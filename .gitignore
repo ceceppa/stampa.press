@@ -1,0 +1,80 @@
+*~
+.DS_Store
+.svn
+.cvs
+.htaccess
+*.bak
+*.swp
+.cache
+debug.log
+debug.93.log
+Thumbs.db
+env
+wp-content/plugins/hello.php
+wp-content/themes/*/style.css
+wp-content/themes/*/style.min.css
+wp-content/themes/*/style.min.css.map
+wp-content/themes/*/style.css.map
+wp-content/themes/*/assets/js/script.js
+wp-content/themes/*/assets/js/script.min.js
+wp-content/themes/*/assets/js/script.js.map
+wp-content/themes/*/assets/dist
+wp-content/themes/*/assets/svg/symbols.svg
+wp-content/themes/*/assets/symbols.html
+wp-config.php
+wp-config-sample.php
+package.json.old
+composer.json.old
+
+# The custom hooks
+.hooks
+
+# Composer & npm
+node_modules
+wp-content/themes/*/assests/dist
+
+# Ignore images, are sync with rsync
+wp-content/uploads
+
+# Backtopjs data
+backstop_data
+
+# Pizza log
+pizza.log.txt
+
+# Cache data
+wp-content/themes/*/inc/_cache
+
+# VSCode
+.vscode
+
+# WP Files
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-config_OLD.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.phpwp-admin
+wp-includes
+wp-admin
+xmlrpc.php
+/vendor
+wp-content/mu-plugins
+
+/composer.json
+/composer.lock
+/index.php
+/license.txt
+/pre-commit
+/pre-receive
+/readme.html
+wp-content/db.php
+wp-content/languages/
+wp-content/plugins/

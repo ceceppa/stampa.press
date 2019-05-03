@@ -1,0 +1,30 @@
+{
+  "name": "stampa",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "docs:build": "vuepress build",
+    "dev": "parcel src/index.js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0",
+    "parcel-bundler": "^1.12.3",
+    "react-test-renderer": "^16.7.0"
+  }
+}
