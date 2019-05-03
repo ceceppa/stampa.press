@@ -11,10 +11,6 @@ debug.93.log
 Thumbs.db
 env
 wp-content/plugins/hello.php
-wp-content/themes/*/style.css
-wp-content/themes/*/style.min.css
-wp-content/themes/*/style.min.css.map
-wp-content/themes/*/style.css.map
 wp-content/themes/*/assets/js/script.js
 wp-content/themes/*/assets/js/script.min.js
 wp-content/themes/*/assets/js/script.js.map
