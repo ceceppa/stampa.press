@@ -1,0 +1,54 @@
+# Cache is causing detached HEAD to point to a previous commit rather then the last...
+# image: node:latest
+
+# cache:
+#   paths:
+#     - node_modules/
+
+before_script:
+  - cd wp-content/themes/$CI_PROJECT_NAME
+  - yarn install
+  - gulp build
+  - set +e
+  - cd $CI_PROJECT_DIR
+  - sed -i '/.*\/style\..*css/d' .gitignore
+  - sed -i '/.*\/script\..*js/d' .gitignore
+  - git add .
+  - git remote add live $WP_GIT_PRODUCTION;
+  - git remote add staging $WP_GIT_STAGING;
+  - git commit -am 'SYNC devserver with remote one'
+  - set -e
+
+stages:
+  - deploy
+
+#
+# Push the content to the "live" environment
+# https://stackoverflow.com/questions/39466770/gitlab-ci-scripts-during-which-is-allowed-to-be-non-zero
+#
+deploy_app:
+  stage: deploy
+  only:
+    - live
+  script:
+    # - backstop reference
+    - git push live HEAD:master --force
+    # - backstop test
+    - "if [ -f movefile.yml ]; then
+      wordmove push -u;
+      fi"
+
+#
+# Push the content to the staging environment
+#
+deploy_staging:
+  stage: deploy
+  only:
+    - staging
+  script:
+    # - backstop reference
+    - git push staging HEAD:master --force
+    # - backstop test
+    - "if [ -f movefile.yml ]; then
+      wordmove push -u;
+      fi"
