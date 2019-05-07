@@ -1,0 +1,33 @@
+[
+  {
+    "group": "Gutenberg",
+    "id": "text",
+    "data": {
+      "label": "Text",
+      "tooltip": "Simple text input field",
+      "icon": "input.svg",
+      "render": [
+        "<PlainText",
+        " value={ `fieldName` }",
+        "onChange={ this.`onFieldNameChanged` }",
+        "/>"
+      ]
+    }
+  },
+  {
+    "group": "Gutenberg",
+    "id": "button",
+    "data": {
+      "label": "Button",
+      "tooltip": "Button field",
+      "icon": "button.svg",
+      "render": [
+        "<PlainText",
+        " value={ `fieldName` }",
+        "onChange={ this.`onFieldNameChanged }",
+        "/>"
+      ],
+      "options": {}
+    }
+  }
+]

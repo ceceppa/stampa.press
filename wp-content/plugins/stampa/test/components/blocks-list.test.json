@@ -1,0 +1,27 @@
+{
+  "Gutenberg": {
+    "text": {
+      "label": "Text",
+      "tooltip": "Simple text input field",
+      "icon": "input.svg",
+      "render": [
+        "<PlainText",
+        " value={ `fieldName` }",
+        "onChange={ this.`onFieldNameChanged` }",
+        "/>"
+      ]
+    },
+    "button": {
+      "label": "Button",
+      "tooltip": "Button field",
+      "icon": "button.svg",
+      "render": [
+        "<PlainText",
+        " value={ `fieldName` }",
+        "onChange={ this.`onFieldNameChanged }",
+        "/>"
+      ],
+      "options": {}
+    }
+  }
+}

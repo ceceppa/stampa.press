@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.postcss"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"style.css","sourceRoot":"../postcss","sourcesContent":["body.post-type-stampa-block {\n  #poststuff #post-body.columns-2 {\n    margin-right: 0;\n  }\n\n  #post-body.columns-2 #postbox-container-1 {\n    display: none;\n  }\n}\n"]}
