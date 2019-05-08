@@ -1,4 +1,5 @@
 {
-  "modules": true,
-  "syntax": "postcss-scss",
+  "plugins": {
+    "precss": {}
+  }
 }
