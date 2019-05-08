@@ -1,0 +1,4 @@
+{
+  "modules": true,
+  "syntax": "postcss-scss",
+}
