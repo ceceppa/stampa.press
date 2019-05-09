@@ -1,8 +1,63 @@
-#poststuff #post-body.columns-2 body.post-type-stampa-block {
+body.post-type-stampa-block #poststuff #post-body.columns-2 {
     margin-right: 0;
   }
-  #post-body.columns-2 #postbox-container-1 body.post-type-stampa-block {
+  body.post-type-stampa-block #post-body.columns-2 #postbox-container-1 {
     display: none;
   }
+
+.stampa {
+  display: -webkit-box;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  margin-top: 20px;
+  color: #555d66;
+}
+
+.stampa__left,
+  .stampa__right {
+    width: 300px;
+    min-width: 300px;
+    width: 300px;
+    min-width: 300px;
+  }
+
+.stampa__left {
+    border-right: 1px solid #e2e4e7;
+  }
+
+.stampa__right {
+    border-left: 1px solid #e2e4e7;
+  }
+
+.stampa__grid {
+    -webkit-box-flex: 1;
+            flex-grow: 1;
+  }
+
+.stampa__content {
+    padding: 16px;
+  }
+
+.stampa__border--bottom {
+    border-bottom: 1px solid #e2e4e7;
+  }
+
+.components__filter {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+  }
+
+.components__group {
+    margin: 0;
+  }
+
+.components__group__label {
+      font-weight: bold;
+    }
 
 /*# sourceMappingURL=/style.css.map */

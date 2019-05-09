@@ -8,12 +8,12 @@ import Grid from './components/Grid';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <ComponentsList className="left-sidebar"></ComponentsList>
-        <Grid className="grid"></Grid>
-        <div className="right-sidebar">
-          <BlockOptions></BlockOptions>
-          <FieldOptions></FieldOptions>
+      <div className="stampa">
+        <ComponentsList />
+        <Grid />
+        <div className="stampa__right">
+          <BlockOptions />
+          <FieldOptions />
         </div>
       </div>
     );

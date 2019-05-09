@@ -1,9 +1,63 @@
 body.post-type-stampa-block {
-  #poststuff #post-body.columns-2 & {
+  #poststuff #post-body.columns-2 {
     margin-right: 0;
   }
 
-  #post-body.columns-2 #postbox-container-1 & {
+  #post-body.columns-2 #postbox-container-1 {
     display: none;
+  }
+}
+
+$border: #e2e4e7;
+
+.stampa {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  margin-top: 20px;
+  color: #555d66;
+
+  &__left,
+  &__right {
+    width: 300px;
+    min-width: 300px;
+    width: 300px;
+    min-width: 300px;
+  }
+
+  &__left {
+    border-right: 1px solid $border;
+  }
+
+  &__right {
+    border-left: 1px solid $border;
+  }
+
+  &__grid {
+    flex-grow: 1;
+  }
+
+  &__content {
+    padding: 16px;
+  }
+
+  &__border--bottom {
+    border-bottom: 1px solid $border;
+  }
+}
+
+.components {
+  &__filter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__group {
+    margin: 0;
+
+    &__label {
+      font-weight: bold;
+    }
   }
 }
