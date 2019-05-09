@@ -25735,7 +25735,73 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"components/ComponentsList.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"components/ComponentItem.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ComponentItem = ComponentItem;
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function ComponentItem(_ref) {
+  var group = _ref.group,
+      blocks = _ref.blocks;
+  console.info(group, blocks);
+  var items = Object.keys(blocks[group]);
+
+  var _useState = (0, _react.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      collapsed = _useState2[0],
+      setCollapsed = _useState2[1];
+
+  return _react.default.createElement("div", {
+    className: "components__group__body"
+  }, _react.default.createElement("button", {
+    className: "components__group__label stampa__content stampa__border--bottom"
+  }, group, _react.default.createElement("span", {
+    "aria-hidden": "true"
+  }, _react.default.createElement("svg", {
+    className: "components__group__arrow",
+    width: "24px",
+    height: "24px",
+    viewBox: "0 0 24 24",
+    xmlns: "http://www.w3.org/2000/svg",
+    role: "img",
+    "aria-hidden": "true",
+    focusable: "false"
+  }, _react.default.createElement("g", null, _react.default.createElement("path", {
+    fill: "none",
+    d: "M0,0h24v24H0V0z"
+  })), _react.default.createElement("g", null, _react.default.createElement("path", {
+    d: "M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"
+  }))))), items.map(function (id) {
+    return _react.default.createElement("dd", {
+      key: id,
+      className: "components__group__item"
+    }, _react.default.createElement("img", {
+      className: "components__group__image",
+      src: blocks[group][id].icon,
+      title: blocks[group][id].tooltip
+    }));
+  }));
+}
+
+var _default = ComponentItem;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js"}],"components/ComponentsList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25744,6 +25810,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
+
+var _ComponentItem = _interopRequireDefault(require("./ComponentItem"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -25781,27 +25851,19 @@ function ComponentsList() {
     value: filter,
     onChange: updateFilter
   })), keys.map(function (group) {
-    return _react.default.createElement("dl", {
+    return _react.default.createElement("div", {
       className: "components__group",
       key: group
-    }, _react.default.createElement("dt", {
-      className: "components__group__label stampa__content stampa__border--bottom"
-    }, group), Object.keys(blocks[group]).map(function (id) {
-      return _react.default.createElement("dd", {
-        key: id,
-        className: "components__group__item"
-      }, _react.default.createElement("img", {
-        className: "components__group__image",
-        src: blocks[group][id].icon,
-        title: blocks[group][id].tooltip
-      }));
+    }, _react.default.createElement(_ComponentItem.default, {
+      group: group,
+      blocks: blocks
     }));
   }));
 }
 
 var _default = ComponentsList;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./ComponentItem":"components/ComponentItem.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

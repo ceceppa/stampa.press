@@ -8,6 +8,7 @@ body.post-type-stampa-block {
   }
 }
 
+$color__dark: #191e23;
 $border: #e2e4e7;
 
 .stampa {
@@ -57,7 +58,13 @@ $border: #e2e4e7;
     margin: 0;
 
     &__label {
-      font-weight: bold;
+      background: transparent;
+      font-weight: 600;
+      color: $color__dark;
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid $border;
+      text-align-last: left;
     }
   }
 }

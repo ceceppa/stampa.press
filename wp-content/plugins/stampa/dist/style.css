@@ -57,7 +57,14 @@ body.post-type-stampa-block #poststuff #post-body.columns-2 {
   }
 
 .components__group__label {
-      font-weight: bold;
+      background: transparent;
+      font-weight: 600;
+      color: #191e23;
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #e2e4e7;
+      -moz-text-align-last: left;
+           text-align-last: left;
     }
 
 /*# sourceMappingURL=/style.css.map */
