@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 
 export function ComponentItem({ group, blocks }) {
-  console.info(group, blocks);
   const items = Object.keys(blocks[group]);
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div className="components__group__body">
-      <button className="components__group__label stampa__content stampa__border--bottom">
+      <button
+        className="components__group__label stampa__content stampa__border--bottom"
+        type="button"
+        onClick={() => setCollapsed(!collapsed)}
+      >
         {group}
-        <span aria-hidden="true">
+        <span aria-hidden="true" className="components__group__arrow">
           <svg
-            className="components__group__arrow"
-            width="24px"
-            height="24px"
+            className={collapsed ? 'collpsed' : undefined}
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
             role="img"
@@ -30,13 +31,17 @@ export function ComponentItem({ group, blocks }) {
         </span>
       </button>
       {items.map(id => (
-        <dd key={id} className="components__group__item">
+        <div
+          key={id}
+          className="components__group__item stampa__content"
+          style={{ display: collapsed ? 'none' : 'block' }}
+        >
           <img
             className="components__group__image"
             src={blocks[group][id].icon}
             title={blocks[group][id].tooltip}
           />
-        </dd>
+        </div>
       ))}
     </div>
   );

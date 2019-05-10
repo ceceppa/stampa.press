@@ -25759,7 +25759,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function ComponentItem(_ref) {
   var group = _ref.group,
       blocks = _ref.blocks;
-  console.info(group, blocks);
   var items = Object.keys(blocks[group]);
 
   var _useState = (0, _react.useState)(false),
@@ -25770,13 +25769,16 @@ function ComponentItem(_ref) {
   return _react.default.createElement("div", {
     className: "components__group__body"
   }, _react.default.createElement("button", {
-    className: "components__group__label stampa__content stampa__border--bottom"
+    className: "components__group__label stampa__content stampa__border--bottom",
+    type: "button",
+    onClick: function onClick() {
+      return setCollapsed(!collapsed);
+    }
   }, group, _react.default.createElement("span", {
-    "aria-hidden": "true"
+    "aria-hidden": "true",
+    className: "components__group__arrow"
   }, _react.default.createElement("svg", {
-    className: "components__group__arrow",
-    width: "24px",
-    height: "24px",
+    className: collapsed ? 'collpsed' : undefined,
     viewBox: "0 0 24 24",
     xmlns: "http://www.w3.org/2000/svg",
     role: "img",
@@ -25788,9 +25790,12 @@ function ComponentItem(_ref) {
   })), _react.default.createElement("g", null, _react.default.createElement("path", {
     d: "M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"
   }))))), items.map(function (id) {
-    return _react.default.createElement("dd", {
+    return _react.default.createElement("div", {
       key: id,
-      className: "components__group__item"
+      className: "components__group__item stampa__content",
+      style: {
+        display: collapsed ? 'none' : 'block'
+      }
     }, _react.default.createElement("img", {
       className: "components__group__image",
       src: blocks[group][id].icon,
@@ -25969,7 +25974,59 @@ function (_Component) {
 
 var _default = FieldOptions;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"components/Grid.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"components/SVGGrid.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function SVGGrid(_ref) {
+  var columns = _ref.columns,
+      rows = _ref.rows;
+  var xPercentage = 100 / columns;
+  var yPercentage = 100 / rows;
+  return _react.default.createElement("svg", {
+    width: "100",
+    height: "100",
+    className: "grid__svg"
+  }, _toConsumableArray(Array(columns + 1)).map(function (nothing, id) {
+    var x = "".concat(id * xPercentage, "%");
+    return _react.default.createElement("line", {
+      key: id,
+      x1: x,
+      y1: "0",
+      x2: x,
+      y2: "100%"
+    });
+  }), _toConsumableArray(Array(rows + 1)).map(function (nothing, id) {
+    var y = "".concat(id * yPercentage, "%");
+    return _react.default.createElement("line", {
+      key: id,
+      x1: "0",
+      y1: y,
+      x2: "100%",
+      y2: y
+    });
+  }));
+}
+
+var _default = SVGGrid;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25979,51 +26036,28 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _SVGGrid = _interopRequireDefault(require("./SVGGrid"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function Grid() {
+  var columns = 12;
+  var rows = 6;
+  return _react.default.createElement("div", {
+    className: "stampa__grid grid"
+  }, _react.default.createElement("div", {
+    className: "grid__content"
+  }, _react.default.createElement(_SVGGrid.default, {
+    rows: rows,
+    columns: columns
+  })));
+}
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var Grid =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Grid, _Component);
-
-  function Grid() {
-    _classCallCheck(this, Grid);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Grid).apply(this, arguments));
-  }
-
-  _createClass(Grid, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", {
-        className: "stampa__grid"
-      }, "Components");
-    }
-  }]);
-
-  return Grid;
-}(_react.Component);
-
-exports.default = Grid;
-},{"react":"../node_modules/react/index.js"}],"App.js":[function(require,module,exports) {
+var _default = Grid;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./SVGGrid":"components/SVGGrid.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26090,7 +26124,7 @@ function (_Component) {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/ComponentsList":"components/ComponentsList.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.jsx"}],"serviceWorker.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/ComponentsList":"components/ComponentsList.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.js"}],"serviceWorker.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26258,7 +26292,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35597" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45321" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
