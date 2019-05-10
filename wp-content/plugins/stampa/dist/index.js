@@ -26003,8 +26003,8 @@ function SVGGrid(_ref) {
     width: "100",
     height: "100",
     className: "grid__svg"
-  }, _toConsumableArray(Array(columns + 1)).map(function (nothing, id) {
-    var x = "".concat(id * xPercentage, "%");
+  }, _toConsumableArray(Array(columns)).map(function (nothing, id) {
+    var x = "".concat((id + 1) * xPercentage, "%");
     return _react.default.createElement("line", {
       key: id,
       x1: x,
@@ -26012,8 +26012,8 @@ function SVGGrid(_ref) {
       x2: x,
       y2: "100%"
     });
-  }), _toConsumableArray(Array(rows + 1)).map(function (nothing, id) {
-    var y = "".concat(id * yPercentage, "%");
+  }), _toConsumableArray(Array(rows)).map(function (nothing, id) {
+    var y = "".concat((id + 1) * yPercentage, "%");
     return _react.default.createElement("line", {
       key: id,
       x1: "0",
@@ -26044,7 +26044,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function Grid() {
   var columns = 12;
-  var rows = 6;
+  var rows = 5;
   return _react.default.createElement("div", {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {

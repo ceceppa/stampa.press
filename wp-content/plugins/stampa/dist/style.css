@@ -97,6 +97,7 @@ body.post-type-stampa-block #poststuff #post-body.columns-2 {
   padding: 30px;
   border-top: 1px solid #e2e4e7;
   border-bottom: 1px solid #e2e4e7;
+  min-height: 230px;
 }
 
 .grid__content {
@@ -115,8 +116,8 @@ body.post-type-stampa-block #poststuff #post-body.columns-2 {
   }
 
 .grid line {
-    stroke-width: 1px;
-    stroke: #e2e4e7;
+    stroke-width: 10px;
+    stroke: #f1f1f1;
   }
 
 /*# sourceMappingURL=/style.css.map */

@@ -4,7 +4,7 @@ import SVGGrid from './SVGGrid';
 
 function Grid() {
   const columns = 12;
-  const rows = 6;
+  const rows = 5;
 
   return (
     <div className="stampa__grid grid">
