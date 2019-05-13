@@ -25735,13 +25735,12 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"components/ComponentItem.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"components/GroupItems.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ComponentItem = ComponentItem;
 exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
@@ -25756,7 +25755,7 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function ComponentItem(_ref) {
+function GroupItems(_ref) {
   var group = _ref.group,
       blocks = _ref.blocks;
   var items = Object.keys(blocks[group]);
@@ -25789,22 +25788,28 @@ function ComponentItem(_ref) {
     d: "M0,0h24v24H0V0z"
   })), _react.default.createElement("g", null, _react.default.createElement("path", {
     d: "M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"
-  }))))), items.map(function (id) {
-    return _react.default.createElement("div", {
+  }))))), _react.default.createElement("ul", {
+    className: "components__items stampa__content",
+    style: {
+      display: collapsed ? 'none' : 'grid'
+    }
+  }, items.map(function (id) {
+    var block = blocks[group][id];
+    return _react.default.createElement("li", {
       key: id,
-      className: "components__group__item stampa__content",
-      style: {
-        display: collapsed ? 'none' : 'block'
-      }
+      className: "components__item",
+      draggable: "true"
     }, _react.default.createElement("img", {
-      className: "components__group__image",
-      src: blocks[group][id].icon,
-      title: blocks[group][id].tooltip
-    }));
-  }));
+      className: "components__image",
+      src: block.icon,
+      title: block.tooltip
+    }), _react.default.createElement("span", {
+      className: "components__label"
+    }, block.label));
+  })));
 }
 
-var _default = ComponentItem;
+var _default = GroupItems;
 exports.default = _default;
 },{"react":"../node_modules/react/index.js"}],"components/ComponentsList.js":[function(require,module,exports) {
 "use strict";
@@ -25816,7 +25821,7 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _ComponentItem = _interopRequireDefault(require("./ComponentItem"));
+var _GroupItems = _interopRequireDefault(require("./GroupItems"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25859,7 +25864,7 @@ function ComponentsList() {
     return _react.default.createElement("div", {
       className: "components__group",
       key: group
-    }, _react.default.createElement(_ComponentItem.default, {
+    }, _react.default.createElement(_GroupItems.default, {
       group: group,
       blocks: blocks
     }));
@@ -25868,7 +25873,7 @@ function ComponentsList() {
 
 var _default = ComponentsList;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./ComponentItem":"components/ComponentItem.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26292,7 +26297,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45321" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35117" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -100,7 +100,11 @@ class Stampa {
 
 		$blocks = json_decode( $data );
 
+		// "Adjust" the path for the images
+		$svg_path = plugins_url( 'assets/svg/', __FILE__ );
 		foreach ( $blocks as $block ) {
+			$block->data->icon = $svg_path . $block->data->icon;
+
 			self::add_block( $block->group, $block->id, (array) $block->data );
 		}
 	}

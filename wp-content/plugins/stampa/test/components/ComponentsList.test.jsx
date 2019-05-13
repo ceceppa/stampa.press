@@ -37,7 +37,7 @@ describe('ComponentsList', () => {
     });
 
     it('Should render a list given an object', () => {
-      expect(component.root.findAllByType('dl').length).toBeGreaterThan(0);
+      expect(component.root.findAllByType('button').length).toBeGreaterThan(0);
     });
 
     it('Should render 1 dt "group" element', () => {

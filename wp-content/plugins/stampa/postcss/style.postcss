@@ -89,6 +89,31 @@ $white: #fff;
       }
     }
   }
+
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    padding-top: 0;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 10px;
+
+    &:hover {
+      background: $hover;
+    }
+  }
+
+  &__image {
+    margin-bottom: 10px;
+    height: 24px;
+  }
 }
 
 .grid {

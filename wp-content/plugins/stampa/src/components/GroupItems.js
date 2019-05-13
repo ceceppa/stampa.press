@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export function ComponentItem({ group, blocks }) {
+function GroupItems({ group, blocks }) {
   const items = Object.keys(blocks[group]);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -30,21 +30,26 @@ export function ComponentItem({ group, blocks }) {
           </svg>
         </span>
       </button>
-      {items.map(id => (
-        <div
-          key={id}
-          className="components__group__item stampa__content"
-          style={{ display: collapsed ? 'none' : 'block' }}
-        >
-          <img
-            className="components__group__image"
-            src={blocks[group][id].icon}
-            title={blocks[group][id].tooltip}
-          />
-        </div>
-      ))}
+      <ul
+        className="components__items stampa__content"
+        style={{ display: collapsed ? 'none' : 'grid' }}
+      >
+        {items.map(id => {
+          const block = blocks[group][id];
+          return (
+            <li key={id} className="components__item" draggable="true">
+              <img
+                className="components__image"
+                src={block.icon}
+                title={block.tooltip}
+              />
+              <span className="components__label">{block.label}</span>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
 
-export default ComponentItem;
+export default GroupItems;

@@ -1,10 +1,11 @@
 /* global stampa */
 import React, { useState } from 'react';
-import ComponentItem from './ComponentItem';
+import GroupItems from './GroupItems';
 
 function ComponentsList() {
-  const blocks =
-    window.stampa && window.stampa.blocks ? window.stampa.blocks : [];
+  const blocks = window.stampa && window.stampa.blocks
+    ? window.stampa.blocks
+    : [];
   let keys = Object.keys(blocks);
   const [filter, setFilter] = useState('');
 
@@ -28,7 +29,7 @@ function ComponentsList() {
       </div>
       {keys.map(group => (
         <div className="components__group" key={group}>
-          <ComponentItem group={group} blocks={blocks} />
+          <GroupItems group={group} blocks={blocks} />
         </div>
       ))}
     </aside>
