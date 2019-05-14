@@ -25802,7 +25802,8 @@ function GroupItems(_ref) {
     }, _react.default.createElement("img", {
       className: "components__image",
       src: block.icon,
-      title: block.tooltip
+      title: block.tooltip,
+      draggable: "false"
     }), _react.default.createElement("span", {
       className: "components__label"
     }, block.label));
@@ -25987,9 +25988,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -25999,15 +26000,32 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-function SVGGrid(_ref) {
+var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
   var columns = _ref.columns,
-      rows = _ref.rows;
+      rows = _ref.rows,
+      drag = _ref.drag;
+  var ref = (0, _react.useRef)();
   var xPercentage = 100 / columns;
-  var yPercentage = 100 / rows;
+  var yPercentage = 100 / rows; // Calculate which cell to highlight
+
+  var cellX = 0;
+  var cellY = 0;
+
+  if (drag.isDragMode) {
+    var clientRect = ref.current.getBoundingClientRect();
+    var x = drag.x - clientRect.x;
+    var y = drag.y - clientRect.y;
+    var cellWidth = clientRect.width / columns;
+    var cellHeight = clientRect.height / rows;
+    cellX = Math.floor(x / cellWidth);
+    cellY = Math.floor(y / cellHeight);
+  }
+
   return _react.default.createElement("svg", {
     width: "100",
     height: "100",
-    className: "grid__svg"
+    className: "grid__svg",
+    ref: ref
   }, _toConsumableArray(Array(columns)).map(function (nothing, id) {
     var x = "".concat((id + 1) * xPercentage, "%");
     return _react.default.createElement("line", {
@@ -26026,8 +26044,18 @@ function SVGGrid(_ref) {
       x2: "100%",
       y2: y
     });
+  }), drag.isDragMode && _react.default.createElement("rect", {
+    x: "".concat(cellX * xPercentage, "%"),
+    y: "".concat(cellY * yPercentage, "%"),
+    width: "".concat(xPercentage, "%"),
+    height: "".concat(yPercentage, "%"),
+    style: {
+      fill: '#0085ba',
+      stroke: '#e2e4e7',
+      strokeWidth: '4px'
+    }
   }));
-}
+});
 
 var _default = SVGGrid;
 exports.default = _default;
@@ -26047,16 +26075,54 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function Grid() {
+  var _useState = (0, _react.useState)({
+    x: 0,
+    y: 0,
+    isDragMode: false
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      drag = _useState2[0],
+      setDragXY = _useState2[1];
+
   var columns = 12;
   var rows = 5;
+  var handleDragHover = (0, _react.useMemo)(function (e) {
+    return function (e) {
+      return setDragXY({
+        x: e.clientX,
+        y: e.clientY,
+        isDragMode: true
+      });
+    };
+  });
+  var handleDragLeave = (0, _react.useMemo)(function (e) {
+    return function (e) {
+      return setDragXY({
+        x: 0,
+        y: 0,
+        isDragMode: false
+      });
+    };
+  });
   return _react.default.createElement("div", {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {
-    className: "grid__content"
+    className: "grid__content",
+    onDragOver: handleDragHover,
+    onDragLeave: handleDragLeave
   }, _react.default.createElement(_SVGGrid.default, {
     rows: rows,
-    columns: columns
+    columns: columns,
+    drag: drag
   })));
 }
 
@@ -26297,7 +26363,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35117" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39459" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

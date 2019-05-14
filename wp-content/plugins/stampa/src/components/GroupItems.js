@@ -42,6 +42,7 @@ function GroupItems({ group, blocks }) {
                 className="components__image"
                 src={block.icon}
                 title={block.tooltip}
+                draggable="false"
               />
               <span className="components__label">{block.label}</span>
             </li>
