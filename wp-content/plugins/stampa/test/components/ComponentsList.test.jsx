@@ -1,6 +1,8 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import ComponentsList from '../../src/components/ComponentsList';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 
 import blocksList from './blocks-list.test.json';
 
@@ -21,11 +23,8 @@ describe('ComponentsList', () => {
   };
 
   beforeEach(() => {
-    props = {
-      wallpaperPath: undefined,
-      userInfoMessage: undefined,
-      onUnlocked: undefined,
-    };
+    props = {};
+
     mountedList = undefined;
   });
 
@@ -36,21 +35,53 @@ describe('ComponentsList', () => {
       component = componentsList();
     });
 
-    it('Should render a list given an object', () => {
-      expect(component.root.findAllByType('button').length).toBeGreaterThan(0);
+    it('Should render the sidebar', () => {
+      expect(component.root.findAllByType('aside').length).toBeGreaterThan(0);
     });
 
-    it('Should render 1 dt "group" element', () => {
-      const dt = component.root.findAllByType('dt');
-      expect(dt.length).toBe(1);
-      expect(dt[0].props.children).toEqual('Gutenberg');
+    it('Should render the search filter', () => {
+      expect(
+        component.root.findAll(
+          node => node.type == 'input' && node.props.name == 'filter'
+        )
+      ).toHaveLength(1);
     });
 
-    it('Should render 2 dd & image elements', () => {
-      const dd = component.root.findAllByType('dd');
-      const images = component.root.findAllByType('img');
-      expect(dd.length).toBe(2);
-      expect(images.length).toBe(2);
+    it('Test filter functionality', () => {
+      const container = document.createElement('div');
+
+      act(() => {
+        ReactDOM.render(<ComponentsList />, container);
+      });
+
+      const input = component.root.find(
+        node => node.type === 'input' && node.props.name === 'filter'
+      );
+      const inputElement = container.querySelector('input[type="search"]');
+
+      act(() => {
+        inputElement.dispatchEvent(
+          new KeyboardEvent('keypress', {
+            key: 's',
+          })
+        );
+      });
+
+      // console.info(inputElement);
+    });
+
+    it('Should render one "group" of element', () => {
+      expect(
+        component.root.findAll(
+          node =>
+            node.type === 'div' && node.props.className == 'components__group'
+        )
+      ).toHaveLength(1);
+    });
+
+    it('Should render 2 items (Text & Button)', () => {
+      const li = component.root.findAllByType('li');
+      expect(li.length).toBe(2);
     });
   });
 });

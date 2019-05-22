@@ -7,7 +7,9 @@ function GroupItems({ group, blocks }) {
   return (
     <div className="components__group__body">
       <button
-        className="components__group__label stampa__content stampa__border--bottom"
+        className={`components__group__label stampa__content stampa__border--bottom${
+          collapsed ? ' collapsed' : ''
+        }`}
         type="button"
         onClick={() => setCollapsed(!collapsed)}
       >

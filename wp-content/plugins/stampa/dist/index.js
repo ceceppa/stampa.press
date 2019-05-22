@@ -25768,7 +25768,7 @@ function GroupItems(_ref) {
   return _react.default.createElement("div", {
     className: "components__group__body"
   }, _react.default.createElement("button", {
-    className: "components__group__label stampa__content stampa__border--bottom",
+    className: "components__group__label stampa__content stampa__border--bottom".concat(collapsed ? ' collapsed' : ''),
     type: "button",
     onClick: function onClick() {
       return setCollapsed(!collapsed);
@@ -25818,7 +25818,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = ComponentsList;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -25871,9 +25871,6 @@ function ComponentsList() {
     }));
   }));
 }
-
-var _default = ComponentsList;
-exports.default = _default;
 },{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
@@ -26363,7 +26360,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39459" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36289" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

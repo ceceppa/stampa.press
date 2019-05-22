@@ -2,10 +2,9 @@
 import React, { useState } from 'react';
 import GroupItems from './GroupItems';
 
-function ComponentsList() {
-  const blocks = window.stampa && window.stampa.blocks
-    ? window.stampa.blocks
-    : [];
+export default function ComponentsList() {
+  const blocks =
+    window.stampa && window.stampa.blocks ? window.stampa.blocks : [];
   let keys = Object.keys(blocks);
   const [filter, setFilter] = useState('');
 
@@ -35,5 +34,3 @@ function ComponentsList() {
     </aside>
   );
 }
-
-export default ComponentsList;
