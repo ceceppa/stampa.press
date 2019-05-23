@@ -4,6 +4,18 @@
       "label": "Text",
       "tooltip": "Simple text input field",
       "icon": "input.svg",
+      "grid": {
+        "columns": {
+          "min": 1,
+          "default": 4
+        },
+        "rows": {
+          "min": 1,
+          "max": 1,
+          "default": 1
+        },
+        "image": ""
+      },
       "render": [
         "<PlainText",
         " value={ `fieldName` }",
@@ -15,6 +27,7 @@
       "label": "Button",
       "tooltip": "Button field",
       "icon": "button.svg",
+      "image": "",
       "render": [
         "<PlainText",
         " value={ `fieldName` }",

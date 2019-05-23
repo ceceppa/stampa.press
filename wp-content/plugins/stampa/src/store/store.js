@@ -2,7 +2,7 @@ import { createConnectedStore } from 'undux';
 
 // Declare your store's initial state.
 const initialState = {
-  draggedElementId: null,
+  draggedBlock: null,
   stampaBlock: {},
   gridColumns: 12,
   gridRows: 5,
@@ -13,7 +13,7 @@ const initialState = {
  * Is jest test?
  */
 if (global) {
-  initialState.draggedElementId = 'test';
+  initialState.draggedBlock = 'test';
 }
 
 // Create & export a store with an initial value.

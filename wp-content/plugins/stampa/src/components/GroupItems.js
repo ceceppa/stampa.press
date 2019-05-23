@@ -17,15 +17,16 @@ function GroupItems({ group, blocks }) {
             return (
               <li
                 key={id}
-                className="components__item"
+                className="components__item tooltip"
                 draggable="true"
-                onDragStart={() => store.set('draggedElementId')(id)}
-                onDragEnd={() => store.set('draggedElementId')(null)}
+                onDragStart={() => store.set('draggedBlock')(block)}
+                onDragEnd={() => store.set('draggedBlock')(null)}
+                data-tooltip={block.tooltip}
               >
                 <img
                   className="components__image"
                   src={block.icon}
-                  title={block.tooltip}
+                  aria-hidden="true"
                   draggable="false"
                 />
                 <span className="components__label">{block.label}</span>

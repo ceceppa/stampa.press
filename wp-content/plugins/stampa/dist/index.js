@@ -27152,7 +27152,7 @@ var _undux = require("undux");
 
 // Declare your store's initial state.
 var initialState = {
-  draggedElementId: null,
+  draggedBlock: null,
   stampaBlock: {},
   gridColumns: 12,
   gridRows: 5,
@@ -27163,7 +27163,7 @@ var initialState = {
  */
 
 if (global) {
-  initialState.draggedElementId = 'test';
+  initialState.draggedBlock = 'test';
 } // Create & export a store with an initial value.
 
 
@@ -27192,12 +27192,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function toggleGroup(_ref) {
   var label = _ref.label,
-      children = _ref.children;
+      children = _ref.children,
+      display = _ref.display;
 
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       collapsed = _useState2[0],
       setCollapsed = _useState2[1];
+
+  if (display == null) {
+    display = 'block';
+  }
 
   return _react.default.createElement("div", {
     className: "toggle-group"
@@ -27225,7 +27230,7 @@ function toggleGroup(_ref) {
   }))))), _react.default.createElement("div", {
     className: "toggle-group__content stampa__content",
     style: {
-      display: collapsed ? 'none' : 'grid'
+      display: collapsed ? 'none' : display
     }
   }, children));
 }
@@ -27278,18 +27283,19 @@ function GroupItems(_ref) {
     var block = blocks[group][id];
     return _react.default.createElement("li", {
       key: id,
-      className: "components__item",
+      className: "components__item tooltip",
       draggable: "true",
       onDragStart: function onDragStart() {
-        return store.set('draggedElementId')(id);
+        return store.set('draggedBlock')(block);
       },
       onDragEnd: function onDragEnd() {
-        return store.set('draggedElementId')(null);
-      }
+        return store.set('draggedBlock')(null);
+      },
+      "data-tooltip": block.tooltip
     }, _react.default.createElement("img", {
       className: "components__image",
       src: block.icon,
-      title: block.tooltip,
+      "aria-hidden": "true",
       draggable: "false"
     }), _react.default.createElement("span", {
       className: "components__label"
@@ -27358,7 +27364,47 @@ function ComponentsList() {
     }));
   }));
 }
-},{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js"}],"components/GridOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js"}],"components/NumberSlider.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = NumberSlider;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function NumberSlider(_ref) {
+  var id = _ref.id,
+      label = _ref.label,
+      storeKey = _ref.storeKey;
+
+  var store = _store.default.useStore();
+
+  var value = store.get(storeKey);
+
+  var updateValue = function updateValue(e) {
+    store.set(storeKey)(Math.max(1, e.target.value));
+  };
+
+  return _react.default.createElement("div", {
+    className: "number-slider"
+  }, _react.default.createElement("label", {
+    className: "number-slider__label",
+    htmlFor: id
+  }, label), _react.default.createElement("input", {
+    className: "number-slider__input",
+    type: "number",
+    id: id,
+    value: value,
+    onChange: updateValue
+  }));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/GridOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27370,61 +27416,28 @@ var _react = _interopRequireDefault(require("react"));
 
 var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
 
-var _store = _interopRequireDefault(require("../store/store"));
+var _NumberSlider = _interopRequireDefault(require("./NumberSlider"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function GridOptions() {
-  var store = _store.default.useStore();
-
-  var columns = store.get('gridColumns');
-  var rows = store.get('gridRows');
-  var gap = store.get('gridGap');
-
-  var updateColumnsCount = function updateColumnsCount(e) {
-    store.set('gridColumns')(Math.max(1, e.target.value));
-  };
-
-  var updateRowsCount = function updateRowsCount(e) {
-    store.set('gridRows')(Math.max(1, e.target.value));
-  };
-
-  var updateGap = function updateGap(e) {
-    store.set('gridGap')(Math.max(1, e.target.value));
-  };
-
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Grid options"
-  }, _react.default.createElement("div", {
-    className: "grid-options"
-  }, _react.default.createElement("label", {
-    htmlFor: "grid-columns"
-  }, "Columns:"), _react.default.createElement("input", {
-    type: "number",
-    id: "grid-columns",
-    value: columns,
-    onChange: updateColumnsCount
-  })), _react.default.createElement("div", {
-    className: "grid-options"
-  }, _react.default.createElement("label", {
-    htmlFor: "grid-rows"
-  }, "Rows:"), _react.default.createElement("input", {
-    type: "number",
-    id: "grid-rows",
-    value: rows,
-    onChange: updateRowsCount
-  })), _react.default.createElement("div", {
-    className: "grid-options"
-  }, _react.default.createElement("label", {
-    htmlFor: "grid-gap"
-  }, "Gap:"), _react.default.createElement("input", {
-    type: "number",
-    id: "grid-gap",
-    value: gap,
-    onChange: updateGap
-  })));
+  }, _react.default.createElement(_NumberSlider.default, {
+    id: "columns",
+    label: "Columns:",
+    storeKey: "gridColumns"
+  }), _react.default.createElement(_NumberSlider.default, {
+    id: "rows",
+    label: "Rows:",
+    storeKey: "gridRows"
+  }), _react.default.createElement(_NumberSlider.default, {
+    id: "gap",
+    label: "Gap:",
+    storeKey: "gridGap"
+  }));
 }
-},{"react":"../node_modules/react/index.js","./ToggleGroup":"components/ToggleGroup.js","../store/store":"store/store.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27563,7 +27576,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
   var columns = store.get('gridColumns');
   var rows = store.get('gridRows');
   var strokeWidth = store.get('gridGap');
-  var draggedElementId = store.get('draggedElementId');
+  var draggedBlock = store.get('draggedBlock');
   var xPercentage = 100 / columns;
   var yPercentage = 100 / rows;
   var halfXGap = 0;
@@ -27572,7 +27585,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
   if (ref.current) {
     var clientRect = ref.current.getBoundingClientRect();
     halfXGap = strokeWidth / clientRect.width / 2;
-    halfYGap = strokeWidth / clientRect.height / 2;
+    halfYGap = strokeWidth / clientRect.height / 1;
     console.info(clientRect);
     console.info({
       halfXGap: halfXGap
@@ -27591,7 +27604,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
     };
   }
 
-  if (draggedElementId && ref.current) {
+  if (draggedBlock && ref.current) {
     var _clientRect = ref.current.getBoundingClientRect();
 
     var x = drag.x - _clientRect.x;
@@ -27635,7 +27648,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
         strokeWidth: strokeWidth
       }
     });
-  }), draggedElementId && drag.hover && _react.default.createElement("rect", {
+  }), draggedBlock && drag.hover && _react.default.createElement("rect", {
     x: "".concat(cellX * xPercentage, "%"),
     y: "".concat(cellY * yPercentage, "%"),
     width: "".concat(xPercentage, "%"),
@@ -27958,7 +27971,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43605" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46183" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

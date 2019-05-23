@@ -7,6 +7,7 @@ import { act } from 'react-dom/test-utils';
 describe('ToggleGroup', () => {
   const props = {
     label: 'Gutenberg',
+    display: 'grid',
   };
   let mountedComponent;
 
@@ -54,6 +55,15 @@ describe('ToggleGroup', () => {
 
       expect(button.className).toContain('collapsed');
       expect(content.style.display).toBe('none');
+
+      act(() => {
+        button.dispatchEvent(
+          new MouseEvent('click', {
+            bubbles: true,
+          })
+        );
+      });
+      expect(content.style.display).toBe('grid');
     });
   });
 });

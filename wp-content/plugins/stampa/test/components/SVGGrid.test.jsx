@@ -38,21 +38,21 @@ describe('SVGGrid', () => {
       expect(component.root.findAllByType('svg')).toHaveLength(1);
     });
 
-    it('Should render 12 columns', () => {
+    it('Should render 12 columns (11 lines)', () => {
       expect(
         component.root.findAll(
           node =>
             node.type === 'line' && node.props.className === 'line--column'
         )
-      ).toHaveLength(12);
+      ).toHaveLength(11);
     });
 
-    it('Should render 5 rows', () => {
+    it('Should render 5 rows (4 lines)', () => {
       expect(
         component.root.findAll(
           node => node.type === 'line' && node.props.className === 'line--row'
         )
-      ).toHaveLength(5);
+      ).toHaveLength(4);
     });
 
     it('Should render a <rect> when dragging over it', () => {

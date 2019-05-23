@@ -8,7 +8,7 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
   const columns = store.get('gridColumns');
   const rows = store.get('gridRows');
   const strokeWidth = store.get('gridGap');
-  const draggedElementId = store.get('draggedElementId');
+  const draggedBlock = store.get('draggedBlock');
 
   const xPercentage = 100 / columns;
   const yPercentage = 100 / rows;
@@ -18,7 +18,7 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
   if (ref.current) {
     const clientRect = ref.current.getBoundingClientRect();
     halfXGap = strokeWidth / clientRect.width / 2;
-    halfYGap = strokeWidth / clientRect.height / 2;
+    halfYGap = strokeWidth / clientRect.height / 1;
 
     console.info(clientRect);
     console.info({ halfXGap }, { halfYGap });
@@ -32,7 +32,7 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
     drag = { hover: false };
   }
 
-  if (draggedElementId && ref.current) {
+  if (draggedBlock && ref.current) {
     const clientRect = ref.current.getBoundingClientRect();
     const x = drag.x - clientRect.x;
     const y = drag.y - clientRect.y;
@@ -77,7 +77,7 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
           />
         );
       })}
-      {draggedElementId && drag.hover && (
+      {draggedBlock && drag.hover && (
         <rect
           x={`${cellX * xPercentage}%`}
           y={`${cellY * yPercentage}%`}

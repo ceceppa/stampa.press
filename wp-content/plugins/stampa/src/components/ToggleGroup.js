@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
-export default function toggleGroup({ label, children }) {
+export default function toggleGroup({ label, children, display }) {
   const [collapsed, setCollapsed] = useState(false);
+  if (display == null) {
+    display = 'block';
+  }
 
   return (
     <div className="toggle-group">
@@ -33,7 +36,7 @@ export default function toggleGroup({ label, children }) {
       </button>
       <div
         className="toggle-group__content stampa__content"
-        style={{ display: collapsed ? 'none' : 'grid' }}
+        style={{ display: collapsed ? 'none' : display }}
       >
         {children}
       </div>
