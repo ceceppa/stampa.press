@@ -32,6 +32,7 @@ describe('GroupItems', () => {
       component = groupItems();
 
       container = document.createElement('div');
+      document.body.appendChild(container);
 
       ReactDOM.render(<GroupItems {...props} />, container);
     });

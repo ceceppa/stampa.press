@@ -49,14 +49,12 @@ describe('ComponentsList', () => {
 
     it('Test filter functionality', () => {
       const container = document.createElement('div');
+      document.body.appendChild(container);
 
       act(() => {
         ReactDOM.render(<ComponentsList />, container);
       });
 
-      const input = component.root.find(
-        node => node.type === 'input' && node.props.name === 'filter'
-      );
       const inputElement = container.querySelector('input[type="search"]');
 
       act(() => {

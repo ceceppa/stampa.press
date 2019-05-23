@@ -25735,7 +25735,1430 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"components/GroupItems.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"../node_modules/rxjs-observable/dist/src/symbol/observable.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+// Lifted from https://github.com/ReactiveX/rxjs/blob/5.3.0/src/symbol/observable.ts
+/** Symbol.observable or a string "@@observable". Used for interop */
+function getSymbolObservable(context) {
+    var $$observable;
+    var Symbol = context.Symbol;
+    if (typeof Symbol === 'function') {
+        if (Symbol.observable) {
+            $$observable = Symbol.observable;
+        }
+        else {
+            $$observable = Symbol('observable');
+            Symbol.observable = $$observable;
+        }
+    }
+    else {
+        $$observable = '@@observable';
+    }
+    return $$observable;
+}
+exports.getSymbolObservable = getSymbolObservable;
+exports.observable = getSymbolObservable(typeof window === 'undefined' ? {} : window);
+
+},{}],"../node_modules/rxjs-observable/dist/src/util/noop.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function noop() { }
+exports.noop = noop;
+
+},{}],"../node_modules/rxjs-observable/dist/src/util/pipe.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var noop_1 = require("./noop");
+/* tslint:enable:max-line-length */
+function pipe() {
+    var fns = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        fns[_i] = arguments[_i];
+    }
+    return pipeFromArray(fns);
+}
+exports.pipe = pipe;
+/** @internal */
+function pipeFromArray(fns) {
+    if (!fns) {
+        return noop_1.noop;
+    }
+    if (fns.length === 1) {
+        return fns[0];
+    }
+    return function piped(input) {
+        return fns.reduce(function (prev, fn) { return fn(prev); }, input);
+    };
+}
+exports.pipeFromArray = pipeFromArray;
+
+},{"./noop":"../node_modules/rxjs-observable/dist/src/util/noop.js"}],"../node_modules/rxjs-observable/dist/src/util/hostReportError.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Throws an error on another job so that it's picked up by the runtime's
+ * uncaught error handling mechanism.
+ * @param err the error to throw
+ */
+function hostReportError(err) {
+    setTimeout(function () {
+        throw err;
+    });
+}
+exports.hostReportError = hostReportError;
+
+},{}],"../node_modules/rxjs-observable/dist/src/Observer.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var hostReportError_1 = require("./util/hostReportError");
+exports.empty = {
+    closed: true,
+    next: function (value) {
+        /* noop */
+    },
+    error: function (err) {
+        hostReportError_1.hostReportError(err);
+    },
+    complete: function () {
+        /*noop*/
+    }
+};
+
+},{"./util/hostReportError":"../node_modules/rxjs-observable/dist/src/util/hostReportError.js"}],"../node_modules/rxjs-observable/dist/src/util/errorObject.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+// typeof any so that it we don't have to cast when comparing a result to the error object
+exports.errorObject = { e: {} };
+
+},{}],"../node_modules/rxjs-observable/dist/src/util/isArray.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isArray = Array.isArray || (function (x) { return x && typeof x.length === 'number'; });
+
+},{}],"../node_modules/rxjs-observable/dist/src/util/isFunction.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function isFunction(x) {
+    return typeof x === 'function';
+}
+exports.isFunction = isFunction;
+
+},{}],"../node_modules/rxjs-observable/dist/src/util/isObject.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function isObject(x) {
+    return x != null && typeof x === 'object';
+}
+exports.isObject = isObject;
+
+},{}],"../node_modules/rxjs-observable/dist/src/util/tryCatch.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var errorObject_1 = require("./errorObject");
+var tryCatchTarget;
+function tryCatcher() {
+    try {
+        return tryCatchTarget.apply(this, arguments);
+    }
+    catch (e) {
+        errorObject_1.errorObject.e = e;
+        return errorObject_1.errorObject;
+    }
+}
+function tryCatch(fn) {
+    tryCatchTarget = fn;
+    return tryCatcher;
+}
+exports.tryCatch = tryCatch;
+
+},{"./errorObject":"../node_modules/rxjs-observable/dist/src/util/errorObject.js"}],"../node_modules/rxjs-observable/dist/src/util/UnsubscriptionError.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function UnsubscriptionErrorImpl(errors) {
+    Error.call(this);
+    this.message = errors
+        ? errors.length + " errors occurred during unsubscription:\n" + errors.map(function (err, i) { return i + 1 + ") " + err.toString(); }).join('\n  ')
+        : '';
+    this.name = 'UnsubscriptionError';
+    this.errors = errors;
+    return this;
+}
+UnsubscriptionErrorImpl.prototype = Object.create(Error.prototype);
+/**
+ * An error thrown when one or more errors have occurred during the
+ * `unsubscribe` of a {@link Subscription}.
+ */
+exports.UnsubscriptionError = UnsubscriptionErrorImpl;
+
+},{}],"../node_modules/rxjs-observable/dist/src/Subscription.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var errorObject_1 = require("./util/errorObject");
+var isArray_1 = require("./util/isArray");
+var isFunction_1 = require("./util/isFunction");
+var isObject_1 = require("./util/isObject");
+var tryCatch_1 = require("./util/tryCatch");
+var UnsubscriptionError_1 = require("./util/UnsubscriptionError");
+/**
+ * Represents a disposable resource, such as the execution of an Observable. A
+ * Subscription has one important method, `unsubscribe`, that takes no argument
+ * and just disposes the resource held by the subscription.
+ *
+ * Additionally, subscriptions may be grouped together through the `add()`
+ * method, which will attach a child Subscription to the current Subscription.
+ * When a Subscription is unsubscribed, all its children (and its grandchildren)
+ * will be unsubscribed as well.
+ *
+ * @class Subscription
+ */
+var Subscription = /** @class */ (function () {
+    /**
+     * @param {function(): void} [unsubscribe] A function describing how to
+     * perform the disposal of resources when the `unsubscribe` method is called.
+     */
+    function Subscription(unsubscribe) {
+        /**
+         * A flag to indicate whether this Subscription has already been unsubscribed.
+         * @type {boolean}
+         */
+        this.closed = false;
+        /** @internal */
+        this._parent = null;
+        /** @internal */
+        this._parents = null;
+        /** @internal */
+        this._subscriptions = null;
+        if (unsubscribe) {
+            this._unsubscribe = unsubscribe;
+        }
+    }
+    /**
+     * Disposes the resources held by the subscription. May, for instance, cancel
+     * an ongoing Observable execution or cancel any other type of work that
+     * started when the Subscription was created.
+     * @return {void}
+     */
+    Subscription.prototype.unsubscribe = function () {
+        var hasErrors = false;
+        var errors;
+        if (this.closed) {
+            return;
+        }
+        var _a = this, _parent = _a._parent, _parents = _a._parents, _unsubscribe = _a._unsubscribe, _subscriptions = _a._subscriptions;
+        this.closed = true;
+        this._parent = null;
+        this._parents = null;
+        // null out _subscriptions first so any child subscriptions that attempt
+        // to remove themselves from this subscription will noop
+        this._subscriptions = null;
+        var index = -1;
+        var len = _parents ? _parents.length : 0;
+        // if this._parent is null, then so is this._parents, and we
+        // don't have to remove ourselves from any parent subscriptions.
+        while (_parent) {
+            _parent.remove(this);
+            // if this._parents is null or index >= len,
+            // then _parent is set to null, and the loop exits
+            _parent = (++index < len && _parents[index]) || null;
+        }
+        if (isFunction_1.isFunction(_unsubscribe)) {
+            var trial = tryCatch_1.tryCatch(_unsubscribe).call(this);
+            if (trial === errorObject_1.errorObject) {
+                hasErrors = true;
+                errors =
+                    errors ||
+                        (errorObject_1.errorObject.e instanceof UnsubscriptionError_1.UnsubscriptionError
+                            ? flattenUnsubscriptionErrors(errorObject_1.errorObject.e.errors)
+                            : [errorObject_1.errorObject.e]);
+            }
+        }
+        if (isArray_1.isArray(_subscriptions)) {
+            index = -1;
+            len = _subscriptions.length;
+            while (++index < len) {
+                var sub = _subscriptions[index];
+                if (isObject_1.isObject(sub)) {
+                    var trial = tryCatch_1.tryCatch(sub.unsubscribe).call(sub);
+                    if (trial === errorObject_1.errorObject) {
+                        hasErrors = true;
+                        errors = errors || [];
+                        var err = errorObject_1.errorObject.e;
+                        if (err instanceof UnsubscriptionError_1.UnsubscriptionError) {
+                            errors = errors.concat(flattenUnsubscriptionErrors(err.errors));
+                        }
+                        else {
+                            errors.push(err);
+                        }
+                    }
+                }
+            }
+        }
+        if (hasErrors) {
+            throw new UnsubscriptionError_1.UnsubscriptionError(errors);
+        }
+    };
+    /**
+     * Adds a tear down to be called during the unsubscribe() of this
+     * Subscription.
+     *
+     * If the tear down being added is a subscription that is already
+     * unsubscribed, is the same reference `add` is being called on, or is
+     * `Subscription.EMPTY`, it will not be added.
+     *
+     * If this subscription is already in an `closed` state, the passed
+     * tear down logic will be executed immediately.
+     *
+     * @param {TeardownLogic} teardown The additional logic to execute on
+     * teardown.
+     * @return {Subscription} Returns the Subscription used or created to be
+     * added to the inner subscriptions list. This Subscription can be used with
+     * `remove()` to remove the passed teardown logic from the inner subscriptions
+     * list.
+     */
+    Subscription.prototype.add = function (teardown) {
+        if (!teardown || teardown === Subscription.EMPTY) {
+            return Subscription.EMPTY;
+        }
+        if (teardown === this) {
+            return this;
+        }
+        var subscription = teardown;
+        switch (typeof teardown) {
+            case 'function':
+                subscription = new Subscription(teardown);
+            case 'object':
+                if (subscription.closed ||
+                    typeof subscription.unsubscribe !== 'function') {
+                    return subscription;
+                }
+                else if (this.closed) {
+                    subscription.unsubscribe();
+                    return subscription;
+                }
+                else if (typeof subscription._addParent !== 'function' /* quack quack */) {
+                    var tmp = subscription;
+                    subscription = new Subscription();
+                    subscription._subscriptions = [tmp];
+                }
+                break;
+            default:
+                throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
+        }
+        var subscriptions = this._subscriptions || (this._subscriptions = []);
+        subscriptions.push(subscription);
+        subscription._addParent(this);
+        return subscription;
+    };
+    /**
+     * Removes a Subscription from the internal list of subscriptions that will
+     * unsubscribe during the unsubscribe process of this Subscription.
+     * @param {Subscription} subscription The subscription to remove.
+     * @return {void}
+     */
+    Subscription.prototype.remove = function (subscription) {
+        var subscriptions = this._subscriptions;
+        if (subscriptions) {
+            var subscriptionIndex = subscriptions.indexOf(subscription);
+            if (subscriptionIndex !== -1) {
+                subscriptions.splice(subscriptionIndex, 1);
+            }
+        }
+    };
+    /** @internal */
+    Subscription.prototype._addParent = function (parent) {
+        var _a = this, _parent = _a._parent, _parents = _a._parents;
+        if (!_parent || _parent === parent) {
+            // If we don't have a parent, or the new parent is the same as the
+            // current parent, then set this._parent to the new parent.
+            this._parent = parent;
+        }
+        else if (!_parents) {
+            // If there's already one parent, but not multiple, allocate an Array to
+            // store the rest of the parent Subscriptions.
+            this._parents = [parent];
+        }
+        else if (_parents.indexOf(parent) === -1) {
+            // Only add the new parent to the _parents list if it's not already there.
+            _parents.push(parent);
+        }
+    };
+    /** @nocollapse */
+    Subscription.EMPTY = (function (empty) {
+        empty.closed = true;
+        return empty;
+    })(new Subscription());
+    return Subscription;
+}());
+exports.Subscription = Subscription;
+function flattenUnsubscriptionErrors(errors) {
+    return errors.reduce(function (errs, err) {
+        return errs.concat(err instanceof UnsubscriptionError_1.UnsubscriptionError ? err.errors : err);
+    }, []);
+}
+
+},{"./util/errorObject":"../node_modules/rxjs-observable/dist/src/util/errorObject.js","./util/isArray":"../node_modules/rxjs-observable/dist/src/util/isArray.js","./util/isFunction":"../node_modules/rxjs-observable/dist/src/util/isFunction.js","./util/isObject":"../node_modules/rxjs-observable/dist/src/util/isObject.js","./util/tryCatch":"../node_modules/rxjs-observable/dist/src/util/tryCatch.js","./util/UnsubscriptionError":"../node_modules/rxjs-observable/dist/src/util/UnsubscriptionError.js"}],"../node_modules/rxjs-observable/dist/src/symbol/rxSubscriber.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rxSubscriber = typeof Symbol === 'function' && typeof Symbol.for === 'function'
+    ? Symbol.for('rxSubscriber')
+    : '@@rxSubscriber';
+/**
+ * @deprecated use rxSubscriber instead
+ */
+exports.$$rxSubscriber = exports.rxSubscriber;
+
+},{}],"../node_modules/rxjs-observable/dist/src/Subscriber.js":[function(require,module,exports) {
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Observer_1 = require("./Observer");
+var Subscription_1 = require("./Subscription");
+var rxSubscriber_1 = require("./symbol/rxSubscriber");
+var hostReportError_1 = require("./util/hostReportError");
+var isFunction_1 = require("./util/isFunction");
+var Subscriber = /** @class */ (function (_super) {
+    __extends(Subscriber, _super);
+    /**
+     * @param {Observer|function(value: T): void} [destinationOrNext] A partially
+     * defined Observer or a `next` callback function.
+     * @param {function(e: ?any): void} [error] The `error` callback of an
+     * Observer.
+     * @param {function(): void} [complete] The `complete` callback of an
+     * Observer.
+     */
+    function Subscriber(destinationOrNext, error, complete) {
+        var _this = _super.call(this) || this;
+        /** @internal */ _this.syncErrorValue = null;
+        /** @internal */ _this.syncErrorThrown = false;
+        /** @internal */ _this.syncErrorThrowable = false;
+        _this.isStopped = false;
+        _this._parentSubscription = null;
+        switch (arguments.length) {
+            case 0:
+                _this.destination = Observer_1.empty;
+                break;
+            case 1:
+                if (!destinationOrNext) {
+                    _this.destination = Observer_1.empty;
+                    break;
+                }
+                if (typeof destinationOrNext === 'object') {
+                    // HACK(benlesh): For situations where Node has multiple copies of rxjs in
+                    // node_modules, we cannot rely on `instanceof` checks
+                    if (isTrustedSubscriber(destinationOrNext)) {
+                        var trustedSubscriber = destinationOrNext[rxSubscriber_1.rxSubscriber]();
+                        _this.syncErrorThrowable = trustedSubscriber.syncErrorThrowable;
+                        _this.destination = trustedSubscriber;
+                        trustedSubscriber.add(_this);
+                    }
+                    else {
+                        _this.syncErrorThrowable = true;
+                        _this.destination = new SafeSubscriber(_this, destinationOrNext);
+                    }
+                    break;
+                }
+            default:
+                _this.syncErrorThrowable = true;
+                _this.destination = new SafeSubscriber(_this, destinationOrNext, error, complete);
+                break;
+        }
+        return _this;
+    }
+    Subscriber.prototype[rxSubscriber_1.rxSubscriber] = function () {
+        return this;
+    };
+    /**
+     * The {@link Observer} callback to receive notifications of type `next` from
+     * the Observable, with a value. The Observable may call this method 0 or more
+     * times.
+     * @param {T} [value] The `next` value.
+     * @return {void}
+     */
+    Subscriber.prototype.next = function (value) {
+        if (!this.isStopped) {
+            this._next(value);
+        }
+    };
+    /**
+     * The {@link Observer} callback to receive notifications of type `error` from
+     * the Observable, with an attached `Error`. Notifies the Observer that
+     * the Observable has experienced an error condition.
+     * @param {any} [err] The `error` exception.
+     * @return {void}
+     */
+    Subscriber.prototype.error = function (err) {
+        if (!this.isStopped) {
+            this.isStopped = true;
+            this._error(err);
+        }
+    };
+    /**
+     * The {@link Observer} callback to receive a valueless notification of type
+     * `complete` from the Observable. Notifies the Observer that the Observable
+     * has finished sending push-based notifications.
+     * @return {void}
+     */
+    Subscriber.prototype.complete = function () {
+        if (!this.isStopped) {
+            this.isStopped = true;
+            this._complete();
+        }
+    };
+    Subscriber.prototype.unsubscribe = function () {
+        if (this.closed) {
+            return;
+        }
+        this.isStopped = true;
+        _super.prototype.unsubscribe.call(this);
+    };
+    Subscriber.prototype._next = function (value) {
+        this.destination.next(value);
+    };
+    Subscriber.prototype._error = function (err) {
+        this.destination.error(err);
+        this.unsubscribe();
+    };
+    Subscriber.prototype._complete = function () {
+        this.destination.complete();
+        this.unsubscribe();
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    Subscriber.prototype._addParentTeardownLogic = function (parentTeardownLogic) {
+        if (parentTeardownLogic !== this) {
+            this._parentSubscription = this.add(parentTeardownLogic);
+        }
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    Subscriber.prototype._unsubscribeParentSubscription = function () {
+        if (this._parentSubscription !== null) {
+            this._parentSubscription.unsubscribe();
+        }
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    Subscriber.prototype._unsubscribeAndRecycle = function () {
+        var _a = this, _parent = _a._parent, _parents = _a._parents;
+        this._parent = null;
+        this._parents = null;
+        this.unsubscribe();
+        this.closed = false;
+        this.isStopped = false;
+        this._parent = _parent;
+        this._parents = _parents;
+        return this;
+    };
+    return Subscriber;
+}(Subscription_1.Subscription));
+exports.Subscriber = Subscriber;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var SafeSubscriber = /** @class */ (function (_super) {
+    __extends(SafeSubscriber, _super);
+    function SafeSubscriber(_parentSubscriber, observerOrNext, error, complete) {
+        var _this = _super.call(this) || this;
+        _this._parentSubscriber = _parentSubscriber;
+        var next;
+        var context = _this;
+        if (isFunction_1.isFunction(observerOrNext)) {
+            next = observerOrNext;
+        }
+        else if (observerOrNext) {
+            next = observerOrNext.next;
+            error = observerOrNext.error;
+            complete = observerOrNext.complete;
+            if (observerOrNext !== Observer_1.empty) {
+                context = Object.create(observerOrNext);
+                if (isFunction_1.isFunction(context.unsubscribe)) {
+                    _this.add(context.unsubscribe.bind(context));
+                }
+                context.unsubscribe = _this.unsubscribe.bind(_this);
+            }
+        }
+        _this._context = context;
+        // @ts-ignore
+        _this._next = next;
+        _this._error = error;
+        _this._complete = complete;
+        return _this;
+    }
+    SafeSubscriber.prototype.next = function (value) {
+        if (!this.isStopped && this._next) {
+            this.__tryOrUnsub(this._next, value);
+        }
+    };
+    SafeSubscriber.prototype.error = function (err) {
+        if (!this.isStopped) {
+            var _parentSubscriber = this._parentSubscriber;
+            if (this._error) {
+                this.__tryOrUnsub(this._error, err);
+                this.unsubscribe();
+            }
+            else if (!_parentSubscriber.syncErrorThrowable) {
+                this.unsubscribe();
+                hostReportError_1.hostReportError(err);
+            }
+            else {
+                hostReportError_1.hostReportError(err);
+                this.unsubscribe();
+            }
+        }
+    };
+    SafeSubscriber.prototype.complete = function () {
+        var _this = this;
+        if (!this.isStopped) {
+            if (this._complete) {
+                var wrappedComplete = function () { return _this._complete.call(_this._context); };
+                this.__tryOrUnsub(wrappedComplete);
+            }
+            this.unsubscribe();
+        }
+    };
+    SafeSubscriber.prototype.__tryOrUnsub = function (fn, value) {
+        try {
+            fn.call(this._context, value);
+        }
+        catch (err) {
+            this.unsubscribe();
+            hostReportError_1.hostReportError(err);
+        }
+    };
+    SafeSubscriber.prototype.__tryOrSetError = function (parent, fn, value) {
+        throw new Error('bad call');
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    SafeSubscriber.prototype._unsubscribe = function () {
+        var _parentSubscriber = this._parentSubscriber;
+        this._context = null;
+        this._parentSubscriber = null;
+        _parentSubscriber.unsubscribe();
+    };
+    return SafeSubscriber;
+}(Subscriber));
+function isTrustedSubscriber(obj) {
+    return (obj instanceof Subscriber ||
+        ('syncErrorThrowable' in obj && obj[rxSubscriber_1.rxSubscriber]));
+}
+
+},{"./Observer":"../node_modules/rxjs-observable/dist/src/Observer.js","./Subscription":"../node_modules/rxjs-observable/dist/src/Subscription.js","./symbol/rxSubscriber":"../node_modules/rxjs-observable/dist/src/symbol/rxSubscriber.js","./util/hostReportError":"../node_modules/rxjs-observable/dist/src/util/hostReportError.js","./util/isFunction":"../node_modules/rxjs-observable/dist/src/util/isFunction.js"}],"../node_modules/rxjs-observable/dist/src/util/toSubscriber.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Observer_1 = require("../Observer");
+var Subscriber_1 = require("../Subscriber");
+var rxSubscriber_1 = require("../symbol/rxSubscriber");
+function toSubscriber(nextOrObserver, error, complete) {
+    if (nextOrObserver) {
+        if (nextOrObserver instanceof Subscriber_1.Subscriber) {
+            return nextOrObserver;
+        }
+        if (nextOrObserver[rxSubscriber_1.rxSubscriber]) {
+            return nextOrObserver[rxSubscriber_1.rxSubscriber]();
+        }
+    }
+    if (!nextOrObserver && !error && !complete) {
+        return new Subscriber_1.Subscriber(Observer_1.empty);
+    }
+    return new Subscriber_1.Subscriber(nextOrObserver, error, complete);
+}
+exports.toSubscriber = toSubscriber;
+
+},{"../Observer":"../node_modules/rxjs-observable/dist/src/Observer.js","../Subscriber":"../node_modules/rxjs-observable/dist/src/Subscriber.js","../symbol/rxSubscriber":"../node_modules/rxjs-observable/dist/src/symbol/rxSubscriber.js"}],"../node_modules/rxjs-observable/dist/src/Observable.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var observable_1 = require("./symbol/observable");
+var pipe_1 = require("./util/pipe");
+var toSubscriber_1 = require("./util/toSubscriber");
+/**
+ * A representation of any set of values over any amount of time. This is the most basic building block
+ * of RxJS.
+ *
+ * @class Observable<T>
+ */
+var Observable = /** @class */ (function () {
+    /**
+     * @constructor
+     * @param {Function} subscribe the function that is called when the Observable is
+     * initially subscribed to. This function is given a Subscriber, to which new values
+     * can be `next`ed, or an `error` method can be called to raise an error, or
+     * `complete` can be called to notify of a successful completion.
+     */
+    function Observable(subscribe) {
+        /** Internal implementation detail, do not use directly. */
+        this._isScalar = false;
+        if (subscribe) {
+            this._subscribe = subscribe;
+        }
+    }
+    /**
+     * Creates a new Observable, with this Observable as the source, and the passed
+     * operator defined as the new observable's operator.
+     * @method lift
+     * @param {Operator} operator the operator defining the operation to take on the observable
+     * @return {Observable} a new observable with the Operator applied
+     */
+    Observable.prototype.lift = function (operator) {
+        var observable = new Observable();
+        observable.source = this;
+        observable.operator = operator;
+        return observable;
+    };
+    Observable.prototype.subscribe = function (observerOrNext, error, complete) {
+        var operator = this.operator;
+        var sink = toSubscriber_1.toSubscriber(observerOrNext, error, complete);
+        if (operator) {
+            operator.call(sink, this.source);
+        }
+        else {
+            sink.add(this.source || this._trySubscribe(sink));
+        }
+        return sink;
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    Observable.prototype._trySubscribe = function (sink) {
+        try {
+            return this._subscribe(sink);
+        }
+        catch (err) {
+            sink.error(err);
+        }
+    };
+    /**
+     * @method forEach
+     * @param {Function} next a handler for each value emitted by the observable
+     * @param {PromiseConstructor} [promiseCtor] a constructor function used to instantiate the Promise
+     * @return {Promise} a promise that either resolves on observable completion or
+     *  rejects with the handled error
+     */
+    Observable.prototype.forEach = function (next, promiseCtor) {
+        var _this = this;
+        promiseCtor = getPromiseCtor(promiseCtor);
+        return new promiseCtor(function (resolve, reject) {
+            // Must be declared in a separate statement to avoid a RefernceError when
+            // accessing subscription below in the closure due to Temporal Dead Zone.
+            var subscription;
+            subscription = _this.subscribe(function (value) {
+                try {
+                    next(value);
+                }
+                catch (err) {
+                    reject(err);
+                    if (subscription) {
+                        subscription.unsubscribe();
+                    }
+                }
+            }, reject, resolve);
+        });
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    Observable.prototype._subscribe = function (subscriber) {
+        var source = this.source;
+        return source && source.subscribe(subscriber);
+    };
+    /**
+     * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
+     * @method Symbol.observable
+     * @return {Observable} this instance of the observable
+     */
+    Observable.prototype[observable_1.observable] = function () {
+        return this;
+    };
+    /**
+     * Used to stitch together functional operators into a chain.
+     * @method pipe
+     * @return {Observable} the Observable result of all of the operators having
+     * been called in the order they were passed in.
+     *
+     * ### Example
+     * ```javascript
+     * import { map, filter, scan } from 'rxjs/operators';
+     *
+     * Rx.Observable.interval(1000)
+     *   .pipe(
+     *     filter(x => x % 2 === 0),
+     *     map(x => x + x),
+     *     scan((acc, x) => acc + x)
+     *   )
+     *   .subscribe(x => console.log(x))
+     * ```
+     */
+    Observable.prototype.pipe = function () {
+        var operations = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            operations[_i] = arguments[_i];
+        }
+        if (operations.length === 0) {
+            return this;
+        }
+        return pipe_1.pipeFromArray(operations)(this);
+    };
+    Observable.prototype.toPromise = function (promiseCtor) {
+        var _this = this;
+        promiseCtor = getPromiseCtor(promiseCtor);
+        return new promiseCtor(function (resolve, reject) {
+            var value;
+            _this.subscribe(function (x) { return (value = x); }, function (err) { return reject(err); }, function () { return resolve(value); });
+        });
+    };
+    return Observable;
+}());
+exports.Observable = Observable;
+/**
+ * Decides between a passed promise constructor from consuming code,
+ * A default configured promise constructor, and the native promise
+ * constructor and returns it. If nothing can be found, it will throw
+ * an error.
+ * @param promiseCtor The optional promise constructor to passed by consuming code
+ */
+function getPromiseCtor(promiseCtor) {
+    if (!promiseCtor) {
+        promiseCtor = Promise;
+    }
+    if (!promiseCtor) {
+        throw new Error('no Promise impl found');
+    }
+    return promiseCtor;
+}
+
+},{"./symbol/observable":"../node_modules/rxjs-observable/dist/src/symbol/observable.js","./util/pipe":"../node_modules/rxjs-observable/dist/src/util/pipe.js","./util/toSubscriber":"../node_modules/rxjs-observable/dist/src/util/toSubscriber.js"}],"../node_modules/rxjs-observable/dist/src/index.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Observable_1 = require("./Observable");
+exports.Observable = Observable_1.Observable;
+var Subscription_1 = require("./Subscription");
+exports.Subscription = Subscription_1.Subscription;
+
+},{"./Observable":"../node_modules/rxjs-observable/dist/src/Observable.js","./Subscription":"../node_modules/rxjs-observable/dist/src/Subscription.js"}],"../node_modules/undux/dist/src/emitter.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var rxjs_observable_1 = require("rxjs-observable");
+var ALL = '__ALL__';
+var CYCLE_ERROR_MESSAGE = '[undux] Error: Cyclical dependency detected. '
+    + 'This may cause a stack overflow unless you fix it. \n'
+    + 'The culprit is the following sequence of .set calls, '
+    + 'called from one or more of your Undux Effects: ';
+var Emitter = /** @class */ (function () {
+    function Emitter(isDevMode) {
+        if (isDevMode === void 0) { isDevMode = false; }
+        this.isDevMode = isDevMode;
+        this.state = {
+            callChain: new Set,
+            observables: new Map,
+            observers: new Map
+        };
+    }
+    /**
+     * Emit an event (silently fails if no listeners are hooked up yet)
+     */
+    Emitter.prototype.emit = function (key, value) {
+        if (this.isDevMode) {
+            if (this.state.callChain.has(key)) {
+                console.error(CYCLE_ERROR_MESSAGE + Array.from(this.state.callChain).concat(key).join(' -> '));
+                return this;
+            }
+            else {
+                this.state.callChain.add(key);
+            }
+        }
+        if (this.hasChannel(key)) {
+            this.emitOnChannel(key, value);
+        }
+        if (this.hasChannel(ALL)) {
+            this.emitOnChannel(ALL, value);
+        }
+        if (this.isDevMode)
+            this.state.callChain.clear();
+        return this;
+    };
+    /**
+     * Subscribe to an event
+     */
+    Emitter.prototype.on = function (key) {
+        return this.createChannel(key);
+    };
+    /**
+     * Subscribe to all events
+     */
+    Emitter.prototype.all = function () {
+        return this.createChannel(ALL);
+    };
+    ///////////////////// privates /////////////////////
+    Emitter.prototype.createChannel = function (key) {
+        var _this = this;
+        if (!this.state.observers.has(key)) {
+            this.state.observers.set(key, []);
+        }
+        if (!this.state.observables.has(key)) {
+            this.state.observables.set(key, []);
+        }
+        var observable = new rxjs_observable_1.Observable(function (_) {
+            _this.state.observers.get(key).push(_);
+            return function () { return _this.deleteChannel(key, observable); };
+        });
+        this.state.observables.get(key).push(observable);
+        return observable;
+    };
+    Emitter.prototype.deleteChannel = function (key, observable) {
+        if (!this.state.observables.has(key)) {
+            return;
+        }
+        var array = this.state.observables.get(key);
+        var index = array.indexOf(observable);
+        if (index < 0) {
+            return;
+        }
+        array.splice(index, 1);
+        if (!array.length) {
+            this.state.observables.delete(key);
+            this.state.observers.delete(key);
+        }
+    };
+    Emitter.prototype.emitOnChannel = function (key, value) {
+        this.state.observers.get(key).forEach(function (_) { return _.next(value); });
+    };
+    Emitter.prototype.hasChannel = function (key) {
+        return this.state.observables.has(key);
+    };
+    return Emitter;
+}());
+exports.Emitter = Emitter;
+
+},{"rxjs-observable":"../node_modules/rxjs-observable/dist/src/index.js"}],"../node_modules/undux/dist/src/utils.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * TODO: Avoid diffing by passing individual values into a React component
+ * rather than the whole `store`, and letting React and `shouldComponentUpdate`
+ * handle diffing for us.
+ */
+function equals(a, b) {
+    if (isImmutable(a) && isImmutable(b)) {
+        return a.equals(b);
+    }
+    return a === b;
+}
+exports.equals = equals;
+function isImmutable(a) {
+    return !!a && typeof a === 'object' && ('@@__IMMUTABLE_ITERABLE__@@' in a
+        || '@@__IMMUTABLE_RECORD__@@' in a);
+}
+exports.isImmutable = isImmutable;
+function getDisplayName(Component) {
+    return Component.displayName || Component.name || 'Component';
+}
+exports.getDisplayName = getDisplayName;
+// Strict Object.keys
+function keys(o) {
+    return Object.keys(o);
+}
+exports.keys = keys;
+function mapValues(o, f) {
+    var result = {};
+    keys(o).forEach(function (k) {
+        return result[k] = f(o[k], k);
+    } // TODO: Improve this
+    );
+    return result;
+}
+exports.mapValues = mapValues;
+function some(o, f) {
+    return keys(o).some(function (k) { return f(o[k], k); });
+}
+exports.some = some;
+
+},{}],"../node_modules/undux/dist/src/plugins/withLogger.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function withLogger(store) {
+    store.onAll().subscribe(function (_a) {
+        var key = _a.key, previousValue = _a.previousValue, value = _a.value;
+        console.info("%c \u2941 " + key, 'background-color: rgb(96, 125, 139); color: #fff; padding: 2px 8px 2px 0;', previousValue, '→', value);
+    });
+    return store;
+}
+exports.withLogger = withLogger;
+
+},{}],"../node_modules/undux/dist/src/plugins/withReduxDevtools.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function withReduxDevtools(store) {
+    var devtools = window.__REDUX_DEVTOOLS_EXTENSION__;
+    if (!devtools) {
+        console.error('Undux withReduxDevtools plugin: Cannot find Redux Devtools browser extension. Is it installed?');
+        return store;
+    }
+    var devTools = devtools.connect();
+    var wasTriggeredByDevtools = false;
+    var jumpToState = function (newState) {
+        var oldState = store.getState();
+        for (var key in newState) {
+            if (key in oldState) {
+                wasTriggeredByDevtools = true;
+                store.set(key)(newState[key]);
+                wasTriggeredByDevtools = false;
+            }
+        }
+    };
+    devTools.subscribe(function (message) {
+        switch (message.type) {
+            case 'START':
+                devTools.send(null, store.getState());
+                return;
+            case 'DISPATCH':
+                if (!message.state) {
+                    return;
+                }
+                switch (message.payload.type) {
+                    case 'JUMP_TO_ACTION':
+                    case 'JUMP_TO_STATE':
+                        jumpToState(JSON.parse(message.state));
+                        return;
+                }
+                return;
+        }
+    });
+    store.onAll().subscribe(function (_a) {
+        var key = _a.key;
+        if (wasTriggeredByDevtools) {
+            return;
+        }
+        devTools.send(key, store.getState());
+    });
+    return store;
+}
+exports.withReduxDevtools = withReduxDevtools;
+
+},{}],"../node_modules/undux/dist/src/react/connect.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var __1 = require("../");
+/**
+ * @deprecated Use `createConnectedStore` instead.
+ */
+function connect(store) {
+    return __1.connectAs({ store: store });
+}
+exports.connect = connect;
+
+},{"../":"../node_modules/undux/dist/src/index.js"}],"../node_modules/undux/dist/src/react/connectAs.js":[function(require,module,exports) {
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var utils_1 = require("../utils");
+/**
+ * @deprecated Use `createConnectedStoreAs` instead.
+ */
+function connectAs(stores) {
+    return function (Component) {
+        var _a;
+        return _a = /** @class */ (function (_super) {
+                __extends(class_1, _super);
+                function class_1() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.state = {
+                        stores: utils_1.mapValues(stores, function (_) {
+                            return _.getCurrentSnapshot();
+                        }),
+                        subscriptions: utils_1.keys(stores).map(function (k) {
+                            return stores[k].onAll().subscribe(function (_a) {
+                                var previousValue = _a.previousValue, value = _a.value;
+                                if (utils_1.equals(previousValue, value)) {
+                                    return false;
+                                }
+                                _this.setState(function (state) {
+                                    var _a;
+                                    return ({
+                                        stores: Object.assign({}, state.stores, (_a = {},
+                                            _a[k] = stores[k].getCurrentSnapshot(),
+                                            _a))
+                                    });
+                                });
+                            });
+                        })
+                    };
+                    return _this;
+                }
+                class_1.prototype.componentWillUnmount = function () {
+                    this.state.subscriptions.forEach(function (_) { return _.unsubscribe(); });
+                };
+                class_1.prototype.shouldComponentUpdate = function (props, state) {
+                    var _this = this;
+                    return (utils_1.some(state.stores, function (s, k) { return s !== _this.state.stores[k]; }) ||
+                        Object.keys(props).some(function (_) { return props[_] !== _this.props[_]; }));
+                };
+                class_1.prototype.render = function () {
+                    return React.createElement(Component, __assign({}, this.props, this.state.stores));
+                };
+                return class_1;
+            }(React.Component)),
+            _a.displayName = "withStore(" + utils_1.getDisplayName(Component) + ")",
+            _a;
+    };
+}
+exports.connectAs = connectAs;
+
+},{"react":"../node_modules/react/index.js","../utils":"../node_modules/undux/dist/src/utils.js"}],"../node_modules/undux/dist/src/react/createConnectedStore.js":[function(require,module,exports) {
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var __1 = require("..");
+var utils_1 = require("../utils");
+function createConnectedStore(initialState, effects) {
+    var Context = React.createContext({ __MISSING_PROVIDER__: true });
+    var Container = /** @class */ (function (_super) {
+        __extends(Container, _super);
+        function Container(props) {
+            var _this = _super.call(this, props) || this;
+            // Create store definition from initial state
+            var state = props.initialState || initialState;
+            _this.storeDefinition = __1.createStore(state);
+            // Apply effects?
+            var fx = props.effects || effects;
+            if (fx) {
+                fx(_this.storeDefinition);
+            }
+            _this.state = {
+                storeSnapshot: _this.storeDefinition.getCurrentSnapshot()
+            };
+            _this.subscription = _this.storeDefinition.onAll().subscribe(function () {
+                return _this.setState({
+                    storeSnapshot: _this.storeDefinition.getCurrentSnapshot()
+                });
+            });
+            return _this;
+        }
+        Container.prototype.componentWillUnmount = function () {
+            this.subscription.unsubscribe();
+            this.storeDefinition.storeSnapshot = null;
+            this.storeDefinition = null;
+        };
+        Container.prototype.render = function () {
+            return (React.createElement(Context.Provider, { value: this.state.storeSnapshot }, this.props.children));
+        };
+        return Container;
+    }(React.Component));
+    var Consumer = function (props) { return (React.createElement(Context.Consumer, null, function (store) {
+        if (!isInitialized(store)) {
+            throw Error("[Undux] Component \"" + props.displayName + "\" does not seem to be nested in an Undux <Container>. To fix this error, be sure to render the component in the <Container>...</Container> component that you got back from calling createConnectedStore().");
+        }
+        return props.children(store);
+    })); };
+    function withStore(Component) {
+        var displayName = utils_1.getDisplayName(Component);
+        var f = function (props) { return (React.createElement(Consumer, { displayName: displayName }, function (storeSnapshot) { return React.createElement(Component, __assign({ store: storeSnapshot }, props)); })); };
+        f.displayName = "withStore(" + displayName + ")";
+        return f;
+    }
+    return {
+        Container: Container,
+        useStore: function () {
+            return React.useContext(Context);
+        },
+        withStore: withStore
+    };
+}
+exports.createConnectedStore = createConnectedStore;
+function isInitialized(store) {
+    return !('__MISSING_PROVIDER__' in store);
+}
+
+},{"react":"../node_modules/react/index.js","..":"../node_modules/undux/dist/src/index.js","../utils":"../node_modules/undux/dist/src/utils.js"}],"../node_modules/undux/dist/src/react/createConnectedStoreAs.js":[function(require,module,exports) {
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var __1 = require("..");
+var utils_1 = require("../utils");
+function createConnectedStoreAs(initialStates, effects) {
+    var Context = React.createContext({ __MISSING_PROVIDER__: true });
+    var Container = /** @class */ (function (_super) {
+        __extends(Container, _super);
+        function Container(props) {
+            var _this = _super.call(this, props) || this;
+            // Create store definition from initial state
+            var states = props.initialStates || initialStates;
+            var stores = utils_1.mapValues(states, function (_) { return __1.createStore(_); });
+            // Apply effects?
+            var fx = props.effects || effects;
+            if (fx) {
+                fx(stores);
+            }
+            _this.state = {
+                storeDefinitions: stores,
+                storeSnapshots: utils_1.mapValues(stores, function (_) { return _.getCurrentSnapshot(); }),
+                subscriptions: utils_1.mapValues(stores, function (_, k) {
+                    return _.onAll().subscribe(function () {
+                        return _this.setState(function (state) {
+                            var _a;
+                            return ({
+                                storeSnapshots: Object.assign({}, state.storeSnapshots, (_a = {},
+                                    _a[k] = _.getCurrentSnapshot(),
+                                    _a))
+                            });
+                        });
+                    });
+                })
+            };
+            return _this;
+        }
+        Container.prototype.componentWillUnmount = function () {
+            utils_1.mapValues(this.state.subscriptions, function (_) { return _.unsubscribe(); });
+            // Let the state get GC'd.
+            // TODO: Find a more elegant way to do this.
+            if (this.state.storeSnapshots) {
+            }
+            utils_1.mapValues(this.state.storeSnapshots, function (_) { return (_.state = null); });
+            utils_1.mapValues(this.state.storeSnapshots, function (_) { return (_.storeDefinition = null); });
+            utils_1.mapValues(this.state.storeDefinitions, function (_) { return (_.storeSnapshot = null); });
+        };
+        Container.prototype.render = function () {
+            return (React.createElement(Context.Provider, { value: this.state.storeSnapshots }, this.props.children));
+        };
+        return Container;
+    }(React.Component));
+    var Consumer = function (props) { return (React.createElement(Context.Consumer, null, function (stores) {
+        if (!isInitialized(stores)) {
+            throw Error("[Undux] Component \"" + props.displayName + "\" does not seem to be nested in an Undux <Container>. To fix this error, be sure to render the component in the <Container>...</Container> component that you got back from calling createConnectedStoreAs().");
+        }
+        return props.children(stores);
+    })); };
+    function withStores(Component) {
+        var displayName = utils_1.getDisplayName(Component);
+        var f = function (props) { return (React.createElement(Consumer, { displayName: displayName }, function (stores) { return React.createElement(Component, __assign({}, stores, props)); })); };
+        f.displayName = "withStores(" + displayName + ")";
+        return f;
+    }
+    return {
+        Container: Container,
+        useStores: function () {
+            return React.useContext(Context);
+        },
+        withStores: withStores
+    };
+}
+exports.createConnectedStoreAs = createConnectedStoreAs;
+function isInitialized(store) {
+    return !('__MISSING_PROVIDER__' in store);
+}
+
+},{"react":"../node_modules/react/index.js","..":"../node_modules/undux/dist/src/index.js","../utils":"../node_modules/undux/dist/src/utils.js"}],"../node_modules/undux/dist/src/react/index.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var connect_1 = require("./connect");
+exports.connect = connect_1.connect;
+var connectAs_1 = require("./connectAs");
+exports.connectAs = connectAs_1.connectAs;
+var createConnectedStore_1 = require("./createConnectedStore");
+exports.createConnectedStore = createConnectedStore_1.createConnectedStore;
+var createConnectedStoreAs_1 = require("./createConnectedStoreAs");
+exports.createConnectedStoreAs = createConnectedStoreAs_1.createConnectedStoreAs;
+
+},{"./connect":"../node_modules/undux/dist/src/react/connect.js","./connectAs":"../node_modules/undux/dist/src/react/connectAs.js","./createConnectedStore":"../node_modules/undux/dist/src/react/createConnectedStore.js","./createConnectedStoreAs":"../node_modules/undux/dist/src/react/createConnectedStoreAs.js"}],"../node_modules/undux/dist/src/index.js":[function(require,module,exports) {
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var emitter_1 = require("./emitter");
+var utils_1 = require("./utils");
+/**
+ * Immutable snapshot of the current store state. One StoreSnapshot per
+ * StoreDefinition is usually alive at a time.
+ */
+var StoreSnapshot = /** @class */ (function () {
+    function StoreSnapshot(state, storeDefinition) {
+        this.state = state;
+        this.storeDefinition = storeDefinition;
+    }
+    StoreSnapshot.prototype.get = function (key) {
+        return this.state[key];
+    };
+    StoreSnapshot.prototype.set = function (key) {
+        return this.storeDefinition.set(key);
+    };
+    StoreSnapshot.prototype.setFrom_EXPERIMENTAL = function (f) {
+        return this.storeDefinition.setFrom_EXPERIMENTAL(f);
+    };
+    StoreSnapshot.prototype.on = function (key) {
+        return this.storeDefinition.on(key);
+    };
+    StoreSnapshot.prototype.onAll = function () {
+        return this.storeDefinition.onAll();
+    };
+    StoreSnapshot.prototype.getState = function () {
+        return Object.freeze(this.state);
+    };
+    return StoreSnapshot;
+}());
+exports.StoreSnapshot = StoreSnapshot;
+var DEFAULT_OPTIONS = {
+    isDevMode: false
+};
+/**
+ * We create a single instance of this per <Container />.
+ */
+var StoreDefinition = /** @class */ (function () {
+    function StoreDefinition(state, options) {
+        var _this = this;
+        // Initialize emitters
+        this.alls = new emitter_1.Emitter(options.isDevMode);
+        this.emitter = new emitter_1.Emitter(options.isDevMode);
+        // Set initial state
+        this.storeSnapshot = new StoreSnapshot(state, this);
+        // Cache setters
+        this.setters = utils_1.mapValues(state, function (v, key) {
+            return function (value) {
+                var _a;
+                var previousValue = _this.storeSnapshot.get(key);
+                _this.storeSnapshot = new StoreSnapshot(Object.assign({}, _this.storeSnapshot.getState(), (_a = {}, _a[key] = value, _a)), _this);
+                _this.emitter.emit(key, value);
+                _this.alls.emit(key, { key: key, previousValue: previousValue, value: value });
+            };
+        });
+    }
+    StoreDefinition.prototype.on = function (key) {
+        return this.emitter.on(key);
+    };
+    StoreDefinition.prototype.onAll = function () {
+        return this.alls.all();
+    };
+    StoreDefinition.prototype.get = function (key) {
+        return this.storeSnapshot.get(key);
+    };
+    StoreDefinition.prototype.set = function (key) {
+        return this.setters[key];
+    };
+    StoreDefinition.prototype.setFrom_EXPERIMENTAL = function (f) {
+        return f(this.storeSnapshot);
+    };
+    StoreDefinition.prototype.getCurrentSnapshot = function () {
+        return this.storeSnapshot;
+    };
+    StoreDefinition.prototype.toStore = function () {
+        return this.storeSnapshot;
+    };
+    StoreDefinition.prototype.getState = function () {
+        return this.storeSnapshot.getState();
+    };
+    return StoreDefinition;
+}());
+exports.StoreDefinition = StoreDefinition;
+/**
+ * @deprecated Use `createConnectedStore` instead.
+ */
+function createStore(initialState, options) {
+    if (options === void 0) { options = DEFAULT_OPTIONS; }
+    return new StoreDefinition(initialState, options);
+}
+exports.createStore = createStore;
+__export(require("./plugins/withLogger"));
+__export(require("./plugins/withReduxDevtools"));
+__export(require("./react"));
+
+},{"./emitter":"../node_modules/undux/dist/src/emitter.js","./utils":"../node_modules/undux/dist/src/utils.js","./plugins/withLogger":"../node_modules/undux/dist/src/plugins/withLogger.js","./plugins/withReduxDevtools":"../node_modules/undux/dist/src/plugins/withReduxDevtools.js","./react":"../node_modules/undux/dist/src/react/index.js"}],"store/store.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _undux = require("undux");
+
+// Declare your store's initial state.
+var initialState = {
+  dragElementId: null,
+  stampaBlock: {}
+}; // Create & export a store with an initial value.
+
+var _default = (0, _undux.createConnectedStore)(initialState, null);
+
+exports.default = _default;
+},{"undux":"../node_modules/undux/dist/src/index.js"}],"components/GroupItems.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25744,6 +27167,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -25758,6 +27185,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function GroupItems(_ref) {
   var group = _ref.group,
       blocks = _ref.blocks;
+
+  var store = _store.default.useStore();
+
   var items = Object.keys(blocks[group]);
 
   var _useState = (0, _react.useState)(false),
@@ -25798,7 +27228,13 @@ function GroupItems(_ref) {
     return _react.default.createElement("li", {
       key: id,
       className: "components__item",
-      draggable: "true"
+      draggable: "true",
+      onDragStart: function onDragStart() {
+        return store.set('dragElementId')(id);
+      },
+      onDragEnd: function onDragEnd() {
+        return store.set('dragElementId')(null);
+      }
     }, _react.default.createElement("img", {
       className: "components__image",
       src: block.icon,
@@ -25812,7 +27248,7 @@ function GroupItems(_ref) {
 
 var _default = GroupItems;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"components/ComponentsList.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/ComponentsList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25987,6 +27423,10 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -26002,13 +27442,16 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
       rows = _ref.rows,
       drag = _ref.drag;
   var ref = (0, _react.useRef)();
+
+  var store = _store.default.useStore();
+
   var xPercentage = 100 / columns;
   var yPercentage = 100 / rows; // Calculate which cell to highlight
 
   var cellX = 0;
   var cellY = 0;
 
-  if (drag.isDragMode) {
+  if (store.get('dragElementId') && ref.current) {
     var clientRect = ref.current.getBoundingClientRect();
     var x = drag.x - clientRect.x;
     var y = drag.y - clientRect.y;
@@ -26030,7 +27473,8 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
       x1: x,
       y1: "0",
       x2: x,
-      y2: "100%"
+      y2: "100%",
+      className: "line--column"
     });
   }), _toConsumableArray(Array(rows)).map(function (nothing, id) {
     var y = "".concat((id + 1) * yPercentage, "%");
@@ -26039,9 +27483,10 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
       x1: "0",
       y1: y,
       x2: "100%",
-      y2: y
+      y2: y,
+      className: "line--row"
     });
-  }), drag.isDragMode && _react.default.createElement("rect", {
+  }), store.get('dragElementId') && _react.default.createElement("rect", {
     x: "".concat(cellX * xPercentage, "%"),
     y: "".concat(cellY * yPercentage, "%"),
     width: "".concat(xPercentage, "%"),
@@ -26056,7 +27501,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
 
 var _default = SVGGrid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"components/Grid.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26096,17 +27541,7 @@ function Grid() {
     return function (e) {
       return setDragXY({
         x: e.clientX,
-        y: e.clientY,
-        isDragMode: true
-      });
-    };
-  });
-  var handleDragLeave = (0, _react.useMemo)(function (e) {
-    return function (e) {
-      return setDragXY({
-        x: 0,
-        y: 0,
-        isDragMode: false
+        y: e.clientY
       });
     };
   });
@@ -26114,8 +27549,7 @@ function Grid() {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {
     className: "grid__content",
-    onDragOver: handleDragHover,
-    onDragLeave: handleDragLeave
+    onDragOver: handleDragHover
   }, _react.default.createElement(_SVGGrid.default, {
     rows: rows,
     columns: columns,
@@ -26318,6 +27752,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
 
+var _store = _interopRequireDefault(require("./store/store"));
+
 var _App = _interopRequireDefault(require("./App"));
 
 var serviceWorker = _interopRequireWildcard(require("./serviceWorker"));
@@ -26326,13 +27762,13 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom.default.render(_react.default.createElement(_App.default, null), document.getElementById('stampa')); // If you want your app to work offline and load faster, you can change
+_reactDom.default.render(_react.default.createElement(_store.default.Container, null, _react.default.createElement(_App.default, null)), document.getElementById('stampa')); // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 
 
 serviceWorker.unregister();
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./App":"App.js","./serviceWorker":"serviceWorker.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./store/store":"store/store.js","./App":"App.js","./serviceWorker":"serviceWorker.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -26360,7 +27796,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36289" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43347" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

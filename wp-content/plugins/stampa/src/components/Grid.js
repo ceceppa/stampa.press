@@ -8,19 +8,12 @@ function Grid() {
   const rows = 5;
 
   const handleDragHover = useMemo(e => e =>
-    setDragXY({ x: e.clientX, y: e.clientY, isDragMode: true })
-  );
-  const handleDragLeave = useMemo(e => e =>
-    setDragXY({ x: 0, y: 0, isDragMode: false })
+    setDragXY({ x: e.clientX, y: e.clientY })
   );
 
   return (
     <div className="stampa__grid grid">
-      <div
-        className="grid__content"
-        onDragOver={handleDragHover}
-        onDragLeave={handleDragLeave}
-      >
+      <div className="grid__content" onDragOver={handleDragHover}>
         <SVGGrid rows={rows} columns={columns} drag={drag} />
       </div>
     </div>
