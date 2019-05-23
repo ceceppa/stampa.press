@@ -1,18 +1,38 @@
 import React, { useRef } from 'react';
 import Store from '../store/store';
 
-const SVGGrid = React.memo(function SVGGrid({ columns, rows, drag }) {
+const SVGGrid = React.memo(function SVGGrid({ drag }) {
   const ref = useRef();
   const store = Store.useStore();
 
+  const columns = store.get('gridColumns');
+  const rows = store.get('gridRows');
+  const strokeWidth = store.get('gridGap');
+  const draggedElementId = store.get('draggedElementId');
+
   const xPercentage = 100 / columns;
   const yPercentage = 100 / rows;
+  let halfXGap = 0;
+  let halfYGap = 0;
+
+  if (ref.current) {
+    const clientRect = ref.current.getBoundingClientRect();
+    halfXGap = strokeWidth / clientRect.width / 2;
+    halfYGap = strokeWidth / clientRect.height / 2;
+
+    console.info(clientRect);
+    console.info({ halfXGap }, { halfYGap });
+  }
 
   // Calculate which cell to highlight
   let cellX = 0;
   let cellY = 0;
 
-  if (store.get('dragElementId') && ref.current) {
+  if (drag == null || drag.hover == null) {
+    drag = { hover: false };
+  }
+
+  if (draggedElementId && ref.current) {
     const clientRect = ref.current.getBoundingClientRect();
     const x = drag.x - clientRect.x;
     const y = drag.y - clientRect.y;
@@ -25,26 +45,39 @@ const SVGGrid = React.memo(function SVGGrid({ columns, rows, drag }) {
 
   return (
     <svg width="100" height="100" className="grid__svg" ref={ref}>
-      {[...Array(columns)].map((nothing, id) => {
-        const x = `${(id + 1) * xPercentage}%`;
+      {[...Array(columns - 1)].map((nothing, id) => {
+        const x = (id + 1) * xPercentage;
+        const percentage = `${x - halfXGap}%`;
+
         return (
           <line
             key={id}
-            x1={x}
+            x1={percentage}
             y1="0"
-            x2={x}
+            x2={percentage}
             y2="100%"
             className="line--column"
+            style={{ strokeWidth }}
           />
         );
       })}
-      {[...Array(rows)].map((nothing, id) => {
-        const y = `${(id + 1) * yPercentage}%`;
+      {[...Array(rows - 1)].map((nothing, id) => {
+        const y = (id + 1) * yPercentage;
+        const percentage = `${y - halfYGap}%`;
+
         return (
-          <line key={id} x1="0" y1={y} x2="100%" y2={y} className="line--row" />
+          <line
+            key={id}
+            x1="0"
+            y1={percentage}
+            x2="100%"
+            y2={percentage}
+            className="line--row"
+            style={{ strokeWidth }}
+          />
         );
       })}
-      {store.get('dragElementId') && (
+      {draggedElementId && drag.hover && (
         <rect
           x={`${cellX * xPercentage}%`}
           y={`${cellY * yPercentage}%`}

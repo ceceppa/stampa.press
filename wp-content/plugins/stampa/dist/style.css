@@ -1,3 +1,147 @@
+.stampa {
+  display: -webkit-box;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  background: var(--white);
+  margin-top: 20px;
+  color: #555d66;
+}
+
+  .stampa__left,
+  .stampa__right {
+    width: 300px;
+    min-width: 300px;
+    width: 300px;
+    min-width: 300px;
+  }
+
+  .stampa__left {
+    border-right: 1px solid #e2e4e7;
+    border-right: 1px solid var(--border);
+  }
+
+  .stampa__right {
+    border-left: 1px solid #e2e4e7;
+    border-left: 1px solid var(--border);
+  }
+
+  .stampa__grid {
+    -webkit-box-flex: 1;
+            flex-grow: 1;
+  }
+
+  .stampa__content {
+    padding: 16px;
+  }
+
+  .stampa__border--bottom {
+    border-bottom: 1px solid #e2e4e7;
+    border-bottom: 1px solid var(--border);
+  }
+
+.components__filter {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+  }
+  .components__items {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    padding-top: 0;
+  }
+  .components__item {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 10px
+  }
+  .components__item:hover {
+      background: #f8f9f9;
+      background: var(--hover);
+    }
+  .components__image {
+    margin-bottom: 10px;
+    height: 24px;
+  }
+
+.toggle-group {
+  margin: 0;
+}
+
+  .toggle-group__label {
+    background: transparent;
+    font-weight: 600;
+    color: var(--color__dark);
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    -moz-text-align-last: left;
+         text-align-last: left;
+    cursor: pointer;
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease
+  }
+
+  .toggle-group__label:hover {
+      background-color: var(--hover);
+    }
+
+  .toggle-group__arrow {
+    float: right;
+    height: 18px;
+    width: 18px;
+  }
+
+  .toggle-group svg {
+    -webkit-transition: all 0.35s ease;
+    transition: all 0.35s ease
+  }
+
+  .toggle-group svg.collpsed {
+      -webkit-transform: rotate(-180deg);
+              transform: rotate(-180deg);
+    }
+
+.grid {
+  display: -webkit-box;
+  display: flex;
+  background: #f1f1f1;
+  padding: 30px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  min-height: 230px;
+}
+
+  .grid__content {
+    background: var(--white);
+    position: relative;
+    width: 100%;
+    display: grid;
+  }
+
+  .grid__svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .grid line {
+    stroke: #f1f1f1;
+  }
+
 body.post-type-stampa-block #poststuff #post-body.columns-2 {
     margin-right: 0;
   }
@@ -11,161 +155,6 @@ body.post-type-stampa-block #poststuff #post-body.columns-2 {
   --hover: #f8f9f9;
   --white: #fff;
 }
-
-.stampa {
-  display: -webkit-box;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  background: var(--white);
-  margin-top: 20px;
-  color: #555d66;
-}
-
-.stampa__left,
-  .stampa__right {
-    width: 300px;
-    min-width: 300px;
-    width: 300px;
-    min-width: 300px;
-  }
-
-.stampa__left {
-    border-right: 1px solid #e2e4e7;
-    border-right: 1px solid var(--border);
-  }
-
-.stampa__right {
-    border-left: 1px solid #e2e4e7;
-    border-left: 1px solid var(--border);
-  }
-
-.stampa__grid {
-    -webkit-box-flex: 1;
-            flex-grow: 1;
-  }
-
-.stampa__content {
-    padding: 16px;
-  }
-
-.stampa__border--bottom {
-    border-bottom: 1px solid #e2e4e7;
-    border-bottom: 1px solid var(--border);
-  }
-
-.components__filter {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-            flex-direction: column;
-  }
-
-.components__group {
-    margin: 0;
-  }
-
-.components__group__label {
-      background: transparent;
-      font-weight: 600;
-      color: #191e23;
-      color: var(--color__dark);
-      width: 100%;
-      border: none;
-      border-bottom: 1px solid #e2e4e7;
-      border-bottom: 1px solid var(--border);
-      -moz-text-align-last: left;
-           text-align-last: left;
-      cursor: pointer;
-      -webkit-transition: all 0.15s ease;
-      transition: all 0.15s ease
-    }
-
-.components__group__label:hover {
-        background-color: #f8f9f9;
-        background-color: var(--hover);
-      }
-
-.components__group__arrow {
-      float: right;
-      height: 18px;
-      width: 18px;
-    }
-
-.components__group svg {
-      -webkit-transition: all 0.35s ease;
-      transition: all 0.35s ease
-    }
-
-.components__group svg.collpsed {
-        -webkit-transform: rotate(-180deg);
-                transform: rotate(-180deg);
-      }
-
-.components__items {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
-    padding-top: 0;
-  }
-
-.components__item {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-            flex-direction: column;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 4px;
-    padding: 10px
-  }
-
-.components__item:hover {
-      background: #f8f9f9;
-      background: var(--hover);
-    }
-
-.components__image {
-    margin-bottom: 10px;
-    height: 24px;
-  }
-
-.grid {
-  display: -webkit-box;
-  display: flex;
-  background: #f1f1f1;
-  padding: 30px;
-  border-top: 1px solid #e2e4e7;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid #e2e4e7;
-  border-bottom: 1px solid var(--border);
-  min-height: 230px;
-}
-
-.grid__content {
-    background: #fff;
-    background: var(--white);
-    position: relative;
-    width: 100%;
-    display: grid;
-  }
-
-.grid__svg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-.grid line {
-    stroke-width: 10px;
-    stroke: #f1f1f1;
-  }
 
 
 /*# sourceMappingURL=/style.css.map */

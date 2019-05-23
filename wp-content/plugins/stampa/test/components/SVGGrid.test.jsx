@@ -3,22 +3,21 @@ import TestRenderer from 'react-test-renderer';
 import SVGGrid from '../../src/components/SVGGrid';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import Store from '../../src/store/store';
 
 import blocksList from './blocks-list.test.json';
 
 describe('SVGGrid', () => {
-  const props = {
-    columns: 12,
-    rows: 5,
-    drag: {
-      isDragMode: false,
-    },
-  };
+  const props = {};
   let mountedComponent;
 
   const getComponent = () => {
     if (!mountedComponent) {
-      mountedComponent = TestRenderer.create(<SVGGrid {...props} />);
+      mountedComponent = TestRenderer.create(
+        <Store.Container>
+          <SVGGrid {...props} />
+        </Store.Container>
+      );
     }
 
     return mountedComponent;
@@ -57,19 +56,22 @@ describe('SVGGrid', () => {
     });
 
     it('Should render a <rect> when dragging over it', () => {
-      const p = props;
-      p.drag = {
-        isDragMode: true,
+      const drag = {
+        hover: true,
         x: 0,
         y: 0,
       };
-
       const container = document.createElement('div');
       document.body.appendChild(container);
 
-      ReactDOM.render(<SVGGrid {...p} />, container);
+      ReactDOM.render(
+        <Store.Container>
+          <SVGGrid drag={drag} />
+        </Store.Container>,
+        container
+      );
 
-      // expect(component.root.findAllByType('rect')).toHaveLength(1);
+      expect(container.querySelectorAll('rect')).toHaveLength(1);
     });
   });
 });

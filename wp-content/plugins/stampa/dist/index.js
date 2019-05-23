@@ -27140,6 +27140,7 @@ __export(require("./plugins/withReduxDevtools"));
 __export(require("./react"));
 
 },{"./emitter":"../node_modules/undux/dist/src/emitter.js","./utils":"../node_modules/undux/dist/src/utils.js","./plugins/withLogger":"../node_modules/undux/dist/src/plugins/withLogger.js","./plugins/withReduxDevtools":"../node_modules/undux/dist/src/plugins/withReduxDevtools.js","./react":"../node_modules/undux/dist/src/react/index.js"}],"store/store.js":[function(require,module,exports) {
+var global = arguments[3];
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27151,14 +27152,84 @@ var _undux = require("undux");
 
 // Declare your store's initial state.
 var initialState = {
-  dragElementId: null,
-  stampaBlock: {}
-}; // Create & export a store with an initial value.
+  draggedElementId: null,
+  stampaBlock: {},
+  gridColumns: 12,
+  gridRows: 5,
+  gridGap: 5
+};
+/**
+ * Is jest test?
+ */
+
+if (global) {
+  initialState.draggedElementId = 'test';
+} // Create & export a store with an initial value.
+
 
 var _default = (0, _undux.createConnectedStore)(initialState, null);
 
 exports.default = _default;
-},{"undux":"../node_modules/undux/dist/src/index.js"}],"components/GroupItems.js":[function(require,module,exports) {
+},{"undux":"../node_modules/undux/dist/src/index.js"}],"components/ToggleGroup.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = toggleGroup;
+
+var _react = _interopRequireWildcard(require("react"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function toggleGroup(_ref) {
+  var label = _ref.label,
+      children = _ref.children;
+
+  var _useState = (0, _react.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      collapsed = _useState2[0],
+      setCollapsed = _useState2[1];
+
+  return _react.default.createElement("div", {
+    className: "toggle-group"
+  }, _react.default.createElement("button", {
+    className: "toggle-group__label stampa__content stampa__border--bottom".concat(collapsed ? ' collapsed' : ''),
+    type: "button",
+    onClick: function onClick() {
+      return setCollapsed(!collapsed);
+    }
+  }, label, _react.default.createElement("span", {
+    "aria-hidden": "true",
+    className: "toggle-group__arrow"
+  }, _react.default.createElement("svg", {
+    className: collapsed ? 'collpsed' : undefined,
+    viewBox: "0 0 24 24",
+    xmlns: "http://www.w3.org/2000/svg",
+    role: "img",
+    "aria-hidden": "true",
+    focusable: "false"
+  }, _react.default.createElement("g", null, _react.default.createElement("path", {
+    fill: "none",
+    d: "M0,0h24v24H0V0z"
+  })), _react.default.createElement("g", null, _react.default.createElement("path", {
+    d: "M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"
+  }))))), _react.default.createElement("div", {
+    className: "toggle-group__content stampa__content",
+    style: {
+      display: collapsed ? 'none' : 'grid'
+    }
+  }, children));
+}
+},{"react":"../node_modules/react/index.js"}],"components/GroupItems.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27169,6 +27240,8 @@ exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 
 var _store = _interopRequireDefault(require("../store/store"));
+
+var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27197,32 +27270,10 @@ function GroupItems(_ref) {
 
   return _react.default.createElement("div", {
     className: "components__group__body"
-  }, _react.default.createElement("button", {
-    className: "components__group__label stampa__content stampa__border--bottom".concat(collapsed ? ' collapsed' : ''),
-    type: "button",
-    onClick: function onClick() {
-      return setCollapsed(!collapsed);
-    }
-  }, group, _react.default.createElement("span", {
-    "aria-hidden": "true",
-    className: "components__group__arrow"
-  }, _react.default.createElement("svg", {
-    className: collapsed ? 'collpsed' : undefined,
-    viewBox: "0 0 24 24",
-    xmlns: "http://www.w3.org/2000/svg",
-    role: "img",
-    "aria-hidden": "true",
-    focusable: "false"
-  }, _react.default.createElement("g", null, _react.default.createElement("path", {
-    fill: "none",
-    d: "M0,0h24v24H0V0z"
-  })), _react.default.createElement("g", null, _react.default.createElement("path", {
-    d: "M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"
-  }))))), _react.default.createElement("ul", {
-    className: "components__items stampa__content",
-    style: {
-      display: collapsed ? 'none' : 'grid'
-    }
+  }, _react.default.createElement(_ToggleGroup.default, {
+    label: group
+  }, _react.default.createElement("ul", {
+    className: "components__items"
   }, items.map(function (id) {
     var block = blocks[group][id];
     return _react.default.createElement("li", {
@@ -27230,10 +27281,10 @@ function GroupItems(_ref) {
       className: "components__item",
       draggable: "true",
       onDragStart: function onDragStart() {
-        return store.set('dragElementId')(id);
+        return store.set('draggedElementId')(id);
       },
       onDragEnd: function onDragEnd() {
-        return store.set('dragElementId')(null);
+        return store.set('draggedElementId')(null);
       }
     }, _react.default.createElement("img", {
       className: "components__image",
@@ -27243,12 +27294,12 @@ function GroupItems(_ref) {
     }), _react.default.createElement("span", {
       className: "components__label"
     }, block.label));
-  })));
+  }))));
 }
 
 var _default = GroupItems;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/ComponentsList.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/ComponentsList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27294,7 +27345,7 @@ function ComponentsList() {
     htmlFor: "filter"
   }, "Search:"), _react.default.createElement("input", {
     type: "search",
-    name: "filter",
+    id: "filter",
     value: filter,
     onChange: updateFilter
   })), keys.map(function (group) {
@@ -27307,7 +27358,73 @@ function ComponentsList() {
     }));
   }));
 }
-},{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js"}],"components/GridOptions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = GridOptions;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function GridOptions() {
+  var store = _store.default.useStore();
+
+  var columns = store.get('gridColumns');
+  var rows = store.get('gridRows');
+  var gap = store.get('gridGap');
+
+  var updateColumnsCount = function updateColumnsCount(e) {
+    store.set('gridColumns')(Math.max(1, e.target.value));
+  };
+
+  var updateRowsCount = function updateRowsCount(e) {
+    store.set('gridRows')(Math.max(1, e.target.value));
+  };
+
+  var updateGap = function updateGap(e) {
+    store.set('gridGap')(Math.max(1, e.target.value));
+  };
+
+  return _react.default.createElement(_ToggleGroup.default, {
+    label: "Grid options"
+  }, _react.default.createElement("div", {
+    className: "grid-options"
+  }, _react.default.createElement("label", {
+    htmlFor: "grid-columns"
+  }, "Columns:"), _react.default.createElement("input", {
+    type: "number",
+    id: "grid-columns",
+    value: columns,
+    onChange: updateColumnsCount
+  })), _react.default.createElement("div", {
+    className: "grid-options"
+  }, _react.default.createElement("label", {
+    htmlFor: "grid-rows"
+  }, "Rows:"), _react.default.createElement("input", {
+    type: "number",
+    id: "grid-rows",
+    value: rows,
+    onChange: updateRowsCount
+  })), _react.default.createElement("div", {
+    className: "grid-options"
+  }, _react.default.createElement("label", {
+    htmlFor: "grid-gap"
+  }, "Gap:"), _react.default.createElement("input", {
+    type: "number",
+    id: "grid-gap",
+    value: gap,
+    onChange: updateGap
+  })));
+}
+},{"react":"../node_modules/react/index.js","./ToggleGroup":"components/ToggleGroup.js","../store/store":"store/store.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27438,25 +27555,49 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
-  var columns = _ref.columns,
-      rows = _ref.rows,
-      drag = _ref.drag;
+  var drag = _ref.drag;
   var ref = (0, _react.useRef)();
 
   var store = _store.default.useStore();
 
+  var columns = store.get('gridColumns');
+  var rows = store.get('gridRows');
+  var strokeWidth = store.get('gridGap');
+  var draggedElementId = store.get('draggedElementId');
   var xPercentage = 100 / columns;
-  var yPercentage = 100 / rows; // Calculate which cell to highlight
+  var yPercentage = 100 / rows;
+  var halfXGap = 0;
+  var halfYGap = 0;
+
+  if (ref.current) {
+    var clientRect = ref.current.getBoundingClientRect();
+    halfXGap = strokeWidth / clientRect.width / 2;
+    halfYGap = strokeWidth / clientRect.height / 2;
+    console.info(clientRect);
+    console.info({
+      halfXGap: halfXGap
+    }, {
+      halfYGap: halfYGap
+    });
+  } // Calculate which cell to highlight
+
 
   var cellX = 0;
   var cellY = 0;
 
-  if (store.get('dragElementId') && ref.current) {
-    var clientRect = ref.current.getBoundingClientRect();
-    var x = drag.x - clientRect.x;
-    var y = drag.y - clientRect.y;
-    var cellWidth = clientRect.width / columns;
-    var cellHeight = clientRect.height / rows;
+  if (drag == null || drag.hover == null) {
+    drag = {
+      hover: false
+    };
+  }
+
+  if (draggedElementId && ref.current) {
+    var _clientRect = ref.current.getBoundingClientRect();
+
+    var x = drag.x - _clientRect.x;
+    var y = drag.y - _clientRect.y;
+    var cellWidth = _clientRect.width / columns;
+    var cellHeight = _clientRect.height / rows;
     cellX = Math.floor(x / cellWidth);
     cellY = Math.floor(y / cellHeight);
   }
@@ -27466,27 +27607,35 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
     height: "100",
     className: "grid__svg",
     ref: ref
-  }, _toConsumableArray(Array(columns)).map(function (nothing, id) {
-    var x = "".concat((id + 1) * xPercentage, "%");
+  }, _toConsumableArray(Array(columns - 1)).map(function (nothing, id) {
+    var x = (id + 1) * xPercentage;
+    var percentage = "".concat(x - halfXGap, "%");
     return _react.default.createElement("line", {
       key: id,
-      x1: x,
+      x1: percentage,
       y1: "0",
-      x2: x,
+      x2: percentage,
       y2: "100%",
-      className: "line--column"
+      className: "line--column",
+      style: {
+        strokeWidth: strokeWidth
+      }
     });
-  }), _toConsumableArray(Array(rows)).map(function (nothing, id) {
-    var y = "".concat((id + 1) * yPercentage, "%");
+  }), _toConsumableArray(Array(rows - 1)).map(function (nothing, id) {
+    var y = (id + 1) * yPercentage;
+    var percentage = "".concat(y - halfYGap, "%");
     return _react.default.createElement("line", {
       key: id,
       x1: "0",
-      y1: y,
+      y1: percentage,
       x2: "100%",
-      y2: y,
-      className: "line--row"
+      y2: percentage,
+      className: "line--row",
+      style: {
+        strokeWidth: strokeWidth
+      }
     });
-  }), store.get('dragElementId') && _react.default.createElement("rect", {
+  }), draggedElementId && drag.hover && _react.default.createElement("rect", {
     x: "".concat(cellX * xPercentage, "%"),
     y: "".concat(cellY * yPercentage, "%"),
     width: "".concat(xPercentage, "%"),
@@ -27541,7 +27690,17 @@ function Grid() {
     return function (e) {
       return setDragXY({
         x: e.clientX,
-        y: e.clientY
+        y: e.clientY,
+        hover: true
+      });
+    };
+  });
+  var handleDragLeave = (0, _react.useMemo)(function (e) {
+    return function (e) {
+      return setDragXY({
+        x: 0,
+        y: 0,
+        hover: false
       });
     };
   });
@@ -27549,7 +27708,8 @@ function Grid() {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {
     className: "grid__content",
-    onDragOver: handleDragHover
+    onDragOver: handleDragHover,
+    onDragLeave: handleDragLeave
   }, _react.default.createElement(_SVGGrid.default, {
     rows: rows,
     columns: columns,
@@ -27570,6 +27730,8 @@ exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 
 var _ComponentsList = _interopRequireDefault(require("./components/ComponentsList"));
+
+var _GridOptions = _interopRequireDefault(require("./components/GridOptions"));
 
 var _BlockOptions = _interopRequireDefault(require("./components/BlockOptions"));
 
@@ -27617,7 +27779,7 @@ function (_Component) {
         className: "stampa"
       }, _react.default.createElement(_ComponentsList.default, null), _react.default.createElement(_Grid.default, null), _react.default.createElement("div", {
         className: "stampa__right"
-      }, _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null)));
+      }, _react.default.createElement(_GridOptions.default, null), _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null)));
     }
   }]);
 
@@ -27626,7 +27788,7 @@ function (_Component) {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/ComponentsList":"components/ComponentsList.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.js"}],"serviceWorker.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/ComponentsList":"components/ComponentsList.js","./components/GridOptions":"components/GridOptions.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.js"}],"serviceWorker.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27796,7 +27958,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43347" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43605" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

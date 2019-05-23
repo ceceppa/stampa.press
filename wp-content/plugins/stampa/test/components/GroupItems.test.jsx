@@ -28,6 +28,7 @@ describe('GroupItems', () => {
   describe('Test the render method using the test JSON file', () => {
     let component;
     let container;
+
     beforeAll(() => {
       component = groupItems();
 
@@ -35,28 +36,6 @@ describe('GroupItems', () => {
       document.body.appendChild(container);
 
       ReactDOM.render(<GroupItems {...props} />, container);
-    });
-
-    it('Should render one <button> with the label "Gutenberg"', () => {
-      const button = container.querySelector('button');
-
-      expect(button.textContent).toBe('Gutenberg');
-    });
-
-    it('The <button> should toggle the group body', () => {
-      const button = container.querySelector('button');
-      const content = container.querySelector('.components__items');
-
-      act(() => {
-        button.dispatchEvent(
-          new MouseEvent('click', {
-            bubbles: true,
-          })
-        );
-      });
-
-      expect(button.className).toContain('collapsed');
-      expect(content.style.display).toBe('none');
     });
 
     it('Should render one <ul> list', () => {

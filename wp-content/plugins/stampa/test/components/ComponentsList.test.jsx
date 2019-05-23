@@ -42,7 +42,7 @@ describe('ComponentsList', () => {
     it('Should render the search filter', () => {
       expect(
         component.root.findAll(
-          node => node.type == 'input' && node.props.name == 'filter'
+          node => node.type == 'input' && node.props.id == 'filter'
         )
       ).toHaveLength(1);
     });

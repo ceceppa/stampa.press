@@ -1,0 +1,33 @@
+.toggle-group {
+  margin: 0;
+
+  &__label {
+    background: transparent;
+    font-weight: 600;
+    color: var(--color__dark);
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    text-align-last: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: var(--hover);
+    }
+  }
+
+  &__arrow {
+    float: right;
+    height: 18px;
+    width: 18px;
+  }
+
+  svg {
+    transition: all 0.35s ease;
+
+    &.collpsed {
+      transform: rotate(-180deg);
+    }
+  }
+}

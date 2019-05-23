@@ -21,7 +21,7 @@ export default function ComponentsList() {
         <label htmlFor="filter">Search:</label>
         <input
           type="search"
-          name="filter"
+          id="filter"
           value={filter}
           onChange={updateFilter}
         />
