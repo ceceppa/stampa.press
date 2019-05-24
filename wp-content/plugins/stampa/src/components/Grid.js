@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import Store from '../store/store';
+import shortid from 'shortid';
 
+import Store from '../store/store';
 import stampa from '../stampa';
 
 import SVGGrid from './SVGGrid';
@@ -20,9 +21,10 @@ function Grid() {
   // const handleDragLeave = useMemo(e => e =>
   //   setDragXY({ x: 0, y: 0, hover: false }));
 
-  const handleDrop = useMemo(e => e => {
+  const handleDrop = e => {
     handleDragLeave();
 
+    console.info('ciao');
     const draggedBlockId = store.get('draggedBlockId');
 
     if (draggedBlockId == null) {
@@ -33,15 +35,13 @@ function Grid() {
     const coords = stampa.getCellXY();
 
     block._stampa = {
-      key: draggedBlockId + new Date().getTime(),
+      key: shortid.generate(),
       column: coords.column,
       row: coords.row,
     };
 
-    console.info(block);
-
     setBlocks([...blocks, block]);
-  });
+  };
 
   const minHeight = 46 * store.get('gridRows') + 'px';
   return (
@@ -63,6 +63,8 @@ function Grid() {
           <div
             dangerouslySetInnerHTML={{ __html: block.html }}
             key={block._stampa.key}
+            draggable="true"
+            className="grid__block"
             style={{
               gridRow: block._stampa.row,
               gridColumn: block._stampa.column,

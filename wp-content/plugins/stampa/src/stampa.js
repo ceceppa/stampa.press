@@ -14,13 +14,17 @@ export default {
     for (const group in groups) {
       for (const block in groups[group]) {
         if (block === id) {
-          return groups[group][block];
+          return Object.assign({}, groups[group][block]);
         }
       }
     }
 
     return null;
   },
+  /**
+   * no need to bother the "store" to store this informations, as that
+   * would cause a re-render
+   */
   setCellXY: (x, y) => {
     cellCoords.column = x + 1;
     cellCoords.row = y + 1;

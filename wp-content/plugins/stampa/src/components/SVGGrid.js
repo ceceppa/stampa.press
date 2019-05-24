@@ -30,7 +30,6 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
   let cellX = 0;
   let cellY = 0;
 
-  let renderRect = false;
   if (draggedBlockId && ref.current) {
     const clientRect = ref.current.getBoundingClientRect();
     const x = drag.x - clientRect.x;
@@ -44,8 +43,6 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
     if (!Number.isNaN(cellX) && !Number.isNaN(cellY)) {
       stampa.setCellXY(cellX, cellY);
     }
-
-    renderRect = true;
   }
 
   return (
@@ -82,7 +79,7 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
           />
         );
       })}
-      {renderRect && draggedBlockId && drag.hover && (
+      {draggedBlockId && drag.hover && (
         <rect
           x={`${cellX * xPercentage}%`}
           y={`${cellY * yPercentage}%`}

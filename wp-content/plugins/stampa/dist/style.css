@@ -3,7 +3,6 @@
   display: flex;
   width: 100%;
   height: 100%;
-  background: #fff;
   background: var(--white);
   margin-top: 20px;
   color: #555d66;
@@ -18,12 +17,10 @@
   }
 
   .stampa__left {
-    border-right: 1px solid #e2e4e7;
     border-right: 1px solid var(--border);
   }
 
   .stampa__right {
-    border-left: 1px solid #e2e4e7;
     border-left: 1px solid var(--border);
   }
 
@@ -37,7 +34,6 @@
   }
 
   .stampa__border--bottom {
-    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--border);
   }
 
@@ -147,6 +143,9 @@
     stroke: #f1f1f1;
   }
 
+  .grid__block {
+    cursor: move;
+  }
 .number-slider {
   display: -webkit-box;
   display: flex;
