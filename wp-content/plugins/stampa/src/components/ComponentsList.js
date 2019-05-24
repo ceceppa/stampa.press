@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import GroupItems from './GroupItems';
 
+import stampa from '../stampa';
+
 export default function ComponentsList() {
-  const blocks =
-    window.stampa && window.stampa.blocks ? window.stampa.blocks : [];
+  const blocks = stampa.getBlocks();
   let keys = Object.keys(blocks);
   const [filter, setFilter] = useState('');
 

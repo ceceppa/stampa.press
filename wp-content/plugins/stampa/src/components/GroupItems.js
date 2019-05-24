@@ -17,8 +17,8 @@ function GroupItems({ group, blocks }) {
                 key={id}
                 className="components__item tooltip"
                 draggable="true"
-                onDragStart={() => store.set('draggedBlock')(block)}
-                onDragEnd={() => store.set('draggedBlock')(null)}
+                onDragStart={() => store.set('draggedBlockId')(id)}
+                onDragEnd={() => store.set('draggedBlockId')(null)}
                 data-tooltip={block.tooltip}
               >
                 <img

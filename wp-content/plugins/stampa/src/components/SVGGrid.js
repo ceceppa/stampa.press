@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import Store from '../store/store';
+import stampa from '../stampa';
 
 const SVGGrid = React.memo(function SVGGrid({ drag }) {
   const ref = useRef();
@@ -8,7 +9,7 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
   const columns = store.get('gridColumns');
   const rows = store.get('gridRows');
   const strokeWidth = store.get('gridGap');
-  const draggedBlock = store.get('draggedBlock');
+  const draggedBlockId = store.get('draggedBlockId');
 
   const xPercentage = 100 / columns;
   const yPercentage = 100 / rows;
@@ -19,20 +20,18 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
     const clientRect = ref.current.getBoundingClientRect();
     halfXGap = strokeWidth / clientRect.width / 2;
     halfYGap = strokeWidth / clientRect.height / 2;
+  }
 
-    console.info(clientRect);
-    console.info({ halfXGap }, { halfYGap });
+  if (drag == null || drag.hover == null) {
+    drag = { hover: false };
   }
 
   // Calculate which cell to highlight
   let cellX = 0;
   let cellY = 0;
 
-  if (drag == null || drag.hover == null) {
-    drag = { hover: false };
-  }
-
-  if (draggedBlock && ref.current) {
+  let renderRect = false;
+  if (draggedBlockId && ref.current) {
     const clientRect = ref.current.getBoundingClientRect();
     const x = drag.x - clientRect.x;
     const y = drag.y - clientRect.y;
@@ -41,6 +40,12 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
 
     cellX = Math.floor(x / cellWidth);
     cellY = Math.floor(y / cellHeight);
+
+    if (!Number.isNaN(cellX) && !Number.isNaN(cellY)) {
+      stampa.setCellXY(cellX, cellY);
+    }
+
+    renderRect = true;
   }
 
   return (
@@ -77,15 +82,15 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
           />
         );
       })}
-      {draggedBlock &&
-        drag.hover &&
+      {renderRect && draggedBlockId && drag.hover && (
         <rect
           x={`${cellX * xPercentage}%`}
           y={`${cellY * yPercentage}%`}
           width={`${xPercentage}%`}
           height={`${yPercentage}%`}
           style={{ fill: '#0085ba', stroke: '#e2e4e7', strokeWidth: '4px' }}
-        />}
+        />
+      )}
     </svg>
   );
 });

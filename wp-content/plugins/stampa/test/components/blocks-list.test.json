@@ -5,7 +5,7 @@
       "tooltip": "Simple text input field",
       "help": "https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/plain-text",
       "icon": "input.svg",
-      "render": [
+      "react": [
         "<PlainText",
         " value={ `fieldName` }",
         "onChange={ this.`onFieldNameChanged` }",
@@ -16,8 +16,7 @@
       "label": "Button",
       "tooltip": "Button field",
       "icon": "button.svg",
-      "image": "",
-      "render": [
+      "react": [
         "<PlainText",
         " value={ `fieldName` }",
         "onChange={ this.`onFieldNameChanged }",

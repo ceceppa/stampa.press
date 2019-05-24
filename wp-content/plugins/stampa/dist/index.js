@@ -27152,18 +27152,20 @@ var _undux = require("undux");
 
 // Declare your store's initial state.
 var initialState = {
-  draggedBlock: null,
+  draggedBlockId: null,
   stampaBlock: {},
   gridColumns: 12,
   gridRows: 5,
-  gridGap: 5
+  gridGap: 5,
+  blockColumn: 0,
+  blockRow: 0
 };
 /**
  * Is jest test?
  */
 
 if (global) {
-  initialState.draggedBlock = 'test';
+  initialState.draggedBlockId = 'test';
 } // Create & export a store with an initial value.
 
 
@@ -27272,10 +27274,10 @@ function GroupItems(_ref) {
       className: "components__item tooltip",
       draggable: "true",
       onDragStart: function onDragStart() {
-        return store.set('draggedBlock')(block);
+        return store.set('draggedBlockId')(id);
       },
       onDragEnd: function onDragEnd() {
-        return store.set('draggedBlock')(null);
+        return store.set('draggedBlockId')(null);
       },
       "data-tooltip": block.tooltip
     }, _react.default.createElement("img", {
@@ -27287,7 +27289,7 @@ function GroupItems(_ref) {
       className: "components__label"
     }, block.label), block.help && _react.default.createElement("a", {
       href: block.help,
-      class: "components__help",
+      className: "components__help",
       target: "_blank"
     }, _react.default.createElement("svg", {
       xmlns: "http://www.w3.org/2000/svg",
@@ -27302,7 +27304,48 @@ function GroupItems(_ref) {
 
 var _default = GroupItems;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/ComponentsList.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"stampa.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/**
+ * Helpers functions
+ */
+var cellCoords = {
+  column: 0,
+  row: 0
+};
+var _default = {
+  getBlocks: function getBlocks() {
+    return window.stampa && window.stampa.blocks || [];
+  },
+  getBlockById: function getBlockById(id) {
+    var groups = this.getBlocks();
+
+    for (var group in groups) {
+      for (var block in groups[group]) {
+        if (block === id) {
+          return groups[group][block];
+        }
+      }
+    }
+
+    return null;
+  },
+  setCellXY: function setCellXY(x, y) {
+    cellCoords.column = x + 1;
+    cellCoords.row = y + 1;
+  },
+  getCellXY: function getCellXY() {
+    return cellCoords;
+  }
+};
+exports.default = _default;
+},{}],"components/ComponentsList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27313,6 +27356,8 @@ exports.default = ComponentsList;
 var _react = _interopRequireWildcard(require("react"));
 
 var _GroupItems = _interopRequireDefault(require("./GroupItems"));
+
+var _stampa = _interopRequireDefault(require("../stampa"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27327,7 +27372,8 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function ComponentsList() {
-  var blocks = window.stampa && window.stampa.blocks ? window.stampa.blocks : [];
+  var blocks = _stampa.default.getBlocks();
+
   var keys = Object.keys(blocks);
 
   var _useState = (0, _react.useState)(''),
@@ -27361,7 +27407,7 @@ function ComponentsList() {
     }));
   }));
 }
-},{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js"}],"components/NumberSlider.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./GroupItems":"components/GroupItems.js","../stampa":"stampa.js"}],"components/NumberSlider.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27552,6 +27598,8 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _store = _interopRequireDefault(require("../store/store"));
 
+var _stampa = _interopRequireDefault(require("../stampa"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -27573,7 +27621,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
   var columns = store.get('gridColumns');
   var rows = store.get('gridRows');
   var strokeWidth = store.get('gridGap');
-  var draggedBlock = store.get('draggedBlock');
+  var draggedBlockId = store.get('draggedBlockId');
   var xPercentage = 100 / columns;
   var yPercentage = 100 / rows;
   var halfXGap = 0;
@@ -27583,25 +27631,20 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
     var clientRect = ref.current.getBoundingClientRect();
     halfXGap = strokeWidth / clientRect.width / 2;
     halfYGap = strokeWidth / clientRect.height / 2;
-    console.info(clientRect);
-    console.info({
-      halfXGap: halfXGap
-    }, {
-      halfYGap: halfYGap
-    });
-  } // Calculate which cell to highlight
-
-
-  var cellX = 0;
-  var cellY = 0;
+  }
 
   if (drag == null || drag.hover == null) {
     drag = {
       hover: false
     };
-  }
+  } // Calculate which cell to highlight
 
-  if (draggedBlock && ref.current) {
+
+  var cellX = 0;
+  var cellY = 0;
+  var renderRect = false;
+
+  if (draggedBlockId && ref.current) {
     var _clientRect = ref.current.getBoundingClientRect();
 
     var x = drag.x - _clientRect.x;
@@ -27610,6 +27653,12 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
     var cellHeight = _clientRect.height / rows;
     cellX = Math.floor(x / cellWidth);
     cellY = Math.floor(y / cellHeight);
+
+    if (!Number.isNaN(cellX) && !Number.isNaN(cellY)) {
+      _stampa.default.setCellXY(cellX, cellY);
+    }
+
+    renderRect = true;
   }
 
   return _react.default.createElement("svg", {
@@ -27645,7 +27694,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
         strokeWidth: strokeWidth
       }
     });
-  }), draggedBlock && drag.hover && _react.default.createElement("rect", {
+  }), renderRect && draggedBlockId && drag.hover && _react.default.createElement("rect", {
     x: "".concat(cellX * xPercentage, "%"),
     y: "".concat(cellY * yPercentage, "%"),
     width: "".concat(xPercentage, "%"),
@@ -27660,7 +27709,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
 
 var _default = SVGGrid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Grid.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27672,11 +27721,21 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _store = _interopRequireDefault(require("../store/store"));
 
+var _stampa = _interopRequireDefault(require("../stampa"));
+
 var _SVGGrid = _interopRequireDefault(require("./SVGGrid"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -27689,31 +27748,59 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function Grid() {
   var store = _store.default.useStore();
 
-  var _useState = (0, _react.useState)({
+  var _useState = (0, _react.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      blocks = _useState2[0],
+      setBlocks = _useState2[1];
+
+  var _useState3 = (0, _react.useState)({
     x: 0,
     y: 0,
     isDragMode: false
   }),
-      _useState2 = _slicedToArray(_useState, 2),
-      drag = _useState2[0],
-      setDragXY = _useState2[1];
+      _useState4 = _slicedToArray(_useState3, 2),
+      drag = _useState4[0],
+      setDragXY = _useState4[1];
 
-  var handleDragHover = (0, _react.useMemo)(function (e) {
+  var handleDragOver = function handleDragOver(e) {
+    e.preventDefault();
+    setDragXY({
+      x: e.clientX,
+      y: e.clientY,
+      hover: true
+    });
+  };
+
+  var handleDragLeave = function handleDragLeave(e) {
+    return setDragXY({
+      x: 0,
+      y: 0,
+      hover: false
+    });
+  }; // const handleDragLeave = useMemo(e => e =>
+  //   setDragXY({ x: 0, y: 0, hover: false }));
+
+
+  var handleDrop = (0, _react.useMemo)(function (e) {
     return function (e) {
-      return setDragXY({
-        x: e.clientX,
-        y: e.clientY,
-        hover: true
-      });
-    };
-  });
-  var handleDragLeave = (0, _react.useMemo)(function (e) {
-    return function (e) {
-      return setDragXY({
-        x: 0,
-        y: 0,
-        hover: false
-      });
+      handleDragLeave();
+      var draggedBlockId = store.get('draggedBlockId');
+
+      if (draggedBlockId == null) {
+        return;
+      }
+
+      var block = _stampa.default.getBlockById(draggedBlockId);
+
+      var coords = _stampa.default.getCellXY();
+
+      block._stampa = {
+        key: draggedBlockId + new Date().getTime(),
+        column: coords.column,
+        row: coords.row
+      };
+      console.info(block);
+      setBlocks([].concat(_toConsumableArray(blocks), [block]));
     };
   });
   var minHeight = 46 * store.get('gridRows') + 'px';
@@ -27721,19 +27808,34 @@ function Grid() {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {
     className: "grid__content",
-    onDragOver: handleDragHover,
+    onDragOver: handleDragOver,
     onDragLeave: handleDragLeave,
+    onDrop: handleDrop,
     style: {
+      gridTemplateColumns: "repeat(".concat(store.get('gridColumns'), ", 1fr)"),
+      gridTemplateRows: "repeat(".concat(store.get('gridRows'), ", 1fr)"),
+      gridGap: "".concat(store.get('gridGap'), "px"),
       minHeight: minHeight
     }
   }, _react.default.createElement(_SVGGrid.default, {
     drag: drag
+  }), blocks.map(function (block) {
+    return _react.default.createElement("div", {
+      dangerouslySetInnerHTML: {
+        __html: block.html
+      },
+      key: block._stampa.key,
+      style: {
+        gridRow: block._stampa.row,
+        gridColumn: block._stampa.column
+      }
+    });
   })));
 }
 
 var _default = Grid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./SVGGrid":"components/SVGGrid.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./SVGGrid":"components/SVGGrid.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27972,7 +28074,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40655" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35753" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
