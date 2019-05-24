@@ -53,12 +53,17 @@ describe('GroupItems', () => {
       expect(li[0].props.draggable).toBe('true');
     });
 
-    it('The <li> element should contain an image and a label', () => {
+    it('The <li> element should contain an image, a label and a help link', () => {
       const li = component.root.findAllByType('li');
       const children = li[0].children;
+      const a = children[2];
 
       expect(children[0].type).toBe('img');
       expect(children[1].type).toBe('span');
+      expect(a.type).toBe('a');
+      expect(a.props.href).toBe(
+        'https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/plain-text'
+      );
     });
   });
 });

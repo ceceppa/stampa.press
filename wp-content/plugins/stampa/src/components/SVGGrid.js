@@ -18,7 +18,7 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
   if (ref.current) {
     const clientRect = ref.current.getBoundingClientRect();
     halfXGap = strokeWidth / clientRect.width / 2;
-    halfYGap = strokeWidth / clientRect.height / 1;
+    halfYGap = strokeWidth / clientRect.height / 2;
 
     console.info(clientRect);
     console.info({ halfXGap }, { halfYGap });
@@ -77,15 +77,15 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
           />
         );
       })}
-      {draggedBlock && drag.hover && (
+      {draggedBlock &&
+        drag.hover &&
         <rect
           x={`${cellX * xPercentage}%`}
           y={`${cellY * yPercentage}%`}
           width={`${xPercentage}%`}
           height={`${yPercentage}%`}
           style={{ fill: '#0085ba', stroke: '#e2e4e7', strokeWidth: '4px' }}
-        />
-      )}
+        />}
     </svg>
   );
 });

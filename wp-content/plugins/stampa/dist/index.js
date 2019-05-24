@@ -27252,14 +27252,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function GroupItems(_ref) {
   var group = _ref.group,
       blocks = _ref.blocks;
@@ -27267,12 +27259,6 @@ function GroupItems(_ref) {
   var store = _store.default.useStore();
 
   var items = Object.keys(blocks[group]);
-
-  var _useState = (0, _react.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      collapsed = _useState2[0],
-      setCollapsed = _useState2[1];
-
   return _react.default.createElement("div", {
     className: "components__group__body"
   }, _react.default.createElement(_ToggleGroup.default, {
@@ -27299,7 +27285,18 @@ function GroupItems(_ref) {
       draggable: "false"
     }), _react.default.createElement("span", {
       className: "components__label"
-    }, block.label));
+    }, block.label), block.help && _react.default.createElement("a", {
+      href: block.help,
+      class: "components__help",
+      target: "_blank"
+    }, _react.default.createElement("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 437.6 437.6"
+    }, _react.default.createElement("path", {
+      d: "M194 142.8c.8 1.6 1.6 3.2 2.4 4.4.8 1.2 2 2.4 2.8 3.6 1.2 1.2 2.4 2.4 4 3.6 1.2.8 2.8 2 4.8 2.4 1.6.8 3.2 1.2 5.2 1.6 2 .4 3.6.4 5.2.4s3.6 0 5.2-.4 3.2-.8 4.4-1.6h.4c1.6-.8 3.2-1.6 4.8-2.8 1.2-.8 2.4-2 3.6-3.2l.4-.4c1.2-1.2 2-2.4 2.8-3.6s1.6-2.4 2-4c0-.4 0-.4.4-.8.8-1.6 1.2-3.6 1.6-5.2.4-1.6.4-3.6.4-5.2s0-3.6-.4-5.2-.8-3.2-1.6-5.2c-1.2-2.8-2.8-5.2-4.8-7.2l-.8-.8c-1.2-1.2-2.4-2-4-3.2-1.6-.8-2.8-1.6-4.4-2.4-1.6-.8-3.2-1.2-4.8-1.6-2-.4-3.6-.4-5.2-.4s-3.6 0-5.2.4-3.2.8-4.8 1.6h-.4c-1.6.8-3.2 1.6-4.4 2.4-1.6 1.2-2.8 2-4 3.2-1.2 1.2-2.4 2.4-3.2 3.6-.8 1.2-1.6 2.8-2.4 4.4-.8 1.6-1.2 3.2-1.6 4.8-.4 2-.4 3.6-.4 5.2s0 3.6.4 5.2c.4 3.2 1.2 4.8 1.6 6.4zM249.6 289.2h-9.2v-98c0-5.6-4.4-10.4-10.4-10.4h-42c-5.6 0-10.4 4.4-10.4 10.4v21.6c0 5.6 4.4 10.4 10.4 10.4h8.4v66.4H188c-5.6 0-10.4 4.4-10.4 10.4v21.6c0 5.6 4.4 10.4 10.4 10.4h61.6c5.6 0 10.4-4.4 10.4-10.4V300c0-6-4.8-10.8-10.4-10.8z"
+    }), _react.default.createElement("path", {
+      d: "M218.8 0C98 0 0 98 0 218.8s98 218.8 218.8 218.8 218.8-98 218.8-218.8S339.6 0 218.8 0zm0 408.8c-104.8 0-190-85.2-190-190s85.2-190 190-190 190 85.2 190 190-85.2 190-190 190z"
+    }))));
   }))));
 }
 
@@ -27585,7 +27582,7 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
   if (ref.current) {
     var clientRect = ref.current.getBoundingClientRect();
     halfXGap = strokeWidth / clientRect.width / 2;
-    halfYGap = strokeWidth / clientRect.height / 1;
+    halfYGap = strokeWidth / clientRect.height / 2;
     console.info(clientRect);
     console.info({
       halfXGap: halfXGap
@@ -27673,6 +27670,8 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _store = _interopRequireDefault(require("../store/store"));
+
 var _SVGGrid = _interopRequireDefault(require("./SVGGrid"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27688,6 +27687,8 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function Grid() {
+  var store = _store.default.useStore();
+
   var _useState = (0, _react.useState)({
     x: 0,
     y: 0,
@@ -27697,8 +27698,6 @@ function Grid() {
       drag = _useState2[0],
       setDragXY = _useState2[1];
 
-  var columns = 12;
-  var rows = 5;
   var handleDragHover = (0, _react.useMemo)(function (e) {
     return function (e) {
       return setDragXY({
@@ -27717,22 +27716,24 @@ function Grid() {
       });
     };
   });
+  var minHeight = 46 * store.get('gridRows') + 'px';
   return _react.default.createElement("div", {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {
     className: "grid__content",
     onDragOver: handleDragHover,
-    onDragLeave: handleDragLeave
+    onDragLeave: handleDragLeave,
+    style: {
+      minHeight: minHeight
+    }
   }, _react.default.createElement(_SVGGrid.default, {
-    rows: rows,
-    columns: columns,
     drag: drag
   })));
 }
 
 var _default = Grid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./SVGGrid":"components/SVGGrid.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./SVGGrid":"components/SVGGrid.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27971,7 +27972,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46183" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40655" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

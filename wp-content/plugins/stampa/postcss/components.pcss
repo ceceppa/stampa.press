@@ -12,10 +12,8 @@
   }
 
   &__item {
-    display: flex;
-    flex-direction: column;
     text-align: center;
-    cursor: pointer;
+    cursor: move;
     border-radius: 4px;
     padding: 10px;
 
@@ -25,7 +23,20 @@
   }
 
   &__image {
+    display: block;
     margin-bottom: 10px;
     height: 24px;
+    width: 100%;
+  }
+
+  &__help {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
   }
 }

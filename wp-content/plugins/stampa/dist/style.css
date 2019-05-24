@@ -55,24 +55,29 @@
     padding-top: 0;
   }
   .components__item {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-            flex-direction: column;
     text-align: center;
-    cursor: pointer;
+    cursor: move;
     border-radius: 4px;
     padding: 10px
   }
   .components__item:hover {
-      background: #f8f9f9;
       background: var(--hover);
     }
   .components__image {
+    display: block;
     margin-bottom: 10px;
     height: 24px;
+    width: 100%;
   }
+  .components__help {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .components__help svg {
+      width: 10px;
+      height: 10px;
+    }
 
 .toggle-group {
   margin: 0;
@@ -119,7 +124,6 @@
   padding: 30px;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  min-height: 230px;
 }
 
   .grid__content {
@@ -127,6 +131,7 @@
     position: relative;
     width: 100%;
     display: grid;
+    align-self: center;
   }
 
   .grid__svg {

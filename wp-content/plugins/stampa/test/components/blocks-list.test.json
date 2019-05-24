@@ -3,19 +3,8 @@
     "text": {
       "label": "Text",
       "tooltip": "Simple text input field",
+      "help": "https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/plain-text",
       "icon": "input.svg",
-      "grid": {
-        "columns": {
-          "min": 1,
-          "default": 4
-        },
-        "rows": {
-          "min": 1,
-          "max": 1,
-          "default": 1
-        },
-        "image": ""
-      },
       "render": [
         "<PlainText",
         " value={ `fieldName` }",
