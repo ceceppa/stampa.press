@@ -16,7 +16,7 @@ export default function BlockOptions() {
       display="block"
       groupClass="block-options"
     >
-      {isBlockSelected && [
+      {store.get('selectedBlock') && [
         <NumberSlider
           id="block-columns"
           label="Columns:"

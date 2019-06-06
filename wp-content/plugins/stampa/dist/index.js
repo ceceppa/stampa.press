@@ -27161,7 +27161,7 @@ var initialState = {
   blockRows: 1,
   blockColumns: 1,
   blockRow: 0,
-  storeSelected: null
+  isBlockSelected: false
 };
 /**
  * Is jest test?
@@ -27527,7 +27527,7 @@ function BlockOptions() {
     label: "Block Options",
     display: "block",
     groupClass: "block-options"
-  }, isBlockSelected && [_react.default.createElement(_NumberSlider.default, {
+  }, store.get('selectedBlock') && [_react.default.createElement(_NumberSlider.default, {
     id: "block-columns",
     label: "Columns:",
     storeKey: "blockColumns"
@@ -28081,7 +28081,45 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
 
 var _default = SVGGrid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/Block.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Block;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Block(_ref) {
+  var block = _ref.block;
+
+  var store = _store.default.useStore(); // Allow the block itself to be dragged
+
+
+  var dragMe = function dragMe(e) {
+    store.set('draggedBlockId')(e.target.dataset.key);
+  };
+
+  return _react.default.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: block.html
+    },
+    draggable: "true",
+    className: "grid__block grid__block--".concat(block._stampa.id),
+    onDragStart: dragMe,
+    "data-key": block._stampa.key,
+    style: {
+      gridRow: block._stampa.row,
+      gridColumn: block._stampa.column
+    }
+  });
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28098,6 +28136,8 @@ var _store = _interopRequireDefault(require("../store/store"));
 var _stampa = _interopRequireDefault(require("../stampa"));
 
 var _SVGGrid = _interopRequireDefault(require("./SVGGrid"));
+
+var _Block = _interopRequireDefault(require("./Block"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28190,11 +28230,6 @@ function Grid() {
       };
       setBlocks([].concat(_toConsumableArray(blocks), [_block]));
     }
-  }; // Allow the block itself to be dragged
-
-
-  var dragMe = function dragMe(e) {
-    store.set('draggedBlockId')(e.target.dataset.key);
   };
 
   var minHeight = 46 * store.get('gridRows') + 'px';
@@ -28214,26 +28249,16 @@ function Grid() {
   }, _react.default.createElement(_SVGGrid.default, {
     drag: drag
   }), blocks.map(function (block) {
-    return _react.default.createElement("div", {
-      dangerouslySetInnerHTML: {
-        __html: block.html
-      },
-      key: block._stampa.key,
-      draggable: "true",
-      className: "grid__block grid__block--".concat(block._stampa.id),
-      onDragStart: dragMe,
-      "data-key": block._stampa.key,
-      style: {
-        gridRow: block._stampa.row,
-        gridColumn: block._stampa.column
-      }
+    return _react.default.createElement(_Block.default, {
+      block: block,
+      key: block._stampa.key
     });
   })));
 }
 
 var _default = Grid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./SVGGrid":"components/SVGGrid.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./SVGGrid":"components/SVGGrid.js","./Block":"components/Block.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28472,7 +28497,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36085" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40445" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

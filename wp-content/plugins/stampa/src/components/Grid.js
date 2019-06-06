@@ -5,6 +5,7 @@ import Store from '../store/store';
 import stampa from '../stampa';
 
 import SVGGrid from './SVGGrid';
+import Block from './Block';
 
 function Grid() {
   const store = Store.useStore();
@@ -59,11 +60,6 @@ function Grid() {
     }
   };
 
-  // Allow the block itself to be dragged
-  const dragMe = e => {
-    store.set('draggedBlockId')(e.target.dataset.key);
-  };
-
   const minHeight = 46 * store.get('gridRows') + 'px';
   return (
     <div className="stampa__grid grid">
@@ -81,18 +77,7 @@ function Grid() {
       >
         <SVGGrid drag={drag} />
         {blocks.map(block => (
-          <div
-            dangerouslySetInnerHTML={{ __html: block.html }}
-            key={block._stampa.key}
-            draggable="true"
-            className={`grid__block grid__block--${block._stampa.id}`}
-            onDragStart={dragMe}
-            data-key={block._stampa.key}
-            style={{
-              gridRow: block._stampa.row,
-              gridColumn: block._stampa.column,
-            }}
-          />
+          <Block block={block} key={block._stampa.key} />
         ))}
       </div>
     </div>

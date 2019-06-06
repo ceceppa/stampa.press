@@ -11,7 +11,7 @@ const initialState = {
   blockRows: 1,
   blockColumns: 1,
   blockRow: 0,
-  storeSelected: null,
+  isBlockSelected: false,
 };
 
 /**
