@@ -1,11 +1,30 @@
 import React, { Component } from 'react';
 
-class BlockOptions extends Component {
-  render() {
-    return(
-      <div>Components</div>
-    )
-  }
-}
+import Store from '../store/store';
 
-export default BlockOptions;
+import ToggleGroup from './ToggleGroup';
+import NumberSlider from './NumberSlider';
+
+export default function BlockOptions() {
+  const store = Store.useStore();
+
+  const isBlockSelected = store.get('selectedBlock');
+
+  return (
+    <ToggleGroup
+      label="Block Options"
+      display="block"
+      groupClass="block-options"
+    >
+      {isBlockSelected && [
+        <NumberSlider
+          id="block-columns"
+          label="Columns:"
+          storeKey="blockColumns"
+        />,
+        <NumberSlider id="block-rows" label="Rows:" storeKey="blockRows" />,
+      ]}
+      {!isBlockSelected && <p className="stampa--gray">No block selected</p>}
+    </ToggleGroup>
+  );
+}

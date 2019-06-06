@@ -27158,7 +27158,10 @@ var initialState = {
   gridRows: 5,
   gridGap: 5,
   blockColumn: 0,
-  blockRow: 0
+  blockRows: 1,
+  blockColumns: 1,
+  blockRow: 0,
+  storeSelected: null
 };
 /**
  * Is jest test?
@@ -27192,10 +27195,20 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+/**
+ * Toggle Group
+ *
+ * @param {string} label the label
+ * @param {children} the children elements
+ * @param {display} the style.display value to set when the group is visible
+ * @param {groupClass} the extra class to assign to the group
+ */
 function toggleGroup(_ref) {
   var label = _ref.label,
       children = _ref.children,
-      display = _ref.display;
+      display = _ref.display,
+      _ref$groupClass = _ref.groupClass,
+      groupClass = _ref$groupClass === void 0 ? null : _ref$groupClass;
 
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -27207,9 +27220,9 @@ function toggleGroup(_ref) {
   }
 
   return _react.default.createElement("div", {
-    className: "toggle-group"
+    className: "toggle-group ".concat(groupClass || '')
   }, _react.default.createElement("button", {
-    className: "toggle-group__label stampa__content stampa__border--bottom".concat(collapsed ? ' collapsed' : ''),
+    className: "toggle-group__label stampa__content stampa__border--bottom ".concat(collapsed ? ' collapsed' : ''),
     type: "button",
     onClick: function onClick() {
       return setCollapsed(!collapsed);
@@ -27470,7 +27483,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function GridOptions() {
   return _react.default.createElement(_ToggleGroup.default, {
-    label: "Grid options"
+    label: "Grid options",
+    groupClass: "stampa__border--bottom"
   }, _react.default.createElement(_NumberSlider.default, {
     id: "columns",
     label: "Columns:",
@@ -27491,54 +27505,41 @@ function GridOptions() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = BlockOptions;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _store = _interopRequireDefault(require("../store/store"));
+
+var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
+
+var _NumberSlider = _interopRequireDefault(require("./NumberSlider"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function BlockOptions() {
+  var store = _store.default.useStore();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var BlockOptions =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(BlockOptions, _Component);
-
-  function BlockOptions() {
-    _classCallCheck(this, BlockOptions);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(BlockOptions).apply(this, arguments));
-  }
-
-  _createClass(BlockOptions, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", null, "Components");
-    }
-  }]);
-
-  return BlockOptions;
-}(_react.Component);
-
-var _default = BlockOptions;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"components/FieldOptions.js":[function(require,module,exports) {
+  var isBlockSelected = store.get('selectedBlock');
+  return _react.default.createElement(_ToggleGroup.default, {
+    label: "Block Options",
+    display: "block",
+    groupClass: "block-options"
+  }, isBlockSelected && [_react.default.createElement(_NumberSlider.default, {
+    id: "block-columns",
+    label: "Columns:",
+    storeKey: "blockColumns"
+  }), _react.default.createElement(_NumberSlider.default, {
+    id: "block-rows",
+    label: "Rows:",
+    storeKey: "blockRows"
+  })], !isBlockSelected && _react.default.createElement("p", {
+    className: "stampa--gray"
+  }, "No block selected"));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/FieldOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28156,23 +28157,44 @@ function Grid() {
 
   var handleDrop = function handleDrop(e) {
     handleDragLeave();
-    console.info('ciao');
     var draggedBlockId = store.get('draggedBlockId');
 
     if (draggedBlockId == null) {
       return;
     }
+    /**
+     * Is a new item or am I moving a one from the board?
+     */
 
-    var block = _stampa.default.getBlockById(draggedBlockId);
 
     var coords = _stampa.default.getCellXY();
 
-    block._stampa = {
-      key: _shortid.default.generate(),
-      column: coords.column,
-      row: coords.row
-    };
-    setBlocks([].concat(_toConsumableArray(blocks), [block]));
+    if (draggedBlockId[0] == '_') {
+      for (var i = 0, l = blocks.length; i < l; ++i) {
+        var block = blocks[i];
+
+        if (block._stampa.key === draggedBlockId) {
+          block._stampa.column = coords.column;
+          block._stampa.row = coords.row;
+          break;
+        }
+      }
+    } else {
+      var _block = _stampa.default.getBlockById(draggedBlockId);
+
+      _block._stampa = {
+        id: draggedBlockId,
+        key: "_".concat(_shortid.default.generate()),
+        column: coords.column,
+        row: coords.row
+      };
+      setBlocks([].concat(_toConsumableArray(blocks), [_block]));
+    }
+  }; // Allow the block itself to be dragged
+
+
+  var dragMe = function dragMe(e) {
+    store.set('draggedBlockId')(e.target.dataset.key);
   };
 
   var minHeight = 46 * store.get('gridRows') + 'px';
@@ -28198,7 +28220,9 @@ function Grid() {
       },
       key: block._stampa.key,
       draggable: "true",
-      className: "grid__block",
+      className: "grid__block grid__block--".concat(block._stampa.id),
+      onDragStart: dragMe,
+      "data-key": block._stampa.key,
       style: {
         gridRow: block._stampa.row,
         gridColumn: block._stampa.column
@@ -28448,7 +28472,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36973" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36085" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

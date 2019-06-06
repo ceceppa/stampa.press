@@ -8,6 +8,7 @@ describe('ToggleGroup', () => {
   const props = {
     label: 'Gutenberg',
     display: 'grid',
+    groupClass: 'another-class',
   };
   let mountedComponent;
 
@@ -39,6 +40,12 @@ describe('ToggleGroup', () => {
       const button = container.querySelector('button');
 
       expect(button.textContent).toBe('Gutenberg');
+    });
+
+    it('Should use the `another-class` for main div', () => {
+      const div = container.querySelector('div');
+
+      expect(div.className).toContain('another-class');
     });
 
     it('The <button> should toggle the group body', () => {

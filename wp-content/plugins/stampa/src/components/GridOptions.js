@@ -4,7 +4,7 @@ import NumberSlider from './NumberSlider';
 
 export default function GridOptions() {
   return (
-    <ToggleGroup label="Grid options">
+    <ToggleGroup label="Grid options" groupClass="stampa__border--bottom">
       {/* Columns */}
       <NumberSlider id="columns" label="Columns:" storeKey="gridColumns" />
 

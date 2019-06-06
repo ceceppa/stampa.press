@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
 
-export default function toggleGroup({ label, children, display }) {
+/**
+ * Toggle Group
+ *
+ * @param {string} label the label
+ * @param {children} the children elements
+ * @param {display} the style.display value to set when the group is visible
+ * @param {groupClass} the extra class to assign to the group
+ */
+export default function toggleGroup({
+  label,
+  children,
+  display,
+  groupClass = null,
+}) {
   const [collapsed, setCollapsed] = useState(false);
   if (display == null) {
     display = 'block';
   }
 
   return (
-    <div className="toggle-group">
+    <div className={`toggle-group ${groupClass || ''}`}>
       <button
-        className={`toggle-group__label stampa__content stampa__border--bottom${
+        className={`toggle-group__label stampa__content stampa__border--bottom ${
           collapsed ? ' collapsed' : ''
         }`}
         type="button"

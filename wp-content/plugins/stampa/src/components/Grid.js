@@ -24,23 +24,44 @@ function Grid() {
   const handleDrop = e => {
     handleDragLeave();
 
-    console.info('ciao');
     const draggedBlockId = store.get('draggedBlockId');
 
     if (draggedBlockId == null) {
       return;
     }
 
-    const block = stampa.getBlockById(draggedBlockId);
+    /**
+     * Is a new item or am I moving a one from the board?
+     */
     const coords = stampa.getCellXY();
+    if (draggedBlockId[0] == '_') {
+      for (let i = 0, l = blocks.length; i < l; ++i) {
+        const block = blocks[i];
 
-    block._stampa = {
-      key: shortid.generate(),
-      column: coords.column,
-      row: coords.row,
-    };
+        if (block._stampa.key === draggedBlockId) {
+          block._stampa.column = coords.column;
+          block._stampa.row = coords.row;
 
-    setBlocks([...blocks, block]);
+          break;
+        }
+      }
+    } else {
+      const block = stampa.getBlockById(draggedBlockId);
+
+      block._stampa = {
+        id: draggedBlockId,
+        key: `_${shortid.generate()}`,
+        column: coords.column,
+        row: coords.row,
+      };
+
+      setBlocks([...blocks, block]);
+    }
+  };
+
+  // Allow the block itself to be dragged
+  const dragMe = e => {
+    store.set('draggedBlockId')(e.target.dataset.key);
   };
 
   const minHeight = 46 * store.get('gridRows') + 'px';
@@ -64,7 +85,9 @@ function Grid() {
             dangerouslySetInnerHTML={{ __html: block.html }}
             key={block._stampa.key}
             draggable="true"
-            className="grid__block"
+            className={`grid__block grid__block--${block._stampa.id}`}
+            onDragStart={dragMe}
+            data-key={block._stampa.key}
             style={{
               gridRow: block._stampa.row,
               gridColumn: block._stampa.column,

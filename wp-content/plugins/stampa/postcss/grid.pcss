@@ -27,6 +27,11 @@
   }
 
   &__block {
-    cursor: move;
+    border: 1px solid var(--border);
+    transition: all 0.15 ease;
+
+    &:hover {
+      border: 1px solid var(--blue);
+    }
   }
 }

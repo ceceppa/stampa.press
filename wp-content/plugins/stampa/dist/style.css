@@ -3,6 +3,7 @@
   display: flex;
   width: 100%;
   height: 100%;
+  background: #fff;
   background: var(--white);
   margin-top: 20px;
   color: #555d66;
@@ -17,10 +18,12 @@
   }
 
   .stampa__left {
+    border-right: 1px solid #e2e4e7;
     border-right: 1px solid var(--border);
   }
 
   .stampa__right {
+    border-left: 1px solid #e2e4e7;
     border-left: 1px solid var(--border);
   }
 
@@ -34,6 +37,7 @@
   }
 
   .stampa__border--bottom {
+    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--border);
   }
 
@@ -57,6 +61,7 @@
     padding: 10px
   }
   .components__item:hover {
+      background: #f8f9f9;
       background: var(--hover);
     }
   .components__image {
@@ -82,9 +87,11 @@
   .toggle-group__label {
     background: transparent;
     font-weight: 600;
+    color: #191e23;
     color: var(--color__dark);
     width: 100%;
     border: none;
+    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--border);
     -moz-text-align-last: left;
          text-align-last: left;
@@ -94,6 +101,7 @@
   }
 
   .toggle-group__label:hover {
+      background-color: #f8f9f9;
       background-color: var(--hover);
     }
 
@@ -118,11 +126,14 @@
   display: flex;
   background: #f1f1f1;
   padding: 30px;
+  border-top: 1px solid #e2e4e7;
   border-top: 1px solid var(--border);
+  border-bottom: 1px solid #e2e4e7;
   border-bottom: 1px solid var(--border);
 }
 
   .grid__content {
+    background: #fff;
     background: var(--white);
     position: relative;
     width: 100%;
@@ -144,8 +155,17 @@
   }
 
   .grid__block {
-    cursor: move;
+    border: 1px solid #e2e4e7;
+    border: 1px solid var(--border);
+    -webkit-transition: all 0.15 ease;
+    transition: all 0.15 ease
   }
+
+  .grid__block:hover {
+      border: 1px solid #0085ba;
+      border: 1px solid var(--blue);
+    }
+
 .number-slider {
   display: -webkit-box;
   display: flex;
@@ -227,6 +247,12 @@ body.post-type-stampa-block #poststuff #post-body.columns-2 {
   --border: #e2e4e7;
   --hover: #f8f9f9;
   --white: #fff;
+  --blue: #0085ba;
+}
+
+.stampa--gray {
+  color: #e2e4e7;
+  color: var(--border);
 }
 
 
