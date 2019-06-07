@@ -34,8 +34,8 @@ const SVGGrid = React.memo(function SVGGrid({ drag }) {
     const clientRect = ref.current.getBoundingClientRect();
     const x = drag.x - clientRect.x;
     const y = drag.y - clientRect.y;
-    const cellWidth = clientRect.width / columns;
-    const cellHeight = clientRect.height / rows;
+    const cellWidth = (clientRect.width - gap * (columns - 1)) / columns;
+    const cellHeight = (clientRect.height - gap * (rows - 1)) / rows;
 
     cellX = Math.floor(x / cellWidth);
     cellY = Math.floor(y / cellHeight);

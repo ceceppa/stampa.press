@@ -7,7 +7,7 @@
       "tooltip": "Simple text input field. (<PlainText />)",
       "help": "https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/plain-text",
       "icon": "input.svg",
-      "html": "Plain Text",
+      "html": "Write text...",
       "react": [
         "<PlainText",
         " value={ `fieldName` }",

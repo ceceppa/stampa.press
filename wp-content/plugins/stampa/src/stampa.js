@@ -26,8 +26,8 @@ export default {
    * would cause a re-render
    */
   setCellXY: (x, y) => {
-    cellCoords.column = x + 1;
-    cellCoords.row = y + 1;
+    cellCoords.startColumn = x + 1;
+    cellCoords.startRow = y + 1;
   },
   getCellXY: () => cellCoords,
 };

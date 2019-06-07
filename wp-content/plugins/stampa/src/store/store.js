@@ -12,14 +12,17 @@ const initialState = {
   blockColumns: 1,
   blockRow: 0,
   isBlockSelected: false,
+  resizingBlock: false,
+  resizingBlockPosition: {},
+  resizeDirection: null,
 };
 
 /**
  * Is jest test?
  */
-if (global) {
-  initialState.draggedBlockId = 'test';
-}
+// if (global) {
+//   initialState.draggedBlockId = 'test';
+// }
 
 // Create & export a store with an initial value.
 export default createConnectedStore(initialState, null);

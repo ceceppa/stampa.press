@@ -10,7 +10,8 @@
         " value={ `fieldName` }",
         "onChange={ this.`onFieldNameChanged` }",
         "/>"
-      ]
+      ],
+      "html": "Lorem ipsum"
     },
     "button": {
       "label": "Button",

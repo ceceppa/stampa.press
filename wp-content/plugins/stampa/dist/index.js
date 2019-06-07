@@ -27140,7 +27140,6 @@ __export(require("./plugins/withReduxDevtools"));
 __export(require("./react"));
 
 },{"./emitter":"../node_modules/undux/dist/src/emitter.js","./utils":"../node_modules/undux/dist/src/utils.js","./plugins/withLogger":"../node_modules/undux/dist/src/plugins/withLogger.js","./plugins/withReduxDevtools":"../node_modules/undux/dist/src/plugins/withReduxDevtools.js","./react":"../node_modules/undux/dist/src/react/index.js"}],"store/store.js":[function(require,module,exports) {
-var global = arguments[3];
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27161,16 +27160,18 @@ var initialState = {
   blockRows: 1,
   blockColumns: 1,
   blockRow: 0,
-  isBlockSelected: false
+  isBlockSelected: false,
+  resizingBlock: false,
+  resizingBlockPosition: {},
+  resizeDirection: null
 };
 /**
  * Is jest test?
  */
-
-if (global) {
-  initialState.draggedBlockId = 'test';
-} // Create & export a store with an initial value.
-
+// if (global) {
+//   initialState.draggedBlockId = 'test';
+// }
+// Create & export a store with an initial value.
 
 var _default = (0, _undux.createConnectedStore)(initialState, null);
 
@@ -27355,8 +27356,8 @@ var _default = {
    * would cause a re-render
    */
   setCellXY: function setCellXY(x, y) {
-    cellCoords.column = x + 1;
-    cellCoords.row = y + 1;
+    cellCoords.startColumn = x + 1;
+    cellCoords.startRow = y + 1;
   },
   getCellXY: function getCellXY() {
     return cellCoords;
@@ -28023,8 +28024,8 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
 
     var x = drag.x - _clientRect.x;
     var y = drag.y - _clientRect.y;
-    var cellWidth = _clientRect.width / columns;
-    var cellHeight = _clientRect.height / rows;
+    var cellWidth = (_clientRect.width - gap * (columns - 1)) / columns;
+    var cellHeight = (_clientRect.height - gap * (rows - 1)) / rows;
     cellX = Math.floor(x / cellWidth);
     cellY = Math.floor(y / cellHeight);
 
@@ -28081,7 +28082,91 @@ var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
 
 var _default = SVGGrid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/Block.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var CSSGrid = _react.default.memo(function SVGGrid() {
+  var ref = (0, _react.useRef)();
+
+  var store = _store.default.useStore();
+
+  var _useState = (0, _react.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      backgroundSize = _useState2[0],
+      updateBackgroundSize = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      backgroundPosition = _useState4[0],
+      updateBackgroundPosition = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(''),
+      _useState6 = _slicedToArray(_useState5, 2),
+      backgroundImage = _useState6[0],
+      updateBackgroundImage = _useState6[1];
+  /**
+   * Update the grid on window resize
+   */
+
+
+  var timeout = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      updateGrid();
+    }, 50);
+  });
+
+  var updateGrid = function updateGrid() {
+    var clientRect = ref.current.getBoundingClientRect();
+    var columns = store.get('gridColumns');
+    var rows = store.get('gridRows');
+    var gap = store.get('gridGap');
+    var width = (clientRect.width - gap * (columns - 1)) / columns;
+    var height = (clientRect.height + gap) / rows;
+    updateBackgroundImage("linear-gradient(to right, #e2e4e7 ".concat(gap, "px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ").concat(gap, "px, transparent 1px)"));
+    updateBackgroundPosition("-".concat(gap, "px -").concat(gap, "px"));
+    updateBackgroundSize("".concat(width + gap, "px ").concat(height, "px"));
+  };
+
+  (0, _react.useEffect)(function () {
+    updateGrid();
+  });
+  return _react.default.createElement("div", {
+    className: "css-grid",
+    ref: ref,
+    style: {
+      backgroundSize: backgroundSize,
+      backgroundImage: backgroundImage,
+      backgroundPosition: backgroundPosition
+    }
+  });
+});
+
+var _default = CSSGrid;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Block.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28098,26 +28183,57 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function Block(_ref) {
   var block = _ref.block;
 
-  var store = _store.default.useStore(); // Allow the block itself to be dragged
+  var store = _store.default.useStore();
 
+  var stampaBlock = block._stampa; // Allow the block itself to be dragged
 
-  var dragMe = function dragMe(e) {
-    store.set('draggedBlockId')(e.target.dataset.key);
+  var dragMe = function dragMe() {
+    store.set('draggedBlockId')(block._stampa.key);
   };
 
+  var startResize = function startResize(e) {
+    e.stopPropagation();
+    store.set('resizingBlockPosition')({
+      startRow: stampaBlock.startRow,
+      startColumn: stampaBlock.startColumn,
+      endColumn: stampaBlock.endColumn,
+      endRow: stampaBlock.endRow
+    });
+    store.set('resizeDirection')(e.target.dataset.resize);
+    store.set('resizingBlock')(true);
+    store.set('draggedBlockId')(block._stampa.key);
+  };
+
+  var gridArea = "".concat(stampaBlock.startRow, " / ").concat(stampaBlock.startColumn, " / ").concat(stampaBlock.endRow + stampaBlock.startRow, " / ").concat(stampaBlock.endColumn + stampaBlock.startColumn);
   return _react.default.createElement("div", {
-    dangerouslySetInnerHTML: {
-      __html: block.html
-    },
     draggable: "true",
     className: "grid__block grid__block--".concat(block._stampa.id),
     onDragStart: dragMe,
     "data-key": block._stampa.key,
     style: {
-      gridRow: block._stampa.row,
-      gridColumn: block._stampa.column
+      gridArea: gridArea
     }
-  });
+  }, _react.default.createElement("p", {
+    dangerouslySetInnerHTML: {
+      __html: block.html
+    },
+    className: "grid__block__content"
+  }), _react.default.createElement("div", {
+    className: "grid__block__resizer grid__block__resizer--width",
+    draggable: "true",
+    "data-resize": "width",
+    onDragStart: startResize
+  }), _react.default.createElement("div", {
+    className: "grid__block__resizer grid__block__resizer--height",
+    "data-resize": "height",
+    draggable: "true",
+    onDragStart: startResize
+  }), _react.default.createElement("div", {
+    className: "grid__block__resizer grid__block__resizer--se",
+    "data-resize": "se",
+    draggable: "true",
+    onDragStart: startResize
+  }));
 }
 },{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
@@ -28136,6 +28252,8 @@ var _store = _interopRequireDefault(require("../store/store"));
 var _stampa = _interopRequireDefault(require("../stampa"));
 
 var _SVGGrid = _interopRequireDefault(require("./SVGGrid"));
+
+var _CSSGrid = _interopRequireDefault(require("./CSSGrid"));
 
 var _Block = _interopRequireDefault(require("./Block"));
 
@@ -28160,6 +28278,8 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function Grid() {
+  var ref = (0, _react.useRef)();
+
   var store = _store.default.useStore();
 
   var _useState = (0, _react.useState)([]),
@@ -28167,33 +28287,49 @@ function Grid() {
       blocks = _useState2[0],
       setBlocks = _useState2[1];
 
-  var _useState3 = (0, _react.useState)({
-    x: 0,
-    y: 0,
-    isDragMode: false
-  }),
+  var _useState3 = (0, _react.useState)({}),
       _useState4 = _slicedToArray(_useState3, 2),
       drag = _useState4[0],
-      setDragXY = _useState4[1];
+      setDrag = _useState4[1];
+
+  var draggedBlockId = store.get('draggedBlockId');
 
   var handleDragOver = function handleDragOver(e) {
     e.preventDefault();
-    setDragXY({
-      x: e.clientX,
-      y: e.clientY,
-      hover: true
-    });
+
+    if (draggedBlockId) {
+      var clientRect = ref.current.getBoundingClientRect();
+      var columns = store.get('gridColumns');
+      var rows = store.get('gridRows');
+      var gap = store.get('gridGap');
+      var x = e.clientX - clientRect.x;
+      var y = e.clientY - clientRect.y;
+      var cellWidth = (clientRect.width - gap * (columns - 1)) / columns;
+      var cellHeight = (clientRect.height - gap * (rows - 1)) / rows;
+      var cellX = Math.ceil(x / cellWidth);
+      var cellY = Math.ceil(y / cellHeight);
+      /**
+       * Store the cell position.
+       *
+       * Because this information doesn't need to cause any
+       * re-rendering, we're going to store into a custom object
+       */
+
+      if (!Number.isNaN(cellX) && !Number.isNaN(cellY)) {
+        setDrag({
+          column: cellX,
+          row: cellY,
+          over: true
+        });
+      }
+    }
   };
 
   var handleDragLeave = function handleDragLeave(e) {
-    return setDragXY({
-      x: 0,
-      y: 0,
-      hover: false
+    setDrag({
+      over: false
     });
-  }; // const handleDragLeave = useMemo(e => e =>
-  //   setDragXY({ x: 0, y: 0, hover: false }));
-
+  };
 
   var handleDrop = function handleDrop(e) {
     handleDragLeave();
@@ -28202,41 +28338,98 @@ function Grid() {
     if (draggedBlockId == null) {
       return;
     }
+
+    store.set('resizingBlock')(false);
     /**
      * Is a new item or am I moving a one from the board?
      */
-
-
-    var coords = _stampa.default.getCellXY();
 
     if (draggedBlockId[0] == '_') {
       for (var i = 0, l = blocks.length; i < l; ++i) {
         var block = blocks[i];
 
         if (block._stampa.key === draggedBlockId) {
-          block._stampa.column = coords.column;
-          block._stampa.row = coords.row;
+          var resize = store.get('resizeDirection');
+          var resizeWidth = false;
+          var resizeHeight = false;
+
+          if (resize == 'width') {
+            resizeWidth = true;
+          } else if (resize == 'height') {
+            resizeHeight = true;
+          } else if (resize == 'se') {
+            resizeWidth = true;
+            resizeHeight = true;
+          } else {
+            block._stampa.startRow = drag.row;
+            block._stampa.startColumn = drag.column;
+          }
+
+          if (resizeWidth && drag.column >= block._stampa.startColumn) {
+            block._stampa.endColumn = drag.column - block._stampa.startColumn + 1;
+          }
+
+          if (resizeHeight && drag.row >= block._stampa.startRow) {
+            block._stampa.endRow = drag.row - block._stampa.startRow + 1;
+          }
+
           break;
         }
       }
+
+      setBlocks(blocks);
     } else {
       var _block = _stampa.default.getBlockById(draggedBlockId);
 
       _block._stampa = {
         id: draggedBlockId,
         key: "_".concat(_shortid.default.generate()),
-        column: coords.column,
-        row: coords.row
+        startColumn: drag.column,
+        startRow: drag.row,
+        endColumn: 1,
+        endRow: 1
       };
       setBlocks([].concat(_toConsumableArray(blocks), [_block]));
     }
   };
+
+  var gridArea;
+
+  if (store.get('resizingBlock')) {
+    var _store$get = store.get('resizingBlockPosition'),
+        startRow = _store$get.startRow,
+        startColumn = _store$get.startColumn,
+        endRow = _store$get.endRow,
+        endColumn = _store$get.endColumn;
+
+    var resize = store.get('resizeDirection');
+
+    if (resize == 'width') {
+      endColumn = Math.max(startColumn, drag.column + 1);
+      endRow += startRow;
+    } else if (resize == 'height') {
+      endRow = Math.max(startRow, drag.row + 1);
+      endColumn += startColumn;
+    } else {
+      endColumn = Math.max(startColumn, drag.column + 1);
+      endRow = Math.max(startRow, drag.row + 1);
+    }
+
+    if (!Number.isNaN(endRow) && !Number.isNaN(endColumn)) {
+      gridArea = "".concat(startRow, " / ").concat(startColumn, " / ").concat(endRow, " / ").concat(endColumn);
+    }
+  } else {
+    gridArea = "".concat(drag.row, " / ").concat(drag.column, " / ").concat(drag.row, " / ").concat(drag.column);
+  } // gridColumn: drag.column,
+  // gridRow: drag.row,
+
 
   var minHeight = 46 * store.get('gridRows') + 'px';
   return _react.default.createElement("div", {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {
     className: "grid__content",
+    ref: ref,
     onDragOver: handleDragOver,
     onDragLeave: handleDragLeave,
     onDrop: handleDrop,
@@ -28246,19 +28439,22 @@ function Grid() {
       gridGap: "".concat(store.get('gridGap'), "px"),
       minHeight: minHeight
     }
-  }, _react.default.createElement(_SVGGrid.default, {
-    drag: drag
-  }), blocks.map(function (block) {
+  }, _react.default.createElement(_CSSGrid.default, null), blocks.map(function (block) {
     return _react.default.createElement(_Block.default, {
       block: block,
       key: block._stampa.key
     });
+  }), draggedBlockId && drag.over && _react.default.createElement("div", {
+    className: "grid__highlight",
+    style: {
+      gridArea: gridArea
+    }
   })));
 }
 
 var _default = Grid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./SVGGrid":"components/SVGGrid.js","./Block":"components/Block.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./SVGGrid":"components/SVGGrid.js","./CSSGrid":"components/CSSGrid.js","./Block":"components/Block.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28497,7 +28693,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40445" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43217" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

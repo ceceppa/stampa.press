@@ -27,7 +27,7 @@ describe('Test Stampa helper functions', () => {
     const coords = stampa.getCellXY();
 
     // X/Y offset is shifted by 1
-    expect(coords.column).toBe(11);
-    expect(coords.row).toBe(6);
+    expect(coords.startColumn).toBe(11);
+    expect(coords.startRow).toBe(6);
   });
 });
