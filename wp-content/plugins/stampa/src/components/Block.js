@@ -6,25 +6,32 @@ export default function Block({ block }) {
   const store = Store.useStore();
   const stampaBlock = block._stampa;
 
-  // Allow the block itself to be dragged
-  const dragMe = () => {
-    store.set('draggedBlockId')(block._stampa.key);
-  };
-
-  const startResize = e => {
-    e.stopPropagation();
-
-    store.set('resizingBlockPosition')({
+  function storeBlockPosition() {
+    store.set('blockPosition')({
       startRow: stampaBlock.startRow,
       startColumn: stampaBlock.startColumn,
       endColumn: stampaBlock.endColumn,
       endRow: stampaBlock.endRow,
     });
+  }
+
+  // Allow the block itself to be dragged
+  function dragMe(e) {
+    e.stopPropagation();
+
+    storeBlockPosition();
+    store.set('draggedBlockId')(block._stampa.key);
+  }
+
+  function startResize(e) {
+    e.stopPropagation();
+
+    storeBlockPosition();
 
     store.set('resizeDirection')(e.target.dataset.resize);
     store.set('resizingBlock')(true);
     store.set('draggedBlockId')(block._stampa.key);
-  };
+  }
 
   const gridArea = `${stampaBlock.startRow} / ${
     stampaBlock.startColumn

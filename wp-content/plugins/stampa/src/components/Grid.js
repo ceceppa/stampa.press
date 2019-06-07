@@ -76,6 +76,7 @@ function Grid() {
 
           let resizeWidth = false;
           let resizeHeight = false;
+
           if (resize == 'width') {
             resizeWidth = true;
           } else if (resize == 'height') {
@@ -102,6 +103,9 @@ function Grid() {
       }
 
       setBlocks(blocks);
+
+      store.set('draggedBlockId')(null);
+      store.set('resizeDirection')(null);
     } else {
       const block = stampa.getBlockById(draggedBlockId);
 
@@ -122,7 +126,7 @@ function Grid() {
 
   if (store.get('resizingBlock')) {
     let { startRow, startColumn, endRow, endColumn } = store.get(
-      'resizingBlockPosition'
+      'blockPosition'
     );
     const resize = store.get('resizeDirection');
 
@@ -141,11 +145,18 @@ function Grid() {
       gridArea = `${startRow} / ${startColumn} / ${endRow} / ${endColumn}`;
     }
   } else {
-    gridArea = `${drag.row} / ${drag.column} / ${drag.row} / ${drag.column}`;
-  }
+    let endRow = drag.row;
+    let endColumn = drag.column;
 
-  // gridColumn: drag.column,
-  // gridRow: drag.row,
+    if (draggedBlockId && draggedBlockId[0] == '_') {
+      const position = store.get('blockPosition');
+
+      endRow += position.endRow;
+      endColumn += position.endColumn;
+    }
+
+    gridArea = `${drag.row} / ${drag.column} / ${endRow} / ${endColumn}`;
+  }
 
   const minHeight = 46 * store.get('gridRows') + 'px';
   return (

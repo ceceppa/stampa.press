@@ -27162,7 +27162,7 @@ var initialState = {
   blockRow: 0,
   isBlockSelected: false,
   resizingBlock: false,
-  resizingBlockPosition: {},
+  blockPosition: {},
   resizeDirection: null
 };
 /**
@@ -28185,24 +28185,31 @@ function Block(_ref) {
 
   var store = _store.default.useStore();
 
-  var stampaBlock = block._stampa; // Allow the block itself to be dragged
+  var stampaBlock = block._stampa;
 
-  var dragMe = function dragMe() {
-    store.set('draggedBlockId')(block._stampa.key);
-  };
-
-  var startResize = function startResize(e) {
-    e.stopPropagation();
-    store.set('resizingBlockPosition')({
+  function storeBlockPosition() {
+    store.set('blockPosition')({
       startRow: stampaBlock.startRow,
       startColumn: stampaBlock.startColumn,
       endColumn: stampaBlock.endColumn,
       endRow: stampaBlock.endRow
     });
+  } // Allow the block itself to be dragged
+
+
+  function dragMe(e) {
+    e.stopPropagation();
+    storeBlockPosition();
+    store.set('draggedBlockId')(block._stampa.key);
+  }
+
+  function startResize(e) {
+    e.stopPropagation();
+    storeBlockPosition();
     store.set('resizeDirection')(e.target.dataset.resize);
     store.set('resizingBlock')(true);
     store.set('draggedBlockId')(block._stampa.key);
-  };
+  }
 
   var gridArea = "".concat(stampaBlock.startRow, " / ").concat(stampaBlock.startColumn, " / ").concat(stampaBlock.endRow + stampaBlock.startRow, " / ").concat(stampaBlock.endColumn + stampaBlock.startColumn);
   return _react.default.createElement("div", {
@@ -28378,6 +28385,8 @@ function Grid() {
       }
 
       setBlocks(blocks);
+      store.set('draggedBlockId')(null);
+      store.set('resizeDirection')(null);
     } else {
       var _block = _stampa.default.getBlockById(draggedBlockId);
 
@@ -28396,7 +28405,7 @@ function Grid() {
   var gridArea;
 
   if (store.get('resizingBlock')) {
-    var _store$get = store.get('resizingBlockPosition'),
+    var _store$get = store.get('blockPosition'),
         startRow = _store$get.startRow,
         startColumn = _store$get.startColumn,
         endRow = _store$get.endRow,
@@ -28419,10 +28428,17 @@ function Grid() {
       gridArea = "".concat(startRow, " / ").concat(startColumn, " / ").concat(endRow, " / ").concat(endColumn);
     }
   } else {
-    gridArea = "".concat(drag.row, " / ").concat(drag.column, " / ").concat(drag.row, " / ").concat(drag.column);
-  } // gridColumn: drag.column,
-  // gridRow: drag.row,
+    var _endRow = drag.row;
+    var _endColumn = drag.column;
 
+    if (draggedBlockId && draggedBlockId[0] == '_') {
+      var position = store.get('blockPosition');
+      _endRow += position.endRow;
+      _endColumn += position.endColumn;
+    }
+
+    gridArea = "".concat(drag.row, " / ").concat(drag.column, " / ").concat(_endRow, " / ").concat(_endColumn);
+  }
 
   var minHeight = 46 * store.get('gridRows') + 'px';
   return _react.default.createElement("div", {

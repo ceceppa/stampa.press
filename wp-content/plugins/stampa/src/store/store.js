@@ -13,7 +13,7 @@ const initialState = {
   blockRow: 0,
   isBlockSelected: false,
   resizingBlock: false,
-  resizingBlockPosition: {},
+  blockPosition: {},
   resizeDirection: null,
 };
 
