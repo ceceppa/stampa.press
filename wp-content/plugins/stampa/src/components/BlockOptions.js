@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import Store from '../store/store';
+
+import SaveBlock from './BlockOptions/Save';
 
 import ToggleGroup from './ToggleGroup';
 import NumberSlider from './NumberSlider';
@@ -8,23 +10,13 @@ import NumberSlider from './NumberSlider';
 export default function BlockOptions() {
   const store = Store.useStore();
 
-  const isBlockSelected = store.get('selectedBlock');
-
   return (
     <ToggleGroup
       label="Block Options"
       display="block"
-      groupClass="block-options"
+      groupClass="block-options stampa__border--bottom"
     >
-      {store.get('selectedBlock') && [
-        <NumberSlider
-          id="block-columns"
-          label="Columns:"
-          storeKey="blockColumns"
-        />,
-        <NumberSlider id="block-rows" label="Rows:" storeKey="blockRows" />,
-      ]}
-      {!isBlockSelected && <p className="stampa--gray">No block selected</p>}
+      <SaveBlock />
     </ToggleGroup>
   );
 }

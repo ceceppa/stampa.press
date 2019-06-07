@@ -32,5 +32,22 @@
       ],
       "options": {}
     }
+  },
+  {
+    "group": "Gutenberg",
+    "id": "heading",
+    "data": {
+      "label": "Heading",
+      "tooltip": "Heading",
+      "icon": "heading.svg",
+      "html": "Heading",
+      "react": [
+        "<Heading",
+        " value={ `fieldName` }",
+        "onChange={ this.`onFieldNameChanged }",
+        "/>"
+      ],
+      "options": {}
+    }
   }
 ]

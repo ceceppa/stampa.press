@@ -29,6 +29,50 @@ class Stampa {
 		add_action( 'init', __CLASS__ . '::register_stampa_blocks_cpt' );
 		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_script' );
 		add_action( 'edit_form_after_title', __CLASS__ . '::render_stampa' );
+
+		// Custom endpoint.
+		add_action( 'rest_api_init', __CLASS__ . '::register_stampa_endpoint' );
+	}
+
+	/**
+	 * Register the custom /stampa/v1/ endpoint(s)
+	 *
+	 * @return void
+	 */
+	public static function register_stampa_endpoint() {
+		register_rest_route(
+			'stampa/v1',
+			'/block/(?P<id>[\\d]+)',
+			array(
+				'methods'             => 'POST',
+				'callback'            => __CLASS__ . '::save_block',
+				'args'                => [
+					'title'   => [
+						'required'    => true,
+						'type'        => 'string',
+						'description' => 'the block title',
+					],
+					'fields'  => [
+						'required'    => true,
+						'type'        => 'object',
+						'description' => 'the block fields',
+					],
+					'options' => [
+						'required'    => false,
+						'type'        => 'object',
+						'description' => 'the block options',
+					],
+					'grid'    => [
+						'required'    => true,
+						'type'        => 'object',
+						'description' => 'the grid options',
+					],
+				],
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -72,7 +116,18 @@ class Stampa {
 			'home_url' => home_url(),
 			'nonce'    => wp_create_nonce( 'wp_rest' ),
 			'blocks'   => self::$blocks,
+			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
+			'post_ID'  => get_the_ID(),
 		);
+
+		$post_id = $_GET['post'] ?? null;
+		if ( $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
+			$data['block'] = [
+				'grid'   => get_post_meta( $post_id, '_stampa_grid', true ),
+				'fields' => get_post_meta( $post_id, '_stampa_fields', true ),
+			];
+		}
+
 		wp_register_script( 'stampa-script', plugins_url( 'dist/index.js', __FILE__ ), [], STAMPA_VERSION, true );
 		wp_localize_script( 'stampa-script', 'stampa', $data );
 		wp_enqueue_script( 'stampa-script' );
@@ -122,8 +177,31 @@ class Stampa {
 	 * @return void
 	 */
 	public static function add_block( string $group, string $block_id, array $block_data ) {
-		$group                               = ucfirst( $group );
+		$group = ucfirst( $group );
+
 		self::$blocks[ $group ][ $block_id ] = $block_data;
+	}
+
+	/**
+	 * Save the block and generate the React code
+	 *
+	 * @return array
+	 */
+	public static function save_block( $request ) {
+		$params  = $request->get_params();
+		$post_id = $params['id'];
+
+		wp_update_post(
+			[
+				'ID'    => (int) $post_id,
+				'title' => $params['title'],
+			]
+		);
+
+		update_post_meta( $post_id, '_stampa_grid', $params['grid'] );
+		update_post_meta( $post_id, '_stampa_fields', $params['fields'] );
+
+		return [ 'done' => 1 ];
 	}
 }
 

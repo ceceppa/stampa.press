@@ -170,6 +170,11 @@
     overflow: hidden
   }
 
+  .grid__block.active {
+      border-color: #ca4a1f;
+      border-color: var(--active);
+    }
+
   .grid__block:hover {
       border: 1px solid #0085ba;
       border: 1px solid var(--blue);
@@ -295,6 +300,13 @@
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
   }
+.block-options__save {
+    text-align: right;
+  }
+
+    .block-options__save .spinner {
+      position: absolute;
+    }
 body.post-type-stampa-block #poststuff #post-body.columns-2 {
     margin-right: 0;
   }
@@ -308,6 +320,7 @@ body.post-type-stampa-block #poststuff #post-body.columns-2 {
   --hover: #f8f9f9;
   --white: #fff;
   --blue: #0085ba;
+  --active: #ca4a1f;
 }
 
 .stampa--gray {

@@ -1,13 +1,13 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import BlockOptions from '../../src/components/BlockOptions';
+import FieldOptions from '../../src/components/FieldOptions';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Store from '../../src/store/store';
 
 import blocksList from './blocks-list.test.json';
 
-describe('BlockOptions', () => {
+describe('FieldOptions', () => {
   const props = {};
   let mountedComponent;
 
@@ -15,7 +15,7 @@ describe('BlockOptions', () => {
     if (!mountedComponent) {
       mountedComponent = TestRenderer.create(
         <Store.Container>
-          <BlockOptions {...props} />
+          <FieldOptions {...props} />
         </Store.Container>
       );
     }
@@ -37,16 +37,16 @@ describe('BlockOptions', () => {
 
       ReactDOM.render(
         <Store.Container>
-          <BlockOptions />
+          <FieldOptions />
         </Store.Container>,
         container
       );
     });
 
     it('Should render a message if no block is selected', () => {
-      const blockOptions = container.querySelector('.block-options p');
+      const FieldOptions = container.querySelector('.block-options p');
 
-      expect(blockOptions).not.toBeNull();
+      expect(FieldOptions).not.toBeNull();
     });
 
     it('Should render the NumberSliders if a block is selected', () => {});

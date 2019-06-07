@@ -21,13 +21,7 @@ export default {
 
     return null;
   },
-  /**
-   * no need to bother the "store" to store this informations, as that
-   * would cause a re-render
-   */
-  setCellXY: (x, y) => {
-    cellCoords.startColumn = x + 1;
-    cellCoords.startRow = y + 1;
-  },
-  getCellXY: () => cellCoords,
+  getBlockByKey: function(key) {},
+  setBlocks: function(blocks) {},
+  blockData: () => window.stampa && window.stampa.block,
 };

@@ -11,10 +11,10 @@ import Block from './Block';
 function Grid() {
   const ref = useRef();
   const store = Store.useStore();
-  const [blocks, setBlocks] = useState([]);
   const [drag, setDrag] = useState({});
 
   const draggedBlockId = store.get('draggedBlockId');
+  const blocks = store.get('stampaBlocks');
 
   const handleDragOver = e => {
     e.preventDefault();
@@ -102,7 +102,7 @@ function Grid() {
         }
       }
 
-      setBlocks(blocks);
+      store.set('stampaBlocks')(blocks);
 
       store.set('draggedBlockId')(null);
       store.set('resizeDirection')(null);
@@ -118,7 +118,10 @@ function Grid() {
         endRow: 1,
       };
 
-      setBlocks([...blocks, block]);
+      store.set('stampaBlocks')([...blocks, block]);
+
+      // Set the last block as "active"
+      store.set('activeBlock')(block._stampa.key);
     }
   };
 

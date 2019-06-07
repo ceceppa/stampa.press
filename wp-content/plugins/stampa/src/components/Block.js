@@ -6,6 +6,9 @@ export default function Block({ block }) {
   const store = Store.useStore();
   const stampaBlock = block._stampa;
 
+  /**
+   * Store the block position and size (needed to nicely show the resize & moving squares)
+   */
   function storeBlockPosition() {
     store.set('blockPosition')({
       startRow: stampaBlock.startRow,
@@ -23,6 +26,11 @@ export default function Block({ block }) {
     store.set('draggedBlockId')(block._stampa.key);
   }
 
+  /**
+   * Let's resize the block :)
+   *
+   * @param {HTMLEvent} e event
+   */
   function startResize(e) {
     e.stopPropagation();
 
@@ -33,20 +41,33 @@ export default function Block({ block }) {
     store.set('draggedBlockId')(block._stampa.key);
   }
 
+  /**
+   * Activate the current block
+   *
+   * @param {HTMLEvent} e event
+   */
+  function setAsActive(e) {
+    store.set('activeBlock')(block._stampa.key);
+  }
+
   const gridArea = `${stampaBlock.startRow} / ${
     stampaBlock.startColumn
   } / ${stampaBlock.endRow + stampaBlock.startRow} / ${stampaBlock.endColumn +
     stampaBlock.startColumn}`;
 
+  const activeBlock = store.get('activeBlock');
+  const activeClass = activeBlock == block._stampa.key ? 'active' : '';
+
   return (
     <div
       draggable="true"
-      className={`grid__block grid__block--${block._stampa.id}`}
+      className={`grid__block grid__block--${block._stampa.id} ${activeClass}`}
       onDragStart={dragMe}
       data-key={block._stampa.key}
       style={{
         gridArea,
       }}
+      onClick={setAsActive}
     >
       <p
         dangerouslySetInnerHTML={{ __html: block.html }}

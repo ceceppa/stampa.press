@@ -27151,19 +27151,16 @@ var _undux = require("undux");
 
 // Declare your store's initial state.
 var initialState = {
+  stampaBlocks: [],
   draggedBlockId: null,
-  stampaBlock: {},
   gridColumns: 12,
   gridRows: 5,
   gridGap: 5,
-  blockColumn: 0,
-  blockRows: 1,
-  blockColumns: 1,
-  blockRow: 0,
   isBlockSelected: false,
   resizingBlock: false,
   blockPosition: {},
-  resizeDirection: null
+  resizeDirection: null,
+  activeBlock: null
 };
 /**
  * Is jest test?
@@ -27350,17 +27347,10 @@ var _default = {
 
     return null;
   },
-
-  /**
-   * no need to bother the "store" to store this informations, as that
-   * would cause a re-render
-   */
-  setCellXY: function setCellXY(x, y) {
-    cellCoords.startColumn = x + 1;
-    cellCoords.startRow = y + 1;
-  },
-  getCellXY: function getCellXY() {
-    return cellCoords;
+  getBlockByKey: function getBlockByKey(key) {},
+  setBlocks: function setBlocks(blocks) {},
+  blockData: function blockData() {
+    return window.stampa && window.stampa.block;
   }
 };
 exports.default = _default;
@@ -27500,7 +27490,113 @@ function GridOptions() {
     storeKey: "gridGap"
   }));
 }
-},{"react":"../node_modules/react/index.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/BlockOptions/Save.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Save;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function Save() {
+  var store = _store.default.useStore();
+
+  var _useState = (0, _react.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      isSaving = _useState2[0],
+      setSavingState = _useState2[1];
+
+  function saveBlock() {
+    setSavingState(true);
+    var fields = [];
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = store.get('stampaBlocks')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var field = _step.value;
+        fields.push({
+          id: field.id,
+          options: field.options,
+          _stampa: field._stampa
+        });
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    jQuery.ajax({
+      type: 'POST',
+      dataType: 'json',
+      url: "".concat(stampa.rest_url, "/").concat(stampa.post_ID),
+      data: {
+        title: title.value,
+        options: {},
+        fields: fields,
+        grid: {
+          columns: store.get('gridColumns'),
+          rows: store.get('gridRows'),
+          gap: store.get('gridGap')
+        }
+      },
+      beforeSend: function beforeSend(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', stampa.nonce);
+      },
+      success: function success(data) {
+        setSavingState(false);
+      },
+      error: function error(data) {
+        alert('Something went wrong :(');
+        setSavingState(false);
+      }
+    });
+  }
+
+  return _react.default.createElement("div", {
+    className: "block-options__save"
+  }, _react.default.createElement("div", {
+    className: "spinner",
+    style: {
+      visibility: isSaving ? 'visible' : ''
+    }
+  }), _react.default.createElement("button", {
+    type: "button",
+    className: "button button-primary",
+    style: {
+      visibility: isSaving ? 'hidden' : ''
+    },
+    onClick: saveBlock
+  }, "Save"));
+}
+},{"react":"../node_modules/react/index.js","../../store/store":"store/store.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27511,6 +27607,8 @@ exports.default = BlockOptions;
 var _react = _interopRequireWildcard(require("react"));
 
 var _store = _interopRequireDefault(require("../store/store"));
+
+var _Save = _interopRequireDefault(require("./BlockOptions/Save"));
 
 var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
 
@@ -27523,12 +27621,72 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function BlockOptions() {
   var store = _store.default.useStore();
 
-  var isBlockSelected = store.get('selectedBlock');
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Block Options",
     display: "block",
+    groupClass: "block-options stampa__border--bottom"
+  }, _react.default.createElement(_Save.default, null));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/FieldOptions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = FieldOptions;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
+
+var _NumberSlider = _interopRequireDefault(require("./NumberSlider"));
+
+var _stampa = _interopRequireDefault(require("../stampa"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function FieldOptions() {
+  var store = _store.default.useStore();
+
+  var activeBlock = store.get('activeBlock');
+  var blockOptions = null;
+
+  if (activeBlock) {
+    var blocks = store.get('stampaBlocks');
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = blocks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {// console.info(block);
+
+        var block = _step.value;
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  }
+
+  return _react.default.createElement(_ToggleGroup.default, {
+    label: "Field Options",
+    display: "block",
     groupClass: "block-options"
-  }, store.get('selectedBlock') && [_react.default.createElement(_NumberSlider.default, {
+  }, store.get('activeBlock') && false && [_react.default.createElement(_NumberSlider.default, {
     id: "block-columns",
     label: "Columns:",
     storeKey: "blockColumns"
@@ -27536,64 +27694,11 @@ function BlockOptions() {
     id: "block-rows",
     label: "Rows:",
     storeKey: "blockRows"
-  })], !isBlockSelected && _react.default.createElement("p", {
+  })], !activeBlock && _react.default.createElement("p", {
     className: "stampa--gray"
   }, "No block selected"));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/FieldOptions.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var FieldOptions =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(FieldOptions, _Component);
-
-  function FieldOptions() {
-    _classCallCheck(this, FieldOptions);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(FieldOptions).apply(this, arguments));
-  }
-
-  _createClass(FieldOptions, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", null, "Field Options");
-    }
-  }]);
-
-  return FieldOptions;
-}(_react.Component);
-
-var _default = FieldOptions;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
 'use strict';
 
 // Found this seed-based random generator somewhere
@@ -28186,6 +28291,9 @@ function Block(_ref) {
   var store = _store.default.useStore();
 
   var stampaBlock = block._stampa;
+  /**
+   * Store the block position and size (needed to nicely show the resize & moving squares)
+   */
 
   function storeBlockPosition() {
     store.set('blockPosition')({
@@ -28202,6 +28310,12 @@ function Block(_ref) {
     storeBlockPosition();
     store.set('draggedBlockId')(block._stampa.key);
   }
+  /**
+   * Let's resize the block :)
+   *
+   * @param {HTMLEvent} e event
+   */
+
 
   function startResize(e) {
     e.stopPropagation();
@@ -28210,16 +28324,29 @@ function Block(_ref) {
     store.set('resizingBlock')(true);
     store.set('draggedBlockId')(block._stampa.key);
   }
+  /**
+   * Activate the current block
+   *
+   * @param {HTMLEvent} e event
+   */
+
+
+  function setAsActive(e) {
+    store.set('activeBlock')(block._stampa.key);
+  }
 
   var gridArea = "".concat(stampaBlock.startRow, " / ").concat(stampaBlock.startColumn, " / ").concat(stampaBlock.endRow + stampaBlock.startRow, " / ").concat(stampaBlock.endColumn + stampaBlock.startColumn);
+  var activeBlock = store.get('activeBlock');
+  var activeClass = activeBlock == block._stampa.key ? 'active' : '';
   return _react.default.createElement("div", {
     draggable: "true",
-    className: "grid__block grid__block--".concat(block._stampa.id),
+    className: "grid__block grid__block--".concat(block._stampa.id, " ").concat(activeClass),
     onDragStart: dragMe,
     "data-key": block._stampa.key,
     style: {
       gridArea: gridArea
-    }
+    },
+    onClick: setAsActive
   }, _react.default.createElement("p", {
     dangerouslySetInnerHTML: {
       __html: block.html
@@ -28289,17 +28416,13 @@ function Grid() {
 
   var store = _store.default.useStore();
 
-  var _useState = (0, _react.useState)([]),
+  var _useState = (0, _react.useState)({}),
       _useState2 = _slicedToArray(_useState, 2),
-      blocks = _useState2[0],
-      setBlocks = _useState2[1];
-
-  var _useState3 = (0, _react.useState)({}),
-      _useState4 = _slicedToArray(_useState3, 2),
-      drag = _useState4[0],
-      setDrag = _useState4[1];
+      drag = _useState2[0],
+      setDrag = _useState2[1];
 
   var draggedBlockId = store.get('draggedBlockId');
+  var blocks = store.get('stampaBlocks');
 
   var handleDragOver = function handleDragOver(e) {
     e.preventDefault();
@@ -28384,7 +28507,7 @@ function Grid() {
         }
       }
 
-      setBlocks(blocks);
+      store.set('stampaBlocks')(blocks);
       store.set('draggedBlockId')(null);
       store.set('resizeDirection')(null);
     } else {
@@ -28398,7 +28521,9 @@ function Grid() {
         endColumn: 1,
         endRow: 1
       };
-      setBlocks([].concat(_toConsumableArray(blocks), [_block]));
+      store.set('stampaBlocks')([].concat(_toConsumableArray(blocks), [_block])); // Set the last block as "active"
+
+      store.set('activeBlock')(_block._stampa.key);
     }
   };
 
@@ -28490,6 +28615,10 @@ var _FieldOptions = _interopRequireDefault(require("./components/FieldOptions"))
 
 var _Grid = _interopRequireDefault(require("./components/Grid"));
 
+var _store = _interopRequireDefault(require("./store/store"));
+
+var _stampa = _interopRequireDefault(require("./stampa"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -28524,6 +28653,24 @@ function (_Component) {
   }
 
   _createClass(App, [{
+    key: "componentDidMount",
+
+    /**
+     * Restore the block on page load
+     */
+    value: function componentDidMount() {
+      var store = this.props.store;
+
+      var blockData = _stampa.default.blockData();
+
+      if (blockData) {
+        // store.set('gridColumns', parseInt(blockData.grid.columns));
+        store.set('gridRows')(parseInt(blockData.grid.rows));
+        store.set('gridGap')(parseInt(blockData.grid.gap));
+        store.set('stampaBlocks')(blockData.fields);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
@@ -28537,9 +28684,10 @@ function (_Component) {
   return App;
 }(_react.Component);
 
-var _default = App;
+var _default = _store.default.withStore(App);
+
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/ComponentsList":"components/ComponentsList.js","./components/GridOptions":"components/GridOptions.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.js"}],"serviceWorker.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/ComponentsList":"components/ComponentsList.js","./components/GridOptions":"components/GridOptions.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.js","./store/store":"store/store.js","./stampa":"stampa.js"}],"serviceWorker.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28709,7 +28857,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43217" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39723" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
