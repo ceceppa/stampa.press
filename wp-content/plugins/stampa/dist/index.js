@@ -27351,6 +27351,24 @@ var _default = {
   setBlocks: function setBlocks(blocks) {},
   blockData: function blockData() {
     return window.stampa && window.stampa.block;
+  },
+  setResizeDirection: function setResizeDirection(resize) {
+    this.resizeDirection = resize;
+  },
+  setResizing: function setResizing(status) {
+    this.resizingStatus = status;
+  },
+  getResizeDirection: function getResizeDirection() {
+    return this.resizeDirection;
+  },
+  isResizing: function isResizing() {
+    return this.resizingStatus;
+  },
+  setBlockPosition: function setBlockPosition(position) {
+    this.blockPosition = position;
+  },
+  getBlockPosition: function getBlockPosition() {
+    return this.blockPosition;
   }
 };
 exports.default = _default;
@@ -27682,19 +27700,32 @@ function FieldOptions() {
     }
   }
 
+  function deleteActiveBlock() {
+    var blocks = store.get('stampaBlocks').filter(function (block) {
+      return block._stampa.key !== activeBlock;
+    });
+    store.set('stampaBlocks')(blocks);
+    store.set('activeBlock')(null);
+  }
+
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Field Options",
     display: "block",
     groupClass: "block-options"
-  }, store.get('activeBlock') && false && [_react.default.createElement(_NumberSlider.default, {
-    id: "block-columns",
-    label: "Columns:",
-    storeKey: "blockColumns"
-  }), _react.default.createElement(_NumberSlider.default, {
-    id: "block-rows",
-    label: "Rows:",
-    storeKey: "blockRows"
-  })], !activeBlock && _react.default.createElement("p", {
+  }, store.get('activeBlock') && [_react.default.createElement("label", {
+    htmlFor: "field-name",
+    className: "number-slider"
+  }, _react.default.createElement("span", {
+    className: "number-slider__label"
+  }, "Field name:"), _react.default.createElement("input", {
+    className: "number-slider__input",
+    type: "text",
+    name: "field-name"
+  })), _react.default.createElement("button", {
+    type: "button",
+    onClick: deleteActiveBlock,
+    className: "button button-link-delete"
+  }, "Delete field")], !activeBlock && _react.default.createElement("p", {
     className: "stampa--gray"
   }, "No block selected"));
 }
@@ -28283,6 +28314,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _store = _interopRequireDefault(require("../store/store"));
 
+var _stampa = _interopRequireDefault(require("../stampa"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Block(_ref) {
@@ -28296,12 +28329,18 @@ function Block(_ref) {
    */
 
   function storeBlockPosition() {
-    store.set('blockPosition')({
+    _stampa.default.setBlockPosition({
       startRow: stampaBlock.startRow,
       startColumn: stampaBlock.startColumn,
       endColumn: stampaBlock.endColumn,
       endRow: stampaBlock.endRow
-    });
+    }); // store.set('blockPosition')({
+    //   startRow: stampaBlock.startRow,
+    //   startColumn: stampaBlock.startColumn,
+    //   endColumn: stampaBlock.endColumn,
+    //   endRow: stampaBlock.endRow,
+    // });
+
   } // Allow the block itself to be dragged
 
 
@@ -28319,9 +28358,14 @@ function Block(_ref) {
 
   function startResize(e) {
     e.stopPropagation();
-    storeBlockPosition();
-    store.set('resizeDirection')(e.target.dataset.resize);
-    store.set('resizingBlock')(true);
+    storeBlockPosition(); // Don't want/need to trigger a re-render of the block/app
+
+    _stampa.default.setResizeDirection(e.target.dataset.resize);
+
+    _stampa.default.setResizing(true); // store.set('resizeDirection')(e.target.dataset.resize);
+    // store.set('resizingBlock')(true);
+
+
     store.set('draggedBlockId')(block._stampa.key);
   }
   /**
@@ -28369,7 +28413,7 @@ function Block(_ref) {
     onDragStart: startResize
   }));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Grid.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28433,9 +28477,11 @@ function Grid() {
       var rows = store.get('gridRows');
       var gap = store.get('gridGap');
       var x = e.clientX - clientRect.x;
-      var y = e.clientY - clientRect.y;
-      var cellWidth = (clientRect.width - gap * (columns - 1)) / columns;
-      var cellHeight = (clientRect.height - gap * (rows - 1)) / rows;
+      var y = e.clientY - clientRect.y; // const cellWidth = (clientRect.width - gap * (columns - 1)) / columns;
+      // const cellHeight = (clientRect.height - gap * (rows - 1)) / rows;
+
+      var cellWidth = clientRect.width / columns;
+      var cellHeight = clientRect.height / rows;
       var cellX = Math.ceil(x / cellWidth);
       var cellY = Math.ceil(y / cellHeight);
       /**
@@ -28469,17 +28515,19 @@ function Grid() {
       return;
     }
 
-    store.set('resizingBlock')(false);
+    _stampa.default.setResizing(false);
     /**
      * Is a new item or am I moving a one from the board?
      */
+
 
     if (draggedBlockId[0] == '_') {
       for (var i = 0, l = blocks.length; i < l; ++i) {
         var block = blocks[i];
 
         if (block._stampa.key === draggedBlockId) {
-          var resize = store.get('resizeDirection');
+          var resize = _stampa.default.getResizeDirection();
+
           var resizeWidth = false;
           var resizeHeight = false;
 
@@ -28509,7 +28557,9 @@ function Grid() {
 
       store.set('stampaBlocks')(blocks);
       store.set('draggedBlockId')(null);
-      store.set('resizeDirection')(null);
+
+      _stampa.default.setResizeDirection(null); // store.set('resizeDirection')(null);
+
     } else {
       var _block = _stampa.default.getBlockById(draggedBlockId);
 
@@ -28529,14 +28579,14 @@ function Grid() {
 
   var gridArea;
 
-  if (store.get('resizingBlock')) {
-    var _store$get = store.get('blockPosition'),
-        startRow = _store$get.startRow,
-        startColumn = _store$get.startColumn,
-        endRow = _store$get.endRow,
-        endColumn = _store$get.endColumn;
+  if (_stampa.default.isResizing()) {
+    var _stampa$getBlockPosit = _stampa.default.getBlockPosition(),
+        startRow = _stampa$getBlockPosit.startRow,
+        startColumn = _stampa$getBlockPosit.startColumn,
+        endRow = _stampa$getBlockPosit.endRow,
+        endColumn = _stampa$getBlockPosit.endColumn;
 
-    var resize = store.get('resizeDirection');
+    var resize = _stampa.default.getResizeDirection();
 
     if (resize == 'width') {
       endColumn = Math.max(startColumn, drag.column + 1);
@@ -28557,7 +28607,8 @@ function Grid() {
     var _endColumn = drag.column;
 
     if (draggedBlockId && draggedBlockId[0] == '_') {
-      var position = store.get('blockPosition');
+      var position = _stampa.default.getBlockPosition();
+
       _endRow += position.endRow;
       _endColumn += position.endColumn;
     }
@@ -28664,10 +28715,17 @@ function (_Component) {
       var blockData = _stampa.default.blockData();
 
       if (blockData) {
-        // store.set('gridColumns', parseInt(blockData.grid.columns));
+        store.set('gridColumns', parseInt(blockData.grid.columns));
         store.set('gridRows')(parseInt(blockData.grid.rows));
         store.set('gridGap')(parseInt(blockData.grid.gap));
-        store.set('stampaBlocks')(blockData.fields);
+        var blocks = blockData.fields.map(function (block) {
+          block._stampa.startColumn = parseInt(block._stampa.startColumn);
+          block._stampa.startRow = parseInt(block._stampa.startRow);
+          block._stampa.endRow = parseInt(block._stampa.endRow);
+          block._stampa.endColumn = parseInt(block._stampa.endColumn);
+          return block;
+        });
+        store.set('stampaBlocks')(blocks);
       }
     }
   }, {
@@ -28857,7 +28915,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39723" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44177" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

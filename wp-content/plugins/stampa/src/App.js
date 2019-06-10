@@ -18,11 +18,19 @@ class App extends Component {
     const blockData = stampa.blockData();
 
     if (blockData) {
-      // store.set('gridColumns', parseInt(blockData.grid.columns));
+      store.set('gridColumns', parseInt(blockData.grid.columns));
       store.set('gridRows')(parseInt(blockData.grid.rows));
       store.set('gridGap')(parseInt(blockData.grid.gap));
 
-      store.set('stampaBlocks')(blockData.fields);
+      const blocks = blockData.fields.map(block => {
+        block._stampa.startColumn = parseInt(block._stampa.startColumn);
+        block._stampa.startRow = parseInt(block._stampa.startRow);
+        block._stampa.endRow = parseInt(block._stampa.endRow);
+        block._stampa.endColumn = parseInt(block._stampa.endColumn);
+
+        return block;
+      });
+      store.set('stampaBlocks')(blocks);
     }
   }
 

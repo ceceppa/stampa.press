@@ -27,8 +27,10 @@ function Grid() {
 
       const x = e.clientX - clientRect.x;
       const y = e.clientY - clientRect.y;
-      const cellWidth = (clientRect.width - gap * (columns - 1)) / columns;
-      const cellHeight = (clientRect.height - gap * (rows - 1)) / rows;
+      // const cellWidth = (clientRect.width - gap * (columns - 1)) / columns;
+      // const cellHeight = (clientRect.height - gap * (rows - 1)) / rows;
+      const cellWidth = clientRect.width / columns;
+      const cellHeight = clientRect.height / rows;
 
       const cellX = Math.ceil(x / cellWidth);
       const cellY = Math.ceil(y / cellHeight);
@@ -62,7 +64,7 @@ function Grid() {
       return;
     }
 
-    store.set('resizingBlock')(false);
+    stampa.setResizing(false);
 
     /**
      * Is a new item or am I moving a one from the board?
@@ -72,7 +74,7 @@ function Grid() {
         const block = blocks[i];
 
         if (block._stampa.key === draggedBlockId) {
-          const resize = store.get('resizeDirection');
+          const resize = stampa.getResizeDirection();
 
           let resizeWidth = false;
           let resizeHeight = false;
@@ -103,9 +105,10 @@ function Grid() {
       }
 
       store.set('stampaBlocks')(blocks);
-
       store.set('draggedBlockId')(null);
-      store.set('resizeDirection')(null);
+
+      stampa.setResizeDirection(null);
+      // store.set('resizeDirection')(null);
     } else {
       const block = stampa.getBlockById(draggedBlockId);
 
@@ -127,11 +130,15 @@ function Grid() {
 
   let gridArea;
 
-  if (store.get('resizingBlock')) {
-    let { startRow, startColumn, endRow, endColumn } = store.get(
-      'blockPosition'
-    );
-    const resize = store.get('resizeDirection');
+  if (stampa.isResizing()) {
+    let {
+      startRow,
+      startColumn,
+      endRow,
+      endColumn,
+    } = stampa.getBlockPosition();
+
+    const resize = stampa.getResizeDirection();
 
     if (resize == 'width') {
       endColumn = Math.max(startColumn, drag.column + 1);
@@ -152,7 +159,7 @@ function Grid() {
     let endColumn = drag.column;
 
     if (draggedBlockId && draggedBlockId[0] == '_') {
-      const position = store.get('blockPosition');
+      const position = stampa.getBlockPosition();
 
       endRow += position.endRow;
       endColumn += position.endColumn;

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Store from '../store/store';
+import stampa from '../stampa';
 
 export default function Block({ block }) {
   const store = Store.useStore();
@@ -10,12 +11,18 @@ export default function Block({ block }) {
    * Store the block position and size (needed to nicely show the resize & moving squares)
    */
   function storeBlockPosition() {
-    store.set('blockPosition')({
+    stampa.setBlockPosition({
       startRow: stampaBlock.startRow,
       startColumn: stampaBlock.startColumn,
       endColumn: stampaBlock.endColumn,
       endRow: stampaBlock.endRow,
     });
+    // store.set('blockPosition')({
+    //   startRow: stampaBlock.startRow,
+    //   startColumn: stampaBlock.startColumn,
+    //   endColumn: stampaBlock.endColumn,
+    //   endRow: stampaBlock.endRow,
+    // });
   }
 
   // Allow the block itself to be dragged
@@ -36,8 +43,11 @@ export default function Block({ block }) {
 
     storeBlockPosition();
 
-    store.set('resizeDirection')(e.target.dataset.resize);
-    store.set('resizingBlock')(true);
+    // Don't want/need to trigger a re-render of the block/app
+    stampa.setResizeDirection(e.target.dataset.resize);
+    stampa.setResizing(true);
+    // store.set('resizeDirection')(e.target.dataset.resize);
+    // store.set('resizingBlock')(true);
     store.set('draggedBlockId')(block._stampa.key);
   }
 

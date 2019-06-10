@@ -20,21 +20,38 @@ export default function FieldOptions() {
     }
   }
 
+  function deleteActiveBlock() {
+    const blocks = store
+      .get('stampaBlocks')
+      .filter(block => block._stampa.key !== activeBlock);
+
+    store.set('stampaBlocks')(blocks);
+    store.set('activeBlock')(null);
+  }
+
   return (
     <ToggleGroup
       label="Field Options"
       display="block"
       groupClass="block-options"
     >
-      {store.get('activeBlock') &&
-        false && [
-          <NumberSlider
-            id="block-columns"
-            label="Columns:"
-            storeKey="blockColumns"
-          />,
-          <NumberSlider id="block-rows" label="Rows:" storeKey="blockRows" />,
-        ]}
+      {store.get('activeBlock') && [
+        <label htmlFor="field-name" className="number-slider">
+          <span className="number-slider__label">Field name:</span>
+          <input
+            className="number-slider__input"
+            type="text"
+            name="field-name"
+          />
+        </label>,
+        <button
+          type="button"
+          onClick={deleteActiveBlock}
+          className="button button-link-delete"
+        >
+          Delete field
+        </button>,
+      ]}
       {!activeBlock && <p className="stampa--gray">No block selected</p>}
     </ToggleGroup>
   );

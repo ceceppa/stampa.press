@@ -120,11 +120,13 @@ class Stampa {
 			'post_ID'  => get_the_ID(),
 		);
 
+		global $pagenow;
 		$post_id = $_GET['post'] ?? null;
-		if ( $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
+		if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
+
 			$data['block'] = [
-				'grid'   => get_post_meta( $post_id, '_stampa_grid', true ),
-				'fields' => get_post_meta( $post_id, '_stampa_fields', true ),
+				'grid'   => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
+				'fields' => json_decode( get_post_meta( $post_id, '_stampa_fields', true ) ),
 			];
 		}
 
@@ -198,8 +200,8 @@ class Stampa {
 			]
 		);
 
-		update_post_meta( $post_id, '_stampa_grid', $params['grid'] );
-		update_post_meta( $post_id, '_stampa_fields', $params['fields'] );
+		update_post_meta( $post_id, '_stampa_grid', json_encode( $params['grid'] ) );
+		update_post_meta( $post_id, '_stampa_fields', json_encode( $params['fields'] ) );
 
 		return [ 'done' => 1 ];
 	}
