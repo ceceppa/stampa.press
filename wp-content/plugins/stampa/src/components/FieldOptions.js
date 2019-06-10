@@ -107,7 +107,7 @@ export default function FieldOptions(props) {
                     type="text"
                     name={`field-${option.name}`}
                     id={`field-${option.name}`}
-                    value={option.value}
+                    value={activeBlock._values[option.name] || option.value}
                     onChange={e => updateOptionValue(e, option.name)}
                   />
                 </label>
@@ -126,7 +126,9 @@ export default function FieldOptions(props) {
                     name={`field-${option.name}`}
                     id={`field-${option.name}`}
                     onChange={e => updateOptionValue(e, option.name)}
-                    defaultValue={option.value}
+                    defaultValue={
+                      activeBlock._values[option.name] || option.value
+                    }
                   >
                     {option.values.map(value => (
                       <option key={value} value={value}>

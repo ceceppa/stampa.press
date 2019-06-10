@@ -204,11 +204,77 @@ class Stampa {
 			]
 		);
 
-		update_post_meta( $post_id, '_stampa_grid', json_encode( $params['grid'] ) );
-		update_post_meta( $post_id, '_stampa_fields', json_encode( $params['fields'] ) );
-		update_post_meta( $post_id, '_stampa_options', json_encode( $params['options'] ) );
+		$grid_params    = apply_filters( 'stampa/save-block/grid', $params['grid'] );
+		$fields_params  = apply_filters( 'stampa/save-block/fields', $params['fields'] );
+		$options_params = apply_filters( 'stampa/save-block/options', $params['options'] );
+
+		update_post_meta( $post_id, '_stampa_grid', json_encode( $grid_params ) );
+		update_post_meta( $post_id, '_stampa_fields', json_encode( $fields_params ) );
+		update_post_meta( $post_id, '_stampa_options', json_encode( $options_params ) );
+
+		if ( isset( $params['generate'] ) ) {
+			self::generate_react_block( $post_id, $params['title'], $grid_params, $fields_params, $options_params );
+		}
 
 		return [ 'done' => 1 ];
+	}
+
+	/**
+	 * Generate the REACT block
+	 *
+	 * @param int    $post_id the post ID.
+	 * @param string $title the block title.
+	 * @param array  $params the block parameters & fields.
+	 */
+	private static function generate_react_block( $post_id, $title, $grid_params, $fields_params, $options_params ) {
+		$output_folder = trailingslashit( get_template_directory() ) . 'assets/js/blocks/';
+		$file_name     = sanitize_title( $title ) . '.js';
+		$output_file   = $output_folder . $file_name;
+
+		/**
+		 * If the file exists make sure that the file hasn't been manually changed.
+		 */
+		if ( \file_exists( $output_file ) ) {
+			$md5 = md5_file( $output_file );
+
+			if ( $md5 !== get_post_meta( $post_id, '_md5', true ) ) {
+				return [
+					'generation-skipped' => "md5 file don't match with the record ($md5)",
+				];
+			}
+		}
+
+		// The block boilerplate.
+		$boilerplate = file_get_contents( __DIR__ . '/assets/gutenberg/block-boilerplate.js' );
+
+		// Title & Id.
+		$replace['{{stampa.block_title}}']     = $title;
+		$replace['{{stampa.sanitized_title}}'] = sanitize_title( $title );
+
+		/**
+		 * Stampa Grid style
+		*/
+		$grid_style = sprintf(
+			'
+				display: grid;
+				grid-template-columns: repeat(1fr, %d);
+				grid-template-rows: repeat(1fr, %d);
+				gap: %dpx;
+				min-height: 360px;
+			',
+			$grid_params['columns'],
+			$grid_params['rows'],
+			$grid_params['gap'],
+			$grid_params['gap']
+		);
+
+		$replace['{{stampa.grid_style}}'] = $grid_style;
+
+		foreach ( $replace as $what => $to ) {
+			$boilerplate = str_replace( $what, $to, $boilerplate );
+		}
+
+		file_put_contents( $output_file, $boilerplate );
 	}
 }
 

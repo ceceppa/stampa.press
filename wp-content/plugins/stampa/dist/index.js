@@ -27865,7 +27865,7 @@ function FieldOptions(props) {
           type: "text",
           name: "field-".concat(option.name),
           id: "field-".concat(option.name),
-          value: option.value,
+          value: activeBlock._values[option.name] || option.value,
           onChange: function onChange(e) {
             return updateOptionValue(e, option.name);
           }
@@ -27885,7 +27885,7 @@ function FieldOptions(props) {
           onChange: function onChange(e) {
             return updateOptionValue(e, option.name);
           },
-          defaultValue: option.value
+          defaultValue: activeBlock._values[option.name] || option.value
         }, option.values.map(function (value) {
           return _react.default.createElement("option", {
             key: value,
@@ -29130,7 +29130,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41665" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44075" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

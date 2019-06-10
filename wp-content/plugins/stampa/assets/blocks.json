@@ -16,12 +16,16 @@
           "value": "Write text..."
         }
       ],
-      "react": [
-        "<PlainText",
-        " value={ `fieldName` }",
-        "onChange={ this.`onFieldNameChanged` }",
-        "/>"
-      ]
+      "gutenberg": {
+        "block": "Heading",
+        "react": [
+          "<PlainText",
+          " gridArea={{gridArea}}",
+          " value={ `fieldName` }",
+          "onChange={ this.`onFieldNameChanged }",
+          "/>"
+        ]
+      }
     }
   },
   {
@@ -41,12 +45,16 @@
           "value": "Add text..."
         }
       ],
-      "react": [
-        "<PlainText",
-        " value={ `fieldName` }",
-        "onChange={ this.`onFieldNameChanged }",
-        "/>"
-      ]
+      "gutenberg": {
+        "block": "PlainText",
+        "react": [
+          "<PlainText",
+          " gridArea={{gridArea}}",
+          " value={ `fieldName` }",
+          "onChange={ this.`onFieldNameChanged }",
+          "/>"
+        ]
+      }
     }
   },
   {
@@ -58,12 +66,16 @@
       "icon": "heading.svg",
       "html": "<{level}>{placeholder}</{level}>",
       "className": "wp-block-heading",
-      "react": [
-        "<Heading",
-        " value={ `fieldName` }",
-        "onChange={ this.`onFieldNameChanged }",
-        "/>"
-      ],
+      "gutenberg": {
+        "block": "Heading",
+        "react": [
+          "<Heading",
+          " gridArea={{gridArea}}",
+          " value={ `fieldName` }",
+          "onChange={ this.`onFieldNameChanged }",
+          "/>"
+        ]
+      },
       "options": [
         {
           "name": "level",
