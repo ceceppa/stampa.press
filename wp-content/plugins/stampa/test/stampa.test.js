@@ -9,14 +9,14 @@ describe('Test Stampa helper functions', () => {
     };
   });
 
-  it('getBlocks() should return the blocks defined in window', () => {
-    const blocks = stampa.getBlocks();
+  it('getFields() should return the blocks defined in window', () => {
+    const blocks = stampa.getFields();
     expect(typeof blocks).toBe('object');
     expect(typeof blocks.Gutenberg).toBe('object');
   });
 
-  it('getBlockById() should return the test "Button" block', () => {
-    const block = stampa.getBlockById('button');
+  it('getFieldById() should return the test "Button" block', () => {
+    const block = stampa.getFieldById('button');
 
     expect(typeof block).toBe('object');
   });
@@ -33,9 +33,9 @@ describe('Test Stampa helper functions', () => {
     expect(stampa.isResizing()).toBe(true);
   });
 
-  it('setBlockPosition to store the the block position information', () => {
-    stampa.setBlockPosition('anything');
+  it('setFieldPosition to store the the block position information', () => {
+    stampa.setFieldPosition('anything');
 
-    expect(stampa.getBlockPosition()).toBe('anything');
+    expect(stampa.getFieldPosition()).toBe('anything');
   });
 });

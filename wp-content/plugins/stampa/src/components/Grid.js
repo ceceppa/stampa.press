@@ -4,22 +4,21 @@ import shortid from 'shortid';
 import Store from '../store/store';
 import stampa from '../stampa';
 
-import SVGGrid from './SVGGrid';
 import CSSGrid from './CSSGrid';
-import Block from './Block';
+import Field from './Field';
 
 function Grid() {
   const ref = useRef();
   const store = Store.useStore();
   const [drag, setDrag] = useState({});
 
-  const draggedBlockId = store.get('draggedBlockId');
-  const blocks = store.get('stampaFields');
+  const draggedFieldId = store.get('draggedFieldId');
+  const fields = store.get('stampaFields');
 
   const handleDragOver = e => {
     e.preventDefault();
 
-    if (draggedBlockId) {
+    if (draggedFieldId) {
       const clientRect = ref.current.getBoundingClientRect();
       const columns = store.get('gridColumns');
       const rows = store.get('gridRows');
@@ -58,9 +57,9 @@ function Grid() {
   const handleDrop = e => {
     handleDragLeave();
 
-    const draggedBlockId = store.get('draggedBlockId');
+    const draggedFieldId = store.get('draggedFieldId');
 
-    if (draggedBlockId == null) {
+    if (draggedFieldId == null) {
       return;
     }
 
@@ -69,11 +68,11 @@ function Grid() {
     /**
      * Is a new item or am I moving a one from the board?
      */
-    if (draggedBlockId[0] == '_') {
-      for (let i = 0, l = blocks.length; i < l; ++i) {
-        const block = blocks[i];
+    if (draggedFieldId[0] == '_') {
+      for (let i = 0, l = fields.length; i < l; ++i) {
+        const field = fields[i];
 
-        if (block._stampa.key === draggedBlockId) {
+        if (field._stampa.key === draggedFieldId) {
           const resize = stampa.getResizeDirection();
 
           let resizeWidth = false;
@@ -87,47 +86,47 @@ function Grid() {
             resizeWidth = true;
             resizeHeight = true;
           } else {
-            block._stampa.startRow = drag.row;
-            block._stampa.startColumn = drag.column;
+            field._stampa.startRow = drag.row;
+            field._stampa.startColumn = drag.column;
           }
 
-          if (resizeWidth && drag.column >= block._stampa.startColumn) {
-            block._stampa.endColumn =
-              drag.column - block._stampa.startColumn + 1;
+          if (resizeWidth && drag.column >= field._stampa.startColumn) {
+            field._stampa.endColumn =
+              drag.column - field._stampa.startColumn + 1;
           }
 
-          if (resizeHeight && drag.row >= block._stampa.startRow) {
-            block._stampa.endRow = drag.row - block._stampa.startRow + 1;
+          if (resizeHeight && drag.row >= field._stampa.startRow) {
+            field._stampa.endRow = drag.row - field._stampa.startRow + 1;
           }
 
           break;
         }
       }
 
-      store.set('stampaFields')(blocks);
-      store.set('draggedBlockId')(null);
+      store.set('stampaFields')(fields);
+      store.set('draggedFieldId')(null);
 
       stampa.setResizeDirection(null);
       // store.set('resizeDirection')(null);
     } else {
-      const block = stampa.getBlockById(draggedBlockId);
+      const field = stampa.getFieldById(draggedFieldId);
 
-      block._stampa = {
-        id: draggedBlockId,
+      field._stampa = {
+        id: draggedFieldId,
         key: `_${shortid.generate()}`,
         startColumn: drag.column,
         startRow: drag.row,
         endColumn: 1,
         endRow: 1,
-        name: draggedBlockId,
+        name: draggedFieldId,
       };
 
-      block._values = {};
+      field._values = {};
 
-      store.set('stampaFields')([...blocks, block]);
+      store.set('stampaFields')([...fields, field]);
 
       // Set the last block as "active"
-      store.set('activeBlockKey')(block._stampa.key);
+      store.set('activeBlockKey')(field._stampa.key);
     }
   };
 
@@ -139,7 +138,7 @@ function Grid() {
       startColumn,
       endRow,
       endColumn,
-    } = stampa.getBlockPosition();
+    } = stampa.getFieldPosition();
 
     const resize = stampa.getResizeDirection();
 
@@ -161,8 +160,8 @@ function Grid() {
     let endRow = drag.row;
     let endColumn = drag.column;
 
-    if (draggedBlockId && draggedBlockId[0] == '_') {
-      const position = stampa.getBlockPosition();
+    if (draggedFieldId && draggedFieldId[0] == '_') {
+      const position = stampa.getFieldPosition();
 
       endRow += position.endRow;
       endColumn += position.endColumn;
@@ -189,17 +188,15 @@ function Grid() {
       >
         <CSSGrid />
         {/* <SVGGrid drag={drag} /> */}
-        {blocks.map(block => (
-          <Block block={block} key={block._stampa.key} />
-        ))}
-        {draggedBlockId && drag.over && (
+        {fields.map(field => <Field field={field} key={field._stampa.key} />)}
+        {draggedFieldId &&
+          drag.over &&
           <div
             className="grid__highlight"
             style={{
               gridArea,
             }}
-          />
-        )}
+          />}
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ class App extends Component {
     super(props);
 
     const store = this.props.store;
-    const blockData = stampa.getStampaBlock();
+    const blockData = stampa.getStampaBlocks();
 
     if (blockData) {
       store.set('gridColumns', parseInt(blockData.grid.columns));
@@ -30,21 +30,21 @@ class App extends Component {
         blockData.options.hasBackgroundOption == 'true';
       store.set('stampaBlockOptions')(blockData.options);
 
-      const blocks = blockData.fields.map(block => {
-        block = Object.assign(stampa.getBlockById(block._stampa.id), block);
-        block._stampa.startColumn = parseInt(block._stampa.startColumn);
-        block._stampa.startRow = parseInt(block._stampa.startRow);
-        block._stampa.endRow = parseInt(block._stampa.endRow);
-        block._stampa.endColumn = parseInt(block._stampa.endColumn);
+      const fields = blockData.fields.map(field => {
+        field = Object.assign(stampa.getFieldById(field._stampa.id), field);
+        field._stampa.startColumn = parseInt(field._stampa.startColumn);
+        field._stampa.startRow = parseInt(field._stampa.startRow);
+        field._stampa.endRow = parseInt(field._stampa.endRow);
+        field._stampa.endColumn = parseInt(field._stampa.endColumn);
 
-        if (!block._values) {
-          block._values = {};
+        if (!field._values) {
+          field._values = {};
         }
 
-        return block;
+        return field;
       });
 
-      store.set('stampaFields')(blocks);
+      store.set('stampaFields')(fields);
     }
   }
 

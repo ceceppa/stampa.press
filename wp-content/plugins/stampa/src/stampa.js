@@ -7,9 +7,9 @@ let cellCoords = {
 };
 
 export default {
-  getBlocks: () => (window.stampa && window.stampa.blocks) || [],
-  getBlockById: function(id) {
-    const groups = this.getBlocks();
+  getFields: () => (window.stampa && window.stampa.blocks) || [],
+  getFieldById: function(id) {
+    const groups = this.getFields();
 
     for (const group in groups) {
       for (const block in groups[group]) {
@@ -21,8 +21,8 @@ export default {
 
     return null;
   },
-  getBlockByKey: function(key) {},
-  getStampaBlock: () => window.stampa && window.stampa.stampa,
+  getFieldByKey: function(key) {},
+  getStampaBlocks: () => window.stampa && window.stampa.stampa,
   setResizeDirection: function(resize) {
     this.resizeDirection = resize;
   },
@@ -35,10 +35,10 @@ export default {
   isResizing: function() {
     return this.resizingStatus;
   },
-  setBlockPosition: function(position) {
-    this.blockPosition = position;
+  setFieldPosition: function(position) {
+    this.fieldPosition = position;
   },
-  getBlockPosition: function() {
-    return this.blockPosition;
+  getFieldPosition: function() {
+    return this.fieldPosition;
   },
 };

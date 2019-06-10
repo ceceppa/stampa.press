@@ -27155,7 +27155,7 @@ var initialState = {
   stampaBlockOptions: {
     hasBackgroundOption: false
   },
-  draggedBlockId: null,
+  draggedFieldId: null,
   gridColumns: 12,
   gridRows: 5,
   gridGap: 5,
@@ -27282,10 +27282,10 @@ function GroupItems(_ref) {
       className: "components__item tooltip",
       draggable: "true",
       onDragStart: function onDragStart() {
-        return store.set('draggedBlockId')(id);
+        return store.set('draggedFieldId')(id);
       },
       onDragEnd: function onDragEnd() {
-        return store.set('draggedBlockId')(null);
+        return store.set('draggedFieldId')(null);
       },
       "data-tooltip": block.tooltip
     }, _react.default.createElement("img", {
@@ -27328,11 +27328,11 @@ var cellCoords = {
   row: 0
 };
 var _default = {
-  getBlocks: function getBlocks() {
+  getFields: function getFields() {
     return window.stampa && window.stampa.blocks || [];
   },
-  getBlockById: function getBlockById(id) {
-    var groups = this.getBlocks();
+  getFieldById: function getFieldById(id) {
+    var groups = this.getFields();
 
     for (var group in groups) {
       for (var block in groups[group]) {
@@ -27344,8 +27344,8 @@ var _default = {
 
     return null;
   },
-  getBlockByKey: function getBlockByKey(key) {},
-  getStampaBlock: function getStampaBlock() {
+  getFieldByKey: function getFieldByKey(key) {},
+  getStampaBlocks: function getStampaBlocks() {
     return window.stampa && window.stampa.stampa;
   },
   setResizeDirection: function setResizeDirection(resize) {
@@ -27360,11 +27360,11 @@ var _default = {
   isResizing: function isResizing() {
     return this.resizingStatus;
   },
-  setBlockPosition: function setBlockPosition(position) {
-    this.blockPosition = position;
+  setFieldPosition: function setFieldPosition(position) {
+    this.fieldPosition = position;
   },
-  getBlockPosition: function getBlockPosition() {
-    return this.blockPosition;
+  getFieldPosition: function getFieldPosition() {
+    return this.fieldPosition;
   }
 };
 exports.default = _default;
@@ -27395,7 +27395,7 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function ComponentsList() {
-  var blocks = _stampa.default.getBlocks();
+  var blocks = _stampa.default.getFields();
 
   var keys = Object.keys(blocks);
 
@@ -28269,127 +28269,7 @@ module.exports.isValid = isValid;
 'use strict';
 module.exports = require('./lib/index');
 
-},{"./lib/index":"../node_modules/shortid/lib/index.js"}],"components/SVGGrid.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _store = _interopRequireDefault(require("../store/store"));
-
-var _stampa = _interopRequireDefault(require("../stampa"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-var SVGGrid = _react.default.memo(function SVGGrid(_ref) {
-  var drag = _ref.drag;
-  var ref = (0, _react.useRef)();
-
-  var store = _store.default.useStore();
-
-  var columns = store.get('gridColumns');
-  var rows = store.get('gridRows');
-  var strokeWidth = store.get('gridGap');
-  var draggedBlockId = store.get('draggedBlockId');
-  var xPercentage = 100 / columns;
-  var yPercentage = 100 / rows;
-  var halfXGap = 0;
-  var halfYGap = 0;
-
-  if (ref.current) {
-    var clientRect = ref.current.getBoundingClientRect();
-    halfXGap = strokeWidth / clientRect.width / 2;
-    halfYGap = strokeWidth / clientRect.height / 2;
-  }
-
-  if (drag == null || drag.hover == null) {
-    drag = {
-      hover: false
-    };
-  } // Calculate which cell to highlight
-
-
-  var cellX = 0;
-  var cellY = 0;
-
-  if (draggedBlockId && ref.current) {
-    var _clientRect = ref.current.getBoundingClientRect();
-
-    var x = drag.x - _clientRect.x;
-    var y = drag.y - _clientRect.y;
-    var cellWidth = (_clientRect.width - gap * (columns - 1)) / columns;
-    var cellHeight = (_clientRect.height - gap * (rows - 1)) / rows;
-    cellX = Math.floor(x / cellWidth);
-    cellY = Math.floor(y / cellHeight);
-
-    if (!Number.isNaN(cellX) && !Number.isNaN(cellY)) {
-      _stampa.default.setCellXY(cellX, cellY);
-    }
-  }
-
-  return _react.default.createElement("svg", {
-    width: "100",
-    height: "100",
-    className: "grid__svg",
-    ref: ref
-  }, _toConsumableArray(Array(columns - 1)).map(function (nothing, id) {
-    var x = (id + 1) * xPercentage;
-    var percentage = "".concat(x - halfXGap, "%");
-    return _react.default.createElement("line", {
-      key: id,
-      x1: percentage,
-      y1: "0",
-      x2: percentage,
-      y2: "100%",
-      className: "line--column",
-      style: {
-        strokeWidth: strokeWidth
-      }
-    });
-  }), _toConsumableArray(Array(rows - 1)).map(function (nothing, id) {
-    var y = (id + 1) * yPercentage;
-    var percentage = "".concat(y - halfYGap, "%");
-    return _react.default.createElement("line", {
-      key: id,
-      x1: "0",
-      y1: percentage,
-      x2: "100%",
-      y2: percentage,
-      className: "line--row",
-      style: {
-        strokeWidth: strokeWidth
-      }
-    });
-  }), draggedBlockId && drag.hover && _react.default.createElement("rect", {
-    x: "".concat(cellX * xPercentage, "%"),
-    y: "".concat(cellY * yPercentage, "%"),
-    width: "".concat(xPercentage, "%"),
-    height: "".concat(yPercentage, "%"),
-    style: {
-      fill: '#0085ba',
-      stroke: '#e2e4e7',
-      strokeWidth: '4px'
-    }
-  }));
-});
-
-var _default = SVGGrid;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+},{"./lib/index":"../node_modules/shortid/lib/index.js"}],"components/CSSGrid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28473,7 +28353,7 @@ var CSSGrid = _react.default.memo(function SVGGrid() {
 
 var _default = CSSGrid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Block.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Field.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28490,23 +28370,23 @@ var _stampa = _interopRequireDefault(require("../stampa"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Block(_ref) {
-  var block = _ref.block;
+  var field = _ref.field;
 
   var store = _store.default.useStore();
 
-  var stampaBlock = block._stampa;
+  var stampaField = field._stampa;
   var resizingClass = _stampa.default.isResizing() ? 'resizing' : '';
-  var blockHTML = block.html;
+  var blockHTML = field.html;
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
 
   try {
-    for (var _iterator = block.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+    for (var _iterator = field.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var option = _step.value;
 
       if (option && option.name) {
-        var value = block._values[option.name] || option.value;
+        var value = field._values[option.name] || option.value;
         var re = new RegExp("{".concat(option.name, "}"), 'g');
         blockHTML = blockHTML.replace(re, value);
       }
@@ -28531,11 +28411,11 @@ function Block(_ref) {
   }
 
   function storeBlockPosition() {
-    _stampa.default.setBlockPosition({
-      startRow: stampaBlock.startRow,
-      startColumn: stampaBlock.startColumn,
-      endColumn: stampaBlock.endColumn,
-      endRow: stampaBlock.endRow
+    _stampa.default.setFieldPosition({
+      startRow: stampaField.startRow,
+      startColumn: stampaField.startColumn,
+      endColumn: stampaField.endColumn,
+      endRow: stampaField.endRow
     });
   } // Allow the block itself to be dragged
 
@@ -28543,7 +28423,7 @@ function Block(_ref) {
   function dragMe(e) {
     e.stopPropagation();
     storeBlockPosition();
-    store.set('draggedBlockId')(block._stampa.key);
+    store.set('draggedFieldId')(field._stampa.key);
   }
   /**
    * Let's resize the block :)
@@ -28560,7 +28440,7 @@ function Block(_ref) {
 
     _stampa.default.setResizing(true);
 
-    store.set('draggedBlockId')(block._stampa.key);
+    store.set('draggedFieldId')(field._stampa.key);
   }
   /**
    * Activate the current block
@@ -28570,17 +28450,17 @@ function Block(_ref) {
 
 
   function setAsActive(e) {
-    store.set('activeBlockKey')(block._stampa.key);
+    store.set('activeBlockKey')(field._stampa.key);
   }
 
-  var gridArea = "".concat(stampaBlock.startRow, " / ").concat(stampaBlock.startColumn, " / ").concat(stampaBlock.endRow + stampaBlock.startRow, " / ").concat(stampaBlock.endColumn + stampaBlock.startColumn);
+  var gridArea = "".concat(stampaField.startRow, " / ").concat(stampaField.startColumn, " / ").concat(stampaField.endRow + stampaField.startRow, " / ").concat(stampaField.endColumn + stampaField.startColumn);
   var activeBlock = store.get('activeBlockKey');
-  var activeClass = activeBlock == block._stampa.key ? 'active' : '';
+  var activeClass = activeBlock == field._stampa.key ? 'active' : '';
   return _react.default.createElement("div", {
     draggable: "true",
-    className: "grid__block grid__block--".concat(block._stampa.id, " ").concat(activeClass, " ").concat(resizingClass),
+    className: "grid__block grid__block--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass),
     onDragStart: dragMe,
-    "data-key": block._stampa.key,
+    "data-key": field._stampa.key,
     style: {
       gridArea: gridArea
     },
@@ -28589,7 +28469,7 @@ function Block(_ref) {
     dangerouslySetInnerHTML: {
       __html: blockHTML
     },
-    className: "grid__block__content ".concat(block.className || '')
+    className: "grid__block__content ".concat(field.className || '')
   }), _react.default.createElement("div", {
     className: "grid__block__resizer grid__block__resizer--width",
     draggable: "true",
@@ -28623,11 +28503,9 @@ var _store = _interopRequireDefault(require("../store/store"));
 
 var _stampa = _interopRequireDefault(require("../stampa"));
 
-var _SVGGrid = _interopRequireDefault(require("./SVGGrid"));
-
 var _CSSGrid = _interopRequireDefault(require("./CSSGrid"));
 
-var _Block = _interopRequireDefault(require("./Block"));
+var _Field = _interopRequireDefault(require("./Field"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28659,13 +28537,13 @@ function Grid() {
       drag = _useState2[0],
       setDrag = _useState2[1];
 
-  var draggedBlockId = store.get('draggedBlockId');
-  var blocks = store.get('stampaFields');
+  var draggedFieldId = store.get('draggedFieldId');
+  var fields = store.get('stampaFields');
 
   var handleDragOver = function handleDragOver(e) {
     e.preventDefault();
 
-    if (draggedBlockId) {
+    if (draggedFieldId) {
       var clientRect = ref.current.getBoundingClientRect();
       var columns = store.get('gridColumns');
       var rows = store.get('gridRows');
@@ -28703,9 +28581,9 @@ function Grid() {
 
   var handleDrop = function handleDrop(e) {
     handleDragLeave();
-    var draggedBlockId = store.get('draggedBlockId');
+    var draggedFieldId = store.get('draggedFieldId');
 
-    if (draggedBlockId == null) {
+    if (draggedFieldId == null) {
       return;
     }
 
@@ -28715,11 +28593,11 @@ function Grid() {
      */
 
 
-    if (draggedBlockId[0] == '_') {
-      for (var i = 0, l = blocks.length; i < l; ++i) {
-        var block = blocks[i];
+    if (draggedFieldId[0] == '_') {
+      for (var i = 0, l = fields.length; i < l; ++i) {
+        var field = fields[i];
 
-        if (block._stampa.key === draggedBlockId) {
+        if (field._stampa.key === draggedFieldId) {
           var resize = _stampa.default.getResizeDirection();
 
           var resizeWidth = false;
@@ -28733,54 +28611,54 @@ function Grid() {
             resizeWidth = true;
             resizeHeight = true;
           } else {
-            block._stampa.startRow = drag.row;
-            block._stampa.startColumn = drag.column;
+            field._stampa.startRow = drag.row;
+            field._stampa.startColumn = drag.column;
           }
 
-          if (resizeWidth && drag.column >= block._stampa.startColumn) {
-            block._stampa.endColumn = drag.column - block._stampa.startColumn + 1;
+          if (resizeWidth && drag.column >= field._stampa.startColumn) {
+            field._stampa.endColumn = drag.column - field._stampa.startColumn + 1;
           }
 
-          if (resizeHeight && drag.row >= block._stampa.startRow) {
-            block._stampa.endRow = drag.row - block._stampa.startRow + 1;
+          if (resizeHeight && drag.row >= field._stampa.startRow) {
+            field._stampa.endRow = drag.row - field._stampa.startRow + 1;
           }
 
           break;
         }
       }
 
-      store.set('stampaFields')(blocks);
-      store.set('draggedBlockId')(null);
+      store.set('stampaFields')(fields);
+      store.set('draggedFieldId')(null);
 
       _stampa.default.setResizeDirection(null); // store.set('resizeDirection')(null);
 
     } else {
-      var _block = _stampa.default.getBlockById(draggedBlockId);
+      var _field = _stampa.default.getFieldById(draggedFieldId);
 
-      _block._stampa = {
-        id: draggedBlockId,
+      _field._stampa = {
+        id: draggedFieldId,
         key: "_".concat(_shortid.default.generate()),
         startColumn: drag.column,
         startRow: drag.row,
         endColumn: 1,
         endRow: 1,
-        name: draggedBlockId
+        name: draggedFieldId
       };
-      _block._values = {};
-      store.set('stampaFields')([].concat(_toConsumableArray(blocks), [_block])); // Set the last block as "active"
+      _field._values = {};
+      store.set('stampaFields')([].concat(_toConsumableArray(fields), [_field])); // Set the last block as "active"
 
-      store.set('activeBlockKey')(_block._stampa.key);
+      store.set('activeBlockKey')(_field._stampa.key);
     }
   };
 
   var gridArea;
 
   if (_stampa.default.isResizing()) {
-    var _stampa$getBlockPosit = _stampa.default.getBlockPosition(),
-        startRow = _stampa$getBlockPosit.startRow,
-        startColumn = _stampa$getBlockPosit.startColumn,
-        endRow = _stampa$getBlockPosit.endRow,
-        endColumn = _stampa$getBlockPosit.endColumn;
+    var _stampa$getFieldPosit = _stampa.default.getFieldPosition(),
+        startRow = _stampa$getFieldPosit.startRow,
+        startColumn = _stampa$getFieldPosit.startColumn,
+        endRow = _stampa$getFieldPosit.endRow,
+        endColumn = _stampa$getFieldPosit.endColumn;
 
     var resize = _stampa.default.getResizeDirection();
 
@@ -28802,8 +28680,8 @@ function Grid() {
     var _endRow = drag.row;
     var _endColumn = drag.column;
 
-    if (draggedBlockId && draggedBlockId[0] == '_') {
-      var position = _stampa.default.getBlockPosition();
+    if (draggedFieldId && draggedFieldId[0] == '_') {
+      var position = _stampa.default.getFieldPosition();
 
       _endRow += position.endRow;
       _endColumn += position.endColumn;
@@ -28827,12 +28705,12 @@ function Grid() {
       gridGap: "".concat(store.get('gridGap'), "px"),
       minHeight: minHeight
     }
-  }, _react.default.createElement(_CSSGrid.default, null), blocks.map(function (block) {
-    return _react.default.createElement(_Block.default, {
-      block: block,
-      key: block._stampa.key
+  }, _react.default.createElement(_CSSGrid.default, null), fields.map(function (field) {
+    return _react.default.createElement(_Field.default, {
+      field: field,
+      key: field._stampa.key
     });
-  }), draggedBlockId && drag.over && _react.default.createElement("div", {
+  }), draggedFieldId && drag.over && _react.default.createElement("div", {
     className: "grid__highlight",
     style: {
       gridArea: gridArea
@@ -28842,7 +28720,7 @@ function Grid() {
 
 var _default = Grid;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./SVGGrid":"components/SVGGrid.js","./CSSGrid":"components/CSSGrid.js","./Block":"components/Block.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./CSSGrid":"components/CSSGrid.js","./Field":"components/Field.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28904,7 +28782,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     var store = _this.props.store;
 
-    var blockData = _stampa.default.getStampaBlock();
+    var blockData = _stampa.default.getStampaBlocks();
 
     if (blockData) {
       store.set('gridColumns', parseInt(blockData.grid.columns));
@@ -28914,20 +28792,20 @@ function (_Component) {
 
       blockData.options.hasBackgroundOption = blockData.options.hasBackgroundOption == 'true';
       store.set('stampaBlockOptions')(blockData.options);
-      var blocks = blockData.fields.map(function (block) {
-        block = Object.assign(_stampa.default.getBlockById(block._stampa.id), block);
-        block._stampa.startColumn = parseInt(block._stampa.startColumn);
-        block._stampa.startRow = parseInt(block._stampa.startRow);
-        block._stampa.endRow = parseInt(block._stampa.endRow);
-        block._stampa.endColumn = parseInt(block._stampa.endColumn);
+      var fields = blockData.fields.map(function (field) {
+        field = Object.assign(_stampa.default.getFieldById(field._stampa.id), field);
+        field._stampa.startColumn = parseInt(field._stampa.startColumn);
+        field._stampa.startRow = parseInt(field._stampa.startRow);
+        field._stampa.endRow = parseInt(field._stampa.endRow);
+        field._stampa.endColumn = parseInt(field._stampa.endColumn);
 
-        if (!block._values) {
-          block._values = {};
+        if (!field._values) {
+          field._values = {};
         }
 
-        return block;
+        return field;
       });
-      store.set('stampaFields')(blocks);
+      store.set('stampaFields')(fields);
     }
 
     return _this;
@@ -29126,7 +29004,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44075" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44907" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

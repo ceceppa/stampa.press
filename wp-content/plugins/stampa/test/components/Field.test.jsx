@@ -1,6 +1,6 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import Block from '../../src/components/Block';
+import Field from '../../src/components/Field';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Store from '../../src/store/store';
@@ -26,7 +26,7 @@ const block = Object.assign(blocksList.Gutenberg.text, {
   className: 'test-class',
 });
 
-describe('Block', () => {
+describe('Field', () => {
   const props = {
     block,
   };
@@ -36,7 +36,7 @@ describe('Block', () => {
     if (!mountedComponent) {
       mountedComponent = TestRenderer.create(
         <Store.Container>
-          <Block {...props} />
+          <Field {...props} />
         </Store.Container>
       );
     }
@@ -57,7 +57,7 @@ describe('Block', () => {
 
       ReactDOM.render(
         <Store.Container>
-          <Block {...props} />
+          <Field {...props} />
         </Store.Container>,
         container
       );

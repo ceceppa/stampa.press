@@ -81,6 +81,9 @@ describe('FieldOptions', () => {
                 value: 'Value 2',
               },
             ],
+            _values: {
+              placeholder: 'Test placeholder',
+            },
           },
         ],
       });
@@ -102,9 +105,9 @@ describe('FieldOptions', () => {
     });
 
     it('Should render the "placeholder" option', () => {
-      expect(
-        container.querySelector('input[name="field-placeholder"]')
-      ).not.toBeNull();
+      const input = container.querySelector('input[name="field-placeholder"]');
+      expect(input).not.toBeNull();
+      expect(input.value).toBe('Test placeholder');
     });
 
     it('Should render a <select></select>', () => {

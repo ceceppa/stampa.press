@@ -3,15 +3,15 @@ import React from 'react';
 import Store from '../store/store';
 import stampa from '../stampa';
 
-export default function Block({ block }) {
+export default function Block({ field }) {
   const store = Store.useStore();
-  const stampaBlock = block._stampa;
+  const stampaField = field._stampa;
   const resizingClass = stampa.isResizing() ? 'resizing' : '';
 
-  let blockHTML = block.html;
-  for (let option of block.options) {
+  let blockHTML = field.html;
+  for (let option of field.options) {
     if (option && option.name) {
-      const value = block._values[option.name] || option.value;
+      const value = field._values[option.name] || option.value;
       const re = new RegExp(`\{${option.name}\}`, 'g');
 
       blockHTML = blockHTML.replace(re, value);
@@ -22,11 +22,11 @@ export default function Block({ block }) {
    * Store the block position and size (needed to nicely show the resize & moving squares)
    */
   function storeBlockPosition() {
-    stampa.setBlockPosition({
-      startRow: stampaBlock.startRow,
-      startColumn: stampaBlock.startColumn,
-      endColumn: stampaBlock.endColumn,
-      endRow: stampaBlock.endRow,
+    stampa.setFieldPosition({
+      startRow: stampaField.startRow,
+      startColumn: stampaField.startColumn,
+      endColumn: stampaField.endColumn,
+      endRow: stampaField.endRow,
     });
   }
 
@@ -35,7 +35,7 @@ export default function Block({ block }) {
     e.stopPropagation();
 
     storeBlockPosition();
-    store.set('draggedBlockId')(block._stampa.key);
+    store.set('draggedFieldId')(field._stampa.key);
   }
 
   /**
@@ -51,7 +51,7 @@ export default function Block({ block }) {
     // Don't want/need to trigger a re-render of the block/app
     stampa.setResizeDirection(e.target.dataset.resize);
     stampa.setResizing(true);
-    store.set('draggedBlockId')(block._stampa.key);
+    store.set('draggedFieldId')(field._stampa.key);
   }
 
   /**
@@ -60,25 +60,20 @@ export default function Block({ block }) {
    * @param {HTMLEvent} e event
    */
   function setAsActive(e) {
-    store.set('activeBlockKey')(block._stampa.key);
+    store.set('activeBlockKey')(field._stampa.key);
   }
 
-  const gridArea = `${stampaBlock.startRow} / ${
-    stampaBlock.startColumn
-  } / ${stampaBlock.endRow + stampaBlock.startRow} / ${stampaBlock.endColumn +
-    stampaBlock.startColumn}`;
+  const gridArea = `${stampaField.startRow} / ${stampaField.startColumn} / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn + stampaField.startColumn}`;
 
   const activeBlock = store.get('activeBlockKey');
-  const activeClass = activeBlock == block._stampa.key ? 'active' : '';
+  const activeClass = activeBlock == field._stampa.key ? 'active' : '';
 
   return (
     <div
       draggable="true"
-      className={`grid__block grid__block--${
-        block._stampa.id
-      } ${activeClass} ${resizingClass}`}
+      className={`grid__block grid__block--${field._stampa.id} ${activeClass} ${resizingClass}`}
       onDragStart={dragMe}
-      data-key={block._stampa.key}
+      data-key={field._stampa.key}
       style={{
         gridArea,
       }}
@@ -86,7 +81,7 @@ export default function Block({ block }) {
     >
       <div
         dangerouslySetInnerHTML={{ __html: blockHTML }}
-        className={`grid__block__content ${block.className || ''}`}
+        className={`grid__block__content ${field.className || ''}`}
       />
 
       <div

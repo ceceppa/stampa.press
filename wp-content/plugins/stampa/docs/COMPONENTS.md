@@ -51,7 +51,7 @@ Example
 Defining new blocks
 
 ```php
-apply_filters( 'stampa_blocks', $blocks );
+apply_filters( 'stampa_blocks', $components );
 ```
 
 This event is triggered when generating the React code for the block:

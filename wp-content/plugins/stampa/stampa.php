@@ -18,7 +18,14 @@ class Stampa {
 	 *
 	 * @var array
 	 */
-	private static $blocks = [];
+	private static $components = [];
+
+	/**
+	 * Registered blocks by id
+	 *
+	 * @var array
+	 */
+	private static $components_by_id = [];
 
 	/**
 	 * Register the filter/actions needed by stampa
@@ -115,7 +122,7 @@ class Stampa {
 		$data = array(
 			'home_url' => home_url(),
 			'nonce'    => wp_create_nonce( 'wp_rest' ),
-			'blocks'   => self::$blocks,
+			'blocks'   => self::$components,
 			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
 			'post_ID'  => get_the_ID(),
 		);
@@ -157,11 +164,11 @@ class Stampa {
 	private static function load_blocks() {
 		$data = file_get_contents( __DIR__ . '/assets/blocks.json' );
 
-		$blocks = json_decode( $data );
+		$components = json_decode( $data );
 
 		// "Adjust" the path for the images
 		$svg_path = plugins_url( 'assets/svg/', __FILE__ );
-		foreach ( $blocks as $block ) {
+		foreach ( $components as $block ) {
 			$block->data->icon = $svg_path . $block->data->icon;
 
 			self::add_block( $block->group, $block->id, (array) $block->data );
@@ -185,7 +192,20 @@ class Stampa {
 
 		// No really needed.
 		unset( $block_data['react'] );
-		self::$blocks[ $group ][ $block_id ] = $block_data;
+		self::$components[ $group ][ $block_id ] = $block_data;
+		self::$components_by_id[ $block_id ]     = $block_data;
+	}
+
+	/**
+	 * Get the block by id
+	 *
+	 * @param string $block_id the Block unique ID.
+	 * @return mixed
+	 */
+	private static function get_block_by_id( string $block_id ) {
+		$block = self::$components_by_id[ $block_id ] ?? null;
+
+		return apply_filters( 'stampa/block/' . $block_id, $block );
 	}
 
 	/**
@@ -213,7 +233,7 @@ class Stampa {
 		update_post_meta( $post_id, '_stampa_options', json_encode( $options_params ) );
 
 		if ( isset( $params['generate'] ) ) {
-			self::generate_react_block( $post_id, $params['title'], $grid_params, $fields_params, $options_params );
+			self::generate_react_block( $post_id, $params['title'], $grid_params, $options_params, $fields_params );
 		}
 
 		return [ 'done' => 1 ];
@@ -226,7 +246,7 @@ class Stampa {
 	 * @param string $title the block title.
 	 * @param array  $params the block parameters & fields.
 	 */
-	private static function generate_react_block( $post_id, $title, $grid_params, $fields_params, $options_params ) {
+	private static function generate_react_block( $post_id, $title, $grid_params, $options_params, $fields_params ) {
 		$output_folder = trailingslashit( get_template_directory() ) . 'assets/js/blocks/';
 		$file_name     = sanitize_title( $title ) . '.js';
 		$output_file   = $output_folder . $file_name;
@@ -235,9 +255,11 @@ class Stampa {
 		 * If the file exists make sure that the file hasn't been manually changed.
 		 */
 		if ( \file_exists( $output_file ) ) {
-			$md5 = md5_file( $output_file );
+			$md5     = md5_file( $output_file );
+			$old_md5 = get_post_meta( $post_id, '_md5', true );
 
-			if ( $md5 !== get_post_meta( $post_id, '_md5', true ) ) {
+			if ( ! empty( $old_md5 ) && $md5 !== $old_md5 ) {
+				error_log( print_r( $md5, true ) );
 				return [
 					'generation-skipped' => "md5 file don't match with the record ($md5)",
 				];
@@ -269,6 +291,22 @@ class Stampa {
 		);
 
 		$replace['{{stampa.grid_style}}'] = $grid_style;
+
+		// The React components.
+		self::load_blocks();
+
+		$gutenberg_components = [];
+		foreach ( $fields_params as $stampa_field ) {
+			$field = self::get_block_by_id( $stampa_field['id'] );
+			if ( empty( $field ) ) {
+				continue;
+			}
+
+			$gutenberg              = $field['gutenberg'];
+			$gutenberg_components[] = $gutenberg->block;
+
+			error_log( print_r( $gutenberg, true ) );
+		}
 
 		foreach ( $replace as $what => $to ) {
 			$boilerplate = str_replace( $what, $to, $boilerplate );

@@ -5,7 +5,7 @@ import GroupItems from './GroupItems';
 import stampa from '../stampa';
 
 export default function ComponentsList() {
-  const blocks = stampa.getBlocks();
+  const blocks = stampa.getFields();
   let keys = Object.keys(blocks);
   const [filter, setFilter] = useState('');
 
