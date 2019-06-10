@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Store from '../../src/store/store';
 
-import blocksList from './blocks-list.test.json';
+import blocksList from './fields-list.test.json';
 import { createConnectedStore } from 'undux';
 
 describe('FieldOptions', () => {

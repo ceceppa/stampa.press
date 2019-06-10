@@ -1,6 +1,6 @@
 import stampa from '../src/stampa';
 
-import blocksList from './components/blocks-list.test.json';
+import blocksList from './components/fields-list.test.json';
 
 describe('Test Stampa helper functions', () => {
   beforeAll(() => {

@@ -4,7 +4,7 @@ import ComponentsList from '../../src/components/ComponentsList';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 
-import blocksList from './blocks-list.test.json';
+import blocksList from './fields-list.test.json';
 
 window.stampa = { blocks: blocksList };
 

@@ -5,9 +5,9 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Store from '../../src/store/store';
 
-import blocksList from './blocks-list.test.json';
+import fieldsList from './fields-list.test.json';
 
-const block = Object.assign(blocksList.Gutenberg.text, {
+const field = Object.assign(fieldsList.Gutenberg.text, {
   _stampa: {
     id: 'text',
     key: '_123',
@@ -28,7 +28,7 @@ const block = Object.assign(blocksList.Gutenberg.text, {
 
 describe('Field', () => {
   const props = {
-    block,
+    field,
   };
   let mountedComponent;
 
