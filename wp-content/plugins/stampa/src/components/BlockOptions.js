@@ -9,13 +9,37 @@ import NumberSlider from './NumberSlider';
 
 export default function BlockOptions() {
   const store = Store.useStore();
+  const stampaBlockOptions = store.get('stampaBlockOptions');
+
+  function updateBackgroundOption(e) {
+    stampaBlockOptions.hasBackgroundOption = e.target.checked;
+
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  }
 
   return (
     <ToggleGroup
-      label="Block Options"
+      label="Stampa block Options"
       display="block"
       groupClass="block-options stampa__border--bottom"
     >
+      <label htmlFor="background" className="number-slider">
+        <span
+          className="number-slider__label tooltip"
+          data-tooltip="If checked allows the user to set up a background-image for the block."
+        >
+          Background:
+        </span>
+        <input
+          className="number-slider__input"
+          type="checkbox"
+          name="background"
+          id="background"
+          checked={stampaBlockOptions.hasBackgroundOption}
+          onChange={updateBackgroundOption}
+        />
+      </label>
+      <br />
       <SaveBlock />
     </ToggleGroup>
   );

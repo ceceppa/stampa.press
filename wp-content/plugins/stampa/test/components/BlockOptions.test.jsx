@@ -43,12 +43,12 @@ describe('BlockOptions', () => {
       );
     });
 
-    it('Should render a message if no block is selected', () => {
-      const blockOptions = container.querySelector('.block-options p');
+    it('Should render the "Background" option', () => {});
+
+    it('Should render the "Save block" button', () => {
+      const blockOptions = container.querySelector('.block-options__save');
 
       expect(blockOptions).not.toBeNull();
     });
-
-    it('Should render the NumberSliders if a block is selected', () => {});
   });
 });

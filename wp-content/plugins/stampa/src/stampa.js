@@ -22,7 +22,6 @@ export default {
     return null;
   },
   getBlockByKey: function(key) {},
-  setBlocks: function(blocks) {},
   blockData: () => window.stampa && window.stampa.block,
   setResizeDirection: function(resize) {
     this.resizeDirection = resize;

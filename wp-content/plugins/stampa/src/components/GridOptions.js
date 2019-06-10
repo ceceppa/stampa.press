@@ -13,6 +13,16 @@ export default function GridOptions() {
 
       {/* Gap */}
       <NumberSlider id="gap" label="Gap:" storeKey="gridGap" />
+
+      <hr />
+
+      {/* Row height */}
+      <NumberSlider
+        id="rowHeight"
+        label="Row Height (px):"
+        storeKey="rowHeight"
+        min="20"
+      />
     </ToggleGroup>
   );
 }

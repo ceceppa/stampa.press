@@ -27151,16 +27151,18 @@ var _undux = require("undux");
 
 // Declare your store's initial state.
 var initialState = {
-  stampaBlocks: [],
+  stampaFields: [],
+  stampaBlockOptions: {},
   draggedBlockId: null,
   gridColumns: 12,
   gridRows: 5,
   gridGap: 5,
+  rowHeight: 46,
   isBlockSelected: false,
   resizingBlock: false,
   blockPosition: {},
   resizeDirection: null,
-  activeBlock: null
+  activeBlockKey: null
 };
 /**
  * Is jest test?
@@ -27348,7 +27350,6 @@ var _default = {
     return null;
   },
   getBlockByKey: function getBlockByKey(key) {},
-  setBlocks: function setBlocks(blocks) {},
   blockData: function blockData() {
     return window.stampa && window.stampa.block;
   },
@@ -27451,14 +27452,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function NumberSlider(_ref) {
   var id = _ref.id,
       label = _ref.label,
-      storeKey = _ref.storeKey;
+      storeKey = _ref.storeKey,
+      min = _ref.min;
 
   var store = _store.default.useStore();
 
   var value = store.get(storeKey);
 
+  if (min == null) {
+    min = 1;
+  }
+
   var updateValue = function updateValue(e) {
-    store.set(storeKey)(Math.max(1, e.target.value));
+    store.set(storeKey)(Math.max(min, e.target.value));
   };
 
   return _react.default.createElement("div", {
@@ -27506,6 +27512,11 @@ function GridOptions() {
     id: "gap",
     label: "Gap:",
     storeKey: "gridGap"
+  }), _react.default.createElement("hr", null), _react.default.createElement(_NumberSlider.default, {
+    id: "rowHeight",
+    label: "Row Height (px):",
+    storeKey: "rowHeight",
+    min: "20"
   }));
 }
 },{"react":"../node_modules/react/index.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/BlockOptions/Save.js":[function(require,module,exports) {
@@ -27548,10 +27559,10 @@ function Save() {
     var _iteratorError = undefined;
 
     try {
-      for (var _iterator = store.get('stampaBlocks')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      for (var _iterator = store.get('stampaFields')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
         var field = _step.value;
         fields.push({
-          id: field.id,
+          id: field._stampa.id,
           options: field.options,
           _stampa: field._stampa
         });
@@ -27582,7 +27593,8 @@ function Save() {
         grid: {
           columns: store.get('gridColumns'),
           rows: store.get('gridRows'),
-          gap: store.get('gridGap')
+          gap: store.get('gridGap'),
+          rowHeight: store.get('rowHeight')
         }
       },
       beforeSend: function beforeSend(xhr) {
@@ -27639,11 +27651,31 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function BlockOptions() {
   var store = _store.default.useStore();
 
+  var stampaBlockOptions = store.get('stampaBlockOptions');
+
+  function updateBackgroundOption(e) {
+    stampaBlockOptions.hasBackgroundOption = e.target.checked;
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  }
+
   return _react.default.createElement(_ToggleGroup.default, {
-    label: "Block Options",
+    label: "Stampa block Options",
     display: "block",
     groupClass: "block-options stampa__border--bottom"
-  }, _react.default.createElement(_Save.default, null));
+  }, _react.default.createElement("label", {
+    htmlFor: "background",
+    className: "number-slider"
+  }, _react.default.createElement("span", {
+    className: "number-slider__label tooltip",
+    "data-tooltip": "If checked allows the user to set up a background-image for the block."
+  }, "Background:"), _react.default.createElement("input", {
+    className: "number-slider__input",
+    type: "checkbox",
+    name: "background",
+    id: "background",
+    checked: stampaBlockOptions.hasBackgroundOption,
+    onChange: updateBackgroundOption
+  })), _react.default.createElement("br", null), _react.default.createElement(_Save.default, null));
 }
 },{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/FieldOptions.js":[function(require,module,exports) {
 "use strict";
@@ -27670,19 +27702,25 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function FieldOptions() {
   var store = _store.default.useStore();
 
-  var activeBlock = store.get('activeBlock');
+  var activeBlockKey = store.get('activeBlockKey');
+  var activeBlock;
   var blockOptions = null;
 
-  if (activeBlock) {
-    var blocks = store.get('stampaBlocks');
+  if (activeBlockKey) {
+    var blocks = store.get('stampaFields');
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
 
     try {
-      for (var _iterator = blocks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {// console.info(block);
-
+      for (var _iterator = blocks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
         var block = _step.value;
+
+        if (block._stampa.key == activeBlockKey) {
+          activeBlock = block;
+          blockOptions = block.options;
+          break;
+        }
       }
     } catch (err) {
       _didIteratorError = true;
@@ -27699,20 +27737,63 @@ function FieldOptions() {
       }
     }
   }
+  /**
+   * Update the name option for the current field.
+   *
+   * @param {*} e
+   */
+
+
+  function updateFieldName(e) {
+    var blocks = store.get('stampaFields');
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = blocks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var _block = _step2.value;
+
+        if (_block._stampa.key == activeBlockKey) {
+          _block._stampa.name = e.target.value;
+          break;
+        }
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+
+    store.set('stampaFields')(blocks);
+  }
+  /**
+   * Delete the active block
+   */
+
 
   function deleteActiveBlock() {
-    var blocks = store.get('stampaBlocks').filter(function (block) {
+    var blocks = store.get('stampaFields').filter(function (block) {
       return block._stampa.key !== activeBlock;
     });
-    store.set('stampaBlocks')(blocks);
-    store.set('activeBlock')(null);
+    store.set('stampaFields')(blocks);
+    store.set('activeBlockKey')(null);
   }
 
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Field Options",
     display: "block",
     groupClass: "block-options"
-  }, store.get('activeBlock') && [_react.default.createElement("label", {
+  }, activeBlock && [_react.default.createElement("label", {
     htmlFor: "field-name",
     className: "number-slider"
   }, _react.default.createElement("span", {
@@ -27720,7 +27801,10 @@ function FieldOptions() {
   }, "Field name:"), _react.default.createElement("input", {
     className: "number-slider__input",
     type: "text",
-    name: "field-name"
+    name: "field-name",
+    id: "field-name",
+    value: activeBlock._stampa.name,
+    onChange: updateFieldName
   })), _react.default.createElement("button", {
     type: "button",
     onClick: deleteActiveBlock,
@@ -28376,11 +28460,11 @@ function Block(_ref) {
 
 
   function setAsActive(e) {
-    store.set('activeBlock')(block._stampa.key);
+    store.set('activeBlockKey')(block._stampa.key);
   }
 
   var gridArea = "".concat(stampaBlock.startRow, " / ").concat(stampaBlock.startColumn, " / ").concat(stampaBlock.endRow + stampaBlock.startRow, " / ").concat(stampaBlock.endColumn + stampaBlock.startColumn);
-  var activeBlock = store.get('activeBlock');
+  var activeBlock = store.get('activeBlockKey');
   var activeClass = activeBlock == block._stampa.key ? 'active' : '';
   return _react.default.createElement("div", {
     draggable: "true",
@@ -28466,7 +28550,7 @@ function Grid() {
       setDrag = _useState2[1];
 
   var draggedBlockId = store.get('draggedBlockId');
-  var blocks = store.get('stampaBlocks');
+  var blocks = store.get('stampaFields');
 
   var handleDragOver = function handleDragOver(e) {
     e.preventDefault();
@@ -28555,7 +28639,7 @@ function Grid() {
         }
       }
 
-      store.set('stampaBlocks')(blocks);
+      store.set('stampaFields')(blocks);
       store.set('draggedBlockId')(null);
 
       _stampa.default.setResizeDirection(null); // store.set('resizeDirection')(null);
@@ -28569,11 +28653,12 @@ function Grid() {
         startColumn: drag.column,
         startRow: drag.row,
         endColumn: 1,
-        endRow: 1
+        endRow: 1,
+        name: id
       };
-      store.set('stampaBlocks')([].concat(_toConsumableArray(blocks), [_block])); // Set the last block as "active"
+      store.set('stampaFields')([].concat(_toConsumableArray(blocks), [_block])); // Set the last block as "active"
 
-      store.set('activeBlock')(_block._stampa.key);
+      store.set('activeBlockKey')(_block._stampa.key);
     }
   };
 
@@ -28616,7 +28701,7 @@ function Grid() {
     gridArea = "".concat(drag.row, " / ").concat(drag.column, " / ").concat(_endRow, " / ").concat(_endColumn);
   }
 
-  var minHeight = 46 * store.get('gridRows') + 'px';
+  var minHeight = store.get('rowHeight') * store.get('gridRows') + 'px';
   return _react.default.createElement("div", {
     className: "stampa__grid grid"
   }, _react.default.createElement("div", {
@@ -28718,6 +28803,7 @@ function (_Component) {
         store.set('gridColumns', parseInt(blockData.grid.columns));
         store.set('gridRows')(parseInt(blockData.grid.rows));
         store.set('gridGap')(parseInt(blockData.grid.gap));
+        store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
         var blocks = blockData.fields.map(function (block) {
           block._stampa.startColumn = parseInt(block._stampa.startColumn);
           block._stampa.startRow = parseInt(block._stampa.startRow);
@@ -28725,7 +28811,7 @@ function (_Component) {
           block._stampa.endColumn = parseInt(block._stampa.endColumn);
           return block;
         });
-        store.set('stampaBlocks')(blocks);
+        store.set('stampaFields')(blocks);
       }
     }
   }, {
@@ -28915,7 +29001,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36043" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38757" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

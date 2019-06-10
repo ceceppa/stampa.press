@@ -21,13 +21,21 @@ describe('Test Stampa helper functions', () => {
     expect(typeof block).toBe('object');
   });
 
-  it('setCellXY store the XY coordinates', () => {
-    stampa.setCellXY(10, 5);
+  it('setResizeDirection store the resizing information', () => {
+    stampa.setResizeDirection('whatever');
 
-    const coords = stampa.getCellXY();
+    expect(stampa.getResizeDirection()).toBe('whatever');
+  });
 
-    // X/Y offset is shifted by 1
-    expect(coords.startColumn).toBe(11);
-    expect(coords.startRow).toBe(6);
+  it('setResizing to store the resizing status', () => {
+    stampa.setResizing(true);
+
+    expect(stampa.isResizing()).toBe(true);
+  });
+
+  it('setBlockPosition to store the the block position information', () => {
+    stampa.setBlockPosition('anything');
+
+    expect(stampa.getBlockPosition()).toBe('anything');
   });
 });

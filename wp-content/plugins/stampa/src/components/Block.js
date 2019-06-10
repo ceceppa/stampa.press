@@ -57,7 +57,7 @@ export default function Block({ block }) {
    * @param {HTMLEvent} e event
    */
   function setAsActive(e) {
-    store.set('activeBlock')(block._stampa.key);
+    store.set('activeBlockKey')(block._stampa.key);
   }
 
   const gridArea = `${stampaBlock.startRow} / ${
@@ -65,7 +65,7 @@ export default function Block({ block }) {
   } / ${stampaBlock.endRow + stampaBlock.startRow} / ${stampaBlock.endColumn +
     stampaBlock.startColumn}`;
 
-  const activeBlock = store.get('activeBlock');
+  const activeBlock = store.get('activeBlockKey');
   const activeClass = activeBlock == block._stampa.key ? 'active' : '';
 
   return (

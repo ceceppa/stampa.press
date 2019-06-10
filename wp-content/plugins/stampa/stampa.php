@@ -181,6 +181,8 @@ class Stampa {
 	public static function add_block( string $group, string $block_id, array $block_data ) {
 		$group = ucfirst( $group );
 
+		// No really needed.
+		unset( $block_data['react'] );
 		self::$blocks[ $group ][ $block_id ] = $block_data;
 	}
 

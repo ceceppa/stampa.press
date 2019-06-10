@@ -11,9 +11,9 @@ export default function Save() {
 
     const fields = [];
 
-    for (const field of store.get('stampaBlocks')) {
+    for (const field of store.get('stampaFields')) {
       fields.push({
-        id: field.id,
+        id: field._stampa.id,
         options: field.options,
         _stampa: field._stampa,
       });
@@ -31,6 +31,7 @@ export default function Save() {
           columns: store.get('gridColumns'),
           rows: store.get('gridRows'),
           gap: store.get('gridGap'),
+          rowHeight: store.get('rowHeight'),
         },
       },
       beforeSend: xhr => {

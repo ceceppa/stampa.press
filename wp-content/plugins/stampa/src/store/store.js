@@ -2,16 +2,18 @@ import { createConnectedStore } from 'undux';
 
 // Declare your store's initial state.
 const initialState = {
-  stampaBlocks: [],
+  stampaFields: [],
+  stampaBlockOptions: {},
   draggedBlockId: null,
   gridColumns: 12,
   gridRows: 5,
   gridGap: 5,
+  rowHeight: 46,
   isBlockSelected: false,
   resizingBlock: false,
   blockPosition: {},
   resizeDirection: null,
-  activeBlock: null,
+  activeBlockKey: null,
 };
 
 /**

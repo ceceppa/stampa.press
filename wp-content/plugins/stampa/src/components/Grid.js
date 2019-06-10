@@ -14,7 +14,7 @@ function Grid() {
   const [drag, setDrag] = useState({});
 
   const draggedBlockId = store.get('draggedBlockId');
-  const blocks = store.get('stampaBlocks');
+  const blocks = store.get('stampaFields');
 
   const handleDragOver = e => {
     e.preventDefault();
@@ -104,7 +104,7 @@ function Grid() {
         }
       }
 
-      store.set('stampaBlocks')(blocks);
+      store.set('stampaFields')(blocks);
       store.set('draggedBlockId')(null);
 
       stampa.setResizeDirection(null);
@@ -119,12 +119,13 @@ function Grid() {
         startRow: drag.row,
         endColumn: 1,
         endRow: 1,
+        name: id,
       };
 
-      store.set('stampaBlocks')([...blocks, block]);
+      store.set('stampaFields')([...blocks, block]);
 
       // Set the last block as "active"
-      store.set('activeBlock')(block._stampa.key);
+      store.set('activeBlockKey')(block._stampa.key);
     }
   };
 
@@ -168,7 +169,7 @@ function Grid() {
     gridArea = `${drag.row} / ${drag.column} / ${endRow} / ${endColumn}`;
   }
 
-  const minHeight = 46 * store.get('gridRows') + 'px';
+  const minHeight = store.get('rowHeight') * store.get('gridRows') + 'px';
   return (
     <div className="stampa__grid grid">
       <div

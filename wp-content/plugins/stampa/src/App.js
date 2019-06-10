@@ -21,6 +21,7 @@ class App extends Component {
       store.set('gridColumns', parseInt(blockData.grid.columns));
       store.set('gridRows')(parseInt(blockData.grid.rows));
       store.set('gridGap')(parseInt(blockData.grid.gap));
+      store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
 
       const blocks = blockData.fields.map(block => {
         block._stampa.startColumn = parseInt(block._stampa.startColumn);
@@ -30,7 +31,7 @@ class App extends Component {
 
         return block;
       });
-      store.set('stampaBlocks')(blocks);
+      store.set('stampaFields')(blocks);
     }
   }
 
