@@ -27558,12 +27558,7 @@ function Save() {
         var field = _step.value;
         fields.push({
           id: field._stampa.id,
-          _values: field.options.map(function (option) {
-            return {
-              name: option.name,
-              value: option.value
-            };
-          }),
+          _values: field._values,
           _stampa: field._stampa
         });
       }
@@ -27582,6 +27577,7 @@ function Save() {
       }
     }
 
+    console.info(fields);
     jQuery.ajax({
       type: 'POST',
       dataType: 'json',

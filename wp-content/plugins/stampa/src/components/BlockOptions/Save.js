@@ -14,12 +14,11 @@ export default function Save() {
     for (const field of store.get('stampaFields')) {
       fields.push({
         id: field._stampa.id,
-        _values: field.options.map(option => {
-          return { name: option.name, value: option.value };
-        }),
+        _values: field._values,
         _stampa: field._stampa,
       });
     }
+    console.info(fields);
 
     jQuery.ajax({
       type: 'POST',
