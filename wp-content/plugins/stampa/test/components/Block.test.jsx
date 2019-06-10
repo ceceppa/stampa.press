@@ -7,19 +7,24 @@ import Store from '../../src/store/store';
 
 import blocksList from './blocks-list.test.json';
 
-const block = Object.assign(
-  {
-    _stampa: {
-      id: 'text',
-      key: '_123',
-      startRow: 2,
-      startColumn: 3,
-      endRow: 2,
-      endColumn: 6,
-    },
+const block = Object.assign(blocksList.Gutenberg.text, {
+  _stampa: {
+    id: 'text',
+    key: '_123',
+    startRow: 2,
+    startColumn: 3,
+    endRow: 2,
+    endColumn: 6,
   },
-  blocksList.Gutenberg.text
-);
+  _values: {},
+  options: [
+    {
+      name: 'test',
+      value: 'test-value',
+    },
+  ],
+  className: 'test-class',
+});
 
 describe('Block', () => {
   const props = {
@@ -58,7 +63,7 @@ describe('Block', () => {
       );
     });
 
-    it('Should the test block', () => {
+    it('Should render the test block', () => {
       const block = container.querySelector('.grid__block');
 
       expect(block).not.toBeNull();
@@ -66,11 +71,18 @@ describe('Block', () => {
       expect(block.style.gridArea).toBe('2 / 3 / 4 / 9');
     });
 
-    it('Should render "Lorem ipsum" text', () => {
+    it('Should render "test-value"', () => {
       const content = container.querySelector('.grid__block__content');
 
       expect(content).not.toBeNull();
-      expect(content.textContent).toBe('Lorem ipsum');
+      expect(content.textContent).toBe('render: test-value');
+    });
+
+    it('Should add the custom class to the element', () => {
+      const content = container.querySelector('.grid__block__content');
+
+      expect(content).not.toBeNull();
+      expect(content.classList).toContain('test-class');
     });
 
     it('Should render the width resizing handler', () => {

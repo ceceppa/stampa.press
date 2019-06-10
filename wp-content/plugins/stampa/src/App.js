@@ -13,9 +13,11 @@ class App extends Component {
   /**
    * Restore the block on page load
    */
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     const store = this.props.store;
-    const blockData = stampa.blockData();
+    const blockData = stampa.getStampaBlock();
 
     if (blockData) {
       store.set('gridColumns', parseInt(blockData.grid.columns));
@@ -23,14 +25,25 @@ class App extends Component {
       store.set('gridGap')(parseInt(blockData.grid.gap));
       store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
 
+      // PHP returns true/false as string, not as boolean.
+      blockData.options.hasBackgroundOption =
+        blockData.options.hasBackgroundOption == 'true';
+      store.set('stampaBlockOptions')(blockData.options);
+
       const blocks = blockData.fields.map(block => {
+        block = Object.assign(stampa.getBlockById(block._stampa.id), block);
         block._stampa.startColumn = parseInt(block._stampa.startColumn);
         block._stampa.startRow = parseInt(block._stampa.startRow);
         block._stampa.endRow = parseInt(block._stampa.endRow);
         block._stampa.endColumn = parseInt(block._stampa.endColumn);
 
+        if (!block._values) {
+          block._values = {};
+        }
+
         return block;
       });
+
       store.set('stampaFields')(blocks);
     }
   }

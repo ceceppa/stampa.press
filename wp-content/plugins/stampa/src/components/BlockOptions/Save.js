@@ -6,7 +6,7 @@ export default function Save() {
   const store = Store.useStore();
   const [isSaving, setSavingState] = useState(false);
 
-  function saveBlock() {
+  function saveBlock(e, generate) {
     setSavingState(true);
 
     const fields = [];
@@ -14,7 +14,9 @@ export default function Save() {
     for (const field of store.get('stampaFields')) {
       fields.push({
         id: field._stampa.id,
-        options: field.options,
+        _values: field.options.map(option => {
+          return { name: option.name, value: option.value };
+        }),
         _stampa: field._stampa,
       });
     }
@@ -25,7 +27,7 @@ export default function Save() {
       url: `${stampa.rest_url}/${stampa.post_ID}`,
       data: {
         title: title.value,
-        options: {},
+        options: store.get('stampaBlockOptions'),
         fields,
         grid: {
           columns: store.get('gridColumns'),
@@ -33,6 +35,7 @@ export default function Save() {
           gap: store.get('gridGap'),
           rowHeight: store.get('rowHeight'),
         },
+        generate,
       },
       beforeSend: xhr => {
         xhr.setRequestHeader('X-WP-Nonce', stampa.nonce);
@@ -55,11 +58,20 @@ export default function Save() {
       />
       <button
         type="button"
-        className="button button-primary"
+        className="button"
         style={{ visibility: isSaving ? 'hidden' : '' }}
         onClick={saveBlock}
       >
         Save
+      </button>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button
+        type="button"
+        className="button button-primary"
+        style={{ visibility: isSaving ? 'hidden' : '' }}
+        onClick={e => saveBlock(e, true)}
+      >
+        Save & Generate
       </button>
     </div>
   );

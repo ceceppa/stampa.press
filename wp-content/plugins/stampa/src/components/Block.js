@@ -6,6 +6,17 @@ import stampa from '../stampa';
 export default function Block({ block }) {
   const store = Store.useStore();
   const stampaBlock = block._stampa;
+  const resizingClass = stampa.isResizing() ? 'resizing' : '';
+
+  let blockHTML = block.html;
+  for (let option of block.options) {
+    if (option && option.name) {
+      const value = block._values[option.name] || option.value;
+      const re = new RegExp(`\{${option.name}\}`, 'g');
+
+      blockHTML = blockHTML.replace(re, value);
+    }
+  }
 
   /**
    * Store the block position and size (needed to nicely show the resize & moving squares)
@@ -17,12 +28,6 @@ export default function Block({ block }) {
       endColumn: stampaBlock.endColumn,
       endRow: stampaBlock.endRow,
     });
-    // store.set('blockPosition')({
-    //   startRow: stampaBlock.startRow,
-    //   startColumn: stampaBlock.startColumn,
-    //   endColumn: stampaBlock.endColumn,
-    //   endRow: stampaBlock.endRow,
-    // });
   }
 
   // Allow the block itself to be dragged
@@ -46,8 +51,6 @@ export default function Block({ block }) {
     // Don't want/need to trigger a re-render of the block/app
     stampa.setResizeDirection(e.target.dataset.resize);
     stampa.setResizing(true);
-    // store.set('resizeDirection')(e.target.dataset.resize);
-    // store.set('resizingBlock')(true);
     store.set('draggedBlockId')(block._stampa.key);
   }
 
@@ -71,7 +74,9 @@ export default function Block({ block }) {
   return (
     <div
       draggable="true"
-      className={`grid__block grid__block--${block._stampa.id} ${activeClass}`}
+      className={`grid__block grid__block--${
+        block._stampa.id
+      } ${activeClass} ${resizingClass}`}
       onDragStart={dragMe}
       data-key={block._stampa.key}
       style={{
@@ -79,9 +84,9 @@ export default function Block({ block }) {
       }}
       onClick={setAsActive}
     >
-      <p
-        dangerouslySetInnerHTML={{ __html: block.html }}
-        className="grid__block__content"
+      <div
+        dangerouslySetInnerHTML={{ __html: blockHTML }}
+        className={`grid__block__content ${block.className || ''}`}
       />
 
       <div

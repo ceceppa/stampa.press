@@ -5,7 +5,6 @@ import Store from '../store/store';
 import SaveBlock from './BlockOptions/Save';
 
 import ToggleGroup from './ToggleGroup';
-import NumberSlider from './NumberSlider';
 
 export default function BlockOptions() {
   const store = Store.useStore();
@@ -23,15 +22,15 @@ export default function BlockOptions() {
       display="block"
       groupClass="block-options stampa__border--bottom"
     >
-      <label htmlFor="background" className="number-slider">
+      <label htmlFor="background" className="stampa-number">
         <span
-          className="number-slider__label tooltip"
+          className="stampa-number__label tooltip"
           data-tooltip="If checked allows the user to set up a background-image for the block."
         >
           Background:
         </span>
         <input
-          className="number-slider__input"
+          className="stampa-number__input"
           type="checkbox"
           name="background"
           id="background"

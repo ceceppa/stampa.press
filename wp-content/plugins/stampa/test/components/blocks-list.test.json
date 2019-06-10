@@ -11,7 +11,7 @@
         "onChange={ this.`onFieldNameChanged` }",
         "/>"
       ],
-      "html": "Lorem ipsum"
+      "html": "render: {test}"
     },
     "button": {
       "label": "Button",

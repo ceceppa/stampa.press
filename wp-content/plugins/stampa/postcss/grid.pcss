@@ -29,7 +29,7 @@
   &__highlight {
     background: var(--blue);
     pointer-events: none;
-    opacity: 0.1;
+    opacity: 0.4;
   }
 
   &__block {
@@ -37,15 +37,21 @@
     transition: all 0.15 ease;
     position: relative;
     overflow: hidden;
+    transition: 0.15s ease;
 
     &:hover {
       border: 1px solid var(--blue);
     }
 
+    &.resizing {
+      opacity: 0.2;
+    }
+
     &.active {
       border-color: var(--active);
 
-      &:hover {}
+      &:hover {
+      }
     }
 
     &__content {

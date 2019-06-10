@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import Store from '../store/store';
 
 import ToggleGroup from './ToggleGroup';
-import NumberSlider from './NumberSlider';
-import stampa from '../stampa';
 
-export default function FieldOptions() {
-  const store = Store.useStore();
-
+export default function FieldOptions(props) {
+  let store;
+  if (props && props.store) {
+    store = props.store.store;
+  } else {
+    store = Store.useStore();
+  }
   const activeBlockKey = store.get('activeBlockKey');
 
   let activeBlock;
@@ -45,6 +47,20 @@ export default function FieldOptions() {
     store.set('stampaFields')(blocks);
   }
 
+  function updateOptionValue(e, name) {
+    const blocks = store.get('stampaFields');
+
+    for (const block of blocks) {
+      if (block._stampa.key == activeBlockKey) {
+        block._values[name] = e.target.value;
+
+        break;
+      }
+    }
+
+    store.set('stampaFields')(blocks);
+  }
+
   /**
    * Delete the active block
    */
@@ -64,10 +80,10 @@ export default function FieldOptions() {
       groupClass="block-options"
     >
       {activeBlock && [
-        <label htmlFor="field-name" className="number-slider">
-          <span className="number-slider__label">Field name:</span>
+        <label htmlFor="field-name" className="stampa-text" key="field-name">
+          <span className="stampa-text__label">Field name:</span>
           <input
-            className="number-slider__input"
+            className="stampa-text__input"
             type="text"
             name="field-name"
             id="field-name"
@@ -75,7 +91,56 @@ export default function FieldOptions() {
             onChange={updateFieldName}
           />
         </label>,
+        <hr key="hr-1" />,
+        activeBlock.options.map((option, index) => {
+          switch (option.type) {
+            case 'text':
+              return (
+                <label
+                  htmlFor={`field-${option.name}`}
+                  className="stampa-text"
+                  key={option.name}
+                >
+                  <span className="stampa-text__label">{option.label}:</span>
+                  <input
+                    className="stampa-text__input"
+                    type="text"
+                    name={`field-${option.name}`}
+                    id={`field-${option.name}`}
+                    value={option.value}
+                    onChange={e => updateOptionValue(e, option.name)}
+                  />
+                </label>
+              );
+            case 'select':
+              return (
+                <div className="stampa-select" key={option.name}>
+                  <label
+                    htmlFor={`field-${option.name}`}
+                    className="stampa-select__name"
+                  >
+                    {option.label}
+                  </label>
+                  <select
+                    className="stampa-select__select"
+                    name={`field-${option.name}`}
+                    id={`field-${option.name}`}
+                    onChange={e => updateOptionValue(e, option.name)}
+                    defaultValue={option.value}
+                  >
+                    {option.values.map(value => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              );
+          }
+        }),
+        <hr key="hr-2" />,
         <button
+          key="delete"
           type="button"
           onClick={deleteActiveBlock}
           className="button button-link-delete"

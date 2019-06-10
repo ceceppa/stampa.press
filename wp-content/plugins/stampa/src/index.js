@@ -6,6 +6,12 @@ import Store from './store/store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+/**
+ * Prevent the custom style from the TinyMCE editor to ovewrite the
+ * Gutenberg one.
+ */
+document.querySelector('#poststuff').id = 'stampastuff';
+
 ReactDOM.render(
   <Store.Container>
     <App />

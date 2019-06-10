@@ -22,7 +22,7 @@ export default {
     return null;
   },
   getBlockByKey: function(key) {},
-  blockData: () => window.stampa && window.stampa.block,
+  getStampaBlock: () => window.stampa && window.stampa.stampa,
   setResizeDirection: function(resize) {
     this.resizeDirection = resize;
   },

@@ -107,7 +107,7 @@ class Stampa {
 	 */
 	public static function register_script() {
 		// The style.
-		wp_enqueue_style( 'stampa-style', plugins_url( 'dist/style.css', __FILE__ ), [], STAMPA_VERSION );
+		wp_enqueue_style( 'stampa-style', plugins_url( 'dist/style.css', __FILE__ ), [ 'wp-block-library' ], STAMPA_VERSION );
 
 		// Load the default stampa blocks.
 		self::load_blocks();
@@ -124,9 +124,10 @@ class Stampa {
 		$post_id = $_GET['post'] ?? null;
 		if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
 
-			$data['block'] = [
-				'grid'   => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
-				'fields' => json_decode( get_post_meta( $post_id, '_stampa_fields', true ) ),
+			$data['stampa'] = [
+				'grid'    => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
+				'options' => json_decode( get_post_meta( $post_id, '_stampa_options', true ), true ),
+				'fields'  => json_decode( get_post_meta( $post_id, '_stampa_fields', true ) ),
 			];
 		}
 
@@ -144,6 +145,7 @@ class Stampa {
 	public static function render_stampa( $post ) {
 		wp_enqueue_script( 'stampa' );
 
+		echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
 		echo '<div id="stampa"></div>';
 	}
 
@@ -204,6 +206,7 @@ class Stampa {
 
 		update_post_meta( $post_id, '_stampa_grid', json_encode( $params['grid'] ) );
 		update_post_meta( $post_id, '_stampa_fields', json_encode( $params['fields'] ) );
+		update_post_meta( $post_id, '_stampa_options', json_encode( $params['options'] ) );
 
 		return [ 'done' => 1 ];
 	}

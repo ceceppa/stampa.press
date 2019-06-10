@@ -14,12 +14,12 @@ export default function NumberSlider({ id, label, storeKey, min }) {
   };
 
   return (
-    <div className="number-slider">
-      <label className="number-slider__label" htmlFor={id}>
+    <div className="stampa-number">
+      <label className="stampa-number__label" htmlFor={id}>
         {label}
       </label>
       <input
-        className="number-slider__input"
+        className="stampa-number__input"
         type="number"
         id={id}
         value={value}

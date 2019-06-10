@@ -122,6 +122,8 @@ function Grid() {
         name: id,
       };
 
+      block._values = {};
+
       store.set('stampaFields')([...blocks, block]);
 
       // Set the last block as "active"
