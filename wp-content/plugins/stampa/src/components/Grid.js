@@ -119,7 +119,7 @@ function Grid() {
         startRow: drag.row,
         endColumn: 1,
         endRow: 1,
-        name: id,
+        name: draggedBlockId,
       };
 
       block._values = {};

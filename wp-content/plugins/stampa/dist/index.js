@@ -27822,7 +27822,7 @@ function FieldOptions(props) {
 
   function deleteActiveBlock() {
     var blocks = store.get('stampaFields').filter(function (block) {
-      return block._stampa.key !== activeBlock;
+      return block._stampa.key !== activeBlockKey;
     });
     store.set('stampaFields')(blocks);
     store.set('activeBlockKey')(null);
@@ -28764,7 +28764,7 @@ function Grid() {
         startRow: drag.row,
         endColumn: 1,
         endRow: 1,
-        name: id
+        name: draggedBlockId
       };
       _block._values = {};
       store.set('stampaFields')([].concat(_toConsumableArray(blocks), [_block])); // Set the last block as "active"

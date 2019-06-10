@@ -67,7 +67,7 @@ export default function FieldOptions(props) {
   function deleteActiveBlock() {
     const blocks = store
       .get('stampaFields')
-      .filter(block => block._stampa.key !== activeBlock);
+      .filter(block => block._stampa.key !== activeBlockKey);
 
     store.set('stampaFields')(blocks);
     store.set('activeBlockKey')(null);
