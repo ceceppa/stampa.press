@@ -38,18 +38,21 @@
     position: relative;
     overflow: hidden;
 
-    &.active {
-      border-color: var(--active);
-    }
-
     &:hover {
       border: 1px solid var(--blue);
+    }
+
+    &.active {
+      border-color: var(--active);
+
+      &:hover {}
     }
 
     &__content {
       padding: 0;
       margin: 0;
     }
+
     &__resizer {
       position: absolute;
       border: 2px solid var(--blue);
