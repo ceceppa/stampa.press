@@ -1,4 +1,4 @@
 #!/bin/bash
-./test/bin/install-wp-tests.sh stampa nine3 nine3pass mysql latest true
+./test/bin/install-wp-tests.sh stampa.phpunit nine3 nine3pass 93digital.git latest
 
 phpunit
