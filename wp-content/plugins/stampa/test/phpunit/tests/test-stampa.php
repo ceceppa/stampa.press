@@ -14,10 +14,14 @@ class Test_Stampa extends \WP_UnitTestCase {
 		$this->assertTrue( class_exists( 'Stampa\Stampa' ) );
 	}
 
-	function test_enqueue_script() {
+	/**
+	 * Make sure that the class register the js and the stylesheet
+	 */
+	function test_register_script_and_style() {
 		do_action( 'admin_enqueue_scripts' );
 
 		$this->assertTrue( wp_script_is( 'stampa-script', 'registered' ) );
+		$this->assertTrue( wp_style_is( 'stampa-style', 'registered' ) );
 	}
 
 	/**
@@ -47,4 +51,8 @@ class Test_Stampa extends \WP_UnitTestCase {
 		$method = $callback['callback'];
 		$this->assertTrue( is_callable( $method ) );
 	}
+
+	/**
+	 * Test the
+	 */
 }

@@ -30,11 +30,15 @@ const CSSGrid = React.memo(function SVGGrid() {
     const width = (clientRect.width - gap * (columns - 1)) / columns;
     const height = (clientRect.height + gap) / rows;
 
-    updateBackgroundImage(
-      `linear-gradient(to right, #e2e4e7 ${gap}px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ${gap}px, transparent 1px)`
-    );
-    updateBackgroundPosition(`-${gap}px -${gap}px`);
-    updateBackgroundSize(`${width + gap}px ${height}px`);
+    if (store.get('gridShow')) {
+      updateBackgroundImage(
+        `linear-gradient(to right, #e2e4e7 ${gap}px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ${gap}px, transparent 1px)`
+      );
+      updateBackgroundPosition(`-${gap}px -${gap}px`);
+      updateBackgroundSize(`${width + gap}px ${height}px`);
+    } else {
+      updateBackgroundImage('none');
+    }
   };
 
   useEffect(() => {

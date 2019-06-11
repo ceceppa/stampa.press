@@ -11,6 +11,7 @@ const initialState = {
   gridRows: 5,
   gridGap: 5,
   rowHeight: 46,
+  gridShow: true,
   isBlockSelected: false,
   resizingBlock: false,
   blockPosition: {},
