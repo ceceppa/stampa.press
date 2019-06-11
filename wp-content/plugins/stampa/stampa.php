@@ -9,6 +9,8 @@ namespace Stampa;
 
 define( 'STAMPA_VERSION', '0.1' );
 
+require __DIR__ . '/stampa/stampa-loader.php';
+
 /**
  * The Stampa class
  */
@@ -246,6 +248,18 @@ class Stampa {
 	}
 
 	/**
+	 * Generate the Block options
+	 *
+	 * @return void
+	 */
+	private static function generate_options( array $options_params ) : string {
+		// The options boilerplate.
+		$boilerplate = file_get_contents( __DIR__ . '/assets/gutenberg/inspector-controls.boilerplace.js' );
+
+		return '';
+	}
+
+	/**
 	 * Generate the REACT block
 	 *
 	 * @param int    $post_id the post ID.
@@ -253,9 +267,10 @@ class Stampa {
 	 * @param array  $params the block parameters & fields.
 	 */
 	private static function generate_react_block( $post_id, $title, $grid_params, $options_params, $fields_params ) {
-		$output_folder = trailingslashit( get_template_directory() ) . 'assets/js/blocks/';
-		$file_name     = sanitize_title( $title ) . '.js';
-		$output_file   = $output_folder . $file_name;
+		$output_folder = trailingslashit( __DIR__ . '/stampa/blocks/' );
+		// $output_folder = trailingslashit( get_template_directory() ) . 'assets/js/blocks/';
+		$file_name   = sanitize_title( $title ) . '.js';
+		$output_file = $output_folder . $file_name;
 
 		/**
 		 * If the file exists make sure that the file hasn't been manually changed.
@@ -317,26 +332,19 @@ class Stampa {
 		$gutenberg_components        = array_unique( $gutenberg_components );
 		$replace['gutenberg_blocks'] = join( ',' . PHP_EOL . '  ', $gutenberg_components ) . ',';
 
+		// The block options.
+		$replace['block_options'] = self::generate_options( $options_params );
+
+		// Let's do the replace.
 		foreach ( $replace as $what => $to ) {
 			$boilerplate = str_replace( "{{stampa.{$what}}}", $to, $boilerplate );
 		}
 
 		file_put_contents( $output_file, $boilerplate );
+
+		// Compile the JS file.
+		exec( 'parcel build stampa/index.js -d stampa/dist' );
 	}
 }
 
 Stampa::init();
-
-
-function my_mario_block_category( $categories, $post ) {
-	return array_merge(
-		$categories,
-		array(
-			array(
-				'slug' => 'stampa-blocks',
-				'title' => __( 'Stampa Blocks', 'stampa-blocks' ),
-			),
-		)
-	);
-}
-add_filter( 'block_categories', __NAMESPACE__ . '\my_mario_block_category', 10, 2);

@@ -30,15 +30,23 @@ registerBlockType('nine3/{{stampa.sanitized_title}}', {
    * @return {JSX} JSX block.
    */
   edit: function ({ className, attributes }) {
-    console.info(className, attributes);
+      const { className, attributes } = props;
+      const attributeKeys = Object.keys(blockAttributes).filter(
+        key => key !== 'strings' && key !== 'className'
+      );
 
-    return (
-      <Fragment>
-        <div className="stampa-grid" style="{{stampa.grid_style}}">
-          Et uailah
-        </div>
-      </Fragment>
-    );
+      {{stampa.block_handlers}}
+
+      return (
+        <Fragment>
+          {{stampa.block_options}}
+
+          <div className="stampa-grid" style="{{stampa.grid_style}}">
+            {{stampa.block_react_code}}
+          </div>
+        </Fragment>
+      );
+    }
   },
 
   /**
