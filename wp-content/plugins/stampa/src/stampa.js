@@ -7,14 +7,14 @@ let cellCoords = {
 };
 
 export default {
-  getFields: () => (window.stampa && window.stampa.blocks) || [],
+  getFields: () => (window.stampa && window.stampa.fields) || [],
   getFieldById: function(id) {
     const groups = this.getFields();
 
     for (const group in groups) {
-      for (const block in groups[group]) {
-        if (block === id) {
-          return Object.assign({}, groups[group][block]);
+      for (const field in groups[group]) {
+        if (field === id) {
+          return Object.assign({}, groups[group][field]);
         }
       }
     }

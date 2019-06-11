@@ -122,7 +122,7 @@ class Stampa {
 		$data = array(
 			'home_url' => home_url(),
 			'nonce'    => wp_create_nonce( 'wp_rest' ),
-			'blocks'   => self::$fields,
+			'fields'   => self::$fields,
 			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
 			'post_ID'  => get_the_ID(),
 		);
@@ -276,8 +276,8 @@ class Stampa {
 		$boilerplate = file_get_contents( __DIR__ . '/assets/gutenberg/block-boilerplate.js' );
 
 		// Title & Id.
-		$replace['{{stampa.block_title}}']     = $title;
-		$replace['{{stampa.sanitized_title}}'] = sanitize_title( $title );
+		$replace['block_title']     = $title;
+		$replace['sanitized_title'] = sanitize_title( $title );
 
 		/**
 		 * Stampa Grid style
@@ -296,7 +296,7 @@ class Stampa {
 			$grid_params['gap']
 		);
 
-		$replace['{{stampa.grid_style}}'] = $grid_style;
+		$replace['grid_style'] = $grid_style;
 
 		// The React components.
 		self::load_fields();
@@ -311,11 +311,14 @@ class Stampa {
 			$gutenberg              = $field['gutenberg'];
 			$gutenberg_components[] = $gutenberg->block;
 
-			error_log( print_r( $gutenberg, true ) );
 		}
 
+		// Unique components to load.
+		$gutenberg_components        = array_unique( $gutenberg_components );
+		$replace['gutenberg_blocks'] = join( ',' . PHP_EOL . '  ', $gutenberg_components ) . ',';
+
 		foreach ( $replace as $what => $to ) {
-			$boilerplate = str_replace( $what, $to, $boilerplate );
+			$boilerplate = str_replace( "{{stampa.{$what}}}", $to, $boilerplate );
 		}
 
 		file_put_contents( $output_file, $boilerplate );
@@ -323,3 +326,17 @@ class Stampa {
 }
 
 Stampa::init();
+
+
+function my_mario_block_category( $categories, $post ) {
+	return array_merge(
+		$categories,
+		array(
+			array(
+				'slug' => 'stampa-blocks',
+				'title' => __( 'Stampa Blocks', 'stampa-blocks' ),
+			),
+		)
+	);
+}
+add_filter( 'block_categories', __NAMESPACE__ . '\my_mario_block_category', 10, 2);

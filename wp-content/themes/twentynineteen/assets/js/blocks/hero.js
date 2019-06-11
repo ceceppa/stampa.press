@@ -6,14 +6,15 @@ const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
 const {
-  {{stampa.gutenberg_blocks}}
+  Heading,
+  PlainText,
 } = wp.components;
 const { Fragment, Component } = wp.element;
 
 registerBlockType('nine3/hero', {
   title: __('Hero'),
   icon: 'welcome-write-blog',
-  category: 'formatting',
+  category: 'stampa-blocks',
   keywords: [],
 
   multiple: true,

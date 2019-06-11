@@ -13,7 +13,7 @@ const { Fragment, Component } = wp.element;
 registerBlockType('nine3/{{stampa.sanitized_title}}', {
   title: __('{{stampa.block_title}}'),
   icon: 'welcome-write-blog',
-  category: 'formatting',
+  category: 'stampa-blocks',
   keywords: [],
 
   multiple: true,

@@ -41,6 +41,11 @@
     border-bottom: 1px solid var(--border);
   }
 
+hr.stampa-hr {
+  opacity: 0.6;
+  margin: 10px 20px 20px;
+}
+
 .toggle-group {
   margin: 0;
 }
@@ -99,7 +104,7 @@
     position: relative;
     width: 100%;
     display: grid;
-    align-self: center;
+    align-self: flex-start;
   }
 
   .stampa-grid__svg {
@@ -307,6 +312,12 @@
     }
 
 .stampa-select,
+.stampa-text,
+.stampa-number {
+  padding-bottom: 10px;
+}
+
+.stampa-select,
 .stampa-number {
   display: -webkit-box;
   display: flex;
@@ -314,13 +325,18 @@
           justify-content: space-between;
 }
 
-  .stampa-select__label, .stampa-number__label {
+.stampa-select__label, .stampa-number__label {
     width: 60%;
     align-self: center;
   }
 
-  .stampa-select__input, .stampa-number__input {
+.stampa-select__input, .stampa-number__input {
     width: 38%;
+  }
+
+.stampa-select input, .stampa-number input {
+    float: none;
+    margin: 0;
   }
 
 .stampa-select__select {

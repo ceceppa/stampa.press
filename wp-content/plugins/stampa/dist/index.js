@@ -27153,7 +27153,8 @@ var _undux = require("undux");
 var initialState = {
   stampaFields: [],
   stampaBlockOptions: {
-    hasBackgroundOption: false
+    hasBackgroundOption: false,
+    title: ''
   },
   draggedFieldId: null,
   gridColumns: 12,
@@ -27327,15 +27328,15 @@ var cellCoords = {
 };
 var _default = {
   getFields: function getFields() {
-    return window.stampa && window.stampa.blocks || [];
+    return window.stampa && window.stampa.fields || [];
   },
   getFieldById: function getFieldById(id) {
     var groups = this.getFields();
 
     for (var group in groups) {
-      for (var block in groups[group]) {
-        if (block === id) {
-          return Object.assign({}, groups[group][block]);
+      for (var field in groups[group]) {
+        if (field === id) {
+          return Object.assign({}, groups[group][field]);
         }
       }
     }
@@ -27677,9 +27678,16 @@ function BlockOptions() {
   var store = _store.default.useStore();
 
   var stampaBlockOptions = store.get('stampaBlockOptions');
+  var categories = ['formatting'];
+  var pageTitle = store.get('pageTitle');
 
   function updateBackgroundOption(e) {
     stampaBlockOptions.hasBackgroundOption = e.target.checked;
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  }
+
+  function updateBlockTitle(e) {
+    stampaBlockOptions.title = e.target.value;
     store.set('stampaBlockOptions')(stampaBlockOptions);
   }
 
@@ -27688,6 +27696,20 @@ function BlockOptions() {
     display: "block",
     groupClass: "block-options stampa__border--bottom"
   }, _react.default.createElement("label", {
+    htmlFor: "block-name",
+    className: "stampa-text"
+  }, _react.default.createElement("span", {
+    className: "stampa-text__label tooltip",
+    "data-tooltip": "The title to use when registering the Gutenberg block"
+  }, "Title:"), _react.default.createElement("input", {
+    className: "stampa-text__input",
+    type: "text",
+    name: "block-name",
+    id: "block-name",
+    value: stampaBlockOptions.title,
+    onChange: updateBlockTitle,
+    placeholder: pageTitle
+  })), _react.default.createElement("label", {
     htmlFor: "background",
     className: "stampa-number"
   }, _react.default.createElement("span", {
