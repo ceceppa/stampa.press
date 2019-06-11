@@ -10,6 +10,7 @@ $size: 8px;
   }
 
   &:hover {
+    z-index: 99;
 
     &::before,
     &::after {
@@ -38,7 +39,7 @@ $size: 8px;
     background: #ca4a1f;
     z-index: 1;
     transition: all 0.15s cubic-bezier(0.25, 0.1, 0.76, 1.96);
-    transform: scale(0.7)
+    transform: scale(0.7);
   }
 
   &::after {

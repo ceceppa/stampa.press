@@ -285,6 +285,9 @@
     opacity: 0;
     pointer-events: none;
   }
+.tooltip:hover {
+    z-index: 99
+  }
 .tooltip:hover::before,
     .tooltip:hover::after {
       opacity: 1;
@@ -312,7 +315,7 @@
     -webkit-transition: all 0.15s cubic-bezier(0.25, 0.1, 0.76, 1.96);
     transition: all 0.15s cubic-bezier(0.25, 0.1, 0.76, 1.96);
     -webkit-transform: scale(0.7);
-            transform: scale(0.7)
+            transform: scale(0.7);
   }
 .tooltip::after {
     content: attr(data-tooltip);
@@ -330,6 +333,7 @@
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
   }
+
 .block-options__save {
     text-align: right;
   }

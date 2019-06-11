@@ -162,7 +162,7 @@ class Stampa {
 	 * @return void
 	 */
 	private static function load_fields() {
-		$data = file_get_contents( __DIR__ . '/assets/blocks.json' );
+		$data = file_get_contents( __DIR__ . '/assets/fields.json' );
 
 		$fields = json_decode( $data );
 
