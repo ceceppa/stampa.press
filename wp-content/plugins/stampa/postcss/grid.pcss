@@ -1,4 +1,4 @@
-.grid {
+.stampa-grid {
   display: flex;
   background: #f1f1f1;
   padding: 30px;
@@ -32,19 +32,20 @@
     opacity: 0.4;
   }
 
-  &__block {
+  &__field {
     border: 1px solid var(--border);
     transition: all 0.15 ease;
     position: relative;
     overflow: hidden;
     transition: 0.15s ease;
+    border-color: var(--border);
 
     &:hover {
       border: 1px solid var(--blue);
     }
 
     &.resizing {
-      opacity: 0.2;
+      opacity: 0.15;
     }
 
     &.active {

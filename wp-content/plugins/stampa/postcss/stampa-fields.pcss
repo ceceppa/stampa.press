@@ -1,34 +1,42 @@
-.stampa-select,
-.stampa-number {
-  display: flex;
-  justify-content: space-between;
-
-  &__label {
-    width: 60%;
-    align-self: center;
+.stampa-fields {
+  &__filter {
+    display: flex;
+    flex-direction: column;
   }
 
-  &__input {
-    width: 38%;
-  }
-}
-
-.stampa-select {
-  &__select {
-    width: 38%;
-  }
-}
-
-.stampa-text {
-  display: flex;
-  justify-content: space-between;
-
-  &__label {
-    width: 38%;
-    align-self: center;
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    padding-top: 0;
   }
 
-  &__input {
-    width: 60%;
+  &__item {
+    text-align: center;
+    cursor: move;
+    border-radius: 4px;
+    padding: 10px;
+
+    &:hover {
+      background: var(--hover);
+    }
+  }
+
+  &__image {
+    display: block;
+    margin-bottom: 10px;
+    height: 24px;
+    width: 100%;
+  }
+
+  &__help {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
   }
 }

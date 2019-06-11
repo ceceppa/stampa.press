@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ComponentsList from './components/ComponentsList';
+import FieldsList from './components/FieldsList';
 import GridOptions from './components/GridOptions';
 import BlockOptions from './components/BlockOptions';
 import FieldOptions from './components/FieldOptions';
@@ -51,7 +51,7 @@ class App extends Component {
   render() {
     return (
       <div className="stampa">
-        <ComponentsList />
+        <FieldsList />
         <Grid />
         <div className="stampa__right">
           <GridOptions />

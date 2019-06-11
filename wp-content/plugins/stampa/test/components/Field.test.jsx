@@ -64,22 +64,22 @@ describe('Field', () => {
     });
 
     it('Should render the test block', () => {
-      const block = container.querySelector('.grid__block');
+      const block = container.querySelector('.stampa-grid__field');
 
       expect(block).not.toBeNull();
-      expect(block.classList).toContain('grid__block--text');
+      expect(block.classList).toContain('stampa-grid__field--text');
       expect(block.style.gridArea).toBe('2 / 3 / 4 / 9');
     });
 
     it('Should render "test-value"', () => {
-      const content = container.querySelector('.grid__block__content');
+      const content = container.querySelector('.stampa-grid__field__content');
 
       expect(content).not.toBeNull();
       expect(content.textContent).toBe('render: test-value');
     });
 
     it('Should add the custom class to the element', () => {
-      const content = container.querySelector('.grid__block__content');
+      const content = container.querySelector('.stampa-grid__field__content');
 
       expect(content).not.toBeNull();
       expect(content.classList).toContain('test-class');
@@ -87,21 +87,23 @@ describe('Field', () => {
 
     it('Should render the width resizing handler', () => {
       const widthResizer = container.querySelector(
-        '.grid__block__resizer--width'
+        '.stampa-grid__field__resizer--width'
       );
 
       expect(widthResizer).not.toBeNull();
     });
 
     it('Should render the corner resizing handler', () => {
-      const seResizer = container.querySelector('.grid__block__resizer--se');
+      const seResizer = container.querySelector(
+        '.stampa-grid__field__resizer--se'
+      );
 
       expect(seResizer).not.toBeNull();
     });
 
     it('Should render the height resizing handler', () => {
       const heightResizer = container.querySelector(
-        '.grid__block__resizer--height'
+        '.stampa-grid__field__resizer--height'
       );
 
       expect(heightResizer).not.toBeNull();

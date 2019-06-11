@@ -1,10 +1,10 @@
 /* global stampa */
 import React, { useState } from 'react';
-import GroupItems from './GroupItems';
+import GroupFields from './GroupFields';
 
 import stampa from '../stampa';
 
-export default function ComponentsList() {
+export default function FieldsList() {
   const blocks = stampa.getFields();
   let keys = Object.keys(blocks);
   const [filter, setFilter] = useState('');
@@ -14,9 +14,9 @@ export default function ComponentsList() {
   };
 
   return (
-    <aside className="stampa__left components">
+    <aside className="stampa__left stampa-fields">
       <div
-        className="components__filter stampa__border--bottom stampa__content"
+        className="stampa-fields__filter stampa__border--bottom stampa__content"
         role="search"
       >
         <label htmlFor="filter">Search:</label>
@@ -28,8 +28,8 @@ export default function ComponentsList() {
         />
       </div>
       {keys.map(group => (
-        <div className="components__group" key={group}>
-          <GroupItems group={group} blocks={blocks} />
+        <div className="stampa-fields__group" key={group}>
+          <GroupFields group={group} blocks={blocks} />
         </div>
       ))}
     </aside>

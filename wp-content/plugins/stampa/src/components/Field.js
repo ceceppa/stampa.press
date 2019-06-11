@@ -8,13 +8,13 @@ export default function Block({ field }) {
   const stampaField = field._stampa;
   const resizingClass = stampa.isResizing() ? 'resizing' : '';
 
-  let blockHTML = field.html;
+  let fieldHTML = field.html;
   for (let option of field.options) {
     if (option && option.name) {
       const value = field._values[option.name] || option.value;
       const re = new RegExp(`\{${option.name}\}`, 'g');
 
-      blockHTML = blockHTML.replace(re, value);
+      fieldHTML = fieldHTML.replace(re, value);
     }
   }
 
@@ -63,7 +63,10 @@ export default function Block({ field }) {
     store.set('activeBlockKey')(field._stampa.key);
   }
 
-  const gridArea = `${stampaField.startRow} / ${stampaField.startColumn} / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn + stampaField.startColumn}`;
+  const gridArea = `${stampaField.startRow} / ${
+    stampaField.startColumn
+  } / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn +
+    stampaField.startColumn}`;
 
   const activeBlock = store.get('activeBlockKey');
   const activeClass = activeBlock == field._stampa.key ? 'active' : '';
@@ -71,7 +74,8 @@ export default function Block({ field }) {
   return (
     <div
       draggable="true"
-      className={`grid__block grid__block--${field._stampa.id} ${activeClass} ${resizingClass}`}
+      className={`stampa-grid__field
+      stampa-grid__field--${field._stampa.id} ${activeClass} ${resizingClass}`}
       onDragStart={dragMe}
       data-key={field._stampa.key}
       style={{
@@ -80,24 +84,24 @@ export default function Block({ field }) {
       onClick={setAsActive}
     >
       <div
-        dangerouslySetInnerHTML={{ __html: blockHTML }}
-        className={`grid__block__content ${field.className || ''}`}
+        dangerouslySetInnerHTML={{ __html: fieldHTML }}
+        className={`stampa-grid__field__content ${field.className || ''}`}
       />
 
       <div
-        className="grid__block__resizer grid__block__resizer--width"
+        className="stampa-grid__field__resizer stampa-grid__field__resizer--width"
         draggable="true"
         data-resize="width"
         onDragStart={startResize}
       />
       <div
-        className="grid__block__resizer grid__block__resizer--height"
+        className="stampa-grid__field__resizer stampa-grid__field__resizer--height"
         data-resize="height"
         draggable="true"
         onDragStart={startResize}
       />
       <div
-        className="grid__block__resizer grid__block__resizer--se"
+        className="stampa-grid__field__resizer stampa-grid__field__resizer--se"
         data-resize="se"
         draggable="true"
         onDragStart={startResize}

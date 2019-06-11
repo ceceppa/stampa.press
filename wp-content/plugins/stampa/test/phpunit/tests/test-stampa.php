@@ -53,6 +53,9 @@ class Test_Stampa extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the
+	 * Add field
 	 */
+	function test_add_field() {
+
+	}
 }

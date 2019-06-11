@@ -1,12 +1,12 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import GroupItems from '../../src/components/GroupItems';
+import GroupFields from '../../src/components/GroupFields';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 
 import blocksList from './fields-list.test.json';
 
-describe('GroupItems', () => {
+describe('GroupFields', () => {
   const props = {
     group: 'Gutenberg',
     blocks: blocksList,
@@ -15,7 +15,7 @@ describe('GroupItems', () => {
 
   const groupItems = () => {
     if (!mountedComponent) {
-      mountedComponent = TestRenderer.create(<GroupItems {...props} />);
+      mountedComponent = TestRenderer.create(<GroupFields {...props} />);
     }
 
     return mountedComponent;
@@ -35,7 +35,7 @@ describe('GroupItems', () => {
       container = document.createElement('div');
       document.body.appendChild(container);
 
-      ReactDOM.render(<GroupItems {...props} />, container);
+      ReactDOM.render(<GroupFields {...props} />, container);
     });
 
     it('Should render one <ul> list', () => {

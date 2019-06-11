@@ -152,6 +152,10 @@ class Stampa {
 	public static function render_stampa( $post ) {
 		wp_enqueue_script( 'stampa' );
 
+		// $stylesheets = get_editor_stylesheets();
+		// foreach ( $stylesheets as $ss ) {
+		// echo '<link rel="stylesheet" href="' . $ss . '" />';
+		// }
 		echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
 		echo '<div id="stampa"></div>';
 	}
@@ -180,11 +184,11 @@ class Stampa {
 
 
 	/**
-	 * Register a new Stampa block
+	 * Register a new Stampa field
 	 *
 	 * @param string $group the group where to register the field.
 	 * @param string $field_id the unique field ID.
-	 * @param array  $field_data the block data.
+	 * @param array  $field_data the field data.
 	 * @return void
 	 */
 	public static function add_field( string $group, string $field_id, array $field_data ) {
@@ -199,12 +203,12 @@ class Stampa {
 	}
 
 	/**
-	 * Get the block by id
+	 * Get the field by id
 	 *
-	 * @param string $field_id the Block unique ID.
+	 * @param string $field_id the field unique ID.
 	 * @return mixed
 	 */
-	private static function get_block_by_id( string $field_id ) {
+	private static function get_field_by_id( string $field_id ) {
 		$block = self::$fields_by_id[ $field_id ] ?? null;
 
 		return apply_filters( 'stampa/block/' . $field_id, $block );
@@ -299,7 +303,7 @@ class Stampa {
 
 		$gutenberg_components = [];
 		foreach ( $fields_params as $stampa_field ) {
-			$field = self::get_block_by_id( $stampa_field['id'] );
+			$field = self::get_field_by_id( $stampa_field['id'] );
 			if ( empty( $field ) ) {
 				continue;
 			}

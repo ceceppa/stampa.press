@@ -1,6 +1,6 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import ComponentsList from '../../src/components/ComponentsList';
+import FieldsList from '../../src/components/FieldsList';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 
@@ -10,13 +10,13 @@ window.stampa = { blocks: blocksList };
 
 // https://medium.freecodecamp.org/the-right-way-to-test-react-components-548a4736ab22
 // https://reactjs.org/docs/test-renderer.html
-describe('ComponentsList', () => {
+describe('FieldsList', () => {
   let props;
   let mountedList;
 
-  const componentsList = () => {
+  const getComponent = () => {
     if (!mountedList) {
-      mountedList = TestRenderer.create(<ComponentsList {...props} />);
+      mountedList = TestRenderer.create(<FieldsList {...props} />);
     }
 
     return mountedList;
@@ -32,7 +32,7 @@ describe('ComponentsList', () => {
     let component;
 
     beforeAll(() => {
-      component = componentsList();
+      component = getComponent();
     });
 
     it('Should render the sidebar', () => {
@@ -52,7 +52,7 @@ describe('ComponentsList', () => {
       document.body.appendChild(container);
 
       act(() => {
-        ReactDOM.render(<ComponentsList />, container);
+        ReactDOM.render(<FieldsList />, container);
       });
 
       const inputElement = container.querySelector('input[type="search"]');
@@ -72,7 +72,8 @@ describe('ComponentsList', () => {
       expect(
         component.root.findAll(
           node =>
-            node.type === 'div' && node.props.className == 'components__group'
+            node.type === 'div' &&
+            node.props.className == 'stampa-fields__group'
         )
       ).toHaveLength(1);
     });

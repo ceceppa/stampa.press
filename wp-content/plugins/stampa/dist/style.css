@@ -27,7 +27,7 @@
     border-left: 1px solid var(--border);
   }
 
-  .stampa__grid {
+  .stampa-grid {
     -webkit-box-flex: 1;
             flex-grow: 1;
   }
@@ -40,45 +40,6 @@
     border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--border);
   }
-
-.components__filter {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-            flex-direction: column;
-  }
-  .components__items {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
-    padding-top: 0;
-  }
-  .components__item {
-    text-align: center;
-    cursor: move;
-    border-radius: 4px;
-    padding: 10px
-  }
-  .components__item:hover {
-      background: #f8f9f9;
-      background: var(--hover);
-    }
-  .components__image {
-    display: block;
-    margin-bottom: 10px;
-    height: 24px;
-    width: 100%;
-  }
-  .components__help {
-    cursor: pointer;
-    display: inline-block;
-    margin-left: 10px;
-  }
-  .components__help svg {
-      width: 10px;
-      height: 10px;
-    }
 
 .toggle-group {
   margin: 0;
@@ -121,7 +82,7 @@
               transform: rotate(-180deg);
     }
 
-.grid {
+.stampa-grid {
   display: -webkit-box;
   display: flex;
   background: #f1f1f1;
@@ -132,7 +93,7 @@
   border-bottom: 1px solid var(--border);
 }
 
-  .grid__content {
+  .stampa-grid__content {
     background: #fff;
     background: var(--white);
     position: relative;
@@ -141,7 +102,7 @@
     align-self: center;
   }
 
-  .grid__svg {
+  .stampa-grid__svg {
     position: absolute;
     left: 0;
     top: 0;
@@ -150,18 +111,18 @@
     pointer-events: none;
   }
 
-  .grid line {
+  .stampa-grid line {
     stroke: #f1f1f1;
   }
 
-  .grid__highlight {
+  .stampa-grid__highlight {
     background: #0085ba;
     background: var(--blue);
     pointer-events: none;
     opacity: 0.4;
   }
 
-  .grid__block {
+  .stampa-grid__field {
     border: 1px solid #e2e4e7;
     border: 1px solid var(--border);
     -webkit-transition: all 0.15 ease;
@@ -169,39 +130,41 @@
     position: relative;
     overflow: hidden;
     -webkit-transition: 0.15s ease;
-    transition: 0.15s ease
+    transition: 0.15s ease;
+    border-color: #e2e4e7;
+    border-color: var(--border)
   }
 
-  .grid__block:hover {
+  .stampa-grid__field:hover {
       border: 1px solid #0085ba;
       border: 1px solid var(--blue);
     }
 
-  .grid__block.resizing {
-      opacity: 0.2;
+  .stampa-grid__field.resizing {
+      opacity: 0.15;
     }
 
-  .grid__block.active {
+  .stampa-grid__field.active {
       border-color: #ca4a1f;
       border-color: var(--active)
     }
 
-  .grid__block.active:hover {
+  .stampa-grid__field.active:hover {
       }
 
-  .grid__block__content {
+  .stampa-grid__field__content {
       padding: 0;
       margin: 0;
     }
 
-  .grid__block__resizer {
+  .stampa-grid__field__resizer {
       position: absolute;
       border: 2px solid #0085ba;
       border: 2px solid var(--blue);
       opacity: 0.2;
     }
 
-  .grid__block__resizer--width {
+  .stampa-grid__field__resizer--width {
         right: 0px;
         width: 0px;
         height: 100%;
@@ -209,7 +172,7 @@
         cursor: w-resize;
       }
 
-  .grid__block__resizer--height {
+  .stampa-grid__field__resizer--height {
         bottom: 0px;
         width: 100%;
         height: 0;
@@ -217,7 +180,7 @@
         cursor: s-resize;
       }
 
-  .grid__block__resizer--se {
+  .stampa-grid__field__resizer--se {
         bottom: -2px;
         right: -2px;
         border-radius: 50%;
@@ -226,7 +189,7 @@
         z-index: 1;
       }
 
-  .grid__block__resizer:hover {
+  .stampa-grid__field__resizer:hover {
         opacity: 1;
       }
 
@@ -239,43 +202,6 @@
   pointer-events: none;
   opacity: 0.15;
 }
-
-.stampa-select,
-.stampa-number {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-pack: justify;
-          justify-content: space-between;
-}
-
-  .stampa-select__label, .stampa-number__label {
-    width: 60%;
-    align-self: center;
-  }
-
-  .stampa-select__input, .stampa-number__input {
-    width: 38%;
-  }
-
-.stampa-select__select {
-    width: 38%;
-  }
-
-.stampa-text {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-pack: justify;
-          justify-content: space-between;
-}
-
-.stampa-text__label {
-    width: 38%;
-    align-self: center;
-  }
-
-.stampa-text__input {
-    width: 60%;
-  }
 
 .tooltip {
   position: relative
@@ -341,6 +267,82 @@
     .block-options__save .spinner {
       position: absolute;
     }
+.stampa-fields__filter {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+  }
+  .stampa-fields__items {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    padding-top: 0;
+  }
+  .stampa-fields__item {
+    text-align: center;
+    cursor: move;
+    border-radius: 4px;
+    padding: 10px
+  }
+  .stampa-fields__item:hover {
+      background: #f8f9f9;
+      background: var(--hover);
+    }
+  .stampa-fields__image {
+    display: block;
+    margin-bottom: 10px;
+    height: 24px;
+    width: 100%;
+  }
+  .stampa-fields__help {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .stampa-fields__help svg {
+      width: 10px;
+      height: 10px;
+    }
+
+.stampa-select,
+.stampa-number {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+}
+
+  .stampa-select__label, .stampa-number__label {
+    width: 60%;
+    align-self: center;
+  }
+
+  .stampa-select__input, .stampa-number__input {
+    width: 38%;
+  }
+
+.stampa-select__select {
+    width: 38%;
+  }
+
+.stampa-text {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+}
+
+.stampa-text__label {
+    width: 38%;
+    align-self: center;
+  }
+
+.stampa-text__input {
+    width: 60%;
+  }
+
 body.post-type-stampa-block #poststuff #post-body.columns-2 {
     margin-right: 0;
   }

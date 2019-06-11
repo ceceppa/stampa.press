@@ -2,36 +2,36 @@ import React, { useState } from 'react';
 import Store from '../store/store';
 import ToggleGroup from './ToggleGroup';
 
-function GroupItems({ group, blocks }) {
+export default function GroupFields({ group, blocks }) {
   const store = Store.useStore();
   const items = Object.keys(blocks[group]);
 
   return (
-    <div className="components__group__body">
+    <div className="stampa-fields__group__body">
       <ToggleGroup label={group}>
-        <ul className="components__items">
+        <ul className="stampa-fields__items">
           {items.map(id => {
             const block = blocks[group][id];
             return (
               <li
                 key={id}
-                className="components__item tooltip"
+                className="stampa-fields__item tooltip"
                 draggable="true"
                 onDragStart={() => store.set('draggedFieldId')(id)}
                 onDragEnd={() => store.set('draggedFieldId')(null)}
                 data-tooltip={block.tooltip}
               >
                 <img
-                  className="components__image"
+                  className="stampa-fields__image"
                   src={block.icon}
                   aria-hidden="true"
                   draggable="false"
                 />
-                <span className="components__label">{block.label}</span>
+                <span className="stampa-fields__label">{block.label}</span>
                 {block.help && (
                   <a
                     href={block.help}
-                    className="components__help"
+                    className="stampa-fields__help"
                     target="_blank"
                   >
                     <svg
@@ -51,5 +51,3 @@ function GroupItems({ group, blocks }) {
     </div>
   );
 }
-
-export default GroupItems;

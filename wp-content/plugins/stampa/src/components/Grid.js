@@ -172,9 +172,9 @@ function Grid() {
 
   const minHeight = store.get('rowHeight') * store.get('gridRows') + 'px';
   return (
-    <div className="stampa__grid grid">
+    <div className="stampa-grid">
       <div
-        className="grid__content"
+        className="stampa-grid__content editor-styles-wrapper"
         ref={ref}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -188,15 +188,17 @@ function Grid() {
       >
         <CSSGrid />
         {/* <SVGGrid drag={drag} /> */}
-        {fields.map(field => <Field field={field} key={field._stampa.key} />)}
-        {draggedFieldId &&
-          drag.over &&
+        {fields.map(field => (
+          <Field field={field} key={field._stampa.key} />
+        ))}
+        {draggedFieldId && drag.over && (
           <div
-            className="grid__highlight"
+            className="stampa-grid__highlight"
             style={{
               gridArea,
             }}
-          />}
+          />
+        )}
       </div>
     </div>
   );
