@@ -18,14 +18,14 @@ class Stampa {
 	 *
 	 * @var array
 	 */
-	private static $components = [];
+	private static $fields = [];
 
 	/**
 	 * Registered blocks by id
 	 *
 	 * @var array
 	 */
-	private static $components_by_id = [];
+	private static $fields_by_id = [];
 
 	/**
 	 * Register the filter/actions needed by stampa
@@ -117,12 +117,12 @@ class Stampa {
 		wp_enqueue_style( 'stampa-style', plugins_url( 'dist/style.css', __FILE__ ), [ 'wp-block-library' ], STAMPA_VERSION );
 
 		// Load the default stampa blocks.
-		self::load_blocks();
+		self::load_fields();
 
 		$data = array(
 			'home_url' => home_url(),
 			'nonce'    => wp_create_nonce( 'wp_rest' ),
-			'blocks'   => self::$components,
+			'blocks'   => self::$fields,
 			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
 			'post_ID'  => get_the_ID(),
 		);
@@ -161,17 +161,17 @@ class Stampa {
 	 *
 	 * @return void
 	 */
-	private static function load_blocks() {
+	private static function load_fields() {
 		$data = file_get_contents( __DIR__ . '/assets/blocks.json' );
 
-		$components = json_decode( $data );
+		$fields = json_decode( $data );
 
 		// "Adjust" the path for the images
 		$svg_path = plugins_url( 'assets/svg/', __FILE__ );
-		foreach ( $components as $block ) {
-			$block->data->icon = $svg_path . $block->data->icon;
+		foreach ( $fields as $field ) {
+			$field->data->icon = $svg_path . $field->data->icon;
 
-			self::add_block( $block->group, $block->id, (array) $block->data );
+			self::add_field( $field->group, $field->id, (array) $field->data );
 		}
 	}
 	/**********************************
@@ -182,30 +182,32 @@ class Stampa {
 	/**
 	 * Register a new Stampa block
 	 *
-	 * @param string $group the group where to register the block.
-	 * @param string $block_id the unique block ID.
-	 * @param array  $block_data the block data.
+	 * @param string $group the group where to register the field.
+	 * @param string $field_id the unique field ID.
+	 * @param array  $field_data the block data.
 	 * @return void
 	 */
-	public static function add_block( string $group, string $block_id, array $block_data ) {
+	public static function add_field( string $group, string $field_id, array $field_data ) {
 		$group = ucfirst( $group );
 
-		// No really needed.
-		unset( $block_data['react'] );
-		self::$components[ $group ][ $block_id ] = $block_data;
-		self::$components_by_id[ $block_id ]     = $block_data;
+		self::$fields_by_id[ $field_id ] = $field_data;
+
+		// No really needed in the front-end.
+		unset( $field_data['gutenberg'] );
+
+		self::$fields[ $group ][ $field_id ] = $field_data;
 	}
 
 	/**
 	 * Get the block by id
 	 *
-	 * @param string $block_id the Block unique ID.
+	 * @param string $field_id the Block unique ID.
 	 * @return mixed
 	 */
-	private static function get_block_by_id( string $block_id ) {
-		$block = self::$components_by_id[ $block_id ] ?? null;
+	private static function get_block_by_id( string $field_id ) {
+		$block = self::$fields_by_id[ $field_id ] ?? null;
 
-		return apply_filters( 'stampa/block/' . $block_id, $block );
+		return apply_filters( 'stampa/block/' . $field_id, $block );
 	}
 
 	/**
@@ -293,7 +295,7 @@ class Stampa {
 		$replace['{{stampa.grid_style}}'] = $grid_style;
 
 		// The React components.
-		self::load_blocks();
+		self::load_fields();
 
 		$gutenberg_components = [];
 		foreach ( $fields_params as $stampa_field ) {

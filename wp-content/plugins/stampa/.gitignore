@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .vuepress/dist
-.cache
+.cachevendor/
+vendor
