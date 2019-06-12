@@ -4,13 +4,20 @@
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { InspectorControls } = wp.editor;
+const { InspectorControls, MediaUpload } = wp.editor;
 const {
+  PanelBody, IconButton,
   {{stampa.gutenberg_blocks}}
 } = wp.components;
 const { Fragment, Component } = wp.element;
 
-registerBlockType('nine3/{{stampa.sanitized_title}}', {
+// Default attributes are set to avoid React throwing an error
+// when start typeing something in the brew new added module
+const defaultAttributes = {
+{{stampa.default_attributes}}
+};
+
+registerBlockType('stampa/{{stampa.sanitized_title}}', {
   title: __('{{stampa.block_title}}'),
   icon: 'welcome-write-blog',
   category: 'stampa-blocks',
@@ -29,20 +36,29 @@ registerBlockType('nine3/{{stampa.sanitized_title}}', {
    * @param {object} props Gutenberg props.
    * @return {JSX} JSX block.
    */
-  edit: function ({ className, attributes }) {
-    console.info(className, attributes);
+  edit: function(props) {
+      const { className, attributes = defaultAttributes, setAttributes} = props;
 
-    return (
-      <Fragment>
-        <div className="stampa-grid" style="{{stampa.grid_style}}">
-          Et uailah
+      function updateAttribute(field, value) {
+        const attribute = {};
+        attribute[field] = value;
+
+        setAttributes(attribute);
+      }
+
+      return (
+        {{stampa.render_container_start}}
+		    <div className={`${className} stampa-block`}>
+          <div className="{{stampa.sanitized_title}}" style={{{{stampa.block_style}}}}>
+        {{stampa.render_content}}
+          </div>
         </div>
-      </Fragment>
-    );
+        {{stampa.render_container_end}}
+      );
   },
 
   /**
    * Let the content to be rendered with PHP
    */
-  save: null,
+  save: () => null,
 });

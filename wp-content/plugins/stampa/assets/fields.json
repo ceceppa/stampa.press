@@ -1,6 +1,6 @@
 [
   {
-    "group": "Gutenberg",
+    "group": "Stampa",
     "id": "heading",
     "data": {
       "label": "Heading",
@@ -9,13 +9,17 @@
       "html": "<{level}>{placeholder}</{level}>",
       "className": "wp-block-heading",
       "gutenberg": {
-        "block": "Heading",
+        "block": "TextControl",
         "react": [
-          "<Heading",
-          " gridArea={{gridArea}}",
-          " value={ `fieldName` }",
-          "onChange={ this.`onFieldNameChanged }",
-          "/>"
+          "<{{stampa.value.level}}",
+          " className=\"stampa-field\"",
+          " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
+          "<textarea type='text' className='stampa-field__height'",
+          " value={attributes.{{stampa.field_name}}}",
+          " placeholder='{{stampa.value.placeholder}}'",
+          " onChange={e => updateAttribute('{{stampa._field_name}}', e.value)}",
+          "/>",
+          "</{{stampa.value.level}}>"
         ]
       },
       "options": [

@@ -13,8 +13,8 @@
   "scripts": {
     "test": "jest",
     "docs:build": "vuepress build",
-    "dev": "parcel watch src/index.js & parcel watch postcss/style.pcss",
-    "build": "parcel build src/index.js && parcel build postcss/style.pcss"
+    "dev": "parcel watch src/index.js & parcel watch postcss/style.pcss & parcel watch postcss/stampa-editor.pcss",
+    "build": "parcel build src/index.js && parcel build postcss/style.pcss && parcel build postcss/stampa-editor.pcss"
   },
   "eslintConfig": {
     "extends": "react-app"

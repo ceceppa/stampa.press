@@ -54,7 +54,7 @@ function register_stampa_blocks_category( $categories, $post ) {
 function enqueue_blocks() {
 	wp_enqueue_script(
 		'stampa-blocks-js',
-		plugins_url( '/dist/index.js', dirname( __FILE__ ) ),
+		plugins_url( '/stampa/dist/index.js', dirname( __FILE__ ) ),
 		[ 'wp-blocks', 'wp-i18n', 'wp-element' ],
 		filemtime( plugin_dir_path( __DIR__ ) . 'dist/index.js' ),
 		true
@@ -72,6 +72,7 @@ function block_renderer() {
 	foreach ( $files as $file ) {
 		$block = sanitize_title( basename( $file ) );
 		$block = str_replace( '.js', '', $block );
+
 		register_block_type(
 			'stampa/' . sanitize_title( $block ),
 			[

@@ -117,116 +117,79 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"blocks/hero.js":[function(require,module,exports) {
-/**
- * BLOCK: Hero
- *
- */
-var __ = wp.i18n.__;
-var registerBlockType = wp.blocks.registerBlockType;
-var _wp$editor = wp.editor,
-    InspectorControls = _wp$editor.InspectorControls,
-    MediaUpload = _wp$editor.MediaUpload;
-var _wp$components = wp.components,
-    PanelBody = _wp$components.PanelBody,
-    IconButton = _wp$components.IconButton,
-    TextControl = _wp$components.TextControl;
-var _wp$element = wp.element,
-    Fragment = _wp$element.Fragment,
-    Component = _wp$element.Component; // Default attributes are set to avoid React throwing an error
-// when start typeing something in the brew new added module
+})({"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
 
-var defaultAttributes = {
-  backgrdoundImage: null
-};
-registerBlockType('stampa/hero', {
-  title: __('Hero'),
-  icon: 'welcome-write-blog',
-  category: 'stampa-blocks',
-  keywords: [],
-  multiple: true,
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
 
-  /**
-   * The edit function describes the structure of your block in the context of the editor.
-   * This represents what the editor will render when the block is used.
-   *
-   * The "edit" property must be a valid function.
-   *
-   * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-   *
-   * @param {object} props Gutenberg props.
-   * @return {JSX} JSX block.
-   */
-  edit: function edit(props) {
-    var className = props.className,
-        _props$attributes = props.attributes,
-        attributes = _props$attributes === void 0 ? defaultAttributes : _props$attributes,
-        setAttributes = props.setAttributes;
+  return bundleURL;
+}
 
-    function updateAttribute(field, value) {
-      var attribute = {};
-      attribute[field] = value;
-      setAttributes(attribute);
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
     }
 
-    return React.createElement(Fragment, null, React.createElement(InspectorControls, null, React.createElement(PanelBody, {
-      title: __('Options')
-    }, React.createElement(MediaUpload, {
-      onSelect: function onSelect(image) {
-        return updateAttribute('backgroundImage', image);
-      },
-      type: "image",
-      value: attributes.backgroundImage,
-      render: function render(_ref) {
-        var open = _ref.open;
-        return React.createElement(IconButton, {
-          className: "button",
-          label: __('Set background Image'),
-          icon: "edit",
-          onClick: open
-        }, "Set background Image");
-      }
-    }))), React.createElement("div", {
-      className: "".concat(className, " stampa-block")
-    }, React.createElement("div", {
-      className: "hero",
-      style: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
-        gridTemplateRows: '1fr 1fr 1fr 1fr 1fr ',
-        gridGap: '5%',
-        minHeight: '230px'
-      }
-    }, React.createElement("h3", {
-      className: "stampa-field",
-      style: {
-        gridRowStart: 2,
-        gridColumnStart: 2,
-        gridRowEnd: 5,
-        gridColumnEnd: 12
-      }
-    }, React.createElement("input", {
-      type: "text",
-      value: attributes.heading,
-      placeholder: "Heading...",
-      onChange: function onChange(e) {
-        return updateAttribute('{{stampa._field_name}}', e.value);
-      }
-    })))));
-  },
+    cssTimeout = null;
+  }, 50);
+}
 
-  /**
-   * Let the content to be rendered with PHP
-   */
-  save: function save() {
-    return null;
-  }
-});
-},{}],"index.js":[function(require,module,exports) {
-"use strict";
+module.exports = reloadCSS;
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"stampa-editor.pcss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
 
-require("./blocks/hero");
-},{"./blocks/hero":"blocks/hero.js"}],"../../../../../../../../../usr/local/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -254,7 +217,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46079" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40725" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -429,5 +392,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../../../../usr/local/lib/node_modules/parcel/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/index.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
+//# sourceMappingURL=/stampa-editor.js.map

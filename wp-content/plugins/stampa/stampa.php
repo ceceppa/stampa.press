@@ -118,6 +118,9 @@ class Stampa {
 		// The style.
 		wp_enqueue_style( 'stampa-style', plugins_url( 'dist/style.css', __FILE__ ), [ 'wp-block-library' ], STAMPA_VERSION );
 
+		// Style needed for Gutenberg only
+		wp_enqueue_style( 'stampa-editor', plugins_url( 'dist/stampa-editor.css', __FILE__ ), [], STAMPA_VERSION );
+
 		// Load the default stampa blocks.
 		self::load_fields();
 
@@ -142,7 +145,6 @@ class Stampa {
 
 		wp_register_script( 'stampa-script', plugins_url( 'dist/index.js', __FILE__ ), [], STAMPA_VERSION, true );
 		wp_localize_script( 'stampa-script', 'stampa', $data );
-		wp_enqueue_script( 'stampa-script' );
 	}
 
 	/**
@@ -252,11 +254,84 @@ class Stampa {
 	 *
 	 * @return void
 	 */
-	private static function generate_options( array $options_params ) : string {
+	private static function generate_options( array $options_params ) : array {
 		// The options boilerplate.
-		$boilerplate = file_get_contents( __DIR__ . '/assets/gutenberg/inspector-controls.boilerplace.js' );
+		$options_boilerplate = file_get_contents( __DIR__ . '/assets/gutenberg/inspector-controls.boilerplace.js' );
 
-		return '';
+		$return = [
+			'default_attributes'     => [],
+			'options_content'        => '',
+			'render_container_start' => '',
+			'render_container_end'   => '',
+			'block_style'            => '',
+		];
+
+		if ( $options_params['hasBackgroundOption'] == false ) {
+			return $return;
+		}
+
+		return [
+			'default_attributes'     => [ 'backgrdoundImage: null' ],
+			'render_container_start' => '<Fragment>' . $options_boilerplate,
+			'render_container_end'   => '</Fragment>',
+			'block_style'            => [ "backgroundImage: 'url( ' + attributes.backgroundImage + ' )'" ],
+		];
+	}
+
+	/**
+	 * Generate the block body
+	 *
+	 * @param array $fields_params the fields to render.
+	 * @return void
+	 */
+	private static function generate_block_body( array $fields_params ) {
+		$render_content = [];
+
+		foreach ( $fields_params as $field ) {
+			$default = self::get_field_by_id( $field['id'] );
+
+			$react_code = join( PHP_EOL, $default['gutenberg']->react );
+
+			$stampa = $field['_stampa'];
+
+			$replace['grid_row_start']    = $stampa['startRow'];
+			$replace['grid_row_end']      = intval( $stampa['startRow'] ) + intval( $stampa['endRow'] );
+			$replace['grid_column_start'] = $stampa['startColumn'];
+			$replace['grid_column_end']   = intval( $stampa['startColumn'] ) + intval( $stampa['endColumn'] );
+			$replace['field_name']        = $stampa['name'];
+
+			// The values.
+			foreach ( $field['_values'] as $key => $value ) {
+				$replace[ 'value.' . $key ] = $value;
+			}
+
+			$render_content[] = self::replace( $replace, $react_code );
+		}
+
+		return [
+			'render_content' => $render_content,
+		];
+	}
+
+	/**
+	 * Replace all the {{stampa}} occurrences defined in the $replace array
+	 * with the corrensponding value.
+	 *
+	 * @param array  $replace the array containing the replacing information.
+	 * @param string $subject the string to modify.
+	 * @return string
+	 */
+	private static function replace( array $replace, string $subject ) : string {
+		// Let's do the replace.
+		foreach ( $replace as $what => $to ) {
+			if ( is_array( $to ) ) {
+				$to = join( PHP_EOL . ',', $to );
+			}
+
+			$subject = str_replace( "{{stampa.{$what}}}", $to, $subject );
+		}
+
+		return $subject;
 	}
 
 	/**
@@ -294,25 +369,6 @@ class Stampa {
 		$replace['block_title']     = $title;
 		$replace['sanitized_title'] = sanitize_title( $title );
 
-		/**
-		 * Stampa Grid style
-		*/
-		$grid_style = sprintf(
-			'
-				display: grid;
-				grid-template-columns: repeat(1fr, %d);
-				grid-template-rows: repeat(1fr, %d);
-				gap: %dpx;
-				min-height: 360px;
-			',
-			$grid_params['columns'],
-			$grid_params['rows'],
-			$grid_params['gap'],
-			$grid_params['gap']
-		);
-
-		$replace['grid_style'] = $grid_style;
-
 		// The React components.
 		self::load_fields();
 
@@ -333,14 +389,35 @@ class Stampa {
 		$replace['gutenberg_blocks'] = join( ',' . PHP_EOL . '  ', $gutenberg_components ) . ',';
 
 		// The block options.
-		$replace['block_options'] = self::generate_options( $options_params );
+		$replace = array_merge( $replace, self::generate_options( $options_params ) );
 
-		// Let's do the replace.
-		foreach ( $replace as $what => $to ) {
-			$boilerplate = str_replace( "{{stampa.{$what}}}", $to, $boilerplate );
+		// The module fields.
+		$replace = array_merge( $replace, self::generate_block_body( $fields_params ) );
+
+		/**
+		 * Stampa Grid style
+		 */
+		$min_height = intval( $grid_params['rowHeight'] ) * intval( $grid_params['rows'] );
+
+		// Can't use "repeat" property -.-. Why people use React?
+		$template_columns = str_repeat( '1fr ', $grid_params['columns'] );
+		$template_rows    = str_repeat( '1fr ', $grid_params['rows'] );
+
+		$grid_style = [
+			"display: 'grid'",
+			"gridTemplateColumns: '$template_columns'",
+			"gridTemplateRows: '$template_rows'",
+			"gridGap: '{$grid_params['gap']}%'",
+			"minHeight: '{$min_height}px'",
+		];
+
+		if ( isset( $replace['block_style'] ) ) {
+			$replace['block_style'] = $grid_style;
+		} else {
+			$replace['block_style'] = array_merge( $replace['block_style'], $grid_params );
 		}
 
-		file_put_contents( $output_file, $boilerplate );
+		file_put_contents( $output_file, self::replace( $replace, $boilerplate ) );
 
 		// Compile the JS file.
 		exec( 'parcel build stampa/index.js -d stampa/dist' );
