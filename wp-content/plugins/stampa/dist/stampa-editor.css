@@ -11,6 +11,10 @@
       font-size: inherit;
       margin: 0;
     }
+  .stampa-block .stampa-field input,
+    .stampa-block .stampa-field textarea {
+      background: transparent;
+    }
   .stampa-block .stampa-field__height {
       height: 100%;
     }

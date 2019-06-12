@@ -1,5 +1,5 @@
 /**
- * BLOCK: Hero
+ * BLOCK: Another one
  *
  */
 const { __ } = wp.i18n;
@@ -18,15 +18,15 @@ const defaultAttributes = {
 backgroundImage: {}
 };
 
-registerBlockType('stampa/hero', {
-  title: __('Hero'),
+registerBlockType('stampa/another-one', {
+  title: __('Another one'),
   icon: 'welcome-write-blog',
   category: 'stampa-blocks',
   keywords: [],
 
   multiple: true,
 
-  attributes: {"backgroundImage":{"type":"object"},"heading":{"type":"string"},"intro":{"type":"string"},"button":{"type":"string"}},
+  attributes: {"backgroundImage":{"type":"object"},"heading":{"type":"string"},"text":{"type":"string"},"button":{"type":"string"}},
 
   /**
    * The edit function describes the structure of your block in the context of the editor.
@@ -70,38 +70,49 @@ registerBlockType('stampa/hero', {
   </PanelBody>
 </InspectorControls>
 		    <div className={`${className} stampa-block`}>
-          <div className="hero" style={{backgroundImage: `url(${attributes.backgroundImage && attributes.backgroundImage.url})`
+          <div className="another-one" style={{backgroundImage: `url(${attributes.backgroundImage && attributes.backgroundImage.url})`
 ,display: 'grid'
 ,gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr '
-,gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr '
-,gridGap: '10px'
-,height: '450px'}}>
+,gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr '
+,gridGap: '5px'
+,height: '460px'}}>
         <h2
  className="stampa-field"
- style={{gridRowStart: 2, gridColumnStart: 2, gridRowEnd: 8, gridColumnEnd: 9}}>
+ style={{gridRowStart: 2, gridColumnStart: 2, gridRowEnd: 3, gridColumnEnd: 9}}>
 <textarea type='text' className='stampa-field__height'
  value={attributes.heading}
- placeholder='Title'
+ placeholder='Heading'
  onChange={e => updateAttribute('heading', e.target.value)}
 />
 </h2>
 <div
  className="stampa-field"
- style={{gridRowStart: 9, gridColumnStart: 2, gridRowEnd: 12, gridColumnEnd: 7}}>
+ style={{gridRowStart: 4, gridColumnStart: 2, gridRowEnd: 8, gridColumnEnd: 8}}>
 <TextareaControl
- value={attributes.intro}
- placeholder='Intro'
- onChange={value => updateAttribute('intro', value)}
+ value={attributes.text}
+ placeholder='Write text...'
+ onChange={value => updateAttribute('text', value)}
 />
 </div>
 <div
  className="stampa-field"
- style={{gridRowStart: 13, gridColumnStart: 2, gridRowEnd: 15, gridColumnEnd: 4}}>
+ style={{gridRowStart: 9, gridColumnStart: 2, gridRowEnd: 10, gridColumnEnd: 5}}>
 <Button
  className="stampa-field"
- style={{gridRowStart: 13, gridColumnStart: 2, gridRowEnd: 15, gridColumnEnd: 4}}
+ style={{gridRowStart: 9, gridColumnStart: 2, gridRowEnd: 10, gridColumnEnd: 5}}
  value={attributes.button}
- placeholder='Button'
+ placeholder='Add text...'
+ onChange={e => updateAttribute('button', e.target.value)}
+/>
+</div>
+<div
+ className="stampa-field"
+ style={{gridRowStart: 9, gridColumnStart: 6, gridRowEnd: 10, gridColumnEnd: 8}}>
+<Button
+ className="stampa-field"
+ style={{gridRowStart: 9, gridColumnStart: 6, gridRowEnd: 10, gridColumnEnd: 8}}
+ value={attributes.button}
+ placeholder='Add text...'
  onChange={e => updateAttribute('button', e.target.value)}
 />
 </div>

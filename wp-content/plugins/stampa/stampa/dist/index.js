@@ -147,17 +147,17 @@ registerBlockType('stampa/hero', {
   keywords: [],
   multiple: true,
   attributes: {
-    backgroundImage: {
-      type: 'object'
+    "backgroundImage": {
+      "type": "object"
     },
-    heading: {
-      type: 'string'
+    "heading": {
+      "type": "string"
     },
-    intro: {
-      type: 'string'
+    "intro": {
+      "type": "string"
     },
-    button: {
-      type: 'string'
+    "button": {
+      "type": "string"
     }
   },
 
@@ -240,8 +240,8 @@ registerBlockType('stampa/hero', {
     }, React.createElement(TextareaControl, {
       value: attributes.intro,
       placeholder: "Intro",
-      onChange: function onChange(e) {
-        return updateAttribute('intro', e);
+      onChange: function onChange(value) {
+        return updateAttribute('intro', value);
       }
     })), React.createElement("div", {
       className: "stampa-field",
@@ -274,11 +274,191 @@ registerBlockType('stampa/hero', {
     return null;
   }
 });
+},{}],"blocks/another-one.js":[function(require,module,exports) {
+/**
+ * BLOCK: Another one
+ *
+ */
+var __ = wp.i18n.__;
+var registerBlockType = wp.blocks.registerBlockType;
+var _wp$editor = wp.editor,
+    InspectorControls = _wp$editor.InspectorControls,
+    MediaUpload = _wp$editor.MediaUpload;
+var _wp$components = wp.components,
+    PanelBody = _wp$components.PanelBody,
+    IconButton = _wp$components.IconButton,
+    TextareaControl = _wp$components.TextareaControl,
+    Button = _wp$components.Button;
+var _wp$element = wp.element,
+    Fragment = _wp$element.Fragment,
+    Component = _wp$element.Component; // Default attributes are set to avoid React throwing an error
+// when start typeing something in the brew new added module
+
+var defaultAttributes = {
+  backgroundImage: {}
+};
+registerBlockType('stampa/another-one', {
+  title: __('Another one'),
+  icon: 'welcome-write-blog',
+  category: 'stampa-blocks',
+  keywords: [],
+  multiple: true,
+  attributes: {
+    "backgroundImage": {
+      "type": "object"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "button": {
+      "type": "string"
+    }
+  },
+
+  /**
+   * The edit function describes the structure of your block in the context of the editor.
+   * This represents what the editor will render when the block is used.
+   *
+   * The "edit" property must be a valid function.
+   *
+   * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+   *
+   * @param {object} props Gutenberg props.
+   * @return {JSX} JSX block.
+   */
+  edit: function edit(props) {
+    var className = props.className,
+        _props$attributes = props.attributes,
+        attributes = _props$attributes === void 0 ? defaultAttributes : _props$attributes,
+        setAttributes = props.setAttributes;
+
+    function updateAttribute(field, value) {
+      var attribute = {};
+      attribute[field] = value;
+      setAttributes(attribute);
+    }
+
+    return React.createElement(Fragment, null, React.createElement(InspectorControls, null, React.createElement(PanelBody, {
+      title: __('Options')
+    }, React.createElement(MediaUpload, {
+      onSelect: function onSelect(image) {
+        return updateAttribute('backgroundImage', image);
+      },
+      type: "image",
+      value: attributes.backgroundImage,
+      render: function render(_ref) {
+        var open = _ref.open;
+        return React.createElement(IconButton, {
+          className: "button",
+          label: __('Set background Image'),
+          icon: "edit",
+          onClick: open
+        }, "Set background Image");
+      }
+    }))), React.createElement("div", {
+      className: "".concat(className, " stampa-block")
+    }, React.createElement("div", {
+      className: "another-one",
+      style: {
+        backgroundImage: "url(".concat(attributes.backgroundImage && attributes.backgroundImage.url, ")"),
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+        gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+        gridGap: '5px',
+        height: '460px'
+      }
+    }, React.createElement("h2", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 2,
+        gridColumnStart: 2,
+        gridRowEnd: 3,
+        gridColumnEnd: 9
+      }
+    }, React.createElement("textarea", {
+      type: "text",
+      className: "stampa-field__height",
+      value: attributes.heading,
+      placeholder: "Heading",
+      onChange: function onChange(e) {
+        return updateAttribute('heading', e.target.value);
+      }
+    })), React.createElement("div", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 4,
+        gridColumnStart: 2,
+        gridRowEnd: 8,
+        gridColumnEnd: 8
+      }
+    }, React.createElement(TextareaControl, {
+      value: attributes.text,
+      placeholder: "Write text...",
+      onChange: function onChange(value) {
+        return updateAttribute('text', value);
+      }
+    })), React.createElement("div", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 9,
+        gridColumnStart: 2,
+        gridRowEnd: 10,
+        gridColumnEnd: 5
+      }
+    }, React.createElement(Button, {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 9,
+        gridColumnStart: 2,
+        gridRowEnd: 10,
+        gridColumnEnd: 5
+      },
+      value: attributes.button,
+      placeholder: "Add text...",
+      onChange: function onChange(e) {
+        return updateAttribute('button', e.target.value);
+      }
+    })), React.createElement("div", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 9,
+        gridColumnStart: 6,
+        gridRowEnd: 10,
+        gridColumnEnd: 8
+      }
+    }, React.createElement(Button, {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 9,
+        gridColumnStart: 6,
+        gridRowEnd: 10,
+        gridColumnEnd: 8
+      },
+      value: attributes.button,
+      placeholder: "Add text...",
+      onChange: function onChange(e) {
+        return updateAttribute('button', e.target.value);
+      }
+    })))));
+  },
+
+  /**
+   * Let the content to be rendered with PHP
+   */
+  save: function save() {
+    return null;
+  }
+});
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("./blocks/hero");
-},{"./blocks/hero":"blocks/hero.js"}],"../../../../../../../../../usr/local/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+require("./blocks/another-one");
+},{"./blocks/hero":"blocks/hero.js","./blocks/another-one":"blocks/another-one.js"}],"../../../../../../../../../usr/local/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

@@ -158,12 +158,12 @@ class Stampa {
 
 		$post_id = $_GET['post'] ?? null;
 
-		if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
+		// if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
 			wp_enqueue_script( 'stampa-script' );
 
 			echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
 			echo '<div id="stampa"></div>';
-		}
+		// }
 	}
 
 	/**
