@@ -1,2 +1,18 @@
-.stampa-block .stampa-field{margin:0;padding:0}.stampa-block .stampa-field *{width:100%}.stampa-block .stampa-field__height{height:100%}
+.stampa-block .stampa-field {
+    margin: 0;
+    padding: 0
+  }
+  .stampa-block .stampa-field::before,
+    .stampa-block .stampa-field::after {
+      display: none;
+    }
+  .stampa-block .stampa-field * {
+      width: 100%;
+      font-size: inherit;
+      margin: 0;
+    }
+  .stampa-block .stampa-field__height {
+      height: 100%;
+    }
+
 /*# sourceMappingURL=/stampa-editor.css.map */

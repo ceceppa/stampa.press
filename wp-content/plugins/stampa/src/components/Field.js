@@ -78,6 +78,7 @@ export default function Block({ field }) {
       stampa-grid__field--${field._stampa.id} ${activeClass} ${resizingClass}`}
       onDragStart={dragMe}
       data-key={field._stampa.key}
+      data-type={field._stampa.id}
       style={{
         gridArea,
       }}

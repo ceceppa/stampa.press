@@ -42,6 +42,24 @@
 
     &:hover {
       border: 1px solid var(--blue);
+
+      &[data-type]::after {
+        opacity: 1;
+      }
+    }
+
+    &[data-type]::after {
+      content: attr(data-type);
+      background: #888;
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 2px;
+      color: #fff;
+      text-transform: uppercase;
+      pointer-events: none;
+      opacity: 0.1;
+      transition: all 0.15s ease;
     }
 
     &.resizing {
@@ -51,8 +69,7 @@
     &.active {
       border-color: var(--active);
 
-      &:hover {
-      }
+      &:hover {}
     }
 
     &__content {

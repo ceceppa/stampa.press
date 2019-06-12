@@ -118,7 +118,7 @@ class Stampa {
 		// The style.
 		wp_enqueue_style( 'stampa-style', plugins_url( 'dist/style.css', __FILE__ ), [ 'wp-block-library' ], STAMPA_VERSION );
 
-		// Style needed for Gutenberg only
+		// Style needed for Gutenberg only.
 		wp_enqueue_style( 'stampa-editor', plugins_url( 'dist/stampa-editor.css', __FILE__ ), [], STAMPA_VERSION );
 
 		// Load the default stampa blocks.
@@ -154,14 +154,16 @@ class Stampa {
 	 * @return void
 	 */
 	public static function render_stampa( $post ) {
-		wp_enqueue_script( 'stampa' );
+		global $pagenow;
 
-		// $stylesheets = get_editor_stylesheets();
-		// foreach ( $stylesheets as $ss ) {
-		// echo '<link rel="stylesheet" href="' . $ss . '" />';
-		// }
-		echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
-		echo '<div id="stampa"></div>';
+		$post_id = $_GET['post'] ?? null;
+
+		if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
+			wp_enqueue_script( 'stampa-script' );
+
+			echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
+			echo '<div id="stampa"></div>';
+		}
 	}
 
 	/**
@@ -263,7 +265,7 @@ class Stampa {
 			'options_content'        => '',
 			'render_container_start' => '',
 			'render_container_end'   => '',
-			'block_style'            => '',
+			'attributes'             => [],
 		];
 
 		if ( $options_params['hasBackgroundOption'] == false ) {
@@ -271,10 +273,15 @@ class Stampa {
 		}
 
 		return [
-			'default_attributes'     => [ 'backgrdoundImage: null' ],
+			'default_attributes'     => [ 'backgroundImage: {}' ],
 			'render_container_start' => '<Fragment>' . $options_boilerplate,
 			'render_container_end'   => '</Fragment>',
-			'block_style'            => [ "backgroundImage: 'url( ' + attributes.backgroundImage + ' )'" ],
+			'block_style'            => [ "backgroundImage: `url(\${attributes.backgroundImage && attributes.backgroundImage.url})`" ],
+			'attributes'             => [
+				'backgroundImage' => [
+					'type' => 'object',
+				],
+			],
 		];
 	}
 
@@ -284,7 +291,7 @@ class Stampa {
 	 * @param array $fields_params the fields to render.
 	 * @return void
 	 */
-	private static function generate_block_body( array $fields_params ) {
+	private static function generate_block_body( array $fields_params, $attributes ) {
 		$render_content = [];
 
 		foreach ( $fields_params as $field ) {
@@ -305,10 +312,15 @@ class Stampa {
 				$replace[ 'value.' . $key ] = $value;
 			}
 
+			$attributes[ $stampa['name'] ] = [
+				'type' => 'string',
+			];
+
 			$render_content[] = self::replace( $replace, $react_code );
 		}
 
 		return [
+			'attributes'     => $attributes,
 			'render_content' => $render_content,
 		];
 	}
@@ -325,7 +337,11 @@ class Stampa {
 		// Let's do the replace.
 		foreach ( $replace as $what => $to ) {
 			if ( is_array( $to ) ) {
-				$to = join( PHP_EOL . ',', $to );
+				if ( $what == 'render_content' ) {
+					$to = join( PHP_EOL, $to );
+				} else {
+					$to = join( PHP_EOL . ',', $to );
+				}
 			}
 
 			$subject = str_replace( "{{stampa.{$what}}}", $to, $subject );
@@ -379,9 +395,10 @@ class Stampa {
 				continue;
 			}
 
-			$gutenberg              = $field['gutenberg'];
-			$gutenberg_components[] = $gutenberg->block;
-
+			$gutenberg = $field['gutenberg'];
+			if ( isset( $gutenberg->block ) ) {
+				$gutenberg_components[] = $gutenberg->block;
+			}
 		}
 
 		// Unique components to load.
@@ -392,8 +409,9 @@ class Stampa {
 		$replace = array_merge( $replace, self::generate_options( $options_params ) );
 
 		// The module fields.
-		$replace = array_merge( $replace, self::generate_block_body( $fields_params ) );
+		$replace = array_merge( $replace, self::generate_block_body( $fields_params, $replace['attributes'] ) );
 
+		$replace['attributes'] = json_encode( $replace['attributes'] );
 		/**
 		 * Stampa Grid style
 		 */
@@ -407,14 +425,14 @@ class Stampa {
 			"display: 'grid'",
 			"gridTemplateColumns: '$template_columns'",
 			"gridTemplateRows: '$template_rows'",
-			"gridGap: '{$grid_params['gap']}%'",
-			"minHeight: '{$min_height}px'",
+			"gridGap: '{$grid_params['gap']}px'",
+			"height: '{$min_height}px'",
 		];
 
 		if ( isset( $replace['block_style'] ) ) {
-			$replace['block_style'] = $grid_style;
+			$replace['block_style'] = array_merge( $replace['block_style'], $grid_style );
 		} else {
-			$replace['block_style'] = array_merge( $replace['block_style'], $grid_params );
+			$replace['block_style'] = $grid_style;
 		}
 
 		file_put_contents( $output_file, self::replace( $replace, $boilerplate ) );

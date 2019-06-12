@@ -5,13 +5,13 @@
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, MediaUpload } = wp.editor;
-const { PanelBody, IconButton, TextControl } = wp.components;
+const { PanelBody, IconButton, TextareaControl, Button } = wp.components;
 const { Fragment, Component } = wp.element;
 
 // Default attributes are set to avoid React throwing an error
 // when start typeing something in the brew new added module
 const defaultAttributes = {
-  backgrdoundImage: null,
+  backgroundImage: {},
 };
 
 registerBlockType('stampa/hero', {
@@ -21,6 +21,13 @@ registerBlockType('stampa/hero', {
   keywords: [],
 
   multiple: true,
+
+  attributes: {
+    backgroundImage: { type: 'object' },
+    heading: { type: 'string' },
+    intro: { type: 'string' },
+    button: { type: 'string' },
+  },
 
   /**
    * The edit function describes the structure of your block in the context of the editor.
@@ -68,30 +75,71 @@ registerBlockType('stampa/hero', {
           <div
             className="hero"
             style={{
+              backgroundImage: `url(${attributes.backgroundImage &&
+                attributes.backgroundImage.url})`,
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
-              gridTemplateRows: '1fr 1fr 1fr 1fr 1fr ',
-              gridGap: '5%',
-              minHeight: '230px',
+              gridTemplateColumns:
+                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+              gridTemplateRows:
+                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+              gridGap: '10px',
+              height: '450px',
             }}
           >
-            <h3
+            <h2
               className="stampa-field"
               style={{
                 gridRowStart: 2,
                 gridColumnStart: 2,
-                gridRowEnd: 5,
-                gridColumnEnd: 12,
+                gridRowEnd: 8,
+                gridColumnEnd: 9,
               }}
             >
-              <input
+              <textarea
                 type="text"
+                className="stampa-field__height"
                 value={attributes.heading}
-                placeholder="Heading..."
-                onChange={e =>
-                  updateAttribute('{{stampa._field_name}}', e.value)}
+                placeholder="Title"
+                onChange={e => updateAttribute('heading', e.target.value)}
               />
-            </h3>
+            </h2>
+            <div
+              className="stampa-field"
+              style={{
+                gridRowStart: 9,
+                gridColumnStart: 2,
+                gridRowEnd: 12,
+                gridColumnEnd: 7,
+              }}
+            >
+              <TextareaControl
+                value={attributes.intro}
+                placeholder="Intro"
+                onChange={e => updateAttribute('intro', e)}
+              />
+            </div>
+            <div
+              className="stampa-field"
+              style={{
+                gridRowStart: 13,
+                gridColumnStart: 2,
+                gridRowEnd: 15,
+                gridColumnEnd: 4,
+              }}
+            >
+              <Button
+                className="stampa-field"
+                style={{
+                  gridRowStart: 13,
+                  gridColumnStart: 2,
+                  gridRowEnd: 15,
+                  gridColumnEnd: 4,
+                }}
+                value={attributes.button}
+                placeholder="Button"
+                onChange={e => updateAttribute('button', e.target.value)}
+              />
+            </div>
           </div>
         </div>
       </Fragment>

@@ -130,14 +130,15 @@ var _wp$editor = wp.editor,
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
     IconButton = _wp$components.IconButton,
-    TextControl = _wp$components.TextControl;
+    TextareaControl = _wp$components.TextareaControl,
+    Button = _wp$components.Button;
 var _wp$element = wp.element,
     Fragment = _wp$element.Fragment,
     Component = _wp$element.Component; // Default attributes are set to avoid React throwing an error
 // when start typeing something in the brew new added module
 
 var defaultAttributes = {
-  backgrdoundImage: null
+  backgroundImage: {}
 };
 registerBlockType('stampa/hero', {
   title: __('Hero'),
@@ -145,6 +146,20 @@ registerBlockType('stampa/hero', {
   category: 'stampa-blocks',
   keywords: [],
   multiple: true,
+  attributes: {
+    backgroundImage: {
+      type: 'object'
+    },
+    heading: {
+      type: 'string'
+    },
+    intro: {
+      type: 'string'
+    },
+    button: {
+      type: 'string'
+    }
+  },
 
   /**
    * The edit function describes the structure of your block in the context of the editor.
@@ -191,26 +206,63 @@ registerBlockType('stampa/hero', {
     }, React.createElement("div", {
       className: "hero",
       style: {
+        backgroundImage: "url(".concat(attributes.backgroundImage && attributes.backgroundImage.url, ")"),
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
-        gridTemplateRows: '1fr 1fr 1fr 1fr 1fr ',
-        gridGap: '5%',
-        minHeight: '230px'
+        gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+        gridGap: '10px',
+        height: '450px'
       }
-    }, React.createElement("h3", {
+    }, React.createElement("h2", {
       className: "stampa-field",
       style: {
         gridRowStart: 2,
         gridColumnStart: 2,
-        gridRowEnd: 5,
-        gridColumnEnd: 12
+        gridRowEnd: 8,
+        gridColumnEnd: 9
       }
-    }, React.createElement("input", {
+    }, React.createElement("textarea", {
       type: "text",
+      className: "stampa-field__height",
       value: attributes.heading,
-      placeholder: "Heading...",
+      placeholder: "Title",
       onChange: function onChange(e) {
-        return updateAttribute('{{stampa._field_name}}', e.value);
+        return updateAttribute('heading', e.target.value);
+      }
+    })), React.createElement("div", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 9,
+        gridColumnStart: 2,
+        gridRowEnd: 12,
+        gridColumnEnd: 7
+      }
+    }, React.createElement(TextareaControl, {
+      value: attributes.intro,
+      placeholder: "Intro",
+      onChange: function onChange(e) {
+        return updateAttribute('intro', e);
+      }
+    })), React.createElement("div", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 13,
+        gridColumnStart: 2,
+        gridRowEnd: 15,
+        gridColumnEnd: 4
+      }
+    }, React.createElement(Button, {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 13,
+        gridColumnStart: 2,
+        gridRowEnd: 15,
+        gridColumnEnd: 4
+      },
+      value: attributes.button,
+      placeholder: "Button",
+      onChange: function onChange(e) {
+        return updateAttribute('button', e.target.value);
       }
     })))));
   },
@@ -254,7 +306,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46079" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37819" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -3,8 +3,15 @@
     margin: 0;
     padding: 0;
 
+    &::before,
+    &::after {
+      display: none;
+    }
+
     * {
       width: 100%;
+      font-size: inherit;
+      margin: 0;
     }
 
     &__height {
