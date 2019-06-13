@@ -30,32 +30,13 @@ export default function BlockOptions() {
       display="block"
       groupClass="block-options stampa__border--bottom"
     >
-      {/* Title */}
-      <label htmlFor="block-name" className="stampa-text">
-        <span
-          className="stampa-text__label tooltip"
-          data-tooltip="The title to use when registering the Gutenberg block"
-        >
-          Title:
-        </span>
-        <input
-          className="stampa-text__input"
-          type="text"
-          name="block-name"
-          id="block-name"
-          value={stampaBlockOptions.title}
-          onChange={updateBlockTitle}
-          placeholder={pageTitle}
-        />
-      </label>
-
       {/* Background */}
       <label htmlFor="background" className="stampa-number">
         <span
           className="stampa-number__label tooltip"
           data-tooltip="If checked allows the user to set up a background-image for the block."
         >
-          Background:
+          Background Image:
         </span>
         <input
           className="stampa-number__input"

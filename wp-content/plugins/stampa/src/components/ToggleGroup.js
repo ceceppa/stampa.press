@@ -13,8 +13,14 @@ export default function toggleGroup({
   children,
   display,
   groupClass = null,
+  isCollapsed = false,
 }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(null);
+
+  if (collapsed == null) {
+    setCollapsed(isCollapsed);
+  }
+
   if (display == null) {
     display = 'block';
   }
@@ -22,9 +28,7 @@ export default function toggleGroup({
   return (
     <div className={`toggle-group ${groupClass || ''}`}>
       <button
-        className={`toggle-group__label stampa__content stampa__border--bottom ${
-          collapsed ? ' collapsed' : ''
-        }`}
+        className={`toggle-group__label stampa__content stampa__border--bottom ${collapsed ? ' collapsed' : ''}`}
         type="button"
         onClick={() => setCollapsed(!collapsed)}
       >

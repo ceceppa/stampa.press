@@ -37,10 +37,12 @@ class Stampa {
 	public static function init() {
 		add_action( 'init', __CLASS__ . '::register_stampa_blocks_cpt' );
 		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_script' );
-		add_action( 'edit_form_after_title', __CLASS__ . '::render_stampa' );
-
+		// add_action( 'edit_form_after_title', __CLASS__ . '::render_stampa' );
 		// Custom endpoint.
 		add_action( 'rest_api_init', __CLASS__ . '::register_stampa_endpoint' );
+
+		// Remove the default editor from the page.
+		add_filter( 'replace_editor', __CLASS__ . '::replace_editor', 10, 2 );
 	}
 
 	/**
@@ -53,16 +55,16 @@ class Stampa {
 			'stampa/v1',
 			'/block/(?P<id>[\\d]+)',
 			array(
-				'methods'             => 'POST',
-				'callback'            => __CLASS__ . '::save_block',
-				'args'                => [
+				'methods'  => 'PUT',
+				'callback' => __CLASS__ . '::save_block',
+				'args'     => [
 					'title'   => [
 						'required'    => true,
 						'type'        => 'string',
 						'description' => 'the block title',
 					],
 					'fields'  => [
-						'required'    => true,
+						'required'    => false,
 						'type'        => 'object',
 						'description' => 'the block fields',
 					],
@@ -77,9 +79,9 @@ class Stampa {
 						'description' => 'the grid options',
 					],
 				],
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
+				// 'permission_callback' => function () {
+				// return current_user_can( 'manage_options' );
+				// },
 			)
 		);
 	}
@@ -124,12 +126,13 @@ class Stampa {
 		// Load the default stampa blocks.
 		self::load_fields();
 
-		$data = array(
+		$post_id = $_GET['post'] ?? get_the_ID();
+		$data    = array(
 			'home_url' => home_url(),
 			'nonce'    => wp_create_nonce( 'wp_rest' ),
 			'fields'   => self::$fields,
 			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
-			'post_ID'  => get_the_ID(),
+			'post_ID'  => intval( $post_id ),
 		);
 
 		global $pagenow;
@@ -137,14 +140,50 @@ class Stampa {
 		if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
 
 			$data['stampa'] = [
-				'grid'    => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
-				'options' => json_decode( get_post_meta( $post_id, '_stampa_options', true ), true ),
-				'fields'  => json_decode( get_post_meta( $post_id, '_stampa_fields', true ) ),
+				'blockTitle' => get_post_field( 'post_title', $post_id ),
+				'grid'       => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
+				'options'    => json_decode( get_post_meta( $post_id, '_stampa_options', true ), true ),
+				'fields'     => json_decode( get_post_meta( $post_id, '_stampa_fields', true ) ),
 			];
 		}
 
 		wp_register_script( 'stampa-script', plugins_url( 'dist/index.js', __FILE__ ), [], STAMPA_VERSION, true );
 		wp_localize_script( 'stampa-script', 'stampa', $data );
+		wp_enqueue_script( 'stampa-script' );
+	}
+
+	/**
+	 * Replace the default editor with Stampa App.
+	 *
+	 * @param boolean $replace    Whether to replace the editor. Default false.
+	 * @param object  $post Post object.
+	 *
+	 * @return boolean
+	 */
+	public static function replace_editor( $replace, $post ) : bool {
+		// Don't know why this event is triggered 3 times...
+		static $times = 0;
+
+		global $pagenow;
+
+		$is_new = $pagenow == 'post-new.php';
+
+		if ( $post->post_type === 'stampa-block' ) {
+			$times++;
+
+			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+
+			wp_enqueue_script( 'heartbeat' );
+
+			require_once ABSPATH . 'wp-admin/admin-header.php';
+
+			if ( $is_new || $times > 2 ) {
+				self::render_stampa();
+			}
+			return true;
+		}
+
+		return $replace;
 	}
 
 	/**
@@ -153,17 +192,9 @@ class Stampa {
 	 * @param [type] $post
 	 * @return void
 	 */
-	public static function render_stampa( $post ) {
-		global $pagenow;
-
-		$post_id = $_GET['post'] ?? null;
-
-		// if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
-			wp_enqueue_script( 'stampa-script' );
-
-			echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
-			echo '<div id="stampa"></div>';
-		// }
+	public static function render_stampa() {
+		echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
+		echo '<div id="stampa"></div>';
 	}
 
 	/**
@@ -229,12 +260,18 @@ class Stampa {
 		$params  = $request->get_params();
 		$post_id = $params['id'];
 
-		wp_update_post(
-			[
-				'ID'    => (int) $post_id,
-				'title' => $params['title'],
-			]
-		);
+		$post_args = [
+			'ID'          => (int) $post_id,
+			'post_title'  => $params['title'],
+			'post_name'   => sanitize_title( $params['title'] ),
+			'post_status' => 'publish',
+			'post_type'   => 'stampa-block',
+		];
+
+		wp_update_post( $post_args );
+		if ( ! isset( $params['fields'] ) || ! is_array( $params['fields'] ) ) {
+			$params['fields'] = [];
+		}
 
 		$grid_params    = apply_filters( 'stampa/save-block/grid', $params['grid'] );
 		$fields_params  = apply_filters( 'stampa/save-block/fields', $params['fields'] );
@@ -248,7 +285,7 @@ class Stampa {
 			self::generate_react_block( $post_id, $params['title'], $grid_params, $options_params, $fields_params );
 		}
 
-		return [ 'done' => 1 ];
+		return [ 'ID' => $post_id ];
 	}
 
 	/**
@@ -276,7 +313,7 @@ class Stampa {
 			'default_attributes'     => [ 'backgroundImage: {}' ],
 			'render_container_start' => '<Fragment>' . $options_boilerplate,
 			'render_container_end'   => '</Fragment>',
-			'block_style'            => [ "backgroundImage: `url(\${attributes.backgroundImage && attributes.backgroundImage.url})`" ],
+			'block_style'            => [ 'backgroundImage: `url(${attributes.backgroundImage && attributes.backgroundImage.url})`' ],
 			'attributes'             => [
 				'backgroundImage' => [
 					'type' => 'object',

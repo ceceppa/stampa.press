@@ -10,7 +10,11 @@ export default function GridOptions() {
   const showGrid = store.get('gridShow');
 
   return (
-    <ToggleGroup label="Grid options" groupClass="stampa__border--bottom">
+    <ToggleGroup
+      label="Grid options"
+      groupClass="stampa__border--bottom"
+      isCollapsed={true}
+    >
       {/* Columns */}
       <NumberSlider id="columns" label="Columns:" storeKey="gridColumns" />
 

@@ -24,6 +24,7 @@ class App extends Component {
       store.set('gridRows')(parseInt(blockData.grid.rows));
       store.set('gridGap')(parseInt(blockData.grid.gap));
       store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
+      store.set('stampaBlockTitle')(blockData.blockTitle);
 
       // PHP returns true/false as string, not as boolean.
       blockData.options.hasBackgroundOption =
@@ -46,17 +47,47 @@ class App extends Component {
 
       store.set('stampaFields')(fields);
     }
-  }
 
+    document.addEventListener('keypress', e => {
+      if (e.key === 'Delete') {
+        stampa.deleteActiveBlock(store);
+      }
+    });
+
+    this.updateBlockTitle = this.updateBlockTitle.bind(this);
+  }
+  updateBlockTitle(e) {
+    this.props.store.set('stampaBlockTitle')(e.target.value);
+  }
   render() {
     return (
       <div className="stampa">
-        <FieldsList />
-        <Grid />
-        <div className="stampa__right">
-          <GridOptions />
-          <BlockOptions />
-          <FieldOptions />
+        <div className="stampa__title">
+          <label
+            className="screen-reader-text"
+            id="title-prompt-text"
+            htmlFor="block-title"
+          >
+            Add block title
+          </label>
+          <input
+            className="stampa__title--input"
+            type="text"
+            name="block-title"
+            id="block-title"
+            placeholder="Block title"
+            value={this.props.store.get('stampaBlockTitle')}
+            onChange={this.updateBlockTitle}
+          />
+        </div>
+        <div className="stampa__body">
+          <FieldsList />
+          <Grid />
+          <div className="stampa__right">
+            <GridOptions />
+            <BlockOptions />
+            <FieldOptions />
+          </div>
         </div>
       </div>
     );

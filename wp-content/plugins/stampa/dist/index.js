@@ -27151,10 +27151,10 @@ var _undux = require("undux");
 
 // Declare your store's initial state.
 var initialState = {
+  stampaBlockTitle: '',
   stampaFields: [],
   stampaBlockOptions: {
-    hasBackgroundOption: false,
-    title: ''
+    hasBackgroundOption: false
   },
   draggedFieldId: null,
   gridColumns: 12,
@@ -27205,12 +27205,18 @@ function toggleGroup(_ref) {
       children = _ref.children,
       display = _ref.display,
       _ref$groupClass = _ref.groupClass,
-      groupClass = _ref$groupClass === void 0 ? null : _ref$groupClass;
+      groupClass = _ref$groupClass === void 0 ? null : _ref$groupClass,
+      _ref$isCollapsed = _ref.isCollapsed,
+      isCollapsed = _ref$isCollapsed === void 0 ? false : _ref$isCollapsed;
 
-  var _useState = (0, _react.useState)(false),
+  var _useState = (0, _react.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
       collapsed = _useState2[0],
       setCollapsed = _useState2[1];
+
+  if (collapsed == null) {
+    setCollapsed(isCollapsed);
+  }
 
   if (display == null) {
     display = 'block';
@@ -27327,6 +27333,12 @@ var cellCoords = {
   row: 0
 };
 var _default = {
+  getPostID: function getPostID() {
+    return stampa.post_ID;
+  },
+  getRestURL: function getRestURL() {
+    return stampa.rest_url;
+  },
   getFields: function getFields() {
     return window.stampa && window.stampa.fields || [];
   },
@@ -27364,6 +27376,20 @@ var _default = {
   },
   getFieldPosition: function getFieldPosition() {
     return this.fieldPosition;
+  },
+
+  /**
+   * Delete the active block
+   *
+   * This function is used by both FieldOptions & App.js
+  */
+  deleteActiveBlock: function deleteActiveBlock(store) {
+    var activeBlockKey = store.get('activeBlockKey');
+    var blocks = store.get('stampaFields').filter(function (block) {
+      return block._stampa.key !== activeBlockKey;
+    });
+    store.set('stampaFields')(blocks);
+    store.set('activeBlockKey')(null);
   }
 };
 exports.default = _default;
@@ -27498,7 +27524,8 @@ function GridOptions() {
   var showGrid = store.get('gridShow');
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Grid options",
-    groupClass: "stampa__border--bottom"
+    groupClass: "stampa__border--bottom",
+    isCollapsed: true
   }, _react.default.createElement(_NumberSlider.default, {
     id: "columns",
     label: "Columns:",
@@ -27547,6 +27574,8 @@ exports.default = Save;
 var _react = _interopRequireWildcard(require("react"));
 
 var _store = _interopRequireDefault(require("../../store/store"));
+
+var _stampa = _interopRequireDefault(require("../../stampa"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27599,13 +27628,12 @@ function Save() {
       }
     }
 
-    console.info(fields);
     jQuery.ajax({
-      type: 'POST',
+      type: 'PUT',
       dataType: 'json',
-      url: "".concat(stampa.rest_url, "/").concat(stampa.post_ID),
+      url: "".concat(_stampa.default.getRestURL(), "/").concat(_stampa.default.getPostID()),
       data: {
-        title: title.value,
+        title: store.get('stampaBlockTitle'),
         options: store.get('stampaBlockOptions'),
         fields: fields,
         grid: {
@@ -27617,7 +27645,7 @@ function Save() {
         generate: generate
       },
       beforeSend: function beforeSend(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', stampa.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', _stampa.default.nonce);
       },
       success: function success(data) {
         setSavingState(false);
@@ -27654,7 +27682,7 @@ function Save() {
     }
   }, "Save & Generate"));
 }
-},{"react":"../node_modules/react/index.js","../../store/store":"store/store.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../../store/store":"store/store.js","../../stampa":"stampa.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27696,26 +27724,12 @@ function BlockOptions() {
     display: "block",
     groupClass: "block-options stampa__border--bottom"
   }, _react.default.createElement("label", {
-    htmlFor: "block-name",
-    className: "stampa-text"
-  }, _react.default.createElement("span", {
-    className: "stampa-text__label tooltip",
-    "data-tooltip": "The title to use when registering the Gutenberg block"
-  }, "Title:"), _react.default.createElement("input", {
-    className: "stampa-text__input",
-    type: "text",
-    name: "block-name",
-    id: "block-name",
-    value: stampaBlockOptions.title,
-    onChange: updateBlockTitle,
-    placeholder: pageTitle
-  })), _react.default.createElement("label", {
     htmlFor: "background",
     className: "stampa-number"
   }, _react.default.createElement("span", {
     className: "stampa-number__label tooltip",
     "data-tooltip": "If checked allows the user to set up a background-image for the block."
-  }, "Background:"), _react.default.createElement("input", {
+  }, "Background Image:"), _react.default.createElement("input", {
     className: "stampa-number__input",
     type: "checkbox",
     name: "background",
@@ -27737,6 +27751,8 @@ var _react = _interopRequireWildcard(require("react"));
 var _store = _interopRequireDefault(require("../store/store"));
 
 var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
+
+var _stampa = _interopRequireDefault(require("../stampa"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27864,11 +27880,7 @@ function FieldOptions(props) {
 
 
   function deleteActiveBlock() {
-    var blocks = store.get('stampaFields').filter(function (block) {
-      return block._stampa.key !== activeBlockKey;
-    });
-    store.set('stampaFields')(blocks);
-    store.set('activeBlockKey')(null);
+    _stampa.default.deleteActiveBlock(store);
   }
 
   return _react.default.createElement(_ToggleGroup.default, {
@@ -27943,7 +27955,7 @@ function FieldOptions(props) {
     className: "stampa--gray"
   }, "No block selected"));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
 'use strict';
 
 // Found this seed-based random generator somewhere
@@ -28807,9 +28819,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -28837,7 +28849,8 @@ function (_Component) {
       store.set('gridColumns', parseInt(blockData.grid.columns));
       store.set('gridRows')(parseInt(blockData.grid.rows));
       store.set('gridGap')(parseInt(blockData.grid.gap));
-      store.set('rowHeight')(parseInt(blockData.grid.rowHeight)); // PHP returns true/false as string, not as boolean.
+      store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
+      store.set('stampaBlockTitle')(blockData.blockTitle); // PHP returns true/false as string, not as boolean.
 
       blockData.options.hasBackgroundOption = blockData.options.hasBackgroundOption == 'true';
       store.set('stampaBlockOptions')(blockData.options);
@@ -28857,17 +28870,44 @@ function (_Component) {
       store.set('stampaFields')(fields);
     }
 
+    document.addEventListener('keypress', function (e) {
+      if (e.key === 'Delete') {
+        _stampa.default.deleteActiveBlock(store);
+      }
+    });
+    _this.updateBlockTitle = _this.updateBlockTitle.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(App, [{
+    key: "updateBlockTitle",
+    value: function updateBlockTitle(e) {
+      this.props.store.set('stampaBlockTitle')(e.target.value);
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
         className: "stampa"
+      }, _react.default.createElement("div", {
+        className: "stampa__title"
+      }, _react.default.createElement("label", {
+        className: "screen-reader-text",
+        id: "title-prompt-text",
+        htmlFor: "block-title"
+      }, "Add block title"), _react.default.createElement("input", {
+        className: "stampa__title--input",
+        type: "text",
+        name: "block-title",
+        id: "block-title",
+        placeholder: "Block title",
+        value: this.props.store.get('stampaBlockTitle'),
+        onChange: this.updateBlockTitle
+      })), _react.default.createElement("div", {
+        className: "stampa__body"
       }, _react.default.createElement(_FieldsList.default, null), _react.default.createElement(_Grid.default, null), _react.default.createElement("div", {
         className: "stampa__right"
-      }, _react.default.createElement(_GridOptions.default, null), _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null)));
+      }, _react.default.createElement(_GridOptions.default, null), _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null))));
     }
   }]);
 
@@ -29013,13 +29053,15 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Prevent the custom style from the TinyMCE editor to ovewrite the
- * Gutenberg one.
- */
-document.querySelector('#poststuff').id = 'stampastuff';
+var stampaElement = document.getElementById('stampa');
 
-_reactDom.default.render(_react.default.createElement(_store.default.Container, null, _react.default.createElement(_App.default, null)), document.getElementById('stampa')); // If you want your app to work offline and load faster, you can change
+if (stampaElement != null) {
+  /**
+  * Prevent the custom style from the TinyMCE editor to ovewrite the
+  * Gutenberg one.
+  */
+  _reactDom.default.render(_react.default.createElement(_store.default.Container, null, _react.default.createElement(_App.default, null)), stampaElement);
+} // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 
@@ -29053,7 +29095,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38769" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36325" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

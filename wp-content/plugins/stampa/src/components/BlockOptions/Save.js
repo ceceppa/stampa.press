@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Store from '../../store/store';
+import stampa from '../../stampa';
 
 export default function Save() {
   const store = Store.useStore();
@@ -18,14 +19,13 @@ export default function Save() {
         _stampa: field._stampa,
       });
     }
-    console.info(fields);
 
     jQuery.ajax({
-      type: 'POST',
+      type: 'PUT',
       dataType: 'json',
-      url: `${stampa.rest_url}/${stampa.post_ID}`,
+      url: `${stampa.getRestURL()}/${stampa.getPostID()}`,
       data: {
-        title: title.value,
+        title: store.get('stampaBlockTitle'),
         options: store.get('stampaBlockOptions'),
         fields,
         grid: {

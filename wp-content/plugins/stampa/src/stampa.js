@@ -7,6 +7,12 @@ let cellCoords = {
 };
 
 export default {
+  getPostID() {
+    return stampa.post_ID;
+  },
+  getRestURL() {
+    return stampa.rest_url;
+  },
   getFields: () => (window.stampa && window.stampa.fields) || [],
   getFieldById: function(id) {
     const groups = this.getFields();
@@ -40,5 +46,19 @@ export default {
   },
   getFieldPosition: function() {
     return this.fieldPosition;
+  },
+  /**
+   * Delete the active block
+   *
+   * This function is used by both FieldOptions & App.js
+  */
+  deleteActiveBlock: store => {
+    const activeBlockKey = store.get('activeBlockKey');
+    const blocks = store
+      .get('stampaFields')
+      .filter(block => block._stampa.key !== activeBlockKey);
+
+    store.set('stampaFields')(blocks);
+    store.set('activeBlockKey')(null);
   },
 };

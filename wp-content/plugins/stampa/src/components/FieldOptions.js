@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Store from '../store/store';
 
 import ToggleGroup from './ToggleGroup';
+import stampa from '../stampa';
 
 export default function FieldOptions(props) {
   let store;
@@ -65,12 +66,7 @@ export default function FieldOptions(props) {
    * Delete the active block
    */
   function deleteActiveBlock() {
-    const blocks = store
-      .get('stampaFields')
-      .filter(block => block._stampa.key !== activeBlockKey);
-
-    store.set('stampaFields')(blocks);
-    store.set('activeBlockKey')(null);
+    stampa.deleteActiveBlock(store);
   }
 
   return (

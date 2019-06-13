@@ -6,18 +6,20 @@ import Store from './store/store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-/**
+const stampaElement = document.getElementById('stampa');
+
+if (stampaElement != null) {
+  /**
  * Prevent the custom style from the TinyMCE editor to ovewrite the
  * Gutenberg one.
  */
-document.querySelector('#poststuff').id = 'stampastuff';
-
-ReactDOM.render(
-  <Store.Container>
-    <App />
-  </Store.Container>,
-  document.getElementById('stampa')
-);
+  ReactDOM.render(
+    <Store.Container>
+      <App />
+    </Store.Container>,
+    stampaElement
+  );
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
