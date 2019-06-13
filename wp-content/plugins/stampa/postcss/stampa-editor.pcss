@@ -1,26 +1,82 @@
-.stampa-block {
-  .stampa-field {
+.stampa-field {
+  margin: 0;
+  padding: 0;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+
+  * {
+    width: 100%;
+    font-size: inherit;
     margin: 0;
-    padding: 0;
+  }
 
-    &::before,
-    &::after {
-      display: none;
+  input,
+  textarea {
+    background: transparent;
+    height: 100%;
+    border-radius: 0;
+    border-color: rgb(141, 150, 160, 0.2);
+
+    &:hover {
+      border-color: rgb(78, 80, 83);
     }
 
-    * {
-      width: 100%;
-      font-size: inherit;
-      margin: 0;
+    &.the-author {
+      border: none;
+      border-bottom: 1px dotted #000;
     }
 
-    input,
-    textarea {
-      background: transparent;
-    }
-
-    &__height {
-      height: 100%;
+    &.the-quote {
+      font-size: 18px;
+      font-weight: 400;
     }
   }
+
+  &__height {
+    height: 100%;
+  }
+
+  &--image {
+    position: relative;
+
+    svg {
+      box-sizing: border-box;
+      width: 80px;
+      height: 80px;
+
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &.round {
+      position: relative;
+      border: 8px solid #E6E4E4;
+      border-radius: 50%;
+      overflow: hidden;
+
+      &:hover {
+        button {
+          opacity: 1;
+        }
+      }
+
+      button {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) !important;
+        opacity: 0;
+        transition: all 0.15s ease;
+      }
+    }
+  }
+}
+
+.quote-image {
+  background-color: #f3f3f3;
 }

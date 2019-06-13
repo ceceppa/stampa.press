@@ -7,14 +7,24 @@ export default function Block({ field }) {
   const store = Store.useStore();
   const stampaField = field._stampa;
   const resizingClass = stampa.isResizing() ? 'resizing' : '';
+  const contentClassName = field.contentClassName || '';
 
   let fieldHTML = field.html;
+  let fieldClassName = field.fieldClassName || '';
+
   for (let option of field.options) {
     if (option && option.name) {
-      const value = field._values[option.name] || option.value;
+      let value = field._values[option.name];
+
+      if (value == null) {
+        value = option.value;
+      }
+
       const re = new RegExp(`\{${option.name}\}`, 'g');
 
+      console.info(value, option.name);
       fieldHTML = fieldHTML.replace(re, value);
+      fieldClassName = fieldClassName.replace(re, value);
     }
   }
 
@@ -75,7 +85,9 @@ export default function Block({ field }) {
     <div
       draggable="true"
       className={`stampa-grid__field
-      stampa-grid__field--${field._stampa.id} ${activeClass} ${resizingClass}`}
+      stampa-field--${
+        field._stampa.id
+      } ${activeClass} ${resizingClass} ${fieldClassName}`}
       onDragStart={dragMe}
       data-key={field._stampa.key}
       data-type={field._stampa.id}
@@ -86,7 +98,7 @@ export default function Block({ field }) {
     >
       <div
         dangerouslySetInnerHTML={{ __html: fieldHTML }}
-        className={`stampa-grid__field__content ${field.className || ''}`}
+        className={`stampa-grid__field__content ${contentClassName}`}
       />
 
       <div

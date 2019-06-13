@@ -80,6 +80,12 @@ describe('FieldOptions', () => {
                 values: ['Value 1', 'Value 2', 'Value 3'],
                 value: 'Value 2',
               },
+              {
+                type: 'checkbox',
+                name: 'test-check',
+                label: 'Checkbox:',
+                checked: 'test-value',
+              },
             ],
             _values: {
               placeholder: 'Test placeholder',
@@ -115,6 +121,12 @@ describe('FieldOptions', () => {
       expect(select).not.toBeNull();
       expect(select.children.length).toBe(3);
       expect(select.selectedIndex).toBe(1);
+    });
+
+    it('Should render an input[type="checkbox"] element', () => {
+      const checkbox = container.querySelector('input[type="checkbox"]');
+      expect(checkbox).not.toBeNull();
+      expect(checkbox.value).toBe('test-value');
     });
   });
 });

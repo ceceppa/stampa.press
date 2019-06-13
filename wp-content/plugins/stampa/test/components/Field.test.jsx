@@ -23,7 +23,8 @@ const field = Object.assign(fieldsList.Gutenberg.text, {
       value: 'test-value',
     },
   ],
-  className: 'test-class',
+  fieldClassName: 'parent-class',
+  contentClassName: 'test-class',
 });
 
 describe('Field', () => {
@@ -67,7 +68,8 @@ describe('Field', () => {
       const block = container.querySelector('.stampa-grid__field');
 
       expect(block).not.toBeNull();
-      expect(block.classList).toContain('stampa-grid__field--text');
+      expect(block.classList).toContain('stampa-field--text');
+      expect(block.classList).toContain('parent-class');
       expect(block.style.gridArea).toBe('2 / 3 / 4 / 9');
     });
 

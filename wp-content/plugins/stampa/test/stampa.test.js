@@ -5,7 +5,7 @@ import blocksList from './components/fields-list.test.json';
 describe('Test Stampa helper functions', () => {
   beforeAll(() => {
     window.stampa = {
-      blocks: blocksList,
+      fields: blocksList,
     };
   });
 

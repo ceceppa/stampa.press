@@ -6,7 +6,7 @@ export default function NumberSlider({ id, label, storeKey, min }) {
   const value = store.get(storeKey);
 
   if (min == null) {
-    min = 1;
+    min = 0;
   }
 
   const updateValue = e => {

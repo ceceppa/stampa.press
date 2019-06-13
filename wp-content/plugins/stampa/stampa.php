@@ -167,6 +167,7 @@ class Stampa {
 		global $pagenow;
 
 		$is_new = $pagenow == 'post-new.php';
+		// $is_edit = $pagenow == 'post.php';
 
 		if ( $post->post_type === 'stampa-block' ) {
 			$times++;
@@ -177,7 +178,7 @@ class Stampa {
 
 			require_once ABSPATH . 'wp-admin/admin-header.php';
 
-			if ( $is_new || $times > 2 ) {
+			if ( $is_new || $is_edit || $times > 2 ) {
 				self::render_stampa();
 			}
 			return true;

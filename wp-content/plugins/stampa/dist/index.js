@@ -27480,7 +27480,7 @@ function NumberSlider(_ref) {
   var value = store.get(storeKey);
 
   if (min == null) {
-    min = 1;
+    min = 0;
   }
 
   var updateValue = function updateValue(e) {
@@ -27543,8 +27543,7 @@ function GridOptions() {
   }), _react.default.createElement(_NumberSlider.default, {
     id: "rowHeight",
     label: "Row Height (px):",
-    storeKey: "rowHeight",
-    min: "20"
+    storeKey: "rowHeight"
   }), _react.default.createElement("hr", {
     className: "stampa-hr"
   }), _react.default.createElement("label", {
@@ -27875,6 +27874,20 @@ function FieldOptions(props) {
     store.set('stampaFields')(blocks);
   }
   /**
+   * Update the state for the checkbox
+   */
+
+
+  function updateOptionChecked(e, name, value) {
+    if (e.target.checked) {
+      e.target.value = value;
+    } else {
+      e.target.value = '';
+    }
+
+    updateOptionValue(e, name);
+  }
+  /**
    * Delete the active block
    */
 
@@ -27904,6 +27917,25 @@ function FieldOptions(props) {
     key: "hr-1"
   }), activeBlock.options.map(function (option, index) {
     switch (option.type) {
+      case 'checkbox':
+        return _react.default.createElement("label", {
+          htmlFor: "field-".concat(option.name),
+          className: "stampa-number",
+          key: option.name
+        }, _react.default.createElement("span", {
+          className: "stampa-number__label"
+        }, option.label, ":"), _react.default.createElement("input", {
+          className: "stampa-number__input",
+          type: "checkbox",
+          name: "field-".concat(option.name),
+          id: "field-".concat(option.name),
+          value: activeBlock._values[option.name] || option.checked,
+          checked: activeBlock._values[option.name] === option.value,
+          onChange: function onChange(e) {
+            return updateOptionChecked(e, option.name, option.value);
+          }
+        }));
+
       case 'text':
         return _react.default.createElement("label", {
           htmlFor: "field-".concat(option.name),
@@ -28436,7 +28468,9 @@ function Block(_ref) {
 
   var stampaField = field._stampa;
   var resizingClass = _stampa.default.isResizing() ? 'resizing' : '';
+  var contentClassName = field.contentClassName || '';
   var fieldHTML = field.html;
+  var fieldClassName = field.fieldClassName || '';
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -28446,9 +28480,16 @@ function Block(_ref) {
       var option = _step.value;
 
       if (option && option.name) {
-        var value = field._values[option.name] || option.value;
+        var value = field._values[option.name];
+
+        if (value == null) {
+          value = option.value;
+        }
+
         var re = new RegExp("{".concat(option.name, "}"), 'g');
+        console.info(value, option.name);
         fieldHTML = fieldHTML.replace(re, value);
+        fieldClassName = fieldClassName.replace(re, value);
       }
     }
     /**
@@ -28518,7 +28559,7 @@ function Block(_ref) {
   var activeClass = activeBlock == field._stampa.key ? 'active' : '';
   return _react.default.createElement("div", {
     draggable: "true",
-    className: "stampa-grid__field\n      stampa-grid__field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass),
+    className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName),
     onDragStart: dragMe,
     "data-key": field._stampa.key,
     "data-type": field._stampa.id,
@@ -28530,7 +28571,7 @@ function Block(_ref) {
     dangerouslySetInnerHTML: {
       __html: fieldHTML
     },
-    className: "stampa-grid__field__content ".concat(field.className || '')
+    className: "stampa-grid__field__content ".concat(contentClassName)
   }), _react.default.createElement("div", {
     className: "stampa-grid__field__resizer stampa-grid__field__resizer--width",
     draggable: "true",
@@ -28706,6 +28747,39 @@ function Grid() {
         name: draggedFieldId
       };
       _field._values = {};
+      /**
+       * All the checkbox option set by default to "false" have to create
+       * an empty record in field._values, otherwise it will automatically fallback
+       * to the default "value"
+       */
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = _field.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var option = _step.value;
+
+          if (option.type == 'checkbox' && option.checked == false) {
+            _field._values[option.name] = '';
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
       store.set('stampaFields')([].concat(_toConsumableArray(fields), [_field])); // Set the last block as "active"
 
       store.set('activeBlockKey')(_field._stampa.key);
@@ -28764,7 +28838,7 @@ function Grid() {
       gridTemplateColumns: "repeat(".concat(store.get('gridColumns'), ", 1fr)"),
       gridTemplateRows: "repeat(".concat(store.get('gridRows'), ", 1fr)"),
       gridGap: "".concat(store.get('gridGap'), "px"),
-      minHeight: minHeight
+      height: minHeight
     }
   }, _react.default.createElement(_CSSGrid.default, null), fields.map(function (field) {
     return _react.default.createElement(_Field.default, {
@@ -29095,7 +29169,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36325" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36681" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

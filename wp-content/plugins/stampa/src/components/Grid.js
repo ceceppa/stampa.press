@@ -123,6 +123,17 @@ function Grid() {
 
       field._values = {};
 
+      /**
+       * All the checkbox option set by default to "false" have to create
+       * an empty record in field._values, otherwise it will automatically fallback
+       * to the default "value"
+       */
+      for (let option of field.options) {
+        if (option.type == 'checkbox' && option.checked == false) {
+          field._values[option.name] = '';
+        }
+      }
+
       store.set('stampaFields')([...fields, field]);
 
       // Set the last block as "active"
@@ -183,7 +194,7 @@ function Grid() {
           gridTemplateColumns: `repeat(${store.get('gridColumns')}, 1fr)`,
           gridTemplateRows: `repeat(${store.get('gridRows')}, 1fr)`,
           gridGap: `${store.get('gridGap')}px`,
-          minHeight,
+          height: minHeight,
         }}
       >
         <CSSGrid />

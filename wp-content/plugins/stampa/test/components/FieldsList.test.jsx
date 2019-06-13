@@ -4,9 +4,9 @@ import FieldsList from '../../src/components/FieldsList';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 
-import blocksList from './fields-list.test.json';
+import fieldsList from './fields-list.test.json';
 
-window.stampa = { blocks: blocksList };
+window.stampa = { fields: fieldsList };
 
 // https://medium.freecodecamp.org/the-right-way-to-test-react-components-548a4736ab22
 // https://reactjs.org/docs/test-renderer.html

@@ -63,6 +63,19 @@ export default function FieldOptions(props) {
   }
 
   /**
+   * Update the state for the checkbox
+   */
+  function updateOptionChecked(e, name, value) {
+    if (e.target.checked) {
+      e.target.value = value;
+    } else {
+      e.target.value = '';
+    }
+
+    updateOptionValue(e, name);
+  }
+
+  /**
    * Delete the active block
    */
   function deleteActiveBlock() {
@@ -90,6 +103,27 @@ export default function FieldOptions(props) {
         <hr key="hr-1" />,
         activeBlock.options.map((option, index) => {
           switch (option.type) {
+            case 'checkbox':
+              return (
+                <label
+                  htmlFor={`field-${option.name}`}
+                  className="stampa-number"
+                  key={option.name}
+                >
+                  <span className="stampa-number__label">{option.label}:</span>
+                  <input
+                    className="stampa-number__input"
+                    type="checkbox"
+                    name={`field-${option.name}`}
+                    id={`field-${option.name}`}
+                    value={activeBlock._values[option.name] || option.checked}
+                    checked={activeBlock._values[option.name] === option.value}
+                    onChange={e =>
+                      updateOptionChecked(e, option.name, option.value)
+                    }
+                  />
+                </label>
+              );
             case 'text':
               return (
                 <label

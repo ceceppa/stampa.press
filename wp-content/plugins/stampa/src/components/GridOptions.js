@@ -31,7 +31,6 @@ export default function GridOptions() {
         id="rowHeight"
         label="Row Height (px):"
         storeKey="rowHeight"
-        min="20"
       />
 
       <hr className="stampa-hr" />

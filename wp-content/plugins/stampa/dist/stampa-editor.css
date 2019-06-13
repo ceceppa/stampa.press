@@ -1,22 +1,85 @@
-.stampa-block .stampa-field {
-    margin: 0;
-    padding: 0
+.stampa-field {
+  margin: 0;
+  padding: 0
+}
+
+.stampa-field::before,
+  .stampa-field::after {
+    display: none;
   }
-  .stampa-block .stampa-field::before,
-    .stampa-block .stampa-field::after {
-      display: none;
+
+.stampa-field * {
+    width: 100%;
+    font-size: inherit;
+    margin: 0;
+  }
+
+.stampa-field input,
+  .stampa-field textarea {
+    background: transparent;
+    height: 100%;
+    border-radius: 0;
+    border-color: rgb(141, 150, 160, 0.2)
+  }
+
+.stampa-field input:hover, .stampa-field textarea:hover {
+      border-color: rgb(78, 80, 83);
     }
-  .stampa-block .stampa-field * {
-      width: 100%;
-      font-size: inherit;
-      margin: 0;
+
+.stampa-field input.the-author, .stampa-field textarea.the-author {
+      border: none;
+      border-bottom: 1px dotted #000;
     }
-  .stampa-block .stampa-field input,
-    .stampa-block .stampa-field textarea {
-      background: transparent;
+
+.stampa-field input.the-quote, .stampa-field textarea.the-quote {
+      font-size: 18px;
+      font-weight: 400;
     }
-  .stampa-block .stampa-field__height {
-      height: 100%;
+
+.stampa-field__height {
+    height: 100%;
+  }
+
+.stampa-field--image {
+    position: relative;
+  }
+
+.stampa-field--image svg {
+      box-sizing: border-box;
+      width: 80px;
+      height: 80px;
+
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
     }
+
+.stampa-field--image.round {
+      position: relative;
+      border: 8px solid #E6E4E4;
+      border-radius: 50%;
+      overflow: hidden
+    }
+
+.stampa-field--image.round:hover button {
+          opacity: 1;
+        }
+
+.stampa-field--image.round button {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%) !important;
+                transform: translate(-50%, -50%) !important;
+        opacity: 0;
+        -webkit-transition: all 0.15s ease;
+        transition: all 0.15s ease;
+      }
+
+.quote-image {
+  background-color: #f3f3f3;
+}
 
 /*# sourceMappingURL=/stampa-editor.css.map */
