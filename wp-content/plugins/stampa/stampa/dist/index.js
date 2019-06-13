@@ -147,17 +147,17 @@ registerBlockType('stampa/hero', {
   keywords: [],
   multiple: true,
   attributes: {
-    "backgroundImage": {
-      "type": "object"
+    backgroundImage: {
+      type: 'object'
     },
-    "heading": {
-      "type": "string"
+    heading: {
+      type: 'string'
     },
-    "intro": {
-      "type": "string"
+    intro: {
+      type: 'string'
     },
-    "button": {
-      "type": "string"
+    button: {
+      type: 'string'
     }
   },
 
@@ -452,13 +452,161 @@ registerBlockType('stampa/another-one', {
     return null;
   }
 });
+},{}],"blocks/aaron.js":[function(require,module,exports) {
+/**
+ * BLOCK: Aaron
+ *
+ */
+var __ = wp.i18n.__;
+var registerBlockType = wp.blocks.registerBlockType;
+var _wp$editor = wp.editor,
+    InspectorControls = _wp$editor.InspectorControls,
+    MediaUpload = _wp$editor.MediaUpload;
+var _wp$components = wp.components,
+    PanelBody = _wp$components.PanelBody,
+    IconButton = _wp$components.IconButton,
+    TextareaControl = _wp$components.TextareaControl;
+var _wp$element = wp.element,
+    Fragment = _wp$element.Fragment,
+    Component = _wp$element.Component; // Default attributes are set to avoid React throwing an error
+// when start typeing something in the brew new added module
+
+var defaultAttributes = {
+  backgroundImage: {}
+};
+registerBlockType('stampa/aaron', {
+  title: __('Aaron'),
+  icon: 'welcome-write-blog',
+  category: 'stampa-blocks',
+  keywords: [],
+  multiple: true,
+  attributes: {
+    "backgroundImage": {
+      "type": "object"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    }
+  },
+
+  /**
+   * The edit function describes the structure of your block in the context of the editor.
+   * This represents what the editor will render when the block is used.
+   *
+   * The "edit" property must be a valid function.
+   *
+   * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+   *
+   * @param {object} props Gutenberg props.
+   * @return {JSX} JSX block.
+   */
+  edit: function edit(props) {
+    var className = props.className,
+        _props$attributes = props.attributes,
+        attributes = _props$attributes === void 0 ? defaultAttributes : _props$attributes,
+        setAttributes = props.setAttributes;
+
+    function updateAttribute(field, value) {
+      var attribute = {};
+      attribute[field] = value;
+      setAttributes(attribute);
+    }
+
+    return React.createElement(Fragment, null, React.createElement(InspectorControls, null, React.createElement(PanelBody, {
+      title: __('Options')
+    }, React.createElement(MediaUpload, {
+      onSelect: function onSelect(image) {
+        return updateAttribute('backgroundImage', image);
+      },
+      type: "image",
+      value: attributes.backgroundImage,
+      render: function render(_ref) {
+        var open = _ref.open;
+        return React.createElement(IconButton, {
+          className: "button",
+          label: __('Set background Image'),
+          icon: "edit",
+          onClick: open
+        }, "Set background Image");
+      }
+    }))), React.createElement("div", {
+      className: "".concat(className, " stampa-block")
+    }, React.createElement("div", {
+      className: "aaron",
+      style: {
+        backgroundImage: "url(".concat(attributes.backgroundImage && attributes.backgroundImage.url, ")"),
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+        gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+        gridGap: '1px',
+        height: '243px'
+      }
+    }, React.createElement("h2", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 2,
+        gridColumnStart: 2,
+        gridRowEnd: 3,
+        gridColumnEnd: 9
+      }
+    }, React.createElement("textarea", {
+      type: "text",
+      className: "stampa-field__height",
+      value: attributes.heading,
+      placeholder: "Title",
+      onChange: function onChange(e) {
+        return updateAttribute('heading', e.target.value);
+      }
+    })), React.createElement("div", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 4,
+        gridColumnStart: 2,
+        gridRowEnd: 8,
+        gridColumnEnd: 5
+      }
+    }, React.createElement(TextareaControl, {
+      value: attributes.text,
+      placeholder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+      onChange: function onChange(value) {
+        return updateAttribute('text', value);
+      }
+    })), React.createElement("div", {
+      className: "stampa-field",
+      style: {
+        gridRowStart: 4,
+        gridColumnStart: 6,
+        gridRowEnd: 9,
+        gridColumnEnd: 10
+      }
+    }, React.createElement(TextareaControl, {
+      value: attributes.text,
+      placeholder: "Blaaaaaa",
+      onChange: function onChange(value) {
+        return updateAttribute('text', value);
+      }
+    })))));
+  },
+
+  /**
+   * Let the content to be rendered with PHP
+   */
+  save: function save() {
+    return null;
+  }
+});
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("./blocks/hero");
 
 require("./blocks/another-one");
-},{"./blocks/hero":"blocks/hero.js","./blocks/another-one":"blocks/another-one.js"}],"../../../../../../../../../usr/local/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+require("./blocks/aaron");
+},{"./blocks/hero":"blocks/hero.js","./blocks/another-one":"blocks/another-one.js","./blocks/aaron":"blocks/aaron.js"}],"../../../../../../../../../usr/local/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -486,7 +634,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37819" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38561" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
