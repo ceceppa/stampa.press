@@ -25,7 +25,7 @@ registerBlockType('stampa/quote-image', {
   attributes: {
     backgroundImage: { type: 'object' },
     text: { type: 'string' },
-    image: { type: 'string' },
+    image: { type: 'object' },
   },
 
   /**
@@ -74,11 +74,9 @@ registerBlockType('stampa/quote-image', {
           <div
             className="quote-image"
             style={{
-              backgroundImage: `url(${attributes.backgroundImage &&
-                attributes.backgroundImage.url})`,
+              backgroundImage: `url(${attributes.backgroundImage && attributes.backgroundImage.url})`,
               display: 'grid',
-              gridTemplateColumns:
-                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+              gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
               gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
               gridGap: '5px',
               height: '336px',
