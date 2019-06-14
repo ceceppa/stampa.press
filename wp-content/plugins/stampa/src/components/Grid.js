@@ -7,6 +7,8 @@ import stampa from '../stampa';
 import CSSGrid from './CSSGrid';
 import Field from './Field';
 
+let oldX, oldY;
+
 function Grid() {
   const ref = useRef();
   const store = Store.useStore();
@@ -22,25 +24,24 @@ function Grid() {
       const clientRect = ref.current.getBoundingClientRect();
       const columns = store.get('gridColumns');
       const rows = store.get('gridRows');
-      const gap = store.get('gridGap');
 
       const x = e.clientX - clientRect.x;
       const y = e.clientY - clientRect.y;
-      // const cellWidth = (clientRect.width - gap * (columns - 1)) / columns;
-      // const cellHeight = (clientRect.height - gap * (rows - 1)) / rows;
       const cellWidth = clientRect.width / columns;
       const cellHeight = clientRect.height / rows;
 
       const cellX = Math.ceil(x / cellWidth);
       const cellY = Math.ceil(y / cellHeight);
 
-      /**
-       * Store the cell position.
-       *
-       * Because this information doesn't need to cause any
-       * re-rendering, we're going to store into a custom object
-       */
-      if (!Number.isNaN(cellX) && !Number.isNaN(cellY)) {
+      if (
+        !Number.isNaN(cellX) &&
+        !Number.isNaN(cellY) &&
+        cellX != oldX &&
+        cellY != oldY
+      ) {
+        oldX = cellX;
+        oldY = cellY;
+
         setDrag({
           column: cellX,
           row: cellY,
@@ -199,17 +200,15 @@ function Grid() {
       >
         <CSSGrid />
         {/* <SVGGrid drag={drag} /> */}
-        {fields.map(field => (
-          <Field field={field} key={field._stampa.key} />
-        ))}
-        {draggedFieldId && drag.over && (
+        {fields.map(field => <Field field={field} key={field._stampa.key} />)}
+        {draggedFieldId &&
+          drag.over &&
           <div
             className="stampa-grid__highlight"
             style={{
               gridArea,
             }}
-          />
-        )}
+          />}
       </div>
     </div>
   );

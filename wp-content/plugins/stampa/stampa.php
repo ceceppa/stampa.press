@@ -147,7 +147,7 @@ class Stampa {
 		$post_id = $_GET['post'] ?? null;
 		if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
 
-			$data['stampa'] = [
+			$data['block'] = [
 				'blockTitle' => get_post_field( 'post_title', $post_id ),
 				'grid'       => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
 				'options'    => json_decode( get_post_meta( $post_id, '_stampa_options', true ), true ),

@@ -9,13 +9,27 @@
  * 
  */
 export default {
+  /**
+   * Get the postID passed via PHP
+   */
   getPostID() {
     return stampa.post_ID;
   },
+  /**
+   * The rest URL
+   */
   getRestURL() {
     return stampa.rest_url;
   },
+  /**
+   * The fields loaded via PHP
+  */
   getFields: () => (window.stampa && window.stampa.fields) || [],
+  /**
+   * Return the field matching the given ID.
+   *
+   * @param {string} id the field id
+   */
   getFieldById: function(id) {
     const groups = this.getFields();
 
@@ -29,14 +43,32 @@ export default {
 
     return null;
   },
-  getFieldByKey: function(key) {},
-  getStampaBlocks: () => window.stampa && window.stampa.stampa,
+  /**
+   * Get the block data (used in edit-mode)
+  */
+  getStampaBlocks: () => window.stampa && window.stampa.block,
+  /**
+   * Specify which resize action the user is performing:
+   * - width
+   * - height
+   * - both
+   *
+   * @param {resize} resize width, height, both
+   */
   setResizeDirection: function(resize) {
     this.resizeDirection = resize;
   },
+  /**
+   * Set the resizing status
+   *
+   * @param {bool} status is it resizing?
+   */
   setResizing: function(status) {
     this.resizingStatus = status;
   },
+  /**
+   * Get the resize direction
+   */
   getResizeDirection: function() {
     return this.resizeDirection;
   },

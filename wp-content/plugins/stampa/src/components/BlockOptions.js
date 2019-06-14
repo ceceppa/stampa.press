@@ -9,8 +9,6 @@ import ToggleGroup from './ToggleGroup';
 export default function BlockOptions() {
   const store = Store.useStore();
   const stampaBlockOptions = store.get('stampaBlockOptions');
-  const categories = ['formatting'];
-  const pageTitle = store.get('pageTitle');
 
   function updateBackgroundOption(e) {
     stampaBlockOptions.hasBackgroundOption = e.target.checked;
