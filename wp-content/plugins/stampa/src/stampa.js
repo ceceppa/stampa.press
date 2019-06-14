@@ -1,11 +1,13 @@
 /**
  * Helpers functions
+ *
+ * Some of this functions are used to avoid unnecessary re-render of the APP.
+ * For example: the information about the start position of the block, stored
+ * when dragging the field, does not affect the app itself, unless until the drop
+ * ends.
+ * So, for this reason we can store the information extenally without using any state/store.
+ * 
  */
-let cellCoords = {
-  column: 0,
-  row: 0,
-};
-
 export default {
   getPostID() {
     return stampa.post_ID;
@@ -41,9 +43,18 @@ export default {
   isResizing: function() {
     return this.resizingStatus;
   },
+  /**
+   * Store the start position of the field during dragging and resizing
+   *
+   * @param {object} position the field position
+   */
   setFieldPosition: function(position) {
     this.fieldPosition = position;
   },
+
+  /**
+   * Returns the start position of the block
+   */
   getFieldPosition: function() {
     return this.fieldPosition;
   },
