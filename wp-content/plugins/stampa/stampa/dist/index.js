@@ -127,7 +127,7 @@ var registerBlockType = wp.blocks.registerBlockType;
 var _wp$editor = wp.editor,
     InspectorControls = _wp$editor.InspectorControls,
     MediaUpload = _wp$editor.MediaUpload;
-var _wp$components = wp.components,
+var _wp$components = wp_components,
     PanelBody = _wp$components.PanelBody,
     IconButton = _wp$components.IconButton,
     TextareaControl = _wp$components.TextareaControl,
@@ -284,7 +284,7 @@ var registerBlockType = wp.blocks.registerBlockType;
 var _wp$editor = wp.editor,
     InspectorControls = _wp$editor.InspectorControls,
     MediaUpload = _wp$editor.MediaUpload;
-var _wp$components = wp.components,
+var _wp$components = wp_components,
     PanelBody = _wp$components.PanelBody,
     IconButton = _wp$components.IconButton,
     TextareaControl = _wp$components.TextareaControl,
@@ -462,7 +462,7 @@ var registerBlockType = wp.blocks.registerBlockType;
 var _wp$editor = wp.editor,
     InspectorControls = _wp$editor.InspectorControls,
     MediaUpload = _wp$editor.MediaUpload;
-var _wp$components = wp.components,
+var _wp$components = wp_components,
     PanelBody = _wp$components.PanelBody,
     IconButton = _wp$components.IconButton,
     TextareaControl = _wp$components.TextareaControl;
@@ -609,10 +609,9 @@ var _wp$editor = wp.editor,
     InspectorControls = _wp$editor.InspectorControls,
     MediaUpload = _wp$editor.MediaUpload;
 var _wp$components = wp.components,
+    TextareaControl = _wp$components.TextareaControl,
     PanelBody = _wp$components.PanelBody,
-    Button = _wp$components.Button,
-    IconButton = _wp$components.IconButton,
-    TextareaControl = _wp$components.TextareaControl;
+    IconButton = _wp$components.IconButton;
 var _wp$element = wp.element,
     Fragment = _wp$element.Fragment,
     Component = _wp$element.Component; // Default attributes are set to avoid React throwing an error
@@ -631,11 +630,14 @@ registerBlockType('stampa/quote-image', {
     backgroundImage: {
       type: 'object'
     },
-    text: {
+    quote: {
+      type: 'string'
+    },
+    author: {
       type: 'string'
     },
     image: {
-      type: 'string'
+      type: 'object'
     }
   },
 
@@ -692,35 +694,32 @@ registerBlockType('stampa/quote-image', {
         height: '336px'
       }
     }, React.createElement("div", {
-      className: "stampa-field",
+      className: "stampa-field stampa-field--textarea",
       style: {
         gridRowStart: 2,
         gridColumnStart: 2,
         gridRowEnd: 6,
         gridColumnEnd: 8
       }
-    }, React.createElement("textarea", {
-      className: "the-quote",
-      value: attributes.text,
+    }, React.createElement(TextareaControl, {
+      value: attributes.quote,
       placeholder: "Quote",
-      rows: "5",
-      onChange: function onChange(e) {
-        return updateAttribute('quote', e.target.value);
+      onChange: function onChange(value) {
+        return updateAttribute('quote', value);
       }
     })), React.createElement("div", {
-      className: "stampa-field",
+      className: "stampa-field stampa-field--textarea",
       style: {
         gridRowStart: 7,
         gridColumnStart: 2,
         gridRowEnd: 8,
         gridColumnEnd: 8
       }
-    }, React.createElement("textarea", {
-      className: "the-author",
-      value: attributes.text,
+    }, React.createElement(TextareaControl, {
+      value: attributes.author,
       placeholder: "The author",
-      onChange: function onChange(e) {
-        return updateAttribute('author', e.target.value);
+      onChange: function onChange(value) {
+        return updateAttribute('author', value);
       }
     })), React.createElement("div", {
       className: "stampa-field stampa-field--image round",
@@ -730,22 +729,18 @@ registerBlockType('stampa/quote-image', {
         gridRowEnd: 6,
         gridColumnEnd: 11
       }
-    }, React.createElement("img", {
-      src: attributes.image && attributes.image.url
-    }), React.createElement(MediaUpload, {
-      onSelect: function onSelect(image) {
-        return updateAttribute('image', image);
+    }, React.createElement(MediaUpload, {
+      className: "media-upload",
+      style: {
+        gridRowStart: 2,
+        gridColumnStart: 9,
+        gridRowEnd: 6,
+        gridColumnEnd: 11
       },
-      type: "image",
       value: attributes.image,
-      render: function render(_ref2) {
-        var open = _ref2.open;
-        return React.createElement(Button, {
-          className: "button",
-          label: __('Media Library'),
-          icon: "edit",
-          onClick: open
-        }, "Media Library");
+      placeholder: "The author",
+      onChange: function onChange(image) {
+        return updateAttribute('image', image);
       }
     })))));
   },
@@ -795,7 +790,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36225" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38875" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

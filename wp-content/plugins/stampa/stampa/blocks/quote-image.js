@@ -11,22 +11,22 @@ const { Fragment, Component } = wp.element;
 // Default attributes are set to avoid React throwing an error
 // when start typeing something in the brew new added module
 const defaultAttributes = {
-  backgroundImage: {},
+  backgroundImage: {}
 };
 
-registerBlockType('stampa/quote-image', {
-  title: __('Quote + Image'),
-  icon: 'welcome-write-blog',
-  category: 'stampa-blocks',
+registerBlockType("stampa/quote-image", {
+  title: __("Quote + Image"),
+  icon: "welcome-write-blog",
+  category: "stampa-blocks",
   keywords: [],
 
   multiple: true,
 
   attributes: {
-    backgroundImage: { type: 'object' },
-    quote: { type: 'string' },
-    author: { type: 'string' },
-    image: { type: 'object' },
+    backgroundImage: { type: "object" },
+    quote: { type: "string" },
+    author: { type: "string" },
+    image: { type: "object" }
   },
 
   /**
@@ -53,15 +53,15 @@ registerBlockType('stampa/quote-image', {
     return (
       <Fragment>
         <InspectorControls>
-          <PanelBody title={__('Options')}>
+          <PanelBody title={__("Options")}>
             <MediaUpload
-              onSelect={image => updateAttribute('backgroundImage', image)}
+              onSelect={image => updateAttribute("backgroundImage", image)}
               type="image"
               value={attributes.backgroundImage}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__('Set background Image')}
+                  label={__("Set background Image")}
                   icon="edit"
                   onClick={open}
                 >
@@ -77,12 +77,12 @@ registerBlockType('stampa/quote-image', {
             style={{
               backgroundImage: `url(${attributes.backgroundImage &&
                 attributes.backgroundImage.url})`,
-              display: 'grid',
+              display: "grid",
               gridTemplateColumns:
-                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
-              gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
-              gridGap: '5px',
-              height: '336px',
+                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+              gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+              gridGap: "5px",
+              height: "336px"
             }}
           >
             {/* quote */}
@@ -92,13 +92,13 @@ registerBlockType('stampa/quote-image', {
                 gridRowStart: 2,
                 gridColumnStart: 2,
                 gridRowEnd: 6,
-                gridColumnEnd: 8,
+                gridColumnEnd: 8
               }}
             >
               <TextareaControl
                 value={attributes.quote}
                 placeholder="Quote"
-                onChange={value => updateAttribute('quote', value)}
+                onChange={value => updateAttribute("quote", value)}
               />
             </div>
             {/* author */}
@@ -108,13 +108,13 @@ registerBlockType('stampa/quote-image', {
                 gridRowStart: 7,
                 gridColumnStart: 2,
                 gridRowEnd: 8,
-                gridColumnEnd: 8,
+                gridColumnEnd: 8
               }}
             >
               <TextareaControl
                 value={attributes.author}
                 placeholder="The author"
-                onChange={value => updateAttribute('author', value)}
+                onChange={value => updateAttribute("author", value)}
               />
             </div>
             {/* image */}
@@ -124,7 +124,7 @@ registerBlockType('stampa/quote-image', {
                 gridRowStart: 2,
                 gridColumnStart: 9,
                 gridRowEnd: 6,
-                gridColumnEnd: 11,
+                gridColumnEnd: 11
               }}
             >
               <MediaUpload
@@ -133,11 +133,11 @@ registerBlockType('stampa/quote-image', {
                   gridRowStart: 2,
                   gridColumnStart: 9,
                   gridRowEnd: 6,
-                  gridColumnEnd: 11,
+                  gridColumnEnd: 11
                 }}
                 value={attributes.image}
                 placeholder="The author"
-                onChange={image => updateAttribute('image', image)}
+                onChange={image => updateAttribute("image", image)}
               />
             </div>
           </div>
@@ -149,5 +149,5 @@ registerBlockType('stampa/quote-image', {
   /**
    * Let the content to be rendered with PHP
    */
-  save: () => null,
+  save: () => null
 });

@@ -176,6 +176,7 @@ class Stampa {
 
 		$is_new = $pagenow == 'post-new.php';
 		// $is_edit = $pagenow == 'post.php';
+		$is_edit = false;
 		if ( $post->post_type === 'stampa-block' ) {
 			$times++;
 
@@ -444,10 +445,16 @@ class Stampa {
 
 		self::add_replace( 'block_style', $grid_style );
 
-		file_put_contents( $output_file, self::replace( $boilerplate ) );
+		$temp = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
+		file_put_contents( $temp, self::replace( $boilerplate ) );
 
+		exec( 'prettier ' . $temp . ' > ' . $output_file );
+
+		// Add to index.js (if not exists)
+		// $index_content = file_get_contents( $index_file );
+		// file_put_contents( $output_file, self::replace( $boilerplate ) );
 		// Compile the JS file.
-		exec( 'parcel build stampa/index.js -d stampa/dist' );
+		// exec( 'parcel build stampa/index.js -d stampa/dist' );
 	}
 
 	/**********************************
