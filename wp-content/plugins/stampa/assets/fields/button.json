@@ -1,0 +1,35 @@
+{
+  "group": "Fields",
+  "id": "button",
+  "data": {
+    "label": "Button",
+    "tooltip": "Button field",
+    "icon": "button.svg",
+    "contentClassName": "wp-block-button",
+    "html": "<div class='wp-block-button__link'>{placeholder}</div>",
+    "options": [
+      {
+        "name": "placeholder",
+        "type": "text",
+        "label": "Placeholder",
+        "value": "Add text..."
+      }
+    ]
+  },
+  "gutenberg": {
+    "block": "Button",
+    "react": [
+      "<div",
+      " className=\"stampa-field\"",
+      " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
+      "<Button",
+      " className=\"stampa-field\"",
+      " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}",
+      " value={attributes.{{stampa.field_name}}}",
+      " placeholder='{{stampa.value.placeholder}}'",
+      " onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}",
+      "/>",
+      "</div>"
+    ]
+  }
+}

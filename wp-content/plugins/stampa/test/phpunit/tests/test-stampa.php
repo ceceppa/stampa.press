@@ -1,5 +1,8 @@
 <?php
 
+use Stampa\Stampa;
+
+
 class Test_Stampa extends \WP_UnitTestCase {
 	/**
 	 * The endpoint namespace
@@ -8,10 +11,8 @@ class Test_Stampa extends \WP_UnitTestCase {
 	 */
 	private static $namespace = 'stampa/v1';
 
-	function test_class_is_defined() {
+	function __constructor() {
 		do_action( 'init' );
-
-		$this->assertTrue( class_exists( 'Stampa\Stampa' ) );
 	}
 
 	/**
@@ -44,8 +45,8 @@ class Test_Stampa extends \WP_UnitTestCase {
 
 		$callback = $routes[ $endpoint ][0];
 
-		// POST callback?
-		$this->assertArrayHasKey( 'POST', $callback['methods'] );
+		// PUT callback?
+		$this->assertArrayHasKey( 'PUT', $callback['methods'] );
 
 		// Is callable?
 		$method = $callback['callback'];
@@ -53,9 +54,13 @@ class Test_Stampa extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Add field
+	 * Test add field
 	 */
 	function test_add_field() {
+		Stampa::add_field( 'my-group', 'my-id', [] );
 
+		$fields = Stampa::get_fields();
+		$this->assertCount( 2, $fields ); // 1 group is loaded by load_fields automatically.
+		$this->assertArrayHasKey( 'My-group', $fields );
 	}
 }

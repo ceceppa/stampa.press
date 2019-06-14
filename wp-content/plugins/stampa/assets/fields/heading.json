@@ -1,0 +1,40 @@
+{
+  "group": "Fields",
+  "id": "heading",
+  "data": {
+    "label": "Heading",
+    "tooltip": "Heading",
+    "icon": "heading.svg",
+    "html": "<{level}>{placeholder}</{level}>",
+    "contentClassName": "wp-block-heading",
+    "options": [
+      {
+        "name": "level",
+        "type": "select",
+        "label": "Level",
+        "values": ["h1", "h2", "h3", "h4", "h5", "h6"],
+        "value": "h2"
+      },
+      {
+        "name": "placeholder",
+        "type": "text",
+        "label": "Placeholder",
+        "value": "Heading"
+      }
+    ]
+  },
+  "gutenberg": {
+    "react": [
+      "<{{stampa.value.level}}",
+      " className=\"stampa-field\"",
+      " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
+      "<textarea type='text' className='stampa-field__height'",
+      " value={attributes.{{stampa.field_name}}}",
+      " placeholder='{{stampa.value.placeholder}}'",
+      " rows=1",
+      " onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}",
+      "/>",
+      "</{{stampa.value.level}}>"
+    ]
+  }
+}
