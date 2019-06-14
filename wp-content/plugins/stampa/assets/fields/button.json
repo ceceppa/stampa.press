@@ -17,7 +17,7 @@
     ]
   },
   "gutenberg": {
-    "block": "Button",
+    "wp_components": "Button",
     "react": [
       "<div",
       " className=\"stampa-field\"",

@@ -17,7 +17,7 @@
     ]
   },
   "gutenberg": {
-    "block": "Paragraph",
+    "wp_components": "Paragraph",
     "react": [
       "<RichText",
       " gridArea={{gridArea}}",

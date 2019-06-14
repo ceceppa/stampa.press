@@ -4,10 +4,9 @@
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { InspectorControls, MediaUpload } = wp.editor;
+const { {{stampa.wp.editor}} } = wp.editor;
 const {
-  PanelBody, IconButton,
-  {{stampa.gutenberg_blocks}}
+  {{stampa.wp.components}}
 } = wp.components;
 const { Fragment, Component } = wp.element;
 

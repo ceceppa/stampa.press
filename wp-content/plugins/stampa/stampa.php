@@ -220,7 +220,7 @@ class Stampa {
 			$svg_path              = plugins_url( 'assets/svg/', __FILE__ );
 				$field->data->icon = $svg_path . $field->data->icon;
 
-				self::add_field( $field->group, $field->id, (array) $field->data );
+				self::add_field( $field->group, $field->id, (array) $field->data, $field->gutenberg );
 		}
 	}
 
@@ -238,13 +238,14 @@ class Stampa {
 		self::add_replace( 'options_content', '' );
 		self::add_replace( 'render_container_start', '' );
 		self::add_replace( 'render_container_end', '' );
-		self::add_replace( 'attributes', [] );
+		self::add_replace( 'attributes', [], null, true );
 
 		if ( $options_params['hasBackgroundOption'] == false ) {
 			return;
 		}
 
-		self::add_replace( 'default_attributes', [ 'backgroundImage: {}' ] );
+		self::add_replace( 'wp.components', [ 'PanelBody', 'IconButton' ] );
+		self::add_replace( 'default_attributes', [ 'backgroundImage: {}' ], null, true );
 		self::add_replace( 'render_container_start', '<Fragment>' . $options_boilerplate );
 		self::add_replace( 'render_container_end', '</Fragment>' );
 		self::add_replace(
@@ -270,14 +271,14 @@ class Stampa {
 	 * @return void
 	 */
 	private static function generate_block_body( array $fields_params ) {
-		$render_content = [];
+		self::add_replace( 'render_content', [], '' );
 
 		foreach ( $fields_params as $field ) {
 			$default = self::get_field_by_id( $field['id'] );
+			$stampa  = $field['_stampa'];
 
-			$react_code = join( PHP_EOL, $default['gutenberg']->react );
-
-			$stampa = $field['_stampa'];
+			$react_code  = '{/* ' . $stampa['name'] . ' */}';
+			$react_code .= join( PHP_EOL, $default['gutenberg']->react );
 
 			self::add_replace( 'grid_row_start', $stampa['startRow'] );
 			self::add_replace( 'grid_row_end', intval( $stampa['startRow'] ) + intval( $stampa['endRow'] ) );
@@ -295,12 +296,17 @@ class Stampa {
 				'attributes',
 				[
 					$attribute_name => [
-						'type' => 'string',
+						'type' => $default['gutenberg']->attribute_type ?? 'string',
 					],
 				]
 			);
 
-			self::add_replace( 'render_content', self::replace( $replace, $react_code ) );
+			self::add_replace(
+				'render_content',
+				[
+					self::replace( $react_code ),
+				]
+			);
 		}
 	}
 
@@ -308,18 +314,17 @@ class Stampa {
 	 * Replace all the {{stampa}} occurrences defined in the $replace array
 	 * with the corrensponding value.
 	 *
-	 * @param array  $replace the array containing the replacing information.
 	 * @param string $subject the string to modify.
 	 * @return string
 	 */
-	private static function replace( array $replace, string $subject ) : string {
+	private static function replace( string $subject ) : string {
 		// Let's do the replace.
-		foreach ( $replace as $what => $to ) {
+		foreach ( self::$replace as $what => $to ) {
 			if ( is_array( $to ) ) {
-				if ( $what == 'render_content' ) {
-					$to = join( PHP_EOL, $to );
+				if ( $to['_encode'] ) {
+					$to = json_encode( $to['values'] );
 				} else {
-					$to = join( PHP_EOL . ',', $to );
+					$to = join( PHP_EOL . $to['_glue'], array_unique( $to['values'] ) );
 				}
 			}
 
@@ -337,13 +342,14 @@ class Stampa {
 	 * @param mixed  $value the value, if is an array it will be merged with Dthe previous value.
 	 * @param mixed  $glue used for array to know the `glue` to use for the join function.
 	 */
-	private static function add_replace( string $replace, $value, $glue = ',' ) {
+	private static function add_replace( string $replace, $value, $glue = ',', $encode = false ) {
 		$current_value = self::$replace[ $replace ] ?? null;
 
 		if ( is_null( $current_value ) && is_array( $value ) && ! isset( $value['_glue'] ) ) {
 			$value = [
-				'_glue'  => $glue,
-				'values' => $value,
+				'_glue'   => $glue,
+				'_encode' => $encode,
+				'values'  => $value,
 			];
 		}
 
@@ -351,9 +357,9 @@ class Stampa {
 			self::$replace[ $replace ] = $value;
 		} else {
 			if ( is_array( $current_value ) ) {
-				self::$replace[ $repalce ] = array_unique( array_merge( $current_value['values'], $value ) );
+				self::$replace[ $replace ]['values'] = array_merge( $current_value['values'], $value );
 			} else {
-				self::$replace[ $repalce ] = $value;
+				self::$replace[ $replace ] = $value;
 			}
 		}
 	}
@@ -390,13 +396,13 @@ class Stampa {
 		$boilerplate = file_get_contents( __DIR__ . '/assets/gutenberg/block-boilerplate.js' );
 
 		// Title & Id.
-		self::add_replace( 'block_title', = $title );
+		self::add_replace( 'block_title', $title );
 		self::add_replace( 'sanitized_title', sanitize_title( $title ) );
 
 		// The React components.
 		self::load_fields();
 
-		$gutenberg_components = [];
+		$wp_components = [];
 		foreach ( $fields_params as $stampa_field ) {
 			$field = self::get_field_by_id( $stampa_field['id'] );
 			if ( empty( $field ) ) {
@@ -404,32 +410,31 @@ class Stampa {
 			}
 
 			$gutenberg = $field['gutenberg'];
-			if ( isset( $gutenberg->block ) ) {
-				$gutenberg_components[] = $gutenberg->block;
+			if ( isset( $gutenberg->wp_components ) ) {
+				$wp_components[] = $gutenberg->wp_components;
 			}
 		}
 
 		// Unique components to load.
-		$gutenberg_components = array_unique( $gutenberg_components );
-		self::add_replace( 'gutenberg_blocks', join( ',' . PHP_EOL . '  ', $gutenberg_components ) . ',' );
+		$wp_components = array_unique( $wp_components );
+
+		self::add_replace( 'wp.editor', [ 'InspectorControls', 'MediaUpload' ] );
+		self::add_replace( 'wp.components', $wp_components );
 
 		// The block options.
 		self::generate_options( $options_params );
 
 		// The module fields.
-		$replace = array_merge( $replace, self::generate_block_body( $fields_params, $replace['attributes'] ) );
+		self::generate_block_body( $fields_params );
 
-		// $replace['attributes'] = json_encode( $replace['attributes'] );
 		/**
-		 * Stampa Grid style
-		 */
+		* Stampa Grid style
+		*/
 		$min_height = intval( $grid_params['rowHeight'] ) * intval( $grid_params['rows'] );
-
 		// Can't use "repeat" property -.-. Why people use React?
 		$template_columns = str_repeat( '1fr ', $grid_params['columns'] );
 		$template_rows    = str_repeat( '1fr ', $grid_params['rows'] );
-
-		$grid_style = [
+		$grid_style       = [
 			"display: 'grid'",
 			"gridTemplateColumns: '$template_columns'",
 			"gridTemplateRows: '$template_rows'",
@@ -437,13 +442,9 @@ class Stampa {
 			"height: '{$min_height}px'",
 		];
 
-		if ( isset( $replace['block_style'] ) ) {
-			$replace['block_style'] = array_merge( $replace['block_style'], $grid_style );
-		} else {
-			$replace['block_style'] = $grid_style;
-		}
+		self::add_replace( 'block_style', $grid_style );
 
-		file_put_contents( $output_file, self::replace( $replace, $boilerplate ) );
+		file_put_contents( $output_file, self::replace( $boilerplate ) );
 
 		// Compile the JS file.
 		exec( 'parcel build stampa/index.js -d stampa/dist' );
@@ -460,12 +461,16 @@ class Stampa {
 	 * @param array  $field_data the field data.
 	 * @return void
 	 */
-	public static function add_field( string $group, string $field_id, array $field_data ) {
+	public static function add_field( string $group, string $field_id, array $field_data, $gutenberg_data ) {
 		$group = ucfirst( $group );
 
-		self::$fields_by_id[ $field_id ] = $field_data;
-
 		self::$fields[ $group ][ $field_id ] = $field_data;
+
+		// Gutenberg data is needed only for the back-end.
+		self::$fields_by_id[ $field_id ] = [
+			'data'      => $field_data,
+			'gutenberg' => $gutenberg_data,
+		];
 	}
 
 	/**

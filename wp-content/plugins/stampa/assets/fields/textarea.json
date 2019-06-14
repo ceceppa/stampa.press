@@ -17,10 +17,10 @@
     ]
   },
   "gutenberg": {
-    "block": "TextareaControl",
+    "wp_components": "TextareaControl",
     "react": [
       "<div",
-      " className=\"stampa-field\"",
+      " className=\"stampa-field stampa-field--textarea\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
       "<TextareaControl",
       " value={attributes.{{stampa.field_name}}}",

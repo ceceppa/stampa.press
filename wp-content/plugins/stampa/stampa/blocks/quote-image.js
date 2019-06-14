@@ -5,7 +5,7 @@
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, MediaUpload } = wp.editor;
-const { PanelBody, Button, IconButton, TextareaControl } = wp.components;
+const { TextareaControl, PanelBody, IconButton } = wp.components;
 const { Fragment, Component } = wp.element;
 
 // Default attributes are set to avoid React throwing an error
@@ -24,7 +24,8 @@ registerBlockType('stampa/quote-image', {
 
   attributes: {
     backgroundImage: { type: 'object' },
-    text: { type: 'string' },
+    quote: { type: 'string' },
+    author: { type: 'string' },
     image: { type: 'object' },
   },
 
@@ -74,16 +75,19 @@ registerBlockType('stampa/quote-image', {
           <div
             className="quote-image"
             style={{
-              backgroundImage: `url(${attributes.backgroundImage && attributes.backgroundImage.url})`,
+              backgroundImage: `url(${attributes.backgroundImage &&
+                attributes.backgroundImage.url})`,
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+              gridTemplateColumns:
+                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
               gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
               gridGap: '5px',
               height: '336px',
             }}
           >
+            {/* quote */}
             <div
-              className="stampa-field"
+              className="stampa-field stampa-field--textarea"
               style={{
                 gridRowStart: 2,
                 gridColumnStart: 2,
@@ -91,16 +95,15 @@ registerBlockType('stampa/quote-image', {
                 gridColumnEnd: 8,
               }}
             >
-              <textarea
-                className="the-quote"
-                value={attributes.text}
+              <TextareaControl
+                value={attributes.quote}
                 placeholder="Quote"
-                rows="5"
-                onChange={e => updateAttribute('quote', e.target.value)}
+                onChange={value => updateAttribute('quote', value)}
               />
             </div>
+            {/* author */}
             <div
-              className="stampa-field"
+              className="stampa-field stampa-field--textarea"
               style={{
                 gridRowStart: 7,
                 gridColumnStart: 2,
@@ -108,13 +111,13 @@ registerBlockType('stampa/quote-image', {
                 gridColumnEnd: 8,
               }}
             >
-              <textarea
-                className="the-author"
-                value={attributes.text}
+              <TextareaControl
+                value={attributes.author}
                 placeholder="The author"
-                onChange={e => updateAttribute('author', e.target.value)}
+                onChange={value => updateAttribute('author', value)}
               />
             </div>
+            {/* image */}
             <div
               className="stampa-field stampa-field--image round"
               style={{
@@ -124,21 +127,17 @@ registerBlockType('stampa/quote-image', {
                 gridColumnEnd: 11,
               }}
             >
-              <img src={attributes.image && attributes.image.url} />
               <MediaUpload
-                onSelect={image => updateAttribute('image', image)}
-                type="image"
+                className="media-upload"
+                style={{
+                  gridRowStart: 2,
+                  gridColumnStart: 9,
+                  gridRowEnd: 6,
+                  gridColumnEnd: 11,
+                }}
                 value={attributes.image}
-                render={({ open }) => (
-                  <Button
-                    className="button"
-                    label={__('Media Library')}
-                    icon="edit"
-                    onClick={open}
-                  >
-                    Media Library
-                  </Button>
-                )}
+                placeholder="The author"
+                onChange={image => updateAttribute('image', image)}
               />
             </div>
           </div>

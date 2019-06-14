@@ -2,18 +2,15 @@
   margin: 0;
   padding: 0
 }
-
 .stampa-field::before,
   .stampa-field::after {
     display: none;
   }
-
 .stampa-field * {
     width: 100%;
     font-size: inherit;
     margin: 0;
   }
-
 .stampa-field input,
   .stampa-field textarea {
     background: transparent;
@@ -21,29 +18,23 @@
     border-radius: 0;
     border-color: rgb(141, 150, 160, 0.2)
   }
-
 .stampa-field input:hover, .stampa-field textarea:hover {
       border-color: rgb(78, 80, 83);
     }
-
 .stampa-field input.the-author, .stampa-field textarea.the-author {
       border: none;
       border-bottom: 1px dotted #000;
     }
-
 .stampa-field input.the-quote, .stampa-field textarea.the-quote {
       font-size: 18px;
       font-weight: 400;
     }
-
 .stampa-field__height {
     height: 100%;
   }
-
 .stampa-field--image {
     position: relative;
   }
-
 .stampa-field--image svg {
       box-sizing: border-box;
       width: 80px;
@@ -55,18 +46,24 @@
       -webkit-transform: translate(-50%, -50%);
               transform: translate(-50%, -50%);
     }
-
-.stampa-field--image.round {
-      position: relative;
-      border: 8px solid #E6E4E4;
-      border-radius: 50%;
-      overflow: hidden
-    }
-
+.stampa-field--image.round .stampa-grid__field__content {
+        display: -webkit-box;
+        display: flex;
+        width: 100%;
+        height: 100%;
+      }
+.stampa-field--image.round .image {
+        position: relative;
+        border: 1px solid #e6e4e4;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
 .stampa-field--image.round:hover button {
           opacity: 1;
         }
-
 .stampa-field--image.round button {
         position: absolute;
         left: 50%;
@@ -77,9 +74,5 @@
         -webkit-transition: all 0.15s ease;
         transition: all 0.15s ease;
       }
-
-.quote-image {
-  background-color: #f3f3f3;
-}
 
 /*# sourceMappingURL=/stampa-editor.css.map */
