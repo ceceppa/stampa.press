@@ -7,6 +7,7 @@
     display: flex;
     width: 100%;
     height: 100%;
+    background: #fff;
     background: var(--white);
     margin-top: 20px;
     color: #555d66;
@@ -27,10 +28,12 @@
   }
 
 .stampa__left {
+    border-right: 1px solid #e2e4e7;
     border-right: 1px solid var(--border);
   }
 
 .stampa__right {
+    border-left: 1px solid #e2e4e7;
     border-left: 1px solid var(--border);
   }
 
@@ -44,6 +47,7 @@
   }
 
 .stampa__border--bottom {
+    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--border);
   }
 
@@ -98,11 +102,14 @@ hr.stampa-hr {
   display: flex;
   background: #f1f1f1;
   padding: 30px;
+  border-top: 1px solid #e2e4e7;
   border-top: 1px solid var(--border);
+  border-bottom: 1px solid #e2e4e7;
   border-bottom: 1px solid var(--border);
 }
 
   .stampa-grid__content {
+    background: #fff;
     background: var(--white);
     position: relative;
     width: 100%;
@@ -124,12 +131,14 @@ hr.stampa-hr {
   }
 
   .stampa-grid__highlight {
+    background: #0085ba;
     background: var(--blue);
     pointer-events: none;
     opacity: 0.4;
   }
 
   .stampa-grid__field {
+    border: 1px solid #e2e4e7;
     border: 1px solid var(--border);
     -webkit-transition: all 0.15 ease;
     transition: all 0.15 ease;
@@ -137,10 +146,12 @@ hr.stampa-hr {
     overflow: hidden;
     -webkit-transition: 0.15s ease;
     transition: 0.15s ease;
+    border-color: #e2e4e7;
     border-color: var(--border)
   }
 
   .stampa-grid__field:hover {
+      border: 1px solid #0085ba;
       border: 1px solid var(--blue)
     }
 
@@ -172,6 +183,7 @@ hr.stampa-hr {
     }
 
   .stampa-grid__field.active {
+      border-color: #ca4a1f;
       border-color: var(--active)
     }
 
@@ -184,6 +196,7 @@ hr.stampa-hr {
 
   .stampa-grid__field__resizer {
       position: absolute;
+      border: 2px solid #0085ba;
       border: 2px solid var(--blue);
       opacity: 0.2;
     }

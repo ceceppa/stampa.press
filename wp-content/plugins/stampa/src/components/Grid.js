@@ -9,7 +9,7 @@ import Field from './Field';
 
 let oldX, oldY;
 
-function Grid() {
+export default function Grid() {
   const ref = useRef();
   const store = Store.useStore();
   const [drag, setDrag] = useState({});
@@ -36,8 +36,7 @@ function Grid() {
       if (
         !Number.isNaN(cellX) &&
         !Number.isNaN(cellY) &&
-        cellX != oldX &&
-        cellY != oldY
+        (cellX != oldX || cellY != oldY)
       ) {
         oldX = cellX;
         oldY = cellY;
@@ -213,5 +212,3 @@ function Grid() {
     </div>
   );
 }
-
-export default Grid;

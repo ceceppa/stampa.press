@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 
 import Store from '../store/store';
 
@@ -10,17 +10,11 @@ export default function BlockOptions() {
   const store = Store.useStore();
   const stampaBlockOptions = store.get('stampaBlockOptions');
 
-  function updateBackgroundOption(e) {
+  const updateBackgroundOption = useCallback(e => {
     stampaBlockOptions.hasBackgroundOption = e.target.checked;
 
     store.set('stampaBlockOptions')(stampaBlockOptions);
-  }
-
-  function updateBlockTitle(e) {
-    stampaBlockOptions.title = e.target.value;
-
-    store.set('stampaBlockOptions')(stampaBlockOptions);
-  }
+  });
 
   return (
     <ToggleGroup

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 export default function CheckboxField({
   option,
@@ -12,7 +12,7 @@ export default function CheckboxField({
   /**
    * Update the state for the checkbox
    */
-  function updateOptionChecked(e, name, value) {
+  const updateOptionChecked = useCallback((e, name, value) => {
     if (e.target.checked) {
       e.target.value = value;
     } else {
@@ -20,7 +20,7 @@ export default function CheckboxField({
     }
 
     updateOptionValue(e, name);
-  }
+  });
 
   let isChecked = option.checked || false;
   if (selectedValues[option.name] != null) {

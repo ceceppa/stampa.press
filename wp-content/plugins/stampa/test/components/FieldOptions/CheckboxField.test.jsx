@@ -11,7 +11,7 @@ describe('CheckboxField', () => {
   const props = {
     option: {
       name: 'test-check',
-      label: 'Checkbox:',
+      label: 'Checkbox',
       value: 'test-value',
     },
     updateOptionValue,
@@ -33,6 +33,12 @@ describe('CheckboxField', () => {
     it('Should render an input[type="checkbox"] element', () => {
       expect(checkbox).not.toBeNull();
       expect(checkbox.value).toBe('test-value');
+    });
+
+    it('Should render the <label> for the SelectField', () => {
+      const label = container.querySelector('label');
+
+      expect(label.textContent).toBe('Checkbox:');
     });
 
     it('Should not be checked by default', () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Store from '../../store/store';
 import stampa from '../../stampa';
@@ -7,7 +7,7 @@ export default function Save() {
   const store = Store.useStore();
   const [isSaving, setSavingState] = useState(false);
 
-  function saveBlock(e, generate) {
+  const saveBlock = useCallback((e, generate) => {
     setSavingState(true);
 
     const fields = [];
@@ -47,7 +47,7 @@ export default function Save() {
         setSavingState(false);
       },
     });
-  }
+  });
 
   return (
     <div className="block-options__save">

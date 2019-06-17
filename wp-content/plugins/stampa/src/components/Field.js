@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Store from '../store/store';
 import stampa from '../stampa';
@@ -30,29 +30,29 @@ export default function Block({ field }) {
   /**
    * Store the block position and size (needed to nicely show the resize & moving squares)
    */
-  function storeBlockPosition() {
+  const storeBlockPosition = useCallback(() => {
     stampa.setFieldPosition({
       startRow: stampaField.startRow,
       startColumn: stampaField.startColumn,
       endColumn: stampaField.endColumn,
       endRow: stampaField.endRow,
     });
-  }
+  });
 
   // Allow the block itself to be dragged
-  function dragMe(e) {
+  const dragMe = useCallback(e => {
     e.stopPropagation();
 
     storeBlockPosition();
     store.set('draggedFieldId')(field._stampa.key);
-  }
+  });
 
   /**
    * Let's resize the block :)
    *
    * @param {HTMLEvent} e event
    */
-  function startResize(e) {
+  const startResize = useCallback(e => {
     e.stopPropagation();
 
     storeBlockPosition();
@@ -61,16 +61,16 @@ export default function Block({ field }) {
     stampa.setResizeDirection(e.target.dataset.resize);
     stampa.setResizing(true);
     store.set('draggedFieldId')(field._stampa.key);
-  }
+  });
 
   /**
    * Activate the current block
    *
    * @param {HTMLEvent} e event
    */
-  function setAsActive(e) {
+  const setAsActive = useCallback(e => {
     store.set('activeBlockKey')(field._stampa.key);
-  }
+  });
 
   const gridArea = `${stampaField.startRow} / ${stampaField.startColumn} / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn + stampaField.startColumn}`;
 
