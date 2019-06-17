@@ -84,7 +84,7 @@ describe('FieldOptions', () => {
                 type: 'checkbox',
                 name: 'test-check',
                 label: 'Checkbox:',
-                checked: 'test-value',
+                value: 'test-value',
               },
             ],
             _values: {

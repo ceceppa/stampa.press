@@ -3,7 +3,20 @@ import React, { Component } from 'react';
 import Store from '../store/store';
 
 import ToggleGroup from './ToggleGroup';
+import CheckboxField from './FieldOptions/CheckboxField';
+import TextField from './FieldOptions/TextField';
+import SelectField from './FieldOptions/SelectField';
+
 import stampa from '../stampa';
+
+/**
+ * Dynamic components name
+ */
+const components = {
+  checkbox: CheckboxField,
+  text: TextField,
+  select: SelectField,
+};
 
 export default function FieldOptions(props) {
   let store;
@@ -63,19 +76,6 @@ export default function FieldOptions(props) {
   }
 
   /**
-   * Update the state for the checkbox
-   */
-  function updateOptionChecked(e, name, value) {
-    if (e.target.checked) {
-      e.target.value = value;
-    } else {
-      e.target.value = '';
-    }
-
-    updateOptionValue(e, name);
-  }
-
-  /**
    * Delete the active block
    */
   function deleteActiveBlock() {
@@ -101,74 +101,17 @@ export default function FieldOptions(props) {
           />
         </label>,
         <hr key="hr-1" />,
-        activeBlock.options.map((option, index) => {
-          switch (option.type) {
-            case 'checkbox':
-              return (
-                <label
-                  htmlFor={`field-${option.name}`}
-                  className="stampa-number"
-                  key={option.name}
-                >
-                  <span className="stampa-number__label">{option.label}:</span>
-                  <input
-                    className="stampa-number__input"
-                    type="checkbox"
-                    name={`field-${option.name}`}
-                    id={`field-${option.name}`}
-                    value={activeBlock._values[option.name] || option.checked}
-                    checked={activeBlock._values[option.name] === option.value}
-                    onChange={e =>
-                      updateOptionChecked(e, option.name, option.value)
-                    }
-                  />
-                </label>
-              );
-            case 'text':
-              return (
-                <label
-                  htmlFor={`field-${option.name}`}
-                  className="stampa-text"
-                  key={option.name}
-                >
-                  <span className="stampa-text__label">{option.label}:</span>
-                  <input
-                    className="stampa-text__input"
-                    type="text"
-                    name={`field-${option.name}`}
-                    id={`field-${option.name}`}
-                    value={activeBlock._values[option.name] || option.value}
-                    onChange={e => updateOptionValue(e, option.name)}
-                  />
-                </label>
-              );
-            case 'select':
-              return (
-                <div className="stampa-select" key={option.name}>
-                  <label
-                    htmlFor={`field-${option.name}`}
-                    className="stampa-select__name"
-                  >
-                    {option.label}
-                  </label>
-                  <select
-                    className="stampa-select__select"
-                    name={`field-${option.name}`}
-                    id={`field-${option.name}`}
-                    onChange={e => updateOptionValue(e, option.name)}
-                    defaultValue={
-                      activeBlock._values[option.name] || option.value
-                    }
-                  >
-                    {option.values.map(value => (
-                      <option key={value} value={value}>
-                        {value}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              );
-          }
+        activeBlock.options.map(option => {
+          const Component = components[option.type];
+
+          return (
+            <Component
+              option={option}
+              updateOptionValue={updateOptionValue}
+              selectedValues={activeBlock._values}
+              key={option.name}
+            />
+          );
         }),
         <hr key="hr-2" />,
         <button
