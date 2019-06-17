@@ -27889,12 +27889,17 @@ function SelectField(_ref) {
   var option = _ref.option,
       selectedValues = _ref.selectedValues,
       updateOptionValue = _ref.updateOptionValue;
+
+  if (selectedValues == null) {
+    selectedValues = {};
+  }
+
   return _react.default.createElement("div", {
     className: "stampa-select"
   }, _react.default.createElement("label", {
     htmlFor: "field-".concat(option.name),
     className: "stampa-select__name"
-  }, option.label), _react.default.createElement("select", {
+  }, option.label, ":"), _react.default.createElement("select", {
     className: "stampa-select__select",
     name: "field-".concat(option.name),
     id: "field-".concat(option.name),
@@ -27995,7 +28000,7 @@ function FieldOptions(props) {
    */
 
 
-  function updateFieldName(e) {
+  var updateFieldName = (0, _react.useCallback)(function (e) {
     var blocks = store.get('stampaFields');
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
@@ -28026,9 +28031,8 @@ function FieldOptions(props) {
     }
 
     store.set('stampaFields')(blocks);
-  }
-
-  function updateOptionValue(e, name) {
+  });
+  var updateOptionValue = (0, _react.useCallback)(function (e, name) {
     var blocks = store.get('stampaFields');
     var _iteratorNormalCompletion3 = true;
     var _didIteratorError3 = false;
@@ -28059,16 +28063,14 @@ function FieldOptions(props) {
     }
 
     store.set('stampaFields')(blocks);
-  }
+  });
   /**
    * Delete the active block
    */
 
-
-  function deleteActiveBlock() {
+  var deleteActiveBlock = (0, _react.useCallback)(function () {
     _stampa.default.deleteActiveBlock(store);
-  }
-
+  });
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Field Options",
     display: "block",

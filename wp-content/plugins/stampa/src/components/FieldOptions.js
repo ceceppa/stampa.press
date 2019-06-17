@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useCallback } from 'react';
 
 import Store from '../store/store';
 
@@ -47,7 +47,7 @@ export default function FieldOptions(props) {
    *
    * @param {*} e
    */
-  function updateFieldName(e) {
+  const updateFieldName = useCallback(e => {
     const blocks = store.get('stampaFields');
 
     for (const block of blocks) {
@@ -59,9 +59,9 @@ export default function FieldOptions(props) {
     }
 
     store.set('stampaFields')(blocks);
-  }
+  });
 
-  function updateOptionValue(e, name) {
+  const updateOptionValue = useCallback((e, name) => {
     const blocks = store.get('stampaFields');
 
     for (const block of blocks) {
@@ -73,14 +73,14 @@ export default function FieldOptions(props) {
     }
 
     store.set('stampaFields')(blocks);
-  }
+  });
 
   /**
    * Delete the active block
    */
-  function deleteActiveBlock() {
+  const deleteActiveBlock = useCallback(() => {
     stampa.deleteActiveBlock(store);
-  }
+  });
 
   return (
     <ToggleGroup

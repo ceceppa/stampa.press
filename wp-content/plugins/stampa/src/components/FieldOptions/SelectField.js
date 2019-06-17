@@ -5,10 +5,14 @@ export default function SelectField({
   selectedValues,
   updateOptionValue,
 }) {
+  if (selectedValues == null) {
+    selectedValues = {};
+  }
+
   return (
     <div className="stampa-select">
       <label htmlFor={`field-${option.name}`} className="stampa-select__name">
-        {option.label}
+        {option.label}:
       </label>
       <select
         className="stampa-select__select"
