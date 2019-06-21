@@ -39,29 +39,39 @@
     overflow: hidden;
     transition: 0.15s ease;
     border-color: var(--border);
+    display: flex;
 
     &:hover {
       border: 1px solid var(--blue);
 
-      &[data-type]::after {
+      .stampa-grid__field__type {
         opacity: 1;
         transform: translateX(0);
+        right: 0;
       }
     }
 
-    &[data-type]::after {
-      content: attr(data-type);
-      background: #888;
+    &__type {
+      background: #eee;
       position: absolute;
-      right: 0;
+      display: flex;
+      right: 35px;
       top: 0;
-      padding: 2px;
-      color: #fff;
+      padding: 2px 5px;
+      align-items: center;
+      color: #333;
       text-transform: uppercase;
       pointer-events: none;
-      opacity: 0.1;
-      transform: translateX(70%);
+      opacity: 0.8;
+      transform: translateX(100%);
       transition: all 0.15s ease;
+      z-index: 1;
+      font-weight: bold;
+
+      img {
+        width: 20px;
+        padding-right: 10px;
+      }
     }
 
     &.resizing {

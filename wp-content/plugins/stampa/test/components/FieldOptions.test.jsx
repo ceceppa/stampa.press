@@ -128,5 +128,19 @@ describe('FieldOptions', () => {
       expect(checkbox).not.toBeNull();
       expect(checkbox.value).toBe('test-value');
     });
+
+    it('Should render the "Add custom option" button', () => {
+      const button = container.querySelector(
+        'button[name="add-custom-option"]'
+      );
+
+      expect(button).not.toBeNull();
+    });
+
+    it('Should render the "Delete field" button', () => {
+      const button = container.querySelector('button[name="delete-field"]');
+
+      expect(button).not.toBeNull();
+    });
   });
 });

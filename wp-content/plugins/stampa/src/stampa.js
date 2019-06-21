@@ -6,7 +6,7 @@
  * when dragging the field, does not affect the app itself, unless until the drop
  * ends.
  * So, for this reason we can store the information extenally without using any state/store.
- * 
+ *
  */
 export default {
   /**
@@ -23,7 +23,7 @@ export default {
   },
   /**
    * The fields loaded via PHP
-  */
+   */
   getFields: () => (window.stampa && window.stampa.fields) || [],
   /**
    * Return the field matching the given ID.
@@ -45,7 +45,7 @@ export default {
   },
   /**
    * Get the block data (used in edit-mode)
-  */
+   */
   getStampaBlocks: () => window.stampa && window.stampa.block,
   /**
    * Specify which resize action the user is performing:
@@ -94,14 +94,18 @@ export default {
    * Delete the active block
    *
    * This function is used by both FieldOptions & App.js
-  */
+   */
   deleteActiveBlock: store => {
-    const activeBlockKey = store.get('activeBlockKey');
-    const blocks = store
-      .get('stampaFields')
-      .filter(block => block._stampa.key !== activeBlockKey);
+    const confirm = window.confirm('Are you sure?');
 
-    store.set('stampaFields')(blocks);
-    store.set('activeBlockKey')(null);
+    if (confirm) {
+      const activeFieldKey = store.get('activeFieldKey');
+      const blocks = store
+        .get('stampaFields')
+        .filter(block => block._stampa.key !== activeFieldKey);
+
+      store.set('stampaFields')(blocks);
+      store.set('activeFieldKey')(null);
+    }
   },
 };

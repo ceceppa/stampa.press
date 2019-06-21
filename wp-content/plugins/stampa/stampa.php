@@ -50,7 +50,7 @@ class Stampa {
 		add_action( 'rest_api_init', __CLASS__ . '::register_stampa_endpoint' );
 
 		// Remove the default editor from the page.
-		add_filter( 'replace_editor', __CLASS__ . '::replace_editor', 10, 2 );
+		add_filter( 'replace_editor', __CLASS__ . '::replace_wp_editor', 10, 2 );
 	}
 
 	/**
@@ -163,32 +163,25 @@ class Stampa {
 	/**
 	 * Replace the default editor with Stampa App.
 	 *
+	 * Don't know why this event is more than once when editing... 3 times...
+	 *
 	 * @param boolean $replace    Whether to replace the editor. Default false.
 	 * @param object  $post Post object.
 	 *
 	 * @return boolean
 	 */
-	public static function replace_editor( $replace, $post ) : bool {
-		// Don't know why this event is triggered 3 times...
-		static $times = 0;
-
+	public static function replace_wp_editor( $replace, $post ) : bool {
 		global $pagenow;
 
-		$is_new = $pagenow == 'post-new.php';
-		// $is_edit = $pagenow == 'post.php';
-		$is_edit = false;
 		if ( $post->post_type === 'stampa-block' ) {
-			$times++;
-
 			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
 			wp_enqueue_script( 'heartbeat' );
 
 			require_once ABSPATH . 'wp-admin/admin-header.php';
 
-			if ( $is_new || $is_edit || $times > 2 ) {
-				self::render_stampa();
-			}
+			self::render_stampa_div();
+
 			return true;
 		}
 
@@ -196,14 +189,17 @@ class Stampa {
 	}
 
 	/**
-	 * Render the stampa app
+	 * Render the stampa div for the React app.
+	 *
+	 * Because the replace_editor event, when opening the edit link, is fired multiple times
+	 * we can't use an ID.
 	 *
 	 * @param [type] $post
 	 * @return void
 	 */
-	public static function render_stampa() {
+	public static function render_stampa_div() {
 		echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
-		echo '<div id="stampa"></div>';
+		echo '<div class="stampa-app"></div>';
 	}
 
 	/**

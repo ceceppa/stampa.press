@@ -17,7 +17,7 @@ const initialState = {
   resizingBlock: false,
   blockPosition: {},
   resizeDirection: null,
-  activeBlockKey: null,
+  activeFieldKey: null,
 };
 
 // Create & export a store with an initial value.

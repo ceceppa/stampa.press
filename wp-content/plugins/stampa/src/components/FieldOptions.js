@@ -3,6 +3,8 @@ import React, { Component, useCallback } from 'react';
 import Store from '../store/store';
 
 import ToggleGroup from './ToggleGroup';
+import ButtonAddCustomOption from './FieldOptions/ButtonAddCustomOption';
+import ButtonDeleteField from './FieldOptions/ButtonDeleteField';
 import CheckboxField from './FieldOptions/CheckboxField';
 import TextField from './FieldOptions/TextField';
 import SelectField from './FieldOptions/SelectField';
@@ -25,17 +27,17 @@ export default function FieldOptions(props) {
   } else {
     store = Store.useStore();
   }
-  const activeBlockKey = store.get('activeBlockKey');
+  const activeFieldKey = store.get('activeFieldKey');
 
   let activeBlock;
-  let blockOptions = null;
-  if (activeBlockKey) {
-    const blocks = store.get('stampaFields');
+  let fieldOptions = null;
+  if (activeFieldKey) {
+    const fields = store.get('stampaFields');
 
-    for (const block of blocks) {
-      if (block._stampa.key == activeBlockKey) {
-        activeBlock = block;
-        blockOptions = block.options;
+    for (const field of fields) {
+      if (field._stampa.key == activeFieldKey) {
+        activeBlock = field;
+        fieldOptions = field.options;
 
         break;
       }
@@ -48,31 +50,31 @@ export default function FieldOptions(props) {
    * @param {*} e
    */
   const updateFieldName = useCallback(e => {
-    const blocks = store.get('stampaFields');
+    const fields = store.get('stampaFields');
 
-    for (const block of blocks) {
-      if (block._stampa.key == activeBlockKey) {
-        block._stampa.name = e.target.value;
+    for (const field of fields) {
+      if (field._stampa.key == activeFieldKey) {
+        field._stampa.name = e.target.value;
 
         break;
       }
     }
 
-    store.set('stampaFields')(blocks);
+    store.set('stampaFields')(fields);
   });
 
   const updateOptionValue = useCallback((e, name) => {
-    const blocks = store.get('stampaFields');
+    const fields = store.get('stampaFields');
 
-    for (const block of blocks) {
-      if (block._stampa.key == activeBlockKey) {
+    for (const block of fields) {
+      if (block._stampa.key == activeFieldKey) {
         block._values[name] = e.target.value;
 
         break;
       }
     }
 
-    store.set('stampaFields')(blocks);
+    store.set('stampaFields')(fields);
   });
 
   /**
@@ -100,7 +102,8 @@ export default function FieldOptions(props) {
             onChange={updateFieldName}
           />
         </label>,
-        <hr key="hr-1" />,
+        <hr key="hr-1" className="stampa-hr" />,
+        <h3 key="h3-tag">Options:</h3>,
         activeBlock.options.map(option => {
           const Component = components[option.type];
 
@@ -113,15 +116,11 @@ export default function FieldOptions(props) {
             />
           );
         }),
-        <hr key="hr-2" />,
-        <button
-          key="delete"
-          type="button"
-          onClick={deleteActiveBlock}
-          className="button button-link-delete"
-        >
-          Delete field
-        </button>,
+        <hr key="hr-2" className="stampa-hr" />,
+        <div key="add-delete-buttons" className="block-options__save">
+          <ButtonAddCustomOption />
+          <ButtonDeleteField deleteActiveBlock={deleteActiveBlock} />
+        </div>,
       ]}
       {!activeBlock && <p className="stampa--gray">No block selected</p>}
     </ToggleGroup>

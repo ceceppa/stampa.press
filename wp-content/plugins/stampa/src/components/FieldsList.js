@@ -5,8 +5,8 @@ import GroupFields from './GroupFields';
 import stampa from '../stampa';
 
 export default function FieldsList() {
-  const blocks = stampa.getFields();
-  let keys = Object.keys(blocks);
+  const fields = stampa.getFields();
+  let keys = Object.keys(fields);
   const [filter, setFilter] = useState('');
 
   const updateFilter = e => {
@@ -29,7 +29,7 @@ export default function FieldsList() {
       </div>
       {keys.map(group => (
         <div className="stampa-fields__group" key={group}>
-          <GroupFields group={group} blocks={blocks} />
+          <GroupFields group={group} fields={fields} />
         </div>
       ))}
     </aside>

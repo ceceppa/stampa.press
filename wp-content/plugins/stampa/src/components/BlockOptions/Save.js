@@ -63,7 +63,6 @@ export default function Save() {
       >
         Save
       </button>
-      &nbsp;&nbsp;&nbsp;&nbsp;
       <button
         type="button"
         className="button button-primary"

@@ -48,14 +48,17 @@ class App extends Component {
       store.set('stampaFields')(fields);
     }
 
-    document.addEventListener('keypress', e => {
-      if (e.key === 'Delete') {
-        stampa.deleteActiveBlock(store);
-      }
-    });
-
     this.updateBlockTitle = this.updateBlockTitle.bind(this);
   }
+
+  componentDidMount() {
+    document.addEventListener('keypress', e => {
+      if (e.key === 'Delete') {
+        stampa.deleteActiveBlock(this.props.store);
+      }
+    });
+  }
+
   updateBlockTitle(e) {
     this.props.store.set('stampaBlockTitle')(e.target.value);
   }

@@ -137,7 +137,7 @@ export default function Grid() {
       store.set('stampaFields')([...fields, field]);
 
       // Set the last block as "active"
-      store.set('activeBlockKey')(field._stampa.key);
+      store.set('activeFieldKey')(field._stampa.key);
     }
   };
 
@@ -199,15 +199,17 @@ export default function Grid() {
       >
         <CSSGrid />
         {/* <SVGGrid drag={drag} /> */}
-        {fields.map(field => <Field field={field} key={field._stampa.key} />)}
-        {draggedFieldId &&
-          drag.over &&
+        {fields.map(field => (
+          <Field field={field} key={field._stampa.key} />
+        ))}
+        {draggedFieldId && drag.over && (
           <div
             className="stampa-grid__highlight"
             style={{
               gridArea,
             }}
-          />}
+          />
+        )}
       </div>
     </div>
   );

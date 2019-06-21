@@ -4,12 +4,12 @@ import GroupFields from '../../src/components/GroupFields';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 
-import blocksList from './fields-list.test.json';
+import fieldsList from './fields-list.test.json';
 
 describe('GroupFields', () => {
   const props = {
     group: 'Gutenberg',
-    blocks: blocksList,
+    fields: fieldsList,
   };
   let mountedComponent;
 

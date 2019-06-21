@@ -27166,7 +27166,7 @@ var initialState = {
   resizingBlock: false,
   blockPosition: {},
   resizeDirection: null,
-  activeBlockKey: null
+  activeFieldKey: null
 }; // Create & export a store with an initial value.
 
 var _default = (0, _undux.createConnectedStore)(initialState, null);
@@ -27272,39 +27272,39 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function GroupFields(_ref) {
   var group = _ref.group,
-      blocks = _ref.blocks;
+      fields = _ref.fields;
 
   var store = _store.default.useStore();
 
-  var items = Object.keys(blocks[group]);
+  var keys = Object.keys(fields[group]);
   return _react.default.createElement("div", {
     className: "stampa-fields__group__body"
   }, _react.default.createElement(_ToggleGroup.default, {
     label: group
   }, _react.default.createElement("ul", {
     className: "stampa-fields__items"
-  }, items.map(function (id) {
-    var block = blocks[group][id];
+  }, keys.map(function (key) {
+    var field = fields[group][key];
     return _react.default.createElement("li", {
-      key: id,
+      key: key,
       className: "stampa-fields__item tooltip",
       draggable: "true",
       onDragStart: function onDragStart() {
-        return store.set('draggedFieldId')(id);
+        return store.set('draggedFieldId')(key);
       },
       onDragEnd: function onDragEnd() {
         return store.set('draggedFieldId')(null);
       },
-      "data-tooltip": block.tooltip
+      "data-tooltip": field.tooltip
     }, _react.default.createElement("img", {
       className: "stampa-fields__image",
-      src: block.icon,
+      src: field.icon,
       "aria-hidden": "true",
       draggable: "false"
     }), _react.default.createElement("span", {
       className: "stampa-fields__label"
-    }, block.label), block.help && _react.default.createElement("a", {
-      href: block.help,
+    }, field.label), field.help && _react.default.createElement("a", {
+      href: field.help,
       className: "stampa-fields__help",
       target: "_blank"
     }, _react.default.createElement("svg", {
@@ -27333,7 +27333,7 @@ exports.default = void 0;
  * when dragging the field, does not affect the app itself, unless until the drop
  * ends.
  * So, for this reason we can store the information extenally without using any state/store.
- * 
+ *
  */
 var _default = {
   /**
@@ -27352,7 +27352,7 @@ var _default = {
 
   /**
    * The fields loaded via PHP
-  */
+   */
   getFields: function getFields() {
     return window.stampa && window.stampa.fields || [];
   },
@@ -27378,7 +27378,7 @@ var _default = {
 
   /**
    * Get the block data (used in edit-mode)
-  */
+   */
   getStampaBlocks: function getStampaBlocks() {
     return window.stampa && window.stampa.block;
   },
@@ -27434,14 +27434,18 @@ var _default = {
    * Delete the active block
    *
    * This function is used by both FieldOptions & App.js
-  */
+   */
   deleteActiveBlock: function deleteActiveBlock(store) {
-    var activeBlockKey = store.get('activeBlockKey');
-    var blocks = store.get('stampaFields').filter(function (block) {
-      return block._stampa.key !== activeBlockKey;
-    });
-    store.set('stampaFields')(blocks);
-    store.set('activeBlockKey')(null);
+    var confirm = window.confirm('Are you sure?');
+
+    if (confirm) {
+      var activeFieldKey = store.get('activeFieldKey');
+      var blocks = store.get('stampaFields').filter(function (block) {
+        return block._stampa.key !== activeFieldKey;
+      });
+      store.set('stampaFields')(blocks);
+      store.set('activeFieldKey')(null);
+    }
   }
 };
 exports.default = _default;
@@ -27472,9 +27476,9 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function FieldsList() {
-  var blocks = _stampa.default.getFields();
+  var fields = _stampa.default.getFields();
 
-  var keys = Object.keys(blocks);
+  var keys = Object.keys(fields);
 
   var _useState = (0, _react.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -27503,7 +27507,7 @@ function FieldsList() {
       key: group
     }, _react.default.createElement(_GroupFields.default, {
       group: group,
-      blocks: blocks
+      fields: fields
     }));
   }));
 }
@@ -27721,7 +27725,7 @@ function Save() {
       visibility: isSaving ? 'hidden' : ''
     },
     onClick: saveBlock
-  }, "Save"), "\xA0\xA0\xA0\xA0", _react.default.createElement("button", {
+  }, "Save"), _react.default.createElement("button", {
     type: "button",
     className: "button button-primary",
     style: {
@@ -27779,7 +27783,49 @@ function BlockOptions() {
     onChange: updateBackgroundOption
   })), _react.default.createElement("br", null), _react.default.createElement(_Save.default, null));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/FieldOptions/CheckboxField.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/FieldOptions/ButtonAddCustomOption.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ButtonAddCustomOption;
+
+var _react = _interopRequireWildcard(require("react"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function ButtonAddCustomOption() {
+  var addCustomOption = (0, _react.useCallback)(function () {});
+  return _react.default.createElement("button", {
+    name: "add-custom-option",
+    type: "button",
+    onClick: addCustomOption,
+    className: "button button-primary"
+  }, "Add custom option");
+}
+},{"react":"../node_modules/react/index.js"}],"components/FieldOptions/ButtonDeleteField.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ButtonDeleteField;
+
+var _react = _interopRequireWildcard(require("react"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function ButtonDeleteField(_ref) {
+  var deleteActiveBlock = _ref.deleteActiveBlock;
+  return _react.default.createElement("button", {
+    name: "delete-field",
+    type: "button",
+    onClick: deleteActiveBlock,
+    className: "button button-link-delete"
+  }, "Delete field");
+}
+},{"react":"../node_modules/react/index.js"}],"components/FieldOptions/CheckboxField.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27928,6 +27974,10 @@ var _store = _interopRequireDefault(require("../store/store"));
 
 var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
 
+var _ButtonAddCustomOption = _interopRequireDefault(require("./FieldOptions/ButtonAddCustomOption"));
+
+var _ButtonDeleteField = _interopRequireDefault(require("./FieldOptions/ButtonDeleteField"));
+
 var _CheckboxField = _interopRequireDefault(require("./FieldOptions/CheckboxField"));
 
 var _TextField = _interopRequireDefault(require("./FieldOptions/TextField"));
@@ -27958,23 +28008,23 @@ function FieldOptions(props) {
     store = _store.default.useStore();
   }
 
-  var activeBlockKey = store.get('activeBlockKey');
+  var activeFieldKey = store.get('activeFieldKey');
   var activeBlock;
-  var blockOptions = null;
+  var fieldOptions = null;
 
-  if (activeBlockKey) {
-    var blocks = store.get('stampaFields');
+  if (activeFieldKey) {
+    var fields = store.get('stampaFields');
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
 
     try {
-      for (var _iterator = blocks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var block = _step.value;
+      for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var field = _step.value;
 
-        if (block._stampa.key == activeBlockKey) {
-          activeBlock = block;
-          blockOptions = block.options;
+        if (field._stampa.key == activeFieldKey) {
+          activeBlock = field;
+          fieldOptions = field.options;
           break;
         }
       }
@@ -28001,17 +28051,17 @@ function FieldOptions(props) {
 
 
   var updateFieldName = (0, _react.useCallback)(function (e) {
-    var blocks = store.get('stampaFields');
+    var fields = store.get('stampaFields');
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
     var _iteratorError2 = undefined;
 
     try {
-      for (var _iterator2 = blocks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var _block = _step2.value;
+      for (var _iterator2 = fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var _field = _step2.value;
 
-        if (_block._stampa.key == activeBlockKey) {
-          _block._stampa.name = e.target.value;
+        if (_field._stampa.key == activeFieldKey) {
+          _field._stampa.name = e.target.value;
           break;
         }
       }
@@ -28030,20 +28080,20 @@ function FieldOptions(props) {
       }
     }
 
-    store.set('stampaFields')(blocks);
+    store.set('stampaFields')(fields);
   });
   var updateOptionValue = (0, _react.useCallback)(function (e, name) {
-    var blocks = store.get('stampaFields');
+    var fields = store.get('stampaFields');
     var _iteratorNormalCompletion3 = true;
     var _didIteratorError3 = false;
     var _iteratorError3 = undefined;
 
     try {
-      for (var _iterator3 = blocks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var _block2 = _step3.value;
+      for (var _iterator3 = fields[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        var block = _step3.value;
 
-        if (_block2._stampa.key == activeBlockKey) {
-          _block2._values[name] = e.target.value;
+        if (block._stampa.key == activeFieldKey) {
+          block._values[name] = e.target.value;
           break;
         }
       }
@@ -28062,7 +28112,7 @@ function FieldOptions(props) {
       }
     }
 
-    store.set('stampaFields')(blocks);
+    store.set('stampaFields')(fields);
   });
   /**
    * Delete the active block
@@ -28089,8 +28139,11 @@ function FieldOptions(props) {
     value: activeBlock._stampa.name,
     onChange: updateFieldName
   })), _react.default.createElement("hr", {
-    key: "hr-1"
-  }), activeBlock.options.map(function (option) {
+    key: "hr-1",
+    className: "stampa-hr"
+  }), _react.default.createElement("h3", {
+    key: "h3-tag"
+  }, "Options:"), activeBlock.options.map(function (option) {
     var Component = components[option.type];
     return _react.default.createElement(Component, {
       option: option,
@@ -28099,17 +28152,18 @@ function FieldOptions(props) {
       key: option.name
     });
   }), _react.default.createElement("hr", {
-    key: "hr-2"
-  }), _react.default.createElement("button", {
-    key: "delete",
-    type: "button",
-    onClick: deleteActiveBlock,
-    className: "button button-link-delete"
-  }, "Delete field")], !activeBlock && _react.default.createElement("p", {
+    key: "hr-2",
+    className: "stampa-hr"
+  }), _react.default.createElement("div", {
+    key: "add-delete-buttons",
+    className: "block-options__save"
+  }, _react.default.createElement(_ButtonAddCustomOption.default, null), _react.default.createElement(_ButtonDeleteField.default, {
+    deleteActiveBlock: deleteActiveBlock
+  }))], !activeBlock && _react.default.createElement("p", {
     className: "stampa--gray"
   }, "No block selected"));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonAddCustomOption":"components/FieldOptions/ButtonAddCustomOption.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
 'use strict';
 
 // Found this seed-based random generator somewhere
@@ -28671,22 +28725,27 @@ function Block(_ref) {
    */
 
   var setAsActive = (0, _react.useCallback)(function (e) {
-    store.set('activeBlockKey')(field._stampa.key);
+    store.set('activeFieldKey')(field._stampa.key);
   });
   var gridArea = "".concat(stampaField.startRow, " / ").concat(stampaField.startColumn, " / ").concat(stampaField.endRow + stampaField.startRow, " / ").concat(stampaField.endColumn + stampaField.startColumn);
-  var activeBlock = store.get('activeBlockKey');
+  var activeBlock = store.get('activeFieldKey');
   var activeClass = activeBlock == field._stampa.key ? 'active' : '';
   return _react.default.createElement("div", {
     draggable: "true",
     className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName),
     onDragStart: dragMe,
     "data-key": field._stampa.key,
-    "data-type": field._stampa.id,
     style: {
       gridArea: gridArea
     },
     onClick: setAsActive
   }, _react.default.createElement("div", {
+    className: "stampa-grid__field__type"
+  }, _react.default.createElement("img", {
+    src: field.icon,
+    "aria-hidden": "true",
+    draggable: "false"
+  }), _react.default.createElement("span", null, field._stampa.id)), _react.default.createElement("div", {
     dangerouslySetInnerHTML: {
       __html: fieldHTML
     },
@@ -28896,7 +28955,7 @@ function Grid() {
 
       store.set('stampaFields')([].concat(_toConsumableArray(fields), [_field])); // Set the last block as "active"
 
-      store.set('activeBlockKey')(_field._stampa.key);
+      store.set('activeFieldKey')(_field._stampa.key);
     }
   };
 
@@ -29055,16 +29114,22 @@ function (_Component) {
       store.set('stampaFields')(fields);
     }
 
-    document.addEventListener('keypress', function (e) {
-      if (e.key === 'Delete') {
-        _stampa.default.deleteActiveBlock(store);
-      }
-    });
     _this.updateBlockTitle = _this.updateBlockTitle.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(App, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      document.addEventListener('keypress', function (e) {
+        if (e.key === 'Delete') {
+          _stampa.default.deleteActiveBlock(_this2.props.store);
+        }
+      });
+    }
+  }, {
     key: "updateBlockTitle",
     value: function updateBlockTitle(e) {
       this.props.store.set('stampaBlockTitle')(e.target.value);
@@ -29238,14 +29303,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var stampaElement = document.getElementById('stampa');
+var stampaElements = document.querySelectorAll('.stampa-app');
 
-if (stampaElement != null) {
+if (stampaElements.length) {
   /**
-  * Prevent the custom style from the TinyMCE editor to ovewrite the
-  * Gutenberg one.
-  */
-  _reactDom.default.render(_react.default.createElement(_store.default.Container, null, _react.default.createElement(_App.default, null)), stampaElement);
+   * Prevent the custom style from the TinyMCE editor to ovewrite the
+   * Gutenberg one.
+   */
+  _reactDom.default.render(_react.default.createElement(_store.default.Container, null, _react.default.createElement(_App.default, null)), stampaElements[stampaElements.length - 1]);
 } // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
@@ -29280,7 +29345,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43447" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42633" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

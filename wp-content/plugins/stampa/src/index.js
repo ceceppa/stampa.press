@@ -6,18 +6,18 @@ import Store from './store/store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const stampaElement = document.getElementById('stampa');
+const stampaElements = document.querySelectorAll('.stampa-app');
 
-if (stampaElement != null) {
+if (stampaElements.length) {
   /**
- * Prevent the custom style from the TinyMCE editor to ovewrite the
- * Gutenberg one.
- */
+   * Prevent the custom style from the TinyMCE editor to ovewrite the
+   * Gutenberg one.
+   */
   ReactDOM.render(
     <Store.Container>
       <App />
     </Store.Container>,
-    stampaElement
+    stampaElements[stampaElements.length - 1]
   );
 }
 
