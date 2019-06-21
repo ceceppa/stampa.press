@@ -131,6 +131,8 @@ export default function Grid() {
       for (let option of field.options) {
         if (option.type == 'checkbox' && option.checked == false) {
           field._values[option.name] = '';
+        } else {
+          field._values[option.name] = option.value;
         }
       }
 

@@ -28,7 +28,17 @@
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}",
       " value={attributes.{{stampa.field_name}}}",
       " placeholder='{{stampa.value.placeholder}}'",
-      " onChange={image => updateAttribute('{{stampa.field_name}}', image)}",
+      " onSelect={image => updateAttribute('{{stampa.field_name}}', image)}",
+      "render={({ open }) => (",
+      "<IconButton",
+      "className='button'",
+      "label={__('Media')}",
+      "icon='media'",
+      "onClick={open}",
+      ">",
+      "Media",
+      "</IconButton>",
+      ")}",
       "/>",
       "</div>"
     ]

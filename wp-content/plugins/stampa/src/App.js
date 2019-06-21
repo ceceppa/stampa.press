@@ -20,7 +20,7 @@ class App extends Component {
     const blockData = stampa.getStampaBlocks();
 
     if (blockData) {
-      store.set('gridColumns', parseInt(blockData.grid.columns));
+      store.set('gridColumns')(parseInt(blockData.grid.columns));
       store.set('gridRows')(parseInt(blockData.grid.rows));
       store.set('gridGap')(parseInt(blockData.grid.gap));
       store.set('rowHeight')(parseInt(blockData.grid.rowHeight));

@@ -31,7 +31,7 @@
       "<textarea type='text' className='stampa-field__height'",
       " value={attributes.{{stampa.field_name}}}",
       " placeholder='{{stampa.value.placeholder}}'",
-      " rows=1",
+      " rows='1'",
       " onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}",
       "/>",
       "</{{stampa.value.level}}>"

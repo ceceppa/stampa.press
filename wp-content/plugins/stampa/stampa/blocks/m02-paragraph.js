@@ -1,32 +1,31 @@
 /**
- * BLOCK: Hero
+ * BLOCK: M02 - Paragraph
  *
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, MediaUpload } = wp.editor;
-const { PanelBody, IconButton, TextareaControl, Button } = wp.components;
+const { Paragraph, PanelBody, IconButton } = wp.components;
 const { Fragment, Component } = wp.element;
 
 // Default attributes are set to avoid React throwing an error
 // when start typeing something in the brew new added module
 const defaultAttributes = {
-  backgroundImage: {},
+  backgroundImage: {}
 };
 
-registerBlockType('stampa/hero', {
-  title: __('Hero'),
-  icon: 'welcome-write-blog',
-  category: 'stampa-blocks',
+registerBlockType("stampa/m02-paragraph", {
+  title: __("M02 - Paragraph"),
+  icon: "welcome-write-blog",
+  category: "stampa-blocks",
   keywords: [],
 
   multiple: true,
 
   attributes: {
-    backgroundImage: { type: 'object' },
-    heading: { type: 'string' },
-    intro: { type: 'string' },
-    button: { type: 'string' },
+    backgroundImage: { type: "object" },
+    heading: { type: "string" },
+    wysiwyg: { type: "string" }
   },
 
   /**
@@ -53,15 +52,15 @@ registerBlockType('stampa/hero', {
     return (
       <Fragment>
         <InspectorControls>
-          <PanelBody title={__('Options')}>
+          <PanelBody title={__("Options")}>
             <MediaUpload
-              onSelect={image => updateAttribute('backgroundImage', image)}
+              onSelect={image => updateAttribute("backgroundImage", image)}
               type="image"
               value={attributes.backgroundImage}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__('Set background Image')}
+                  label={__("Set background Image")}
                   icon="edit"
                   onClick={open}
                 >
@@ -73,73 +72,43 @@ registerBlockType('stampa/hero', {
         </InspectorControls>
         <div className={`${className} stampa-block`}>
           <div
-            className="hero"
+            className="m02-paragraph"
             style={{
               backgroundImage: `url(${attributes.backgroundImage &&
                 attributes.backgroundImage.url})`,
-              display: 'grid',
+              display: "grid",
               gridTemplateColumns:
-                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
-              gridTemplateRows:
-                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
-              gridGap: '10px',
-              height: '450px',
+                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+              gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr ",
+              gridGap: "16px",
+              height: "258px"
             }}
           >
+            {/* heading */}
             <h2
               className="stampa-field"
               style={{
                 gridRowStart: 2,
-                gridColumnStart: 2,
-                gridRowEnd: 8,
-                gridColumnEnd: 9,
+                gridColumnStart: 3,
+                gridRowEnd: 3,
+                gridColumnEnd: 11
               }}
             >
               <textarea
                 type="text"
                 className="stampa-field__height"
                 value={attributes.heading}
-                placeholder="Title"
-                onChange={e => updateAttribute('heading', e.target.value)}
+                placeholder="Heading"
+                rows="1"
+                onChange={e => updateAttribute("heading", e.target.value)}
               />
             </h2>
-            <div
-              className="stampa-field"
-              style={{
-                gridRowStart: 9,
-                gridColumnStart: 2,
-                gridRowEnd: 12,
-                gridColumnEnd: 7,
-              }}
-            >
-              <TextareaControl
-                value={attributes.intro}
-                placeholder="Intro"
-                onChange={value => updateAttribute('intro', value)}
-              />
-            </div>
-            <div
-              className="stampa-field"
-              style={{
-                gridRowStart: 13,
-                gridColumnStart: 2,
-                gridRowEnd: 15,
-                gridColumnEnd: 4,
-              }}
-            >
-              <Button
-                className="stampa-field"
-                style={{
-                  gridRowStart: 13,
-                  gridColumnStart: 2,
-                  gridRowEnd: 15,
-                  gridColumnEnd: 4,
-                }}
-                value={attributes.button}
-                placeholder="Button"
-                onChange={e => updateAttribute('button', e.target.value)}
-              />
-            </div>
+            {/* wysiwyg */}
+            <RichText
+              gridArea={{ gridArea }}
+              value={fieldName}
+              onChange={value => updateAttribute("wysiwyg", value)}
+            />
           </div>
         </div>
       </Fragment>
@@ -149,5 +118,5 @@ registerBlockType('stampa/hero', {
   /**
    * Let the content to be rendered with PHP
    */
-  save: () => null,
+  save: () => null
 });

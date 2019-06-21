@@ -21,8 +21,8 @@
     "react": [
       "<RichText",
       " gridArea={{gridArea}}",
-      " value={ `fieldName` }",
-      "onChange={ this.`onFieldNameChanged }",
+      " value={fieldName}",
+      "onChange={value => updateAttribute('{{stampa.field_name}}', value)}",
       "/>"
     ]
   }

@@ -1,0 +1,18 @@
+{
+  "group": "Static",
+  "id": "rectangle",
+  "data": {
+    "label": "Rectangle",
+    "tooltip": "Rectangle",
+    "icon": "button.svg",
+    "options": []
+  },
+  "gutenberg": {
+    "react": [
+      "<div",
+      " className=\"stampa-field\"",
+      " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
+      "</div>"
+    ]
+  }
+}

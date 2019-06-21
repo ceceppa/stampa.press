@@ -28936,6 +28936,8 @@ function Grid() {
 
           if (option.type == 'checkbox' && option.checked == false) {
             _field._values[option.name] = '';
+          } else {
+            _field._values[option.name] = option.value;
           }
         }
       } catch (err) {
@@ -29090,7 +29092,7 @@ function (_Component) {
     var blockData = _stampa.default.getStampaBlocks();
 
     if (blockData) {
-      store.set('gridColumns', parseInt(blockData.grid.columns));
+      store.set('gridColumns')(parseInt(blockData.grid.columns));
       store.set('gridRows')(parseInt(blockData.grid.rows));
       store.set('gridGap')(parseInt(blockData.grid.gap));
       store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
@@ -29345,7 +29347,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42633" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37953" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

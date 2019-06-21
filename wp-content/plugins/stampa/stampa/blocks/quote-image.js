@@ -26,7 +26,8 @@ registerBlockType("stampa/quote-image", {
     backgroundImage: { type: "object" },
     quote: { type: "string" },
     author: { type: "string" },
-    image: { type: "object" }
+    image: { type: "object" },
+    heading2: { type: "string" }
   },
 
   /**
@@ -137,9 +138,38 @@ registerBlockType("stampa/quote-image", {
                 }}
                 value={attributes.image}
                 placeholder="The author"
-                onChange={image => updateAttribute("image", image)}
+                onSelect={image => updateAttribute("image", image)}
+                render={({ open }) => (
+                  <IconButton
+                    className="button"
+                    label={__("Media")}
+                    icon="media"
+                    onClick={open}
+                  >
+                    Media
+                  </IconButton>
+                )}
               />
             </div>
+            {/* heading2 */}
+            <h2
+              className="stampa-field"
+              style={{
+                gridRowStart: 7,
+                gridColumnStart: 9,
+                gridRowEnd: 8,
+                gridColumnEnd: 13
+              }}
+            >
+              <textarea
+                type="text"
+                className="stampa-field__height"
+                value={attributes.heading2}
+                placeholder="Heading"
+                rows="1"
+                onChange={e => updateAttribute("heading2", e.target.value)}
+              />
+            </h2>
           </div>
         </div>
       </Fragment>
