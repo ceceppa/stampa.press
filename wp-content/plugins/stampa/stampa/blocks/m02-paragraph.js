@@ -58,7 +58,7 @@ registerBlockType("stampa/m02-paragraph", {
         >
           {/* heading */}
           <h2
-            className="stampa-field"
+            className="stampa-field stampa-field--heading"
             style={{
               gridRowStart: 1,
               gridColumnStart: 1,

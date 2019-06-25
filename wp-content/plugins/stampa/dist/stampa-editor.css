@@ -34,6 +34,7 @@
   }
 .stampa-field--image {
     position: relative;
+    overflow: hidden;
   }
 .stampa-field--image svg {
       box-sizing: border-box;
@@ -61,23 +62,31 @@
         height: 100%;
         box-sizing: border-box;
       }
-.stampa-field--image.round:hover button {
-          opacity: 1;
-        }
-.stampa-field--image.round button {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        -webkit-transform: translate(-50%, -50%) !important;
-                transform: translate(-50%, -50%) !important;
-        opacity: 0;
-        -webkit-transition: all 0.15s ease;
-        transition: all 0.15s ease;
+.stampa-field--image img {
+      min-width: 100%;
+      min-height: 100%;
+    }
+.stampa-field--image button {
+      position: absolute;
+      left: 0;
+      top: 0%;
+      opacity: 0;
+      height: 100% !important;
+      width: 100%;
+      -webkit-transition: all 0.15s ease;
+      transition: all 0.15s ease;
+    }
+.stampa-field--image:hover button {
+        opacity: 0.5;
       }
 .stampa-block .stampa-field--heading {
       font-size: 1rem;
       padding: 0;
       margin: 0;
     }
+.stampa-field--textarea * {
+      height: 100%;
+    }
+
 
 /*# sourceMappingURL=/stampa-editor.css.map */

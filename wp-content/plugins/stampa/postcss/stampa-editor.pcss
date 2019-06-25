@@ -41,6 +41,7 @@
 
   &--image {
     position: relative;
+    overflow: hidden;
 
     svg {
       box-sizing: border-box;
@@ -69,20 +70,25 @@
         height: 100%;
         box-sizing: border-box;
       }
+    }
 
-      &:hover {
-        button {
-          opacity: 1;
-        }
-      }
+    img {
+      min-width: 100%;
+      min-height: 100%;
+    }
+    button {
+      position: absolute;
+      left: 0;
+      top: 0%;
+      opacity: 0;
+      height: 100% !important;
+      width: 100%;
+      transition: all 0.15s ease;
+    }
 
+    &:hover {
       button {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%) !important;
-        opacity: 0;
-        transition: all 0.15s ease;
+        opacity: 0.5;
       }
     }
   }
@@ -92,6 +98,12 @@
       font-size: 1rem;
       padding: 0;
       margin: 0;
+    }
+  }
+
+  &--textarea {
+    * {
+      height: 100%;
     }
   }
 }
