@@ -5,7 +5,7 @@
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, MediaUpload, RichText } = wp.editor;
-const { Button } = wp.components;
+const { IconButton, Button } = wp.components;
 const { Fragment, Component } = wp.element;
 
 // Default attributes are set to avoid React throwing an error
@@ -66,7 +66,7 @@ registerBlockType("stampa/m05-block", {
         >
           {/* heading */}
           <h2
-            className="stampa-field"
+            className="stampa-field stampa-field--heading"
             style={{
               gridRowStart: 4,
               gridColumnStart: 4,
@@ -85,7 +85,7 @@ registerBlockType("stampa/m05-block", {
           </h2>
           {/* wysiwyg */}
           <div
-            className="stampa-field stampa-field--textarea"
+            className="stampa-field stampa-field--wysiwyg"
             style={{
               gridRowStart: 6,
               gridColumnStart: 2,
@@ -109,6 +109,23 @@ registerBlockType("stampa/m05-block", {
               gridColumnEnd: 22
             }}
           >
+            <img
+              src={attributes.image && attributes.image.url}
+              className="stampa-field__image"
+            />
+            {attributes.image == null && (
+              <svg
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M0,0h24v24H0V0z" fill="none"></path>
+                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z"></path>
+                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
+              </svg>
+            )}
             <MediaUpload
               className="media-upload"
               style={{
@@ -127,7 +144,7 @@ registerBlockType("stampa/m05-block", {
                   icon="media"
                   onClick={open}
                 >
-                  Media
+                  Select image
                 </IconButton>
               )}
             />
@@ -144,7 +161,7 @@ registerBlockType("stampa/m05-block", {
           ></div>
           {/* heading */}
           <h3
-            className="stampa-field"
+            className="stampa-field stampa-field--heading"
             style={{
               gridRowStart: 12,
               gridColumnStart: 3,
@@ -163,7 +180,7 @@ registerBlockType("stampa/m05-block", {
           </h3>
           {/* heading */}
           <h4
-            className="stampa-field"
+            className="stampa-field stampa-field--heading"
             style={{
               gridRowStart: 13,
               gridColumnStart: 3,
@@ -182,7 +199,7 @@ registerBlockType("stampa/m05-block", {
           </h4>
           {/* wysiwyg */}
           <div
-            className="stampa-field stampa-field--textarea"
+            className="stampa-field stampa-field--wysiwyg"
             style={{
               gridRowStart: 15,
               gridColumnStart: 3,
