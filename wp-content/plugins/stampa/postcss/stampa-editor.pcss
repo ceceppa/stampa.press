@@ -4,7 +4,7 @@
 
   &::before,
   &::after {
-    display: none;
+    display: none !important;
   }
 
   * {
@@ -84,6 +84,14 @@
         opacity: 0;
         transition: all 0.15s ease;
       }
+    }
+  }
+
+  &--heading {
+    .stampa-block & {
+      font-size: 1rem;
+      padding: 0;
+      margin: 0;
     }
   }
 }

@@ -1,11 +1,11 @@
 /**
- * BLOCK: Title
+ * BLOCK: M01 - Banner
  *
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, MediaUpload } = wp.editor;
-const { PanelBody, IconButton } = wp.components;
+const { Button, PanelBody, IconButton } = wp.components;
 const { Fragment, Component } = wp.element;
 
 // Default attributes are set to avoid React throwing an error
@@ -14,8 +14,8 @@ const defaultAttributes = {
   backgroundImage: {}
 };
 
-registerBlockType("stampa/title", {
-  title: __("Title"),
+registerBlockType("stampa/m01-banner", {
+  title: __("M01 - Banner"),
   icon: "welcome-write-blog",
   category: "stampa-blocks",
   keywords: [],
@@ -24,7 +24,7 @@ registerBlockType("stampa/title", {
 
   attributes: {
     backgroundImage: { type: "object" },
-    heading: { type: "string" }
+    button: { type: "string" }
   },
 
   /**
@@ -71,37 +71,41 @@ registerBlockType("stampa/title", {
         </InspectorControls>
         <div className={`${className} stampa-block`}>
           <div
-            className="title"
+            className="m01-banner"
             style={{
               backgroundImage: `url(${attributes.backgroundImage &&
                 attributes.backgroundImage.url})`,
               display: "grid",
               gridTemplateColumns:
-                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
               gridTemplateRows: "1fr 1fr 1fr 1fr 1fr ",
               gridGap: "5px",
               height: "230px"
             }}
           >
-            {/* heading */}
-            <h1
+            {/* button */}
+            <div
               className="stampa-field"
               style={{
-                gridRowStart: 2,
+                gridRowStart: 3,
                 gridColumnStart: 4,
-                gridRowEnd: 5,
-                gridColumnEnd: 10
+                gridRowEnd: 4,
+                gridColumnEnd: 9
               }}
             >
-              <textarea
-                type="text"
-                className="stampa-field__height"
-                value={attributes.heading}
-                placeholder="Heading"
-                rows="1"
-                onChange={e => updateAttribute("heading", e.target.value)}
+              <Button
+                className="stampa-field"
+                style={{
+                  gridRowStart: 3,
+                  gridColumnStart: 4,
+                  gridRowEnd: 4,
+                  gridColumnEnd: 9
+                }}
+                value={attributes.button}
+                placeholder="Add text..."
+                onChange={e => updateAttribute("button", e.target.value)}
               />
-            </h1>
+            </div>
           </div>
         </div>
       </Fragment>

@@ -26,7 +26,7 @@
   "gutenberg": {
     "react": [
       "<{{stampa.value.level}}",
-      " className=\"stampa-field\"",
+      " className=\"stampa-field stampa-field--heading\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
       "<textarea type='text' className='stampa-field__height'",
       " value={attributes.{{stampa.field_name}}}",

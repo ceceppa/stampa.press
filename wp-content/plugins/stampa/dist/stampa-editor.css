@@ -4,7 +4,7 @@
 }
 .stampa-field::before,
   .stampa-field::after {
-    display: none;
+    display: none !important;
   }
 .stampa-field * {
     width: 100%;
@@ -74,5 +74,10 @@
         -webkit-transition: all 0.15s ease;
         transition: all 0.15s ease;
       }
+.stampa-block .stampa-field--heading {
+      font-size: 1rem;
+      padding: 0;
+      margin: 0;
+    }
 
 /*# sourceMappingURL=/stampa-editor.css.map */

@@ -8,12 +8,14 @@ namespace Stampa\BlockGenerator;
 
 use Stampa\Stampa;
 
-define( 'STAMPA_OUTPUT_FOLDER', \realpath(__DIR__ . '/../') . '/' );
+define( 'STAMPA_OUTPUT_FOLDER', \realpath( __DIR__ . '/../' ) . '/' );
 
 /**
  * The class
  */
 class BlockGenerator extends Stampa {
+	private static $block_title = null;
+
 	/**
 	 * List of key pairs to use for replacing the custom
 	 * {{fields}} tags in the boilerplates.
@@ -30,6 +32,13 @@ class BlockGenerator extends Stampa {
 	public static function init() {
 			// Custom endpoint.
 		add_action( 'rest_api_init', __CLASS__ . '::register_stampa_endpoint' );
+
+		add_filter( 'post_row_actions', __CLASS__ . '::add_quick_generate_block_link', 10, 2 );
+
+		$stampa_action = $_GET['stampa-action'] ?? null;
+		if ( $stampa_action == 'generate-block' ) {
+			self::load_and_generate_react_block();
+		}
 	}
 
 
@@ -91,7 +100,7 @@ class BlockGenerator extends Stampa {
 			'post_type'   => 'stampa-block',
 		];
 
-    wp_update_post( $post_args );
+		wp_update_post( $post_args );
 
 		if ( ! isset( $params['fields'] ) || ! is_array( $params['fields'] ) ) {
 			$params['fields'] = [];
@@ -105,7 +114,7 @@ class BlockGenerator extends Stampa {
 	 *
 	 * @param string $post_id the post ID.
 	 * @param array  $params the array containing the data to save.
-   *
+	 *
 	 * @return array
 	 */
 	private static function update_block_meta( $post_id, $params ) : array {
@@ -135,7 +144,7 @@ class BlockGenerator extends Stampa {
 		$output_folder = trailingslashit( STAMPA_OUTPUT_FOLDER . 'stampa/blocks/' );
 		// $output_folder = trailingslashit( get_template_directory() ) . 'assets/js/blocks/';
 		$file_name   = sanitize_title( $title ) . '.js';
-    $output_file = $output_folder . $file_name;
+		$output_file = $output_folder . $file_name;
 
 		/**
 		 * If the file exists make sure that the file hasn't been manually changed.
@@ -152,9 +161,6 @@ class BlockGenerator extends Stampa {
 			}
 		}
 
-		// The block boilerplate.
-    $boilerplate = file_get_contents( STAMPA_OUTPUT_FOLDER . 'assets/gutenberg/block-boilerplate.js' );
-
 		// Title & Id.
 		self::add_replace( 'block_title', $title );
 		self::add_replace( 'sanitized_title', sanitize_title( $title ) );
@@ -163,6 +169,7 @@ class BlockGenerator extends Stampa {
 		self::load_fields();
 
 		$wp_components = [];
+		$wp_editor     = [ 'InspectorControls', 'MediaUpload' ];
 		foreach ( $fields_params as $stampa_field ) {
 			$field = self::get_field_by_id( $stampa_field['id'] );
 			if ( empty( $field ) ) {
@@ -173,12 +180,16 @@ class BlockGenerator extends Stampa {
 			if ( isset( $gutenberg->wp_components ) ) {
 				$wp_components[] = $gutenberg->wp_components;
 			}
+
+			if ( isset( $gutenberg->wp_editor ) ) {
+				$wp_editor[] = $gutenberg->wp_editor;
+			}
 		}
 
 		// Unique components to load.
 		$wp_components = array_unique( $wp_components );
 
-		self::add_replace( 'wp.editor', [ 'InspectorControls', 'MediaUpload' ] );
+		self::add_replace( 'wp.editor', $wp_editor );
 		self::add_replace( 'wp.components', $wp_components );
 
 		// The block options.
@@ -202,21 +213,33 @@ class BlockGenerator extends Stampa {
 			"height: '{$min_height}px'",
 		];
 
+		self::$block_title = $title;
 		self::add_replace( 'block_style', $grid_style );
 
-		$temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
-		file_put_contents( $temp_file, self::replace( $boilerplate ) );
+		self::save_js_file( $output_file );
+	}
 
-    exec( 'prettier ' . $temp_file . ' > ' . $output_file, $ignore, $return_val );
-    if ( $return_val > 0 ) {
-      error_log( print_r( $temp_file, true ) );
-      return false;
-    }
+	private static function save_js_file( $output_file ) {
+		$temp_file    = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
+		$boilerplate  = file_get_contents( STAMPA_OUTPUT_FOLDER . 'assets/gutenberg/block-boilerplate.js' );
+		$file_content = self::replace( $boilerplate );
+
+		file_put_contents( $temp_file, $file_content );
+
+		self::beautify_js_file_or_fail( $temp_file, $output_file );
+	}
+
+	private static function beautify_js_file_or_fail( $temp_file, $output_file ) {
+		exec( 'prettier ' . $temp_file . ' > ' . $output_file, $ignore, $return_val );
+
+		if ( $return_val > 0 ) {
+			error_log( print_r( $temp_file, true ) );
+			throw new \Error( 'Prettier failed' );
+		}
 
 		// Add to index.js (if not exists).
 		self::add_block_to_indexjs( $output_file );
 	}
-
 
 	/**
 	 * Store the key and vaule pair that are going to be used to replace the {{fields}}
@@ -294,10 +317,10 @@ class BlockGenerator extends Stampa {
 			self::add_replace( 'grid_column_end', intval( $stampa['startColumn'] ) + intval( $stampa['endColumn'] ) );
 			self::add_replace( 'field_name', $stampa['name'] );
 
-      // The values.
-      if ( ! isset($field['_values']) ) {
-        $field['_values'] = [];
-      }
+			// The values.
+			if ( ! isset( $field['_values'] ) ) {
+				$field['_values'] = [];
+			}
 
 			foreach ( $field['_values'] as $key => $value ) {
 				self::add_replace( 'value.' . $key, $value );
@@ -329,18 +352,20 @@ class BlockGenerator extends Stampa {
 	 * @return void
 	 */
 	private static function generate_options( array $options_params ) : void {
-		// The options boilerplate.
-		$options_boilerplate = file_get_contents( STAMPA_OUTPUT_FOLDER . 'assets/gutenberg/inspector-controls.boilerplace.js' );
-
 		self::add_replace( 'default_attributes', [] );
 		self::add_replace( 'options_content', '' );
 		self::add_replace( 'render_container_start', '' );
 		self::add_replace( 'render_container_end', '' );
 		self::add_replace( 'attributes', [], null, true );
 
-		if ( $options_params['hasBackgroundOption'] == false ) {
+		$hasBackground = $options_params['hasBackgroundOption'];
+
+		if ( $hasBackground === false || $hasBackground === 'false' ) {
 			return;
 		}
+
+		// The options boilerplate.
+		$options_boilerplate = file_get_contents( STAMPA_OUTPUT_FOLDER . 'assets/gutenberg/inspector-controls.boilerplace.js' );
 
 		self::add_replace( 'wp.components', [ 'PanelBody', 'IconButton' ] );
 		self::add_replace( 'default_attributes', [ 'backgroundImage: {}' ], null, true );
@@ -371,7 +396,37 @@ class BlockGenerator extends Stampa {
 		$index_content = file_get_contents( $index_file );
 
 		if ( stripos( $index_content, $file_name ) == 0 ) {
-			$index_content .=  "import './blocks/{$file_name}'" . PHP_EOL;
+			$index_content .= "import './blocks/{$file_name}'" . PHP_EOL;
+
+			file_put_contents( $index_file, $index_content );
+		}
+
+		self::generate_post_css_file( $output_file );
+	}
+
+	private static function generate_post_css_file( string $output_file ) {
+		$basename          = basename( $output_file );
+		$post_css_filename = str_replace( '.js', '.pcss', $basename );
+
+		$output_css_file = STAMPA_OUTPUT_FOLDER . 'stampa/pcss/' . $post_css_filename;
+		$file_exists     = file_exists( $output_css_file );
+
+		if ( ! $file_exists ) {
+			$post_css_content = sprintf( ".wp-block-stampa-%s {\n}", sanitize_title( self::$block_title ) );
+
+			file_put_contents( $output_css_file, $post_css_content );
+		}
+
+		self::add_css_file_to_index_pcss( $post_css_filename );
+	}
+
+
+	private static function add_css_file_to_index_pcss( string $post_css_filename ) {
+		$index_file    = STAMPA_OUTPUT_FOLDER . 'stampa/index.pcss';
+		$index_content = file_get_contents( $index_file );
+
+		if ( stripos( $index_content, $post_css_filename ) == 0 ) {
+			$index_content .= "@import './pcss/{$post_css_filename}';" . PHP_EOL;
 
 			file_put_contents( $index_file, $index_content );
 		}
@@ -385,7 +440,81 @@ class BlockGenerator extends Stampa {
 	private static function parcel_build() {
 		$stampa_path = STAMPA_OUTPUT_FOLDER . 'stampa';
 
+		exec( "parcel build {$stampa_path}/index.pcss -d {$stampa_path}/dist" );
 		exec( "parcel build {$stampa_path}/index.js -d {$stampa_path}/dist" );
+	}
+
+	/**
+	 * Add the "Generate block" item to the quick-edit menu.
+	 *
+	 * @param array   $actions the actions.
+	 * @param WP_Post $post the post.
+	 * @return array
+	 */
+	public static function add_quick_generate_block_link( array $actions, $post ) : array {
+		if ( $post->post_type !== 'stampa-block' ) {
+			return $actions;
+		}
+
+		$link                       = add_query_arg(
+			[
+				'stampa-action'   => 'generate-block',
+				'stampa-block-id' => $post->ID,
+			]
+		);
+		$actions['stampa-generate'] = sprintf( '<a href="%s">Generate block</a>', $link );
+
+		return $actions;
+	}
+
+	/**
+	 * Load the block and trigger the react_code generator
+	 *
+	 * @return void
+	 */
+	private static function load_and_generate_react_block() {
+		$post_ID = $_GET['stampa-block-id'] ?? null;
+
+		if ( $post_ID == \null || get_post_field( 'post_type', $post_ID ) !== 'stampa-block' ) {
+			return;
+		}
+
+		$title          = get_post_field( 'post_title', $post_ID );
+		$grid_params    = (array) json_decode( get_post_meta( $post_ID, '_stampa_grid', true ) );
+		$fields_params  = (array) json_decode( get_post_meta( $post_ID, '_stampa_fields', true ) );
+		$options_params = (array) json_decode( get_post_meta( $post_ID, '_stampa_options', true ) );
+
+		self::convert_json_data_and_generate_react_block( $post_ID, $title, $grid_params, $fields_params, $options_params );
+	}
+
+	/**
+	 * Convert the data as needed by generate_react_block and generate the JS code.
+	 *
+	 * @param [type] $title
+	 * @param [type] $grid_params
+	 * @param [type] $fields_params
+	 * @param [type] $options_params
+	 * @return void
+	 */
+	private static function convert_json_data_and_generate_react_block( $post_ID, $title, $grid_params, $fields_params, $options_params ) {
+		// Convert the subdata from (stdClass) to array
+		$fields_params = array_map(
+			function( $field ) {
+				$ret = [];
+
+				foreach ( $field as $key => $value ) {
+					if ( \is_object( $value ) ) {
+						$value = (array) $value;
+					}
+
+					$ret[ $key ] = $value;
+				}
+				return $ret;
+			},
+			$fields_params
+		);
+
+		self::generate_react_block( $post_ID, $title, $grid_params, $options_params, $fields_params );
 	}
 }
 

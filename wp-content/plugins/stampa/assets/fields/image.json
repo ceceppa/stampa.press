@@ -19,10 +19,12 @@
   },
   "gutenberg": {
     "attribute_type": "object",
+    "wp_components": "IconButton",
     "react": [
       "<div",
       " className=\"stampa-field stampa-field--image {{stampa.value.round}}\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
+      "<img src={attributes.{{stampa.field_name}} && attributes.{{stampa.field_name}}.url} className='stampa-field__image' />",
       "<MediaUpload",
       " className=\"media-upload\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}",

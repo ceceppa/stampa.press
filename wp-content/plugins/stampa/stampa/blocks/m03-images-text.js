@@ -5,14 +5,12 @@
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, MediaUpload } = wp.editor;
-const { TextareaControl, PanelBody, IconButton } = wp.components;
+const { IconButton, TextareaControl } = wp.components;
 const { Fragment, Component } = wp.element;
 
 // Default attributes are set to avoid React throwing an error
 // when start typeing something in the brew new added module
-const defaultAttributes = {
-  backgroundImage: {}
-};
+const defaultAttributes = {};
 
 registerBlockType("stampa/m03-images-text", {
   title: __("M03 - Images + Text"),
@@ -23,10 +21,11 @@ registerBlockType("stampa/m03-images-text", {
   multiple: true,
 
   attributes: {
-    backgroundImage: { type: "object" },
-    image: { type: "object" },
+    image1: { type: "object" },
     heading: { type: "string" },
-    text: { type: "string" }
+    text: { type: "string" },
+    image2: { type: "object" },
+    image3: { type: "object" }
   },
 
   /**
@@ -51,178 +50,167 @@ registerBlockType("stampa/m03-images-text", {
     }
 
     return (
-      <Fragment>
-        <InspectorControls>
-          <PanelBody title={__("Options")}>
-            <MediaUpload
-              onSelect={image => updateAttribute("backgroundImage", image)}
-              type="image"
-              value={attributes.backgroundImage}
-              render={({ open }) => (
-                <IconButton
-                  className="button"
-                  label={__("Set background Image")}
-                  icon="edit"
-                  onClick={open}
-                >
-                  Set background Image
-                </IconButton>
-              )}
-            />
-          </PanelBody>
-        </InspectorControls>
-        <div className={`${className} stampa-block`}>
+      <div className={`${className} stampa-block`}>
+        <div
+          className="m03-images-text"
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+            gridTemplateRows:
+              "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+            gridGap: "7px",
+            height: "598px"
+          }}
+        >
+          {/* image1 */}
           <div
-            className="m03-images-text"
+            className="stampa-field stampa-field--image "
             style={{
-              backgroundImage: `url(${attributes.backgroundImage &&
-                attributes.backgroundImage.url})`,
-              display: "grid",
-              gridTemplateColumns:
-                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-              gridTemplateRows:
-                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-              gridGap: "7px",
-              height: "598px"
+              gridRowStart: 1,
+              gridColumnStart: 1,
+              gridRowEnd: 9,
+              gridColumnEnd: 8
             }}
           >
-            {/* image */}
-            <div
-              className="stampa-field stampa-field--image "
+            <img
+              src={attributes.image1 && attributes.image1.url}
+              className="stampa-field__image"
+            />
+            <MediaUpload
+              className="media-upload"
               style={{
                 gridRowStart: 1,
                 gridColumnStart: 1,
                 gridRowEnd: 9,
                 gridColumnEnd: 8
               }}
-            >
-              <MediaUpload
-                className="media-upload"
-                style={{
-                  gridRowStart: 1,
-                  gridColumnStart: 1,
-                  gridRowEnd: 9,
-                  gridColumnEnd: 8
-                }}
-                value={attributes.image}
-                placeholder="Write text..."
-                onSelect={image => updateAttribute("image", image)}
-                render={({ open }) => (
-                  <IconButton
-                    className="button"
-                    label={__("Media")}
-                    icon="media"
-                    onClick={open}
-                  >
-                    Media
-                  </IconButton>
-                )}
-              />
-            </div>
-            {/* heading */}
-            <h2
-              className="stampa-field"
-              style={{
-                gridRowStart: 1,
-                gridColumnStart: 9,
-                gridRowEnd: 2,
-                gridColumnEnd: 15
-              }}
-            >
-              <textarea
-                type="text"
-                className="stampa-field__height"
-                value={attributes.heading}
-                placeholder="Heading"
-                rows="1"
-                onChange={e => updateAttribute("heading", e.target.value)}
-              />
-            </h2>
-            {/* text */}
-            <div
-              className="stampa-field stampa-field--textarea"
-              style={{
-                gridRowStart: 2,
-                gridColumnStart: 9,
-                gridRowEnd: 14,
-                gridColumnEnd: 15
-              }}
-            >
-              <TextareaControl
-                value={attributes.text}
-                placeholder="Write text..."
-                onChange={value => updateAttribute("text", value)}
-              />
-            </div>
-            {/* image */}
-            <div
-              className="stampa-field stampa-field--image "
+              value={attributes.image1}
+              placeholder="Write text..."
+              onSelect={image => updateAttribute("image1", image)}
+              render={({ open }) => (
+                <IconButton
+                  className="button"
+                  label={__("Media")}
+                  icon="media"
+                  onClick={open}
+                >
+                  Media
+                </IconButton>
+              )}
+            />
+          </div>
+          {/* heading */}
+          <h2
+            className="stampa-field stampa-field--heading"
+            style={{
+              gridRowStart: 1,
+              gridColumnStart: 9,
+              gridRowEnd: 2,
+              gridColumnEnd: 15
+            }}
+          >
+            <textarea
+              type="text"
+              className="stampa-field__height"
+              value={attributes.heading}
+              placeholder="Heading"
+              rows="1"
+              onChange={e => updateAttribute("heading", e.target.value)}
+            />
+          </h2>
+          {/* text */}
+          <div
+            className="stampa-field stampa-field--textarea"
+            style={{
+              gridRowStart: 2,
+              gridColumnStart: 9,
+              gridRowEnd: 14,
+              gridColumnEnd: 15
+            }}
+          >
+            <TextareaControl
+              value={attributes.text}
+              placeholder="Write text..."
+              onChange={value => updateAttribute("text", value)}
+            />
+          </div>
+          {/* image2 */}
+          <div
+            className="stampa-field stampa-field--image "
+            style={{
+              gridRowStart: 9,
+              gridColumnStart: 1,
+              gridRowEnd: 14,
+              gridColumnEnd: 5
+            }}
+          >
+            <img
+              src={attributes.image2 && attributes.image2.url}
+              className="stampa-field__image"
+            />
+            <MediaUpload
+              className="media-upload"
               style={{
                 gridRowStart: 9,
                 gridColumnStart: 1,
                 gridRowEnd: 14,
                 gridColumnEnd: 5
               }}
-            >
-              <MediaUpload
-                className="media-upload"
-                style={{
-                  gridRowStart: 9,
-                  gridColumnStart: 1,
-                  gridRowEnd: 14,
-                  gridColumnEnd: 5
-                }}
-                value={attributes.image}
-                placeholder="Write text..."
-                onSelect={image => updateAttribute("image", image)}
-                render={({ open }) => (
-                  <IconButton
-                    className="button"
-                    label={__("Media")}
-                    icon="media"
-                    onClick={open}
-                  >
-                    Media
-                  </IconButton>
-                )}
-              />
-            </div>
-            {/* image */}
-            <div
-              className="stampa-field stampa-field--image "
+              value={attributes.image2}
+              placeholder="Write text..."
+              onSelect={image => updateAttribute("image2", image)}
+              render={({ open }) => (
+                <IconButton
+                  className="button"
+                  label={__("Media")}
+                  icon="media"
+                  onClick={open}
+                >
+                  Media
+                </IconButton>
+              )}
+            />
+          </div>
+          {/* image3 */}
+          <div
+            className="stampa-field stampa-field--image "
+            style={{
+              gridRowStart: 9,
+              gridColumnStart: 5,
+              gridRowEnd: 12,
+              gridColumnEnd: 8
+            }}
+          >
+            <img
+              src={attributes.image3 && attributes.image3.url}
+              className="stampa-field__image"
+            />
+            <MediaUpload
+              className="media-upload"
               style={{
                 gridRowStart: 9,
                 gridColumnStart: 5,
                 gridRowEnd: 12,
                 gridColumnEnd: 8
               }}
-            >
-              <MediaUpload
-                className="media-upload"
-                style={{
-                  gridRowStart: 9,
-                  gridColumnStart: 5,
-                  gridRowEnd: 12,
-                  gridColumnEnd: 8
-                }}
-                value={attributes.image}
-                placeholder="Write text..."
-                onSelect={image => updateAttribute("image", image)}
-                render={({ open }) => (
-                  <IconButton
-                    className="button"
-                    label={__("Media")}
-                    icon="media"
-                    onClick={open}
-                  >
-                    Media
-                  </IconButton>
-                )}
-              />
-            </div>
+              value={attributes.image3}
+              placeholder="Write text..."
+              onSelect={image => updateAttribute("image3", image)}
+              render={({ open }) => (
+                <IconButton
+                  className="button"
+                  label={__("Media")}
+                  icon="media"
+                  onClick={open}
+                >
+                  Media
+                </IconButton>
+              )}
+            />
           </div>
         </div>
-      </Fragment>
+      </div>
     );
   },
 

@@ -1,10 +1,10 @@
 /**
- * BLOCK: M02 - Paragraph
+ * BLOCK: M00 - Title
  *
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { InspectorControls, MediaUpload, RichText } = wp.editor;
+const { InspectorControls, MediaUpload } = wp.editor;
 const {} = wp.components;
 const { Fragment, Component } = wp.element;
 
@@ -12,15 +12,15 @@ const { Fragment, Component } = wp.element;
 // when start typeing something in the brew new added module
 const defaultAttributes = {};
 
-registerBlockType("stampa/m02-paragraph", {
-  title: __("M02 - Paragraph"),
+registerBlockType("stampa/m00-title", {
+  title: __("M00 - Title"),
   icon: "welcome-write-blog",
   category: "stampa-blocks",
   keywords: [],
 
   multiple: true,
 
-  attributes: { heading: { type: "string" }, wysiwyg: { type: "string" } },
+  attributes: { heading: { type: "string" } },
 
   /**
    * The edit function describes the structure of your block in the context of the editor.
@@ -46,23 +46,23 @@ registerBlockType("stampa/m02-paragraph", {
     return (
       <div className={`${className} stampa-block`}>
         <div
-          className="m02-paragraph"
+          className="m00-title"
           style={{
             display: "grid",
             gridTemplateColumns:
               "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
             gridTemplateRows: "1fr 1fr 1fr 1fr 1fr ",
-            gridGap: "16px",
-            height: "215px"
+            gridGap: "5px",
+            height: "230px"
           }}
         >
           {/* heading */}
-          <h2
+          <h1
             className="stampa-field"
             style={{
               gridRowStart: 1,
               gridColumnStart: 1,
-              gridRowEnd: 2,
+              gridRowEnd: 6,
               gridColumnEnd: 13
             }}
           >
@@ -74,23 +74,7 @@ registerBlockType("stampa/m02-paragraph", {
               rows="1"
               onChange={e => updateAttribute("heading", e.target.value)}
             />
-          </h2>
-          {/* wysiwyg */}
-          <div
-            className="stampa-field stampa-field--wysiwyg"
-            style={{
-              gridRowStart: 2,
-              gridColumnStart: 1,
-              gridRowEnd: 6,
-              gridColumnEnd: 13
-            }}
-          >
-            <RichText
-              placeholder="Write text..."
-              value={attributes.wysiwyg}
-              onChange={value => updateAttribute("wysiwyg", value)}
-            />
-          </div>
+          </h1>
         </div>
       </div>
     );

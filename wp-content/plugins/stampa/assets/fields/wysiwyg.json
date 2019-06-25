@@ -2,7 +2,7 @@
   "group": "Fields",
   "id": "wysiwyg",
   "data": {
-    "label": "Paragraph",
+    "label": "WYSIWYG",
     "tooltip": "WYSIWYG Editor (<RichText />)",
     "help": "https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/rich-text",
     "icon": "wysiwyg.svg",
@@ -17,13 +17,18 @@
     ]
   },
   "gutenberg": {
-    "wp_components": "Paragraph",
+    "wp_editor": "RichText",
     "react": [
+      "<div",
+      " className=\"stampa-field stampa-field--wysiwyg\"",
+      " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}",
+      ">",
       "<RichText",
-      " gridArea={{gridArea}}",
-      " value={fieldName}",
+      " placeholder='{{stampa.value.placeholder}}'",
+      " value={attributes.{{stampa.field_name}}}",
       "onChange={value => updateAttribute('{{stampa.field_name}}', value)}",
-      "/>"
+      "/>",
+      "</div>"
     ]
   }
 }

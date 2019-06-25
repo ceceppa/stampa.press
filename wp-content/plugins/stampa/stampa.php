@@ -80,6 +80,9 @@ class Stampa {
 		// Style needed for Gutenberg only.
 		wp_enqueue_style( 'stampa-editor', plugins_url( 'dist/stampa-editor.css', __FILE__ ), [], STAMPA_VERSION );
 
+		// Style for custom blocks
+		wp_enqueue_style( 'stampa-blocks-style', plugins_url( 'stampa/dist/index.css', __FILE__ ), [], STAMPA_VERSION );
+
 		// Load the default stampa blocks.
 		self::load_fields();
 
