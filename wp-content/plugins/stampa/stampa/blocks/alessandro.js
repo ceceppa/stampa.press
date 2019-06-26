@@ -12,20 +12,20 @@ const { Fragment, Component } = wp.element;
 // when start typeing something in the brew new added module
 const defaultAttributes = {};
 
-registerBlockType("stampa/alessandro", {
-  title: __("Alessandro"),
-  icon: "welcome-write-blog",
-  category: "stampa-blocks",
+registerBlockType('stampa/alessandro', {
+  title: __('Alessandro'),
+  icon: 'welcome-write-blog',
+  category: 'stampa-blocks',
   keywords: [],
 
   multiple: true,
 
   attributes: {
-    image1: { type: "object" },
-    heading: { type: "string" },
-    image2: { type: "object" },
-    image: { type: "object" },
-    wysiwyg: { type: "string" }
+    image1: { type: 'object' },
+    heading: { type: 'string' },
+    image2: { type: 'object' },
+    image: { type: 'object' },
+    wysiwyg: { type: 'string' },
   },
 
   /**
@@ -50,20 +50,15 @@ registerBlockType("stampa/alessandro", {
     }
 
     return (
-<<<<<<< HEAD
-      <div className={`${className} stampa-block`}>
-=======
       <div className={`${className} stampa-block m99`}>
->>>>>>> 6fd694b25a0fbaeecc94e22358640ffe0d81f0e6
         <div
           className="alessandro"
           style={{
-            display: "grid",
-            gridTemplateColumns:
-              "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-            gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-            gridGap: "5px",
-            height: "418px"
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+            gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+            gridGap: '5px',
+            height: '418px',
           }}
         >
           {/* image1 */}
@@ -73,14 +68,14 @@ registerBlockType("stampa/alessandro", {
               gridRowStart: 1,
               gridColumnStart: 1,
               gridRowEnd: 6,
-              gridColumnEnd: 7
+              gridColumnEnd: 7,
             }}
           >
             <img
               src={attributes.image1 && attributes.image1.url}
               className="stampa-field__image"
             />
-            {attributes.image1 == null && (
+            {attributes.image1 == null &&
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,26 +83,25 @@ registerBlockType("stampa/alessandro", {
                 aria-hidden="true"
                 focusable="false"
               >
-                <path d="M0,0h24v24H0V0z" fill="none"></path>
-                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z"></path>
-                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
-              </svg>
-            )}
+                <path d="M0,0h24v24H0V0z" fill="none" />
+                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z" />
+                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z" />
+              </svg>}
             <MediaUpload
               className="media-upload"
               style={{
                 gridRowStart: 1,
                 gridColumnStart: 1,
                 gridRowEnd: 6,
-                gridColumnEnd: 7
+                gridColumnEnd: 7,
               }}
               value={attributes.image1}
               placeholder="Write text..."
-              onSelect={image => updateAttribute("image1", image)}
+              onSelect={image => updateAttribute('image1', image)}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__("Media")}
+                  label={__('Media')}
                   icon="media"
                   onClick={open}
                 >
@@ -123,7 +117,7 @@ registerBlockType("stampa/alessandro", {
               gridRowStart: 1,
               gridColumnStart: 8,
               gridRowEnd: 2,
-              gridColumnEnd: 13
+              gridColumnEnd: 13,
             }}
           >
             <textarea
@@ -131,7 +125,7 @@ registerBlockType("stampa/alessandro", {
               value={attributes.heading}
               placeholder="Heading"
               rows="1"
-              onChange={e => updateAttribute("heading", e.target.value)}
+              onChange={e => updateAttribute('heading', e.target.value)}
             />
           </h2>
           {/* image2 */}
@@ -141,14 +135,14 @@ registerBlockType("stampa/alessandro", {
               gridRowStart: 6,
               gridColumnStart: 1,
               gridRowEnd: 9,
-              gridColumnEnd: 4
+              gridColumnEnd: 4,
             }}
           >
             <img
               src={attributes.image2 && attributes.image2.url}
               className="stampa-field__image"
             />
-            {attributes.image2 == null && (
+            {attributes.image2 == null &&
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -156,26 +150,25 @@ registerBlockType("stampa/alessandro", {
                 aria-hidden="true"
                 focusable="false"
               >
-                <path d="M0,0h24v24H0V0z" fill="none"></path>
-                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z"></path>
-                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
-              </svg>
-            )}
+                <path d="M0,0h24v24H0V0z" fill="none" />
+                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z" />
+                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z" />
+              </svg>}
             <MediaUpload
               className="media-upload"
               style={{
                 gridRowStart: 6,
                 gridColumnStart: 1,
                 gridRowEnd: 9,
-                gridColumnEnd: 4
+                gridColumnEnd: 4,
               }}
               value={attributes.image2}
               placeholder="Heading"
-              onSelect={image => updateAttribute("image2", image)}
+              onSelect={image => updateAttribute('image2', image)}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__("Media")}
+                  label={__('Media')}
                   icon="media"
                   onClick={open}
                 >
@@ -191,14 +184,14 @@ registerBlockType("stampa/alessandro", {
               gridRowStart: 6,
               gridColumnStart: 4,
               gridRowEnd: 12,
-              gridColumnEnd: 10
+              gridColumnEnd: 10,
             }}
           >
             <img
               src={attributes.image && attributes.image.url}
               className="stampa-field__image"
             />
-            {attributes.image == null && (
+            {attributes.image == null &&
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -206,26 +199,25 @@ registerBlockType("stampa/alessandro", {
                 aria-hidden="true"
                 focusable="false"
               >
-                <path d="M0,0h24v24H0V0z" fill="none"></path>
-                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z"></path>
-                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
-              </svg>
-            )}
+                <path d="M0,0h24v24H0V0z" fill="none" />
+                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z" />
+                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z" />
+              </svg>}
             <MediaUpload
               className="media-upload"
               style={{
                 gridRowStart: 6,
                 gridColumnStart: 4,
                 gridRowEnd: 12,
-                gridColumnEnd: 10
+                gridColumnEnd: 10,
               }}
               value={attributes.image}
               placeholder="Heading"
-              onSelect={image => updateAttribute("image", image)}
+              onSelect={image => updateAttribute('image', image)}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__("Media")}
+                  label={__('Media')}
                   icon="media"
                   onClick={open}
                 >
@@ -241,13 +233,13 @@ registerBlockType("stampa/alessandro", {
               gridRowStart: 2,
               gridColumnStart: 8,
               gridRowEnd: 11,
-              gridColumnEnd: 13
+              gridColumnEnd: 13,
             }}
           >
             <RichText
               placeholder="Write text..."
               value={attributes.wysiwyg}
-              onChange={value => updateAttribute("wysiwyg", value)}
+              onChange={value => updateAttribute('wysiwyg', value)}
             />
           </div>
         </div>
@@ -258,5 +250,5 @@ registerBlockType("stampa/alessandro", {
   /**
    * Let the content to be rendered with PHP
    */
-  save: () => null
+  save: () => null,
 });

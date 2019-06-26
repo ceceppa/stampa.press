@@ -425,16 +425,11 @@ class BlockGenerator extends Stampa {
 		);
 	}
 
-<<<<<<< HEAD
-	private static function add_block_to_indexjs( string $output_file ) {
-		$file_name     = preg_replace( '/.js$/', '', basename( $output_file ) );
-=======
 	/**
 	 * Add the block to the index.js file, if is not there yet
 	 */
 	private static function add_block_to_indexjs() {
 		$file_name     = preg_replace( '/.js$/', '', basename( self::$output_file ) );
->>>>>>> 6fd694b25a0fbaeecc94e22358640ffe0d81f0e6
 		$index_file    = STAMPA_OUTPUT_FOLDER . 'stampa/index.js';
 		$index_content = file_get_contents( $index_file );
 
