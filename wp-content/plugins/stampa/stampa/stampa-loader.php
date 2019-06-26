@@ -71,13 +71,16 @@ function block_renderer() {
 
 	foreach ( $files as $file ) {
 		$block = sanitize_title( basename( $file ) );
-		$block = str_replace( '.js', '', $block );
+		$block = str_replace( '-js', '', $block );
 
 		register_block_type(
 			'stampa/' . sanitize_title( $block ),
 			[
 				'render_callback' => function( $attributes ) use ( $block ) {
-					nine3_locate_template( "modules/{$block}.php", $attributes );
+					$module_file = __DIR__ . "/modules/${block}.php";
+
+					include $module_file;
+					// nine3_locate_template( "modules/{$block}.php", $attributes );
 				},
 			]
 		);

@@ -37,5 +37,6 @@
       "/>",
       "</{{stampa.value.level}}>"
     ]
-  }
+  },
+  "php": "<{{stampa.value.level}} class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></{{stampa.value.level}}>"
 }

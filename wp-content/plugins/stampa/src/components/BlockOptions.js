@@ -16,14 +16,37 @@ export default function BlockOptions() {
     store.set('stampaBlockOptions')(stampaBlockOptions);
   });
 
+  const updateBlockCssClassName = useCallback(e => {
+    stampaBlockOptions.cssClassName = e.target.value;
+
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  });
+
   return (
     <ToggleGroup
       label="Stampa block Options"
       display="block"
       groupClass="block-options stampa__border--bottom"
     >
+      {/*  */}
+      <label htmlFor="block-name" className="stampa-number">
+        <span
+          className="stampa-number__label tooltip"
+          data-tooltip="The root css class to use for generating the CSS/"
+        >
+          Block root css class:
+        </span>
+        <input
+          className="stampa-number__input"
+          type="text"
+          name="block-name"
+          id="block-name"
+          value={stampaBlockOptions.cssClassName || ''}
+          onChange={updateBlockCssClassName}
+        />
+      </label>
       {/* Background */}
-      <label htmlFor="background" className="stampa-number">
+      <label htmlFor="block-background" className="stampa-number">
         <span
           className="stampa-number__label tooltip"
           data-tooltip="If checked allows the user to set up a background-image for the block."
@@ -33,8 +56,8 @@ export default function BlockOptions() {
         <input
           className="stampa-number__input"
           type="checkbox"
-          name="background"
-          id="background"
+          name="block-background"
+          id="block-background"
           checked={stampaBlockOptions.hasBackgroundOption}
           onChange={updateBackgroundOption}
         />

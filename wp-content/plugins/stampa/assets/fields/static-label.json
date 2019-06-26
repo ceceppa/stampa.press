@@ -22,5 +22,6 @@
       "{{stampa.value.label}}",
       "</span>"
     ]
-  }
+  },
+  "php": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></div>"
 }

@@ -14,5 +14,6 @@
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
       "</div>"
     ]
-  }
+  },
+  "php": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></div>"
 }

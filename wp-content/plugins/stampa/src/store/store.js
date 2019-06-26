@@ -6,6 +6,7 @@ const initialState = {
   stampaFields: [],
   stampaBlockOptions: {
     hasBackgroundOption: false,
+    cssClassName: null,
   },
   draggedFieldId: null,
   gridColumns: 12,
