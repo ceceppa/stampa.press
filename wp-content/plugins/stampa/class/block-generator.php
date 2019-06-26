@@ -23,8 +23,9 @@ class BlockGenerator extends Stampa {
 	private static $fields_params        = null;
 	private static $options_params       = null;
 
-	private static $temp_file = null;
-	private static $output_file = null;
+	private static $temp_file       = null;
+	private static $output_file     = null;
+	private static $php_output_file = null;
 
 	/**
 	 * List of key pairs to use for replacing the custom
@@ -171,6 +172,7 @@ class BlockGenerator extends Stampa {
 		self::generate_block_body();
 		self::setup_grid_style();
 		self::save_js_file();
+		self::generate_basic_php_render_file();
 	}
 
 	private static function check_if_origin_has_changed() {
@@ -227,7 +229,7 @@ class BlockGenerator extends Stampa {
 	}
 
 	private static function setup_grid_style() {
-		$height = intval( self::$grid_params['rowHeight'] ) * intval( self::$grid_params['rows'] );
+		$height      = intval( self::$grid_params['rowHeight'] ) * intval( self::$grid_params['rows'] );
 		$grid_params = self::$grid_params;
 
 		// Can't use "repeat" property -.-, why????
@@ -245,7 +247,7 @@ class BlockGenerator extends Stampa {
 	}
 
 	private static function save_js_file() {
-		self::$temp_file    = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
+		self::$temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
 
 		$boilerplate  = file_get_contents( STAMPA_OUTPUT_FOLDER . 'assets/gutenberg/block-boilerplate.js' );
 		$file_content = self::replace( $boilerplate );
@@ -253,6 +255,7 @@ class BlockGenerator extends Stampa {
 		file_put_contents( self::$temp_file, $file_content );
 
 		self::beautify_js_file_or_fail();
+		self::parcel_build();
 	}
 
 	private static function beautify_js_file_or_fail() {
@@ -479,8 +482,46 @@ class BlockGenerator extends Stampa {
 
 			file_put_contents( $index_file, $index_content );
 		}
+	}
 
-		self::parcel_build();
+	private static function generate_basic_php_render_file() {
+		$file_name             = sanitize_title( self::$block_title );
+		self::$php_output_file = \STAMPA_OUTPUT_FOLDER . 'stampa/modules/' . $file_name . '.php';
+
+		if ( self::check_if_php_has_changed() ) {
+			return;
+		}
+
+		self::generate_the_basic_php_code();
+	}
+
+	private static function check_if_php_has_changed() {
+		if ( ! file_exists( self::$php_output_file ) ) {
+			return false;
+		}
+
+		$md5_file = \md5_file( self::$php_output_file );
+		$old_md5  = get_post_meta( self::$post_ID, '_md5_php', \true );
+
+		return ! empty( $old_md5 ) && $md5_file != $old_md5;
+	}
+
+	private static function generate_the_basic_php_code() {
+		$php_content = sprintf( '<section class="%s">%s', self::$block_css_class_name, \PHP_EOL );
+
+		foreach ( self::$fields_params as $stampa_field ) {
+			$field = self::get_field_by_id( $stampa_field['id'] );
+
+			if ( isset( $field['php'] ) ) {
+				self::add_replace( 'field_name', $stampa_field['_stampa']['name'] );
+
+				$php_content .= self::replace( $field['php'] ) . PHP_EOL;
+			}
+		}
+
+		$php_content .= '</section>';
+
+		file_put_contents( self::$php_output_file, $php_content );
 	}
 
 	/**

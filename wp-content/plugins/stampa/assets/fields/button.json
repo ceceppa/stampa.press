@@ -32,5 +32,6 @@
       "/>",
       "</div>"
     ]
-  }
+  },
+  "php": "<a href='<?php echo $block_data['{{stampa.field_name}}']['url'] ?>' class='button {{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}']['label'] ?></a>"
 }

@@ -169,7 +169,7 @@ class Stampa {
 			$svg_path              = plugins_url( 'assets/svg/', __FILE__ );
 				$field->data->icon = $svg_path . $field->data->icon;
 
-				self::add_field( $field->group, $field->id, (array) $field->data, $field->gutenberg );
+				self::add_field( $field->group, $field->id, (array) $field->data, $field->gutenberg, $field->php );
 		}
 	}
 
@@ -181,7 +181,7 @@ class Stampa {
 	 * @param array  $field_data the field data.
 	 * @return void
 	 */
-	public static function add_field( string $group, string $field_id, array $field_data, $gutenberg_data ) {
+	public static function add_field( string $group, string $field_id, array $field_data, $gutenberg_data, $php_data ) {
 		$group = ucfirst( $group );
 
 		self::$fields[ $group ][ $field_id ] = $field_data;
@@ -190,6 +190,7 @@ class Stampa {
 		self::$fields_by_id[ $field_id ] = [
 			'data'      => $field_data,
 			'gutenberg' => $gutenberg_data,
+			'php'       => $php_data,
 		];
 	}
 
