@@ -49,7 +49,7 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
 
       return (
         {{stampa.render_container_start}}
-		    <div className={`${className} stampa-block`}>
+		    <div className={`${className} stampa-block {{stampa.block_css_class_name}}`}>
           <div className="{{stampa.sanitized_title}}" style={{{{stampa.block_style}}}}>
         {{stampa.render_content}}
           </div>

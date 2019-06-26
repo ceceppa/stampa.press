@@ -43,7 +43,25 @@ describe('BlockOptions', () => {
       );
     });
 
-    it('Should render the "Background" option', () => {});
+    it('Should render the "Group Options" toggle-group', () => {
+      const blockOptions = container.querySelector('.block-options');
+
+      expect(blockOptions).not.toBeNull();
+    });
+
+    it('Should render the option for the "Block" name', () => {
+      const blockOptions = container.querySelector('input[name="block-name"]');
+
+      expect(blockOptions).not.toBeNull();
+    });
+
+    it('Should render the option for the "Background" setting', () => {
+      const blockOptions = container.querySelector(
+        'input[name="block-background"]'
+      );
+
+      expect(blockOptions).not.toBeNull();
+    });
 
     it('Should render the "Save block" button', () => {
       const blockOptions = container.querySelector('.block-options__save');
