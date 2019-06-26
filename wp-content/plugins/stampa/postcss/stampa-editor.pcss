@@ -1,6 +1,10 @@
+/* $border-color: #e6e4e4; */
+$border-color: rgb(141, 150, 160, 0.2);
+
 .stampa-field {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 
   &::before,
   &::after {
@@ -18,30 +22,17 @@
     background: transparent;
     height: 100%;
     border-radius: 0;
-    border-color: rgb(141, 150, 160, 0.2);
+    border: 1px solid $border-color;
 
     &:hover {
       border-color: rgb(78, 80, 83);
     }
-
-    &.the-author {
-      border: none;
-      border-bottom: 1px dotted #000;
-    }
-
-    &.the-quote {
-      font-size: 18px;
-      font-weight: 400;
-    }
-  }
-
-  &__height {
-    height: 100%;
   }
 
   &--image {
     position: relative;
     overflow: hidden;
+    border: 1px solid $border-color;
 
     svg {
       box-sizing: border-box;
@@ -63,7 +54,7 @@
 
       .image {
         position: relative;
-        border: 1px solid #e6e4e4;
+        border: 1px solid $border-color;
         border-radius: 50%;
         overflow: hidden;
         width: 100%;
@@ -72,10 +63,14 @@
       }
     }
 
-    img {
+    .stampa-field__image {
       min-width: 100%;
       min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
     }
+
     button {
       position: absolute;
       left: 0;
@@ -94,6 +89,11 @@
   }
 
   &--heading {
+    textarea {
+      font-size: inherit;
+      color: inherit;
+    }
+
     .stampa-block & {
       font-size: 1rem;
       padding: 0;
@@ -106,4 +106,12 @@
       height: 100%;
     }
   }
+
+  &--wysiwyg {
+    border: 1px solid $border-color;
+  }
+}
+
+.wp-block[data-type^='stampa/'] {
+  width: 100% !important;
 }

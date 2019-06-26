@@ -1,16 +1,16 @@
 {
   "group": "Static",
-  "id": "rectangle",
+  "id": "container",
   "data": {
-    "label": "Rectangle",
-    "tooltip": "Rectangle",
+    "label": "Container",
+    "tooltip": "Static <div /> element",
     "icon": "button.svg",
     "options": []
   },
   "gutenberg": {
     "react": [
       "<div",
-      " className=\"stampa-field\"",
+      " className=\"stampa-field container field--{{stampa.field_name}}\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
       "</div>"
     ]

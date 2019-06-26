@@ -54,7 +54,7 @@ class App extends Component {
   componentDidMount() {
     document.addEventListener('keypress', e => {
       if (e.key === 'Delete') {
-        stampa.deleteActiveBlock(this.props.store);
+        stampa.deleteActiveField(this.props.store);
       }
     });
   }

@@ -3,7 +3,7 @@
   "id": "static-label",
   "data": {
     "label": "Label",
-    "tooltip": "Label",
+    "tooltip": "Static <span /> element",
     "icon": "button.svg",
     "options": [
       {
@@ -16,11 +16,11 @@
   },
   "gutenberg": {
     "react": [
-      "<div",
-      " className=\"stampa-field\"",
+      "<span",
+      " className=\"stampa-field stampa-field--label field--{{stampa.field_name}}\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
       "{{stampa.value.label}}",
-      "</div>"
+      "</span>"
     ]
   }
 }

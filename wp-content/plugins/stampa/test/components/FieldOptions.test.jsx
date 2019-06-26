@@ -57,7 +57,7 @@ describe('FieldOptions', () => {
       document.body.appendChild(container);
 
       const C = createConnectedStore({
-        activeBlockKey: '_key',
+        activeFieldKey: '_key',
         stampaFields: [
           {
             label: 'Text',

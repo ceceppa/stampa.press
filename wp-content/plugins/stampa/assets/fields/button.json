@@ -18,9 +18,10 @@
   },
   "gutenberg": {
     "wp_components": "Button",
+    "attribute_type": "string",
     "react": [
       "<div",
-      " className=\"stampa-field\"",
+      " className=\"stampa-field stampa-field--button field--{{stampa.field_name}}\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
       "<Button",
       " className=\"stampa-field\"",

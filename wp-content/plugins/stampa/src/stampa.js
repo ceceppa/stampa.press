@@ -95,7 +95,7 @@ export default {
    *
    * This function is used by both FieldOptions & App.js
    */
-  deleteActiveBlock: store => {
+  deleteActiveField: store => {
     const confirm = window.confirm('Are you sure?');
 
     if (confirm) {

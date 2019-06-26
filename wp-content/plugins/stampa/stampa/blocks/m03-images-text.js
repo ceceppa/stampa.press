@@ -12,20 +12,20 @@ const { Fragment, Component } = wp.element;
 // when start typeing something in the brew new added module
 const defaultAttributes = {};
 
-registerBlockType("stampa/m03-images-text", {
-  title: __("M03 - Images + Text"),
-  icon: "welcome-write-blog",
-  category: "stampa-blocks",
+registerBlockType('stampa/m03-images-text', {
+  title: __('M03 - Images + Text'),
+  icon: 'welcome-write-blog',
+  category: 'stampa-blocks',
   keywords: [],
 
   multiple: true,
 
   attributes: {
-    image1: { type: "object" },
-    heading: { type: "string" },
-    text: { type: "string" },
-    image2: { type: "object" },
-    image3: { type: "object" }
+    image1: { type: 'object' },
+    heading: { type: 'string' },
+    text: { type: 'string' },
+    image2: { type: 'object' },
+    image3: { type: 'object' },
   },
 
   /**
@@ -54,13 +54,11 @@ registerBlockType("stampa/m03-images-text", {
         <div
           className="m03-images-text"
           style={{
-            display: "grid",
-            gridTemplateColumns:
-              "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-            gridTemplateRows:
-              "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-            gridGap: "7px",
-            height: "598px"
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+            gridTemplateRows: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+            gridGap: '7px',
+            height: '598px',
           }}
         >
           {/* image1 */}
@@ -70,14 +68,14 @@ registerBlockType("stampa/m03-images-text", {
               gridRowStart: 1,
               gridColumnStart: 1,
               gridRowEnd: 9,
-              gridColumnEnd: 8
+              gridColumnEnd: 8,
             }}
           >
             <img
               src={attributes.image1 && attributes.image1.url}
               className="stampa-field__image"
             />
-            {attributes.image1 == null && (
+            {attributes.image1 == null &&
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -85,26 +83,25 @@ registerBlockType("stampa/m03-images-text", {
                 aria-hidden="true"
                 focusable="false"
               >
-                <path d="M0,0h24v24H0V0z" fill="none"></path>
-                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z"></path>
-                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
-              </svg>
-            )}
+                <path d="M0,0h24v24H0V0z" fill="none" />
+                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z" />
+                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z" />
+              </svg>}
             <MediaUpload
               className="media-upload"
               style={{
                 gridRowStart: 1,
                 gridColumnStart: 1,
                 gridRowEnd: 9,
-                gridColumnEnd: 8
+                gridColumnEnd: 8,
               }}
               value={attributes.image1}
               placeholder="Write text..."
-              onSelect={image => updateAttribute("image1", image)}
+              onSelect={image => updateAttribute('image1', image)}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__("Media")}
+                  label={__('Media')}
                   icon="media"
                   onClick={open}
                 >
@@ -119,8 +116,8 @@ registerBlockType("stampa/m03-images-text", {
             style={{
               gridRowStart: 1,
               gridColumnStart: 9,
-              gridRowEnd: 2,
-              gridColumnEnd: 15
+              gridRowEnd: 3,
+              gridColumnEnd: 15,
             }}
           >
             <textarea
@@ -129,23 +126,23 @@ registerBlockType("stampa/m03-images-text", {
               value={attributes.heading}
               placeholder="Heading"
               rows="1"
-              onChange={e => updateAttribute("heading", e.target.value)}
+              onChange={e => updateAttribute('heading', e.target.value)}
             />
           </h2>
           {/* text */}
           <div
             className="stampa-field stampa-field--textarea"
             style={{
-              gridRowStart: 2,
+              gridRowStart: 3,
               gridColumnStart: 9,
               gridRowEnd: 14,
-              gridColumnEnd: 15
+              gridColumnEnd: 15,
             }}
           >
             <TextareaControl
               value={attributes.text}
               placeholder="Write text..."
-              onChange={value => updateAttribute("text", value)}
+              onChange={value => updateAttribute('text', value)}
             />
           </div>
           {/* image2 */}
@@ -155,14 +152,14 @@ registerBlockType("stampa/m03-images-text", {
               gridRowStart: 9,
               gridColumnStart: 1,
               gridRowEnd: 14,
-              gridColumnEnd: 5
+              gridColumnEnd: 5,
             }}
           >
             <img
               src={attributes.image2 && attributes.image2.url}
               className="stampa-field__image"
             />
-            {attributes.image2 == null && (
+            {attributes.image2 == null &&
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -170,26 +167,25 @@ registerBlockType("stampa/m03-images-text", {
                 aria-hidden="true"
                 focusable="false"
               >
-                <path d="M0,0h24v24H0V0z" fill="none"></path>
-                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z"></path>
-                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
-              </svg>
-            )}
+                <path d="M0,0h24v24H0V0z" fill="none" />
+                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z" />
+                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z" />
+              </svg>}
             <MediaUpload
               className="media-upload"
               style={{
                 gridRowStart: 9,
                 gridColumnStart: 1,
                 gridRowEnd: 14,
-                gridColumnEnd: 5
+                gridColumnEnd: 5,
               }}
               value={attributes.image2}
               placeholder="Write text..."
-              onSelect={image => updateAttribute("image2", image)}
+              onSelect={image => updateAttribute('image2', image)}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__("Media")}
+                  label={__('Media')}
                   icon="media"
                   onClick={open}
                 >
@@ -205,14 +201,14 @@ registerBlockType("stampa/m03-images-text", {
               gridRowStart: 9,
               gridColumnStart: 5,
               gridRowEnd: 12,
-              gridColumnEnd: 8
+              gridColumnEnd: 8,
             }}
           >
             <img
               src={attributes.image3 && attributes.image3.url}
               className="stampa-field__image"
             />
-            {attributes.image3 == null && (
+            {attributes.image3 == null &&
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -220,26 +216,25 @@ registerBlockType("stampa/m03-images-text", {
                 aria-hidden="true"
                 focusable="false"
               >
-                <path d="M0,0h24v24H0V0z" fill="none"></path>
-                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z"></path>
-                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
-              </svg>
-            )}
+                <path d="M0,0h24v24H0V0z" fill="none" />
+                <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z" />
+                <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z" />
+              </svg>}
             <MediaUpload
               className="media-upload"
               style={{
                 gridRowStart: 9,
                 gridColumnStart: 5,
                 gridRowEnd: 12,
-                gridColumnEnd: 8
+                gridColumnEnd: 8,
               }}
               value={attributes.image3}
               placeholder="Write text..."
-              onSelect={image => updateAttribute("image3", image)}
+              onSelect={image => updateAttribute('image3', image)}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__("Media")}
+                  label={__('Media')}
                   icon="media"
                   onClick={open}
                 >
@@ -256,5 +251,5 @@ registerBlockType("stampa/m03-images-text", {
   /**
    * Let the content to be rendered with PHP
    */
-  save: () => null
+  save: () => null,
 });

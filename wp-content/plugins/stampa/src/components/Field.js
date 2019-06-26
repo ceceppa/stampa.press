@@ -22,7 +22,10 @@ export default function Block({ field }) {
 
       const re = new RegExp(`\{${option.name}\}`, 'g');
 
-      fieldHTML = fieldHTML.replace(re, value);
+      if (fieldHTML) {
+        fieldHTML = fieldHTML.replace(re, value);
+      }
+
       fieldClassName = fieldClassName.replace(re, value);
     }
   }
@@ -72,10 +75,7 @@ export default function Block({ field }) {
     store.set('activeFieldKey')(field._stampa.key);
   });
 
-  const gridArea = `${stampaField.startRow} / ${
-    stampaField.startColumn
-  } / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn +
-    stampaField.startColumn}`;
+  const gridArea = `${stampaField.startRow} / ${stampaField.startColumn} / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn + stampaField.startColumn}`;
 
   const activeBlock = store.get('activeFieldKey');
   const activeClass = activeBlock == field._stampa.key ? 'active' : '';
@@ -84,9 +84,7 @@ export default function Block({ field }) {
     <div
       draggable="true"
       className={`stampa-grid__field
-      stampa-field--${
-        field._stampa.id
-      } ${activeClass} ${resizingClass} ${fieldClassName}`}
+      stampa-field--${field._stampa.id} ${activeClass} ${resizingClass} ${fieldClassName}`}
       onDragStart={dragMe}
       data-key={field._stampa.key}
       style={{

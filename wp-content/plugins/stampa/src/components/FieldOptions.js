@@ -29,14 +29,14 @@ export default function FieldOptions(props) {
   }
   const activeFieldKey = store.get('activeFieldKey');
 
-  let activeBlock;
+  let activeField;
   let fieldOptions = null;
   if (activeFieldKey) {
     const fields = store.get('stampaFields');
 
     for (const field of fields) {
       if (field._stampa.key == activeFieldKey) {
-        activeBlock = field;
+        activeField = field;
         fieldOptions = field.options;
 
         break;
@@ -80,8 +80,8 @@ export default function FieldOptions(props) {
   /**
    * Delete the active block
    */
-  const deleteActiveBlock = useCallback(() => {
-    stampa.deleteActiveBlock(store);
+  const deleteactiveField = useCallback(() => {
+    stampa.deleteactiveField(store);
   });
 
   return (
@@ -90,7 +90,7 @@ export default function FieldOptions(props) {
       display="block"
       groupClass="block-options"
     >
-      {activeBlock && [
+      {activeField && [
         <label htmlFor="field-name" className="stampa-text" key="field-name">
           <span className="stampa-text__label">Field name:</span>
           <input
@@ -98,20 +98,20 @@ export default function FieldOptions(props) {
             type="text"
             name="field-name"
             id="field-name"
-            value={activeBlock._stampa.name}
+            value={activeField._stampa.name}
             onChange={updateFieldName}
           />
         </label>,
         <hr key="hr-1" className="stampa-hr" />,
         <h3 key="h3-tag">Options:</h3>,
-        activeBlock.options.map(option => {
+        activeField.options.map(option => {
           const Component = components[option.type];
 
           return (
             <Component
               option={option}
               updateOptionValue={updateOptionValue}
-              selectedValues={activeBlock._values}
+              selectedValues={activeField._values}
               key={option.name}
             />
           );
@@ -119,10 +119,10 @@ export default function FieldOptions(props) {
         <hr key="hr-2" className="stampa-hr" />,
         <div key="add-delete-buttons" className="block-options__save">
           <ButtonAddCustomOption />
-          <ButtonDeleteField deleteActiveBlock={deleteActiveBlock} />
+          <ButtonDeleteField deleteactiveField={deleteactiveField} />
         </div>,
       ]}
-      {!activeBlock && <p className="stampa--gray">No block selected</p>}
+      {!activeField && <p className="stampa--gray">No block selected</p>}
     </ToggleGroup>
   );
 }

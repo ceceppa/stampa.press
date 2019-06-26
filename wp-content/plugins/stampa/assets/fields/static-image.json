@@ -10,7 +10,7 @@
   "gutenberg": {
     "react": [
       "<div",
-      " className=\"stampa-field\"",
+      " className=\"stampa-field field--{{stampa.field_name}}\"",
       " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
       "</div>"
     ]

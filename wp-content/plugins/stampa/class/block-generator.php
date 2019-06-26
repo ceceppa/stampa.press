@@ -15,6 +15,7 @@ define( 'STAMPA_OUTPUT_FOLDER', \realpath( __DIR__ . '/../' ) . '/' );
  */
 class BlockGenerator extends Stampa {
 	private static $block_title = null;
+	private static $fields      = [];
 
 	/**
 	 * List of key pairs to use for replacing the custom
@@ -170,6 +171,7 @@ class BlockGenerator extends Stampa {
 
 		$wp_components = [];
 		$wp_editor     = [ 'InspectorControls', 'MediaUpload' ];
+		self::$fields  = $fields_params;
 		foreach ( $fields_params as $stampa_field ) {
 			$field = self::get_field_by_id( $stampa_field['id'] );
 			if ( empty( $field ) ) {
@@ -327,14 +329,16 @@ class BlockGenerator extends Stampa {
 			}
 
 			$attribute_name = $stampa['name'];
-			self::add_replace(
-				'attributes',
-				[
-					$attribute_name => [
-						'type' => $default['gutenberg']->attribute_type ?? 'string',
-					],
-				]
-			);
+			if ( isset( $default['gutenberg']->attribute_type ) ) {
+				self::add_replace(
+					'attributes',
+					[
+						$attribute_name => [
+							'type' => $default['gutenberg']->attribute_type,
+						],
+					]
+				);
+			}
 
 			self::add_replace(
 				'render_content',
@@ -412,7 +416,7 @@ class BlockGenerator extends Stampa {
 		$file_exists     = file_exists( $output_css_file );
 
 		if ( ! $file_exists ) {
-			$post_css_content = sprintf( ".wp-block-stampa-%s {\n}", sanitize_title( self::$block_title ) );
+			$post_css_content = self::generate_post_css_file_content();
 
 			file_put_contents( $output_css_file, $post_css_content );
 		}
@@ -420,6 +424,20 @@ class BlockGenerator extends Stampa {
 		self::add_css_file_to_index_pcss( $post_css_filename );
 	}
 
+	/**
+	 * Generates a css line for each element within the block
+	 */
+	private static function generate_post_css_file_content() : string {
+		$css_content = sprintf( '.wp-block-stampa-%s {', sanitize_title( self::$block_title ) );
+
+		foreach ( self::$fields as $field ) {
+			$css_content .= sprintf( '%s  .field--%s {%s  }', PHP_EOL, $field['_stampa']['name'], PHP_EOL );
+		}
+
+		$css_content .= '}';
+
+		return $css_content;
+	}
 
 	private static function add_css_file_to_index_pcss( string $post_css_filename ) {
 		$index_file    = STAMPA_OUTPUT_FOLDER . 'stampa/index.pcss';
