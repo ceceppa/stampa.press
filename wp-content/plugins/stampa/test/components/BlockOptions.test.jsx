@@ -62,11 +62,5 @@ describe('BlockOptions', () => {
 
       expect(blockOptions).not.toBeNull();
     });
-
-    it('Should render the "Save block" button', () => {
-      const blockOptions = container.querySelector('.block-options__save');
-
-      expect(blockOptions).not.toBeNull();
-    });
   });
 });

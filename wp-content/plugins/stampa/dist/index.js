@@ -27729,12 +27729,10 @@ function CheckboxField(_ref) {
   return _react.default.createElement("label", {
     htmlFor: "field-".concat(option.name),
     className: "stampa-checkbox"
-  }, _react.default.createElement("div", {
-    class: "checkbox_wrapper"
   }, _react.default.createElement("span", {
-    className: "stampa-number__label"
+    className: "stampa-checkbox__label"
   }, option.label, ":"), _react.default.createElement("input", {
-    className: "stampa-number__input",
+    className: "stampa-checkbox__input",
     type: "checkbox",
     name: "field-".concat(option.name),
     id: "field-".concat(option.name),
@@ -27743,25 +27741,7 @@ function CheckboxField(_ref) {
     onChange: function onChange(e) {
       return updateOptionChecked(e, option.name, option.value);
     }
-  }), _react.default.createElement("span", {
-    className: "custom"
-  }), _react.default.createElement("svg", {
-    version: "1.1",
-    width: "32",
-    height: "32",
-    viewBox: "0 0 32 32",
-    class: "true_icon"
-  }, _react.default.createElement("path", {
-    d: "M27 4l-15 15-7-7-5 5 12 12 20-20z"
-  })), _react.default.createElement("svg", {
-    version: "1.1",
-    width: "32",
-    height: "32",
-    viewBox: "0 0 32 32",
-    class: "false_icon"
-  }, _react.default.createElement("path", {
-    d: "M31.708 25.708c-0-0-0-0-0-0l-9.708-9.708 9.708-9.708c0-0 0-0 0-0 0.105-0.105 0.18-0.227 0.229-0.357 0.133-0.356 0.057-0.771-0.229-1.057l-4.586-4.586c-0.286-0.286-0.702-0.361-1.057-0.229-0.13 0.048-0.252 0.124-0.357 0.228 0 0-0 0-0 0l-9.708 9.708-9.708-9.708c-0-0-0-0-0-0-0.105-0.104-0.227-0.18-0.357-0.228-0.356-0.133-0.771-0.057-1.057 0.229l-4.586 4.586c-0.286 0.286-0.361 0.702-0.229 1.057 0.049 0.13 0.124 0.252 0.229 0.357 0 0 0 0 0 0l9.708 9.708-9.708 9.708c-0 0-0 0-0 0-0.104 0.105-0.18 0.227-0.229 0.357-0.133 0.355-0.057 0.771 0.229 1.057l4.586 4.586c0.286 0.286 0.702 0.361 1.057 0.229 0.13-0.049 0.252-0.124 0.357-0.229 0-0 0-0 0-0l9.708-9.708 9.708 9.708c0 0 0 0 0 0 0.105 0.105 0.227 0.18 0.357 0.229 0.356 0.133 0.771 0.057 1.057-0.229l4.586-4.586c0.286-0.286 0.362-0.702 0.229-1.057-0.049-0.13-0.124-0.252-0.229-0.357z"
-  }))));
+  }));
 }
 },{"react":"../node_modules/react/index.js"}],"components/GridOptions.js":[function(require,module,exports) {
 "use strict";
@@ -27805,13 +27785,21 @@ function GridOptions() {
     id: "rowHeight",
     label: "Row Height (px):",
     storeKey: "rowHeight"
-  }), _react.default.createElement(_CheckboxField.default, {
-    option: "show-grid",
-    selectedValues: showGrid,
-    updateOptionValue: function updateOptionValue() {
+  }), _react.default.createElement("label", {
+    htmlFor: "showgrid",
+    className: "stampa-checkbox"
+  }, _react.default.createElement("input", {
+    className: "stampa-checkbox__input",
+    type: "checkbox",
+    name: "showgrid",
+    id: "showgrid",
+    checked: showGrid,
+    onChange: function onChange() {
       return store.set('gridShow')(!showGrid);
     }
-  }), _react.default.createElement(_Save.default, null));
+  }), _react.default.createElement("span", {
+    className: "stampa-checkbox__label"
+  }, "Show grid:")), _react.default.createElement(_Save.default, null));
 }
 },{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./NumberSlider":"components/NumberSlider.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
@@ -29387,7 +29375,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36615" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38261" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

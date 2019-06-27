@@ -37,7 +37,7 @@ class Stampa {
 	 */
 	public static function init() {
 		add_action( 'init', __CLASS__ . '::register_stampa_blocks_cpt' );
-		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_script' );
+		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_script', 99 );
 		// add_action( 'edit_form_after_title', __CLASS__ . '::render_stampa' );
 		// Remove the default editor from the page.
 		add_filter( 'replace_editor', __CLASS__ . '::replace_wp_editor', 10, 2 );

@@ -29,23 +29,17 @@ export default function GridOptions() {
       />
 
       {/* Toggle grid */}
-      <CheckboxField
-        option="show-grid"
-        selectedValues={showGrid}
-        updateOptionValue={() => store.set('gridShow')(!showGrid)}
-      />
-      {/* 
-      <label htmlFor="showgrid" className="stampa-number">
-        <span className="stampa-number__label">Show grid:</span>
+      <label htmlFor="showgrid" className="stampa-checkbox">
         <input
-          className="stampa-number__input"
+          className="stampa-checkbox__input"
           type="checkbox"
           name="showgrid"
           id="showgrid"
           checked={showGrid}
           onChange={() => store.set('gridShow')(!showGrid)}
         />
-      </label> */}
+        <span className="stampa-checkbox__label">Show grid:</span>
+      </label>
 
       {/* Save & Generate buttons */}
       <SaveBlock />

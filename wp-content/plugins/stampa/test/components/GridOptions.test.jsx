@@ -21,31 +21,31 @@ describe('GridOptions', () => {
       );
     });
 
-    it('Should define a ToggleGroup', () => {
-      const toggleGroup = container.querySelectorAll('.toggle-group');
-
-      expect(toggleGroup).toHaveLength(1);
-    });
-
     it('Should allow changing the # of columns', () => {
-      const inputs = container.querySelectorAll('input#grid-columns');
+      const inputs = container.querySelectorAll('input#columns');
       const input = inputs[0];
 
       expect(inputs).toHaveLength(1);
     });
 
     it('Should allow changing the # of rows', () => {
-      const inputs = container.querySelectorAll('input#grid-rows');
+      const inputs = container.querySelectorAll('input#rows');
       const input = inputs[0];
 
       expect(inputs).toHaveLength(1);
     });
 
     it('Should allow changing the # of rows', () => {
-      const inputs = container.querySelectorAll('input#grid-gap');
+      const inputs = container.querySelectorAll('input#gap');
       const input = inputs[0];
 
       expect(inputs).toHaveLength(1);
+    });
+
+    it('Should render the "Save block" button', () => {
+      const blockOptions = container.querySelector('.block-options__save');
+
+      expect(blockOptions).not.toBeNull();
     });
   });
 });

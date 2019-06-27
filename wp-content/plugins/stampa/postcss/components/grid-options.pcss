@@ -23,7 +23,8 @@
     width: calc(100% - 30px);
   }
 
-  .stampa-number {
+  .stampa-number,
+  .stampa-checkbox {
     display: block;
     padding-bottom: 0;
   }
@@ -34,9 +35,17 @@
   }
 
   .stampa-number__input {
-    width: 60px;
-    margin-right: 10px;
-    text-align: right;
+
+    &[type='text'],
+    &[type='number'] {
+      width: 60px;
+      margin-right: 10px;
+      text-align: right;
+    }
+
+    &[type="checkbox"] {
+      margin-right: 10px;
+    }
   }
 
   .block-options__save {

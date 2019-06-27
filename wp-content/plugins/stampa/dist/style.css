@@ -261,7 +261,6 @@ label='Grid options' .stampa__title--input {
   width: 100%;
   display: -webkit-box;
   display: flex;
-  background: #fff;
   background: var(--stampa-white);
   padding: 10px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
@@ -284,7 +283,8 @@ label='Grid options' .stampa__title--input {
     width: calc(100% - 30px);
   }
 
-  .grid-options .stampa-number {
+  .grid-options .stampa-number,
+  .grid-options .stampa-checkbox {
     display: block;
     padding-bottom: 0;
   }
@@ -294,11 +294,16 @@ label='Grid options' .stampa__title--input {
     margin-right: 10px;
   }
 
-  .grid-options .stampa-number__input {
-    width: 60px;
-    margin-right: 10px;
-    text-align: right;
-  }
+  .grid-options .stampa-number__input[type='text'],
+    .grid-options .stampa-number__input[type='number'] {
+      width: 60px;
+      margin-right: 10px;
+      text-align: right;
+    }
+
+  .grid-options .stampa-number__input[type="checkbox"] {
+      margin-right: 10px;
+    }
 
   .grid-options .block-options__save {
     -webkit-box-flex: 1;
@@ -418,23 +423,24 @@ label='Grid options' .stampa__title--input {
 }
 
 .stampa-select,
-.stampa-number {
+.stampa-number,
+.stampa-checkbox {
   display: -webkit-box;
   display: flex;
   -webkit-box-pack: justify;
           justify-content: space-between;
 }
 
-.stampa-select__label, .stampa-number__label {
+.stampa-select__label, .stampa-number__label, .stampa-checkbox__label {
     width: 60%;
     align-self: center;
   }
 
-.stampa-select__input, .stampa-number__input {
+.stampa-select__input, .stampa-number__input, .stampa-checkbox__input {
     width: 38%;
   }
 
-.stampa-select input, .stampa-number input {
+.stampa-select input, .stampa-number input, .stampa-checkbox input {
     float: none;
     margin: 0;
   }
@@ -459,64 +465,17 @@ label='Grid options' .stampa__title--input {
     width: 60%;
   }
 
-.stampa-checkbox .checkbox_wrapper {
-    background: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    height: 50px;
-    margin: 3em auto;
-    position: relative;
-    width: 100px;
-  }
+/**
+ * Need to include the parent selector because the default style loaded
+ * conflicts with this one, and I don't like using !important
+ */
+.stampa-checkbox .stampa-checkbox__input {
+      border: 2px solid #6c7781;
+      border: 2px solid var(--stampa-checkbox-border);
+      border-radius: 2px;
 
-.stampa-checkbox label {
-    display: block;
-    margin: auto;
-    width: 100px;
-  }
-
-.stampa-checkbox [type='checkbox']:checked+.custom,
-  .stampa-checkbox [type='checkbox']:not(:checked)+.custom {
-    background: #e74c3c;
-    left: 1px;
-    position: absolute;
-    top: 1px;
-    bottom: 1px;
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-    width: 48px;
-    z-index: 10;
-  }
-
-.stampa-checkbox [type='checkbox']:checked,
-  .stampa-checkbox [type='checkbox']:not(:checked) {
-    opacity: 0;
-  }
-
-.stampa-checkbox [type='checkbox']:checked+.custom {
-    background: #2ecc71;
-    left: 49px;
-  }
-
-.stampa-checkbox svg {
-    -webkit-filter: drop-shadow(1px 1px 1px #000);
-            filter: drop-shadow(1px 1px 1px #000);
-    position: absolute;
-    z-index: 1;
-  }
-
-.stampa-checkbox .true_icon {
-    fill: #2ecc71;
-    left: 8px;
-    top: 8px;
-  }
-
-.stampa-checkbox .false_icon {
-    fill: #e74c3c;
-    right: 8px;
-    top: 9px;
-  }
+      margin-right: 10px;
+    }
 :root {
   --stampa-dark: #191e23;
   --stampa-border: #e2e4e7;
@@ -524,6 +483,7 @@ label='Grid options' .stampa__title--input {
   --stampa-white: #fff;
   --stampa-blue: #0085ba;
   --stampa-active: #ca4a1f;
+  --stampa-checkbox-border: #6c7781;
 }
 
 body.post-type-stampa-block #poststuff #post-body.columns-2 {

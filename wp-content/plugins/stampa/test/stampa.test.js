@@ -40,15 +40,15 @@ describe('Test Stampa helper functions', () => {
   });
 
   it('sanitizeVariableName should convert the input in an valid variable name', () => {
-    expect(stampa.sanitizeName('field name')).toBe('field_name');
-    expect(stampa.sanitizeName('field@name')).toBe('field_name');
-    expect(stampa.sanitizeName('field+name')).toBe('field_name');
-    expect(stampa.sanitizeName('field-name')).toBe('field_name');
-    expect(stampa.sanitizeName('field/name')).toBe('field_name');
-    expect(stampa.sanitizeName('30 fields')).toBe('_fields');
-    expect(stampa.sanitizeName('"fields')).toBe('_fields');
-    expect(stampa.sanitizeName("'fields")).toBe('_fields');
-    expect(stampa.sanitizeName('fields ')).toBe('fields_');
-    expect(stampa.sanitizeName(' fields')).toBe('_fields');
+    expect(stampa.sanitizeVariableName('field name')).toBe('field_name');
+    expect(stampa.sanitizeVariableName('field@name')).toBe('field_name');
+    expect(stampa.sanitizeVariableName('field+name')).toBe('field_name');
+    expect(stampa.sanitizeVariableName('field-name')).toBe('field_name');
+    expect(stampa.sanitizeVariableName('field/name')).toBe('field_name');
+    expect(stampa.sanitizeVariableName('30 fields')).toBe('_fields');
+    expect(stampa.sanitizeVariableName('"fields')).toBe('_fields');
+    expect(stampa.sanitizeVariableName("'fields")).toBe('_fields');
+    expect(stampa.sanitizeVariableName('fields ')).toBe('fields_');
+    expect(stampa.sanitizeVariableName(' fields')).toBe('_fields');
   });
 });
