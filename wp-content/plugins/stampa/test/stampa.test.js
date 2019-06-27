@@ -38,4 +38,17 @@ describe('Test Stampa helper functions', () => {
 
     expect(stampa.getFieldPosition()).toBe('anything');
   });
+
+  it('sanitizeVariableName should convert the input in an valid variable name', () => {
+    expect(stampa.sanitizeName('field name')).toBe('field_name');
+    expect(stampa.sanitizeName('field@name')).toBe('field_name');
+    expect(stampa.sanitizeName('field+name')).toBe('field_name');
+    expect(stampa.sanitizeName('field-name')).toBe('field_name');
+    expect(stampa.sanitizeName('field/name')).toBe('field_name');
+    expect(stampa.sanitizeName('30 fields')).toBe('_fields');
+    expect(stampa.sanitizeName('"fields')).toBe('_fields');
+    expect(stampa.sanitizeName("'fields")).toBe('_fields');
+    expect(stampa.sanitizeName('fields ')).toBe('fields_');
+    expect(stampa.sanitizeName(' fields')).toBe('_fields');
+  });
 });

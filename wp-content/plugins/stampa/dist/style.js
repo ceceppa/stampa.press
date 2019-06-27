@@ -199,6 +199,11 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/grid-options.pcss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
 },{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/tooltip.pcss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -224,7 +229,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./components/stampa":"components/stampa.pcss","./components/toggle-group":"components/toggle-group.pcss","./components/grid":"components/grid.pcss","./components/tooltip":"components/tooltip.pcss","./components/block-options":"components/block-options.pcss","./components/stampa-fields":"components/stampa-fields.pcss","./components/stampa-inputs":"components/stampa-inputs.pcss","_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./components/stampa":"components/stampa.pcss","./components/toggle-group":"components/toggle-group.pcss","./components/grid":"components/grid.pcss","./components/grid-options":"components/grid-options.pcss","./components/tooltip":"components/tooltip.pcss","./components/block-options":"components/block-options.pcss","./components/stampa-fields":"components/stampa-fields.pcss","./components/stampa-inputs":"components/stampa-inputs.pcss","_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -252,7 +257,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32911" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38299" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

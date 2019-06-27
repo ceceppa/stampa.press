@@ -2,11 +2,11 @@
   display: flex;
   background: #f1f1f1;
   padding: 30px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--stampa-border);
+  border-bottom: 1px solid var(--stampa-border);
 
   &__content {
-    background: var(--white);
+    background: var(--stampa-white);
     position: relative;
     width: 100%;
     display: grid;
@@ -27,22 +27,22 @@
   }
 
   &__highlight {
-    background: var(--blue);
+    background: var(--stampa-blue);
     pointer-events: none;
     opacity: 0.4;
   }
 
   &__field {
-    border: 1px solid var(--border);
+    border: 1px solid var(--stampa-border);
     transition: all 0.15 ease;
     position: relative;
     overflow: hidden;
     transition: 0.15s ease;
-    border-color: var(--border);
+    border-color: var(--stampa-border);
     display: flex;
 
     &:hover {
-      border: 1px solid var(--blue);
+      border: 1px solid var(--stampa-blue);
 
       .stampa-grid__field__type {
         opacity: 1;
@@ -79,7 +79,7 @@
     }
 
     &.active {
-      border-color: var(--active);
+      border-color: var(--stampa-active);
 
       &:hover {
       }
@@ -92,7 +92,7 @@
 
     &__resizer {
       position: absolute;
-      border: 2px solid var(--blue);
+      border: 2px solid var(--stampa-blue);
       opacity: 0.2;
 
       &--width {

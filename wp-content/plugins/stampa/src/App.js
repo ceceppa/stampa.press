@@ -65,6 +65,8 @@ class App extends Component {
   render() {
     return (
       <div className="stampa">
+        <GridOptions />
+
         <div className="stampa__title">
           <label
             className="screen-reader-text"
@@ -87,7 +89,6 @@ class App extends Component {
           <FieldsList />
           <Grid />
           <div className="stampa__right">
-            <GridOptions />
             <BlockOptions />
             <FieldOptions />
           </div>

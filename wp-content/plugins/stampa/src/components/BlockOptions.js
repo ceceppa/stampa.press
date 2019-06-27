@@ -2,8 +2,6 @@ import React, { useCallback } from 'react';
 
 import Store from '../store/store';
 
-import SaveBlock from './BlockOptions/Save';
-
 import ToggleGroup from './ToggleGroup';
 
 export default function BlockOptions() {
@@ -62,8 +60,6 @@ export default function BlockOptions() {
           onChange={updateBackgroundOption}
         />
       </label>
-      <br />
-      <SaveBlock />
     </ToggleGroup>
   );
 }

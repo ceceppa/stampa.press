@@ -54,7 +54,7 @@ export default function FieldOptions(props) {
 
     for (const field of fields) {
       if (field._stampa.key == activeFieldKey) {
-        field._stampa.name = e.target.value;
+        field._stampa.name = stampa.sanitizeVariableName(e.target.value);
 
         break;
       }
@@ -90,9 +90,15 @@ export default function FieldOptions(props) {
       display="block"
       groupClass="block-options"
     >
+      {/* The field "name" */}
       {activeField && [
         <label htmlFor="field-name" className="stampa-text" key="field-name">
-          <span className="stampa-text__label">Field name:</span>
+          <span
+            className="stampa-text__label"
+            data-tooltip="This fields is used to generate the variable name"
+          >
+            Field name:
+          </span>
           <input
             className="stampa-text__input"
             type="text"

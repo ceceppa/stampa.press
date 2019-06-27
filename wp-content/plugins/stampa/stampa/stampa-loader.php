@@ -78,9 +78,10 @@ function block_renderer() {
 			[
 				'render_callback' => function( $attributes ) use ( $block ) {
 					$module_file = __DIR__ . "/modules/${block}.php";
+					extract( $attributes, EXTR_SKIP );
+					unset( $attributes );
 
 					include $module_file;
-					// nine3_locate_template( "modules/{$block}.php", $attributes );
 				},
 			]
 		);

@@ -1,2 +1,45 @@
 .grid-options {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  display: flex;
+  background: var(--stampa-white);
+  padding: 10px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  body.wp-admin & {
+    top: 30px;
+    left: 160px;
+    width: calc(100% - 160px);
+  }
+
+  body.folded & {
+    left: 30px;
+    width: calc(100% - 30px);
+  }
+
+  .stampa-number {
+    display: block;
+    padding-bottom: 0;
+  }
+
+  .stampa-number__label {
+    width: auto;
+    margin-right: 10px;
+  }
+
+  .stampa-number__input {
+    width: 60px;
+    margin-right: 10px;
+    text-align: right;
+  }
+
+  .block-options__save {
+    flex-grow: 1;
+  }
 }

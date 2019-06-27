@@ -1,3 +1,21 @@
+:root {
+  --stampa-dark: #191e23;
+  --stampa-border: #e2e4e7;
+  --stampa-hover: #f8f9f9;
+  --stampa-white: #fff;
+  --stampa-blue: #0085ba;
+  --stampa-active: #ca4a1f;
+}
+
+@import './components/stampa';
+@import './components/toggle-group';
+@import './components/grid';
+@import './components/grid-options';
+@import './components/tooltip';
+@import './components/block-options';
+@import './components/stampa-fields';
+@import './components/stampa-inputs';
+
 body.post-type-stampa-block {
   #poststuff #post-body.columns-2 {
     margin-right: 0;
@@ -6,25 +24,16 @@ body.post-type-stampa-block {
   #post-body.columns-2 #postbox-container-1 {
     display: none;
   }
+
+  #wpcontent {
+    padding: 0;
+  }
 }
 
-:root {
-  --color__dark: #191e23;
-  --border: #e2e4e7;
-  --hover: #f8f9f9;
-  --white: #fff;
-  --blue: #0085ba;
-  --active: #ca4a1f;
+.stampa-app {
+  position: relative;
 }
-
-@import './components/stampa';
-@import './components/toggle-group';
-@import './components/grid';
-@import './components/tooltip';
-@import './components/block-options';
-@import './components/stampa-fields';
-@import './components/stampa-inputs';
 
 .stampa--gray {
-  color: var(--border);
+  color: var(--stampa-border);
 }

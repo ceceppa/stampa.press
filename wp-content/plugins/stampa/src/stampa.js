@@ -108,4 +108,19 @@ export default {
       store.set('activeFieldKey')(null);
     }
   },
+  sanitizeVariableName: function(str) {
+    str = str.toLowerCase();
+
+    var from = 'àáäâèéëêìíïîòóöôùúüûñç';
+    var to = 'aaaaeeeeiiiioooouuuunc';
+
+    for (var i = 0, l = from.length; i < l; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    return str
+      .replace(/\W/g, '_')
+      .replace(/\s+/g, '_')
+      .replace(/^\d+/g, '');
+  },
 };

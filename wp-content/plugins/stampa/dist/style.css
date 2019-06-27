@@ -7,12 +7,13 @@
     display: flex;
     width: 100%;
     height: 100%;
-    background: var(--white);
+    background: #fff;
+    background: var(--stampa-white);
     margin-top: 20px;
     color: #555d66;
   }
 
-.stampa__title--input {
+label='Grid options' .stampa__title--input {
       font-size: 1.7em;
       width: 100%;
       padding: 3px 8px;
@@ -27,11 +28,13 @@
   }
 
 .stampa__left {
-    border-right: 1px solid var(--border);
+    border-right: 1px solid #e2e4e7;
+    border-right: 1px solid var(--stampa-border);
   }
 
 .stampa__right {
-    border-left: 1px solid var(--border);
+    border-left: 1px solid #e2e4e7;
+    border-left: 1px solid var(--stampa-border);
   }
 
 .stampa-grid {
@@ -44,7 +47,8 @@
   }
 
 .stampa__border--bottom {
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #e2e4e7;
+    border-bottom: 1px solid var(--stampa-border);
   }
 
 .stampa-hr {
@@ -60,11 +64,11 @@
     background: transparent;
     font-weight: 600;
     color: #191e23;
-    color: var(--color__dark);
+    color: var(--stampa-dark);
     width: 100%;
     border: none;
     border-bottom: 1px solid #e2e4e7;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--stampa-border);
     -moz-text-align-last: left;
          text-align-last: left;
     cursor: pointer;
@@ -74,7 +78,7 @@
 
   .toggle-group__label:hover {
       background-color: #f8f9f9;
-      background-color: var(--hover);
+      background-color: var(--stampa-hover);
     }
 
   .toggle-group__arrow {
@@ -98,12 +102,15 @@
   display: flex;
   background: #f1f1f1;
   padding: 30px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid #e2e4e7;
+  border-top: 1px solid var(--stampa-border);
+  border-bottom: 1px solid #e2e4e7;
+  border-bottom: 1px solid var(--stampa-border);
 }
 
   .stampa-grid__content {
-    background: var(--white);
+    background: #fff;
+    background: var(--stampa-white);
     position: relative;
     width: 100%;
     display: grid;
@@ -124,26 +131,30 @@
   }
 
   .stampa-grid__highlight {
-    background: var(--blue);
+    background: #0085ba;
+    background: var(--stampa-blue);
     pointer-events: none;
     opacity: 0.4;
   }
 
   .stampa-grid__field {
-    border: 1px solid var(--border);
+    border: 1px solid #e2e4e7;
+    border: 1px solid var(--stampa-border);
     -webkit-transition: all 0.15 ease;
     transition: all 0.15 ease;
     position: relative;
     overflow: hidden;
     -webkit-transition: 0.15s ease;
     transition: 0.15s ease;
-    border-color: var(--border);
+    border-color: #e2e4e7;
+    border-color: var(--stampa-border);
     display: -webkit-box;
     display: flex
   }
 
   .stampa-grid__field:hover {
-      border: 1px solid var(--blue);
+      border: 1px solid #0085ba;
+      border: 1px solid var(--stampa-blue);
     }
 
   .stampa-grid__field:hover .stampa-grid__field__type {
@@ -185,7 +196,8 @@
     }
 
   .stampa-grid__field.active {
-      border-color: var(--active)
+      border-color: #ca4a1f;
+      border-color: var(--stampa-active)
     }
 
   .stampa-grid__field.active:hover {
@@ -198,7 +210,8 @@
 
   .stampa-grid__field__resizer {
       position: absolute;
-      border: 2px solid var(--blue);
+      border: 2px solid #0085ba;
+      border: 2px solid var(--stampa-blue);
       opacity: 0.2;
     }
 
@@ -241,6 +254,56 @@
   opacity: 0.15;
 }
 
+.grid-options {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  display: -webkit-box;
+  display: flex;
+  background: #fff;
+  background: var(--stampa-white);
+  padding: 10px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+  box-sizing: border-box;
+}
+
+  body.wp-admin .grid-options {
+    top: 30px;
+    left: 160px;
+    width: calc(100% - 160px);
+  }
+
+  body.folded .grid-options {
+    left: 30px;
+    width: calc(100% - 30px);
+  }
+
+  .grid-options .stampa-number {
+    display: block;
+    padding-bottom: 0;
+  }
+
+  .grid-options .stampa-number__label {
+    width: auto;
+    margin-right: 10px;
+  }
+
+  .grid-options .stampa-number__input {
+    width: 60px;
+    margin-right: 10px;
+    text-align: right;
+  }
+
+  .grid-options .block-options__save {
+    -webkit-box-flex: 1;
+            flex-grow: 1;
+  }
 .tooltip {
   position: relative
 }
@@ -330,7 +393,7 @@
   }
   .stampa-fields__item:hover {
       background: #f8f9f9;
-      background: var(--hover);
+      background: var(--stampa-hover);
     }
   .stampa-fields__image {
     display: block;
@@ -396,25 +459,92 @@
     width: 60%;
   }
 
+.stampa-checkbox .checkbox_wrapper {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    height: 50px;
+    margin: 3em auto;
+    position: relative;
+    width: 100px;
+  }
+
+.stampa-checkbox label {
+    display: block;
+    margin: auto;
+    width: 100px;
+  }
+
+.stampa-checkbox [type='checkbox']:checked+.custom,
+  .stampa-checkbox [type='checkbox']:not(:checked)+.custom {
+    background: #e74c3c;
+    left: 1px;
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    width: 48px;
+    z-index: 10;
+  }
+
+.stampa-checkbox [type='checkbox']:checked,
+  .stampa-checkbox [type='checkbox']:not(:checked) {
+    opacity: 0;
+  }
+
+.stampa-checkbox [type='checkbox']:checked+.custom {
+    background: #2ecc71;
+    left: 49px;
+  }
+
+.stampa-checkbox svg {
+    -webkit-filter: drop-shadow(1px 1px 1px #000);
+            filter: drop-shadow(1px 1px 1px #000);
+    position: absolute;
+    z-index: 1;
+  }
+
+.stampa-checkbox .true_icon {
+    fill: #2ecc71;
+    left: 8px;
+    top: 8px;
+  }
+
+.stampa-checkbox .false_icon {
+    fill: #e74c3c;
+    right: 8px;
+    top: 9px;
+  }
+:root {
+  --stampa-dark: #191e23;
+  --stampa-border: #e2e4e7;
+  --stampa-hover: #f8f9f9;
+  --stampa-white: #fff;
+  --stampa-blue: #0085ba;
+  --stampa-active: #ca4a1f;
+}
+
 body.post-type-stampa-block #poststuff #post-body.columns-2 {
     margin-right: 0;
   }
-  body.post-type-stampa-block #post-body.columns-2 #postbox-container-1 {
+
+body.post-type-stampa-block #post-body.columns-2 #postbox-container-1 {
     display: none;
   }
 
-:root {
-  --color__dark: #191e23;
-  --border: #e2e4e7;
-  --hover: #f8f9f9;
-  --white: #fff;
-  --blue: #0085ba;
-  --active: #ca4a1f;
+body.post-type-stampa-block #wpcontent {
+    padding: 0;
+  }
+
+.stampa-app {
+  position: relative;
 }
 
 .stampa--gray {
   color: #e2e4e7;
-  color: var(--border);
+  color: var(--stampa-border);
 }
 
 

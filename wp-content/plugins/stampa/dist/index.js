@@ -27447,6 +27447,17 @@ var _default = {
       store.set('stampaFields')(blocks);
       store.set('activeFieldKey')(null);
     }
+  },
+  sanitizeVariableName: function sanitizeVariableName(str) {
+    str = str.toLowerCase();
+    var from = 'àáäâèéëêìíïîòóöôùúüûñç';
+    var to = 'aaaaeeeeiiiioooouuuunc';
+
+    for (var i = 0, l = from.length; i < l; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    return str.replace(/\W/g, '_').replace(/\s+/g, '_').replace(/^\d+/g, '');
   }
 };
 exports.default = _default;
@@ -27512,114 +27523,7 @@ function FieldsList() {
     }));
   }));
 }
-},{"react":"../node_modules/react/index.js","./GroupFields":"components/GroupFields.js","../stampa":"stampa.js"}],"components/NumberSlider.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = NumberSlider;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _store = _interopRequireDefault(require("../store/store"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function NumberSlider(_ref) {
-  var id = _ref.id,
-      label = _ref.label,
-      storeKey = _ref.storeKey,
-      min = _ref.min;
-
-  var store = _store.default.useStore();
-
-  var value = store.get(storeKey);
-
-  if (min == null) {
-    min = 0;
-  }
-
-  var updateValue = function updateValue(e) {
-    store.set(storeKey)(Math.max(min, e.target.value));
-  };
-
-  return _react.default.createElement("div", {
-    className: "stampa-number"
-  }, _react.default.createElement("label", {
-    className: "stampa-number__label",
-    htmlFor: id
-  }, label), _react.default.createElement("input", {
-    className: "stampa-number__input",
-    type: "number",
-    id: id,
-    value: value,
-    onChange: updateValue
-  }));
-}
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/GridOptions.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = GridOptions;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _store = _interopRequireDefault(require("../store/store"));
-
-var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
-
-var _NumberSlider = _interopRequireDefault(require("./NumberSlider"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function GridOptions() {
-  var store = _store.default.useStore();
-
-  var showGrid = store.get('gridShow');
-  return _react.default.createElement(_ToggleGroup.default, {
-    label: "Grid options",
-    groupClass: "stampa__border--bottom",
-    isCollapsed: true
-  }, _react.default.createElement(_NumberSlider.default, {
-    id: "columns",
-    label: "Columns:",
-    storeKey: "gridColumns"
-  }), _react.default.createElement(_NumberSlider.default, {
-    id: "rows",
-    label: "Rows:",
-    storeKey: "gridRows"
-  }), _react.default.createElement(_NumberSlider.default, {
-    id: "gap",
-    label: "Gap:",
-    storeKey: "gridGap"
-  }), _react.default.createElement("hr", {
-    className: "stampa-hr"
-  }), _react.default.createElement(_NumberSlider.default, {
-    id: "rowHeight",
-    label: "Row Height (px):",
-    storeKey: "rowHeight"
-  }), _react.default.createElement("hr", {
-    className: "stampa-hr"
-  }), _react.default.createElement("label", {
-    htmlFor: "showgrid",
-    className: "stampa-number"
-  }, _react.default.createElement("span", {
-    className: "stampa-number__label"
-  }, "Show grid:"), _react.default.createElement("input", {
-    className: "stampa-number__input",
-    type: "checkbox",
-    name: "showgrid",
-    id: "showgrid",
-    checked: showGrid,
-    onChange: function onChange() {
-      return store.set('gridShow')(!showGrid);
-    }
-  })));
-}
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./NumberSlider":"components/NumberSlider.js"}],"components/BlockOptions/Save.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./GroupFields":"components/GroupFields.js","../stampa":"stampa.js"}],"components/BlockOptions/Save.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27737,7 +27641,179 @@ function Save() {
     }
   }, "Save & Generate"));
 }
-},{"react":"../node_modules/react/index.js","../../store/store":"store/store.js","../../stampa":"stampa.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../../store/store":"store/store.js","../../stampa":"stampa.js"}],"components/NumberSlider.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = NumberSlider;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function NumberSlider(_ref) {
+  var id = _ref.id,
+      label = _ref.label,
+      storeKey = _ref.storeKey,
+      min = _ref.min;
+
+  var store = _store.default.useStore();
+
+  var value = store.get(storeKey);
+
+  if (min == null) {
+    min = 0;
+  }
+
+  var updateValue = function updateValue(e) {
+    store.set(storeKey)(Math.max(min, e.target.value));
+  };
+
+  return _react.default.createElement("div", {
+    className: "stampa-number"
+  }, _react.default.createElement("label", {
+    className: "stampa-number__label",
+    htmlFor: id
+  }, label), _react.default.createElement("input", {
+    className: "stampa-number__input",
+    type: "number",
+    id: id,
+    value: value,
+    onChange: updateValue
+  }));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/FieldOptions/CheckboxField.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = CheckboxField;
+
+var _react = _interopRequireWildcard(require("react"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function CheckboxField(_ref) {
+  var option = _ref.option,
+      selectedValues = _ref.selectedValues,
+      updateOptionValue = _ref.updateOptionValue;
+
+  if (selectedValues == null) {
+    selectedValues = {};
+  }
+  /**
+   * Update the state for the checkbox
+   */
+
+
+  var updateOptionChecked = (0, _react.useCallback)(function (e, name, value) {
+    if (e.target.checked) {
+      e.target.value = value;
+    } else {
+      e.target.value = '';
+    }
+
+    updateOptionValue(e, name);
+  });
+  var isChecked = option.checked || false;
+
+  if (selectedValues[option.name] != null) {
+    isChecked = selectedValues[option.name] === option.value;
+  }
+
+  return _react.default.createElement("label", {
+    htmlFor: "field-".concat(option.name),
+    className: "stampa-checkbox"
+  }, _react.default.createElement("div", {
+    class: "checkbox_wrapper"
+  }, _react.default.createElement("span", {
+    className: "stampa-number__label"
+  }, option.label, ":"), _react.default.createElement("input", {
+    className: "stampa-number__input",
+    type: "checkbox",
+    name: "field-".concat(option.name),
+    id: "field-".concat(option.name),
+    value: option.value,
+    checked: isChecked,
+    onChange: function onChange(e) {
+      return updateOptionChecked(e, option.name, option.value);
+    }
+  }), _react.default.createElement("span", {
+    className: "custom"
+  }), _react.default.createElement("svg", {
+    version: "1.1",
+    width: "32",
+    height: "32",
+    viewBox: "0 0 32 32",
+    class: "true_icon"
+  }, _react.default.createElement("path", {
+    d: "M27 4l-15 15-7-7-5 5 12 12 20-20z"
+  })), _react.default.createElement("svg", {
+    version: "1.1",
+    width: "32",
+    height: "32",
+    viewBox: "0 0 32 32",
+    class: "false_icon"
+  }, _react.default.createElement("path", {
+    d: "M31.708 25.708c-0-0-0-0-0-0l-9.708-9.708 9.708-9.708c0-0 0-0 0-0 0.105-0.105 0.18-0.227 0.229-0.357 0.133-0.356 0.057-0.771-0.229-1.057l-4.586-4.586c-0.286-0.286-0.702-0.361-1.057-0.229-0.13 0.048-0.252 0.124-0.357 0.228 0 0-0 0-0 0l-9.708 9.708-9.708-9.708c-0-0-0-0-0-0-0.105-0.104-0.227-0.18-0.357-0.228-0.356-0.133-0.771-0.057-1.057 0.229l-4.586 4.586c-0.286 0.286-0.361 0.702-0.229 1.057 0.049 0.13 0.124 0.252 0.229 0.357 0 0 0 0 0 0l9.708 9.708-9.708 9.708c-0 0-0 0-0 0-0.104 0.105-0.18 0.227-0.229 0.357-0.133 0.355-0.057 0.771 0.229 1.057l4.586 4.586c0.286 0.286 0.702 0.361 1.057 0.229 0.13-0.049 0.252-0.124 0.357-0.229 0-0 0-0 0-0l9.708-9.708 9.708 9.708c0 0 0 0 0 0 0.105 0.105 0.227 0.18 0.357 0.229 0.356 0.133 0.771 0.057 1.057-0.229l4.586-4.586c0.286-0.286 0.362-0.702 0.229-1.057-0.049-0.13-0.124-0.252-0.229-0.357z"
+  }))));
+}
+},{"react":"../node_modules/react/index.js"}],"components/GridOptions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = GridOptions;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+var _Save = _interopRequireDefault(require("./BlockOptions/Save"));
+
+var _NumberSlider = _interopRequireDefault(require("./NumberSlider"));
+
+var _CheckboxField = _interopRequireDefault(require("./FieldOptions/CheckboxField"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function GridOptions() {
+  var store = _store.default.useStore();
+
+  var showGrid = store.get('gridShow');
+  return _react.default.createElement("div", {
+    className: "grid-options stampa__border--bottom"
+  }, _react.default.createElement(_NumberSlider.default, {
+    id: "columns",
+    label: "Columns:",
+    storeKey: "gridColumns"
+  }), _react.default.createElement(_NumberSlider.default, {
+    id: "rows",
+    label: "Rows:",
+    storeKey: "gridRows"
+  }), _react.default.createElement(_NumberSlider.default, {
+    id: "gap",
+    label: "Gap:",
+    storeKey: "gridGap"
+  }), _react.default.createElement(_NumberSlider.default, {
+    id: "rowHeight",
+    label: "Row Height (px):",
+    storeKey: "rowHeight"
+  }), _react.default.createElement(_CheckboxField.default, {
+    option: "show-grid",
+    selectedValues: showGrid,
+    updateOptionValue: function updateOptionValue() {
+      return store.set('gridShow')(!showGrid);
+    }
+  }), _react.default.createElement(_Save.default, null));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./NumberSlider":"components/NumberSlider.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27748,8 +27824,6 @@ exports.default = BlockOptions;
 var _react = _interopRequireWildcard(require("react"));
 
 var _store = _interopRequireDefault(require("../store/store"));
-
-var _Save = _interopRequireDefault(require("./BlockOptions/Save"));
 
 var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
 
@@ -27799,9 +27873,9 @@ function BlockOptions() {
     id: "block-background",
     checked: stampaBlockOptions.hasBackgroundOption,
     onChange: updateBackgroundOption
-  })), _react.default.createElement("br", null), _react.default.createElement(_Save.default, null));
+  })));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/FieldOptions/ButtonAddCustomOption.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/FieldOptions/ButtonAddCustomOption.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27842,63 +27916,6 @@ function ButtonDeleteField(_ref) {
     onClick: deleteActiveField,
     className: "button button-link-delete"
   }, "Delete field");
-}
-},{"react":"../node_modules/react/index.js"}],"components/FieldOptions/CheckboxField.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = CheckboxField;
-
-var _react = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function CheckboxField(_ref) {
-  var option = _ref.option,
-      selectedValues = _ref.selectedValues,
-      updateOptionValue = _ref.updateOptionValue;
-
-  if (selectedValues == null) {
-    selectedValues = {};
-  }
-  /**
-   * Update the state for the checkbox
-   */
-
-
-  var updateOptionChecked = (0, _react.useCallback)(function (e, name, value) {
-    if (e.target.checked) {
-      e.target.value = value;
-    } else {
-      e.target.value = '';
-    }
-
-    updateOptionValue(e, name);
-  });
-  var isChecked = option.checked || false;
-
-  if (selectedValues[option.name] != null) {
-    isChecked = selectedValues[option.name] === option.value;
-  }
-
-  return _react.default.createElement("label", {
-    htmlFor: "field-".concat(option.name),
-    className: "stampa-number"
-  }, _react.default.createElement("span", {
-    className: "stampa-number__label"
-  }, option.label, ":"), _react.default.createElement("input", {
-    className: "stampa-number__input",
-    type: "checkbox",
-    name: "field-".concat(option.name),
-    id: "field-".concat(option.name),
-    value: option.value,
-    checked: isChecked,
-    onChange: function onChange(e) {
-      return updateOptionChecked(e, option.name, option.value);
-    }
-  }));
 }
 },{"react":"../node_modules/react/index.js"}],"components/FieldOptions/TextField.js":[function(require,module,exports) {
 "use strict";
@@ -28079,7 +28096,7 @@ function FieldOptions(props) {
         var _field = _step2.value;
 
         if (_field._stampa.key == activeFieldKey) {
-          _field._stampa.name = e.target.value;
+          _field._stampa.name = _stampa.default.sanitizeVariableName(e.target.value);
           break;
         }
       }
@@ -28148,7 +28165,8 @@ function FieldOptions(props) {
     className: "stampa-text",
     key: "field-name"
   }, _react.default.createElement("span", {
-    className: "stampa-text__label"
+    className: "stampa-text__label",
+    "data-tooltip": "This fields is used to generate the variable name"
   }, "Field name:"), _react.default.createElement("input", {
     className: "stampa-text__input",
     type: "text",
@@ -29163,7 +29181,7 @@ function (_Component) {
     value: function render() {
       return _react.default.createElement("div", {
         className: "stampa"
-      }, _react.default.createElement("div", {
+      }, _react.default.createElement(_GridOptions.default, null), _react.default.createElement("div", {
         className: "stampa__title"
       }, _react.default.createElement("label", {
         className: "screen-reader-text",
@@ -29181,7 +29199,7 @@ function (_Component) {
         className: "stampa__body"
       }, _react.default.createElement(_FieldsList.default, null), _react.default.createElement(_Grid.default, null), _react.default.createElement("div", {
         className: "stampa__right"
-      }, _react.default.createElement(_GridOptions.default, null), _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null))));
+      }, _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null))));
     }
   }]);
 
@@ -29369,7 +29387,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33331" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36615" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
