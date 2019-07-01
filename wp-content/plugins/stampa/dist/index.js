@@ -29170,6 +29170,10 @@ function (_Component) {
       return _react.default.createElement("div", {
         className: "stampa"
       }, _react.default.createElement(_GridOptions.default, null), _react.default.createElement("div", {
+        className: "stampa__body"
+      }, _react.default.createElement(_FieldsList.default, null), _react.default.createElement("div", {
+        className: "stampa__grid"
+      }, _react.default.createElement("div", {
         className: "stampa__title"
       }, _react.default.createElement("label", {
         className: "screen-reader-text",
@@ -29183,9 +29187,7 @@ function (_Component) {
         placeholder: "Block title",
         value: this.props.store.get('stampaBlockTitle'),
         onChange: this.updateBlockTitle
-      })), _react.default.createElement("div", {
-        className: "stampa__body"
-      }, _react.default.createElement(_FieldsList.default, null), _react.default.createElement(_Grid.default, null), _react.default.createElement("div", {
+      })), _react.default.createElement(_Grid.default, null)), _react.default.createElement("div", {
         className: "stampa__right"
       }, _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null))));
     }
@@ -29375,7 +29377,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38261" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37273" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

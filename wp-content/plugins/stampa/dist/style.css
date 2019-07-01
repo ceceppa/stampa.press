@@ -6,21 +6,25 @@
     display: -webkit-box;
     display: flex;
     width: 100%;
-    height: 100%;
-    background: #fff;
-    background: var(--stampa-white);
-    margin-top: 20px;
+    min-height: calc(100% - 20px);
+    position: relative;
+    top: 18px;
     color: #555d66;
   }
 
-label='Grid options' .stampa__title--input {
+.stampa__title {
+    padding: 30px 30px 0px;
+  }
+
+.stampa__title--input {
       font-size: 1.7em;
       width: 100%;
-      padding: 3px 8px;
+      padding: 8px 8px;
     }
 
 .stampa__left,
   .stampa__right {
+    background: var(--stampa-white);
     width: 300px;
     min-width: 300px;
     width: 300px;
@@ -28,16 +32,14 @@ label='Grid options' .stampa__title--input {
   }
 
 .stampa__left {
-    border-right: 1px solid #e2e4e7;
     border-right: 1px solid var(--stampa-border);
   }
 
 .stampa__right {
-    border-left: 1px solid #e2e4e7;
     border-left: 1px solid var(--stampa-border);
   }
 
-.stampa-grid {
+.stampa__grid {
     -webkit-box-flex: 1;
             flex-grow: 1;
   }
@@ -47,7 +49,6 @@ label='Grid options' .stampa__title--input {
   }
 
 .stampa__border--bottom {
-    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--stampa-border);
   }
 
@@ -55,7 +56,6 @@ label='Grid options' .stampa__title--input {
     opacity: 0.6;
     margin: 10px 20px 20px;
   }
-
 .toggle-group {
   margin: 0;
 }
@@ -102,14 +102,9 @@ label='Grid options' .stampa__title--input {
   display: flex;
   background: #f1f1f1;
   padding: 30px;
-  border-top: 1px solid #e2e4e7;
-  border-top: 1px solid var(--stampa-border);
-  border-bottom: 1px solid #e2e4e7;
-  border-bottom: 1px solid var(--stampa-border);
 }
 
   .stampa-grid__content {
-    background: #fff;
     background: var(--stampa-white);
     position: relative;
     width: 100%;
@@ -131,14 +126,12 @@ label='Grid options' .stampa__title--input {
   }
 
   .stampa-grid__highlight {
-    background: #0085ba;
     background: var(--stampa-blue);
     pointer-events: none;
     opacity: 0.4;
   }
 
   .stampa-grid__field {
-    border: 1px solid #e2e4e7;
     border: 1px solid var(--stampa-border);
     -webkit-transition: all 0.15 ease;
     transition: all 0.15 ease;
@@ -146,14 +139,12 @@ label='Grid options' .stampa__title--input {
     overflow: hidden;
     -webkit-transition: 0.15s ease;
     transition: 0.15s ease;
-    border-color: #e2e4e7;
     border-color: var(--stampa-border);
     display: -webkit-box;
     display: flex
   }
 
   .stampa-grid__field:hover {
-      border: 1px solid #0085ba;
       border: 1px solid var(--stampa-blue);
     }
 
@@ -196,7 +187,6 @@ label='Grid options' .stampa__title--input {
     }
 
   .stampa-grid__field.active {
-      border-color: #ca4a1f;
       border-color: var(--stampa-active)
     }
 
@@ -210,7 +200,6 @@ label='Grid options' .stampa__title--input {
 
   .stampa-grid__field__resizer {
       position: absolute;
-      border: 2px solid #0085ba;
       border: 2px solid var(--stampa-blue);
       opacity: 0.2;
     }
@@ -283,6 +272,13 @@ label='Grid options' .stampa__title--input {
     width: calc(100% - 30px);
   }
 
+  .grid-options >*::after {
+      content: '|';
+      margin-left: 15px;
+      margin-right: 15px;
+      opacity: 0.4;
+    }
+
   .grid-options .stampa-number,
   .grid-options .stampa-checkbox {
     display: block;
@@ -307,8 +303,12 @@ label='Grid options' .stampa__title--input {
 
   .grid-options .block-options__save {
     -webkit-box-flex: 1;
-            flex-grow: 1;
+            flex-grow: 1
   }
+
+  .grid-options .block-options__save::after {
+      display: none;
+    }
 .tooltip {
   position: relative
 }
@@ -470,12 +470,14 @@ label='Grid options' .stampa__title--input {
  * conflicts with this one, and I don't like using !important
  */
 .stampa-checkbox .stampa-checkbox__input {
-      border: 2px solid #6c7781;
       border: 2px solid var(--stampa-checkbox-border);
       border-radius: 2px;
 
-      margin-right: 10px;
+      margin-right: 10px
     }
+.stampa-checkbox .stampa-checkbox__input:checked::before {
+        margin: -4px 0 0 -5px;
+      }
 :root {
   --stampa-dark: #191e23;
   --stampa-border: #e2e4e7;

@@ -67,27 +67,30 @@ class App extends Component {
       <div className="stampa">
         <GridOptions />
 
-        <div className="stampa__title">
-          <label
-            className="screen-reader-text"
-            id="title-prompt-text"
-            htmlFor="block-title"
-          >
-            Add block title
-          </label>
-          <input
-            className="stampa__title--input"
-            type="text"
-            name="block-title"
-            id="block-title"
-            placeholder="Block title"
-            value={this.props.store.get('stampaBlockTitle')}
-            onChange={this.updateBlockTitle}
-          />
-        </div>
         <div className="stampa__body">
           <FieldsList />
-          <Grid />
+
+          <div className="stampa__grid">
+            <div className="stampa__title">
+              <label
+                className="screen-reader-text"
+                id="title-prompt-text"
+                htmlFor="block-title"
+              >
+                Add block title
+              </label>
+              <input
+                className="stampa__title--input"
+                type="text"
+                name="block-title"
+                id="block-title"
+                placeholder="Block title"
+                value={this.props.store.get('stampaBlockTitle')}
+                onChange={this.updateBlockTitle}
+              />
+            </div>
+            <Grid />
+          </div>
           <div className="stampa__right">
             <BlockOptions />
             <FieldOptions />
