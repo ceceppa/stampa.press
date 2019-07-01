@@ -184,7 +184,12 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"components/stampa.pcss":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"variables.pcss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/stampa.pcss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -224,12 +229,22 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/hierarchy.pcss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/react-sortable-tree/style.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
 },{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"style.pcss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./components/stampa":"components/stampa.pcss","./components/toggle-group":"components/toggle-group.pcss","./components/grid":"components/grid.pcss","./components/grid-options":"components/grid-options.pcss","./components/tooltip":"components/tooltip.pcss","./components/block-options":"components/block-options.pcss","./components/stampa-fields":"components/stampa-fields.pcss","./components/stampa-inputs":"components/stampa-inputs.pcss","_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./variables":"variables.pcss","./components/stampa":"components/stampa.pcss","./components/toggle-group":"components/toggle-group.pcss","./components/grid":"components/grid.pcss","./components/grid-options":"components/grid-options.pcss","./components/tooltip":"components/tooltip.pcss","./components/block-options":"components/block-options.pcss","./components/stampa-fields":"components/stampa-fields.pcss","./components/stampa-inputs":"components/stampa-inputs.pcss","./components/hierarchy":"components/hierarchy.pcss","../node_modules/react-sortable-tree/style.css":"../node_modules/react-sortable-tree/style.css","_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -257,7 +272,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40815" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41599" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
