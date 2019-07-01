@@ -8,6 +8,7 @@ import Grid from './components/Grid';
 
 import Store from './store/store';
 import stampa from './stampa';
+import Hierarchy from './components/Hierarchy';
 
 class App extends Component {
   /**
@@ -92,6 +93,7 @@ class App extends Component {
             <Grid />
           </div>
           <div className="stampa__right">
+            <Hierarchy />
             <BlockOptions />
             <FieldOptions />
           </div>

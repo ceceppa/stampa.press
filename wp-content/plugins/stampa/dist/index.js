@@ -29055,7 +29055,45 @@ function Grid() {
     }
   })));
 }
-},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./CSSGrid":"components/CSSGrid.js","./Field":"components/Field.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./CSSGrid":"components/CSSGrid.js","./Field":"components/Field.js"}],"components/Hierarchy.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Hierarchy;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Hierarchy(_ref) {
+  var items = _ref.items;
+
+  var store = _store.default.useStore();
+
+  if (items == null) {
+    items = store.get('stampaFields');
+  }
+
+  return _react.default.createElement(_ToggleGroup.default, {
+    label: "Hierarchy",
+    display: "block",
+    groupClass: "hierarchy stampa__border--bottom"
+  }, _react.default.createElement("ul", {
+    className: "hierarchy__list"
+  }, items.map(function (item) {
+    return _react.default.createElement("li", {
+      className: "hierarchy__item",
+      key: item._stampa.key
+    }, item._stampa.name);
+  })));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29078,6 +29116,8 @@ var _Grid = _interopRequireDefault(require("./components/Grid"));
 var _store = _interopRequireDefault(require("./store/store"));
 
 var _stampa = _interopRequireDefault(require("./stampa"));
+
+var _Hierarchy = _interopRequireDefault(require("./components/Hierarchy"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29189,7 +29229,7 @@ function (_Component) {
         onChange: this.updateBlockTitle
       })), _react.default.createElement(_Grid.default, null)), _react.default.createElement("div", {
         className: "stampa__right"
-      }, _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null))));
+      }, _react.default.createElement(_Hierarchy.default, null), _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null))));
     }
   }]);
 
@@ -29199,7 +29239,7 @@ function (_Component) {
 var _default = _store.default.withStore(App);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/FieldsList":"components/FieldsList.js","./components/GridOptions":"components/GridOptions.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.js","./store/store":"store/store.js","./stampa":"stampa.js"}],"serviceWorker.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/FieldsList":"components/FieldsList.js","./components/GridOptions":"components/GridOptions.js","./components/BlockOptions":"components/BlockOptions.js","./components/FieldOptions":"components/FieldOptions.js","./components/Grid":"components/Grid.js","./store/store":"store/store.js","./stampa":"stampa.js","./components/Hierarchy":"components/Hierarchy.js"}],"serviceWorker.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
