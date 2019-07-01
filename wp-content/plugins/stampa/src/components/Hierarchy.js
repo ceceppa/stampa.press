@@ -7,9 +7,8 @@ import ToggleGroup from './ToggleGroup';
 
 export default function Hierarchy({ items }) {
   const store = Store.useStore();
-  const [treeData, setTreeData] = useState([
-    { title: 'Chicken', children: [{ title: 'Egg' }] },
-  ]);
+  const treeData = store.get('stampaFields');
+
   if (items == null) {
     items = store.get('stampaFields');
   }
@@ -23,16 +22,10 @@ export default function Hierarchy({ items }) {
       <div style={{ height: 400 }}>
         <SortableTree
           treeData={treeData}
-          onChange={treeData => setTreeData(treeData)}
+          maxDepth={1}
+          onChange={treeData => store.set('stampaFields')(treeData)}
         />
       </div>
-      <ul className="hierarchy__list">
-        {items.map(item => (
-          <li className="hierarchy__item" key={item._stampa.key}>
-            {item._stampa.name}
-          </li>
-        ))}
-      </ul>
     </ToggleGroup>
   );
 }

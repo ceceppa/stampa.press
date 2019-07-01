@@ -55667,28 +55667,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function Hierarchy(_ref) {
   var items = _ref.items;
 
   var store = _store.default.useStore();
 
-  var _useState = (0, _react.useState)([{
-    title: 'Chicken',
-    children: [{
-      title: 'Egg'
-    }]
-  }]),
-      _useState2 = _slicedToArray(_useState, 2),
-      treeData = _useState2[0],
-      setTreeData = _useState2[1];
+  var treeData = store.get('stampaFields');
 
   if (items == null) {
     items = store.get('stampaFields');
@@ -55704,16 +55688,10 @@ function Hierarchy(_ref) {
     }
   }, _react.default.createElement(_reactSortableTree.default, {
     treeData: treeData,
+    maxDepth: 1,
     onChange: function onChange(treeData) {
-      return setTreeData(treeData);
+      return store.set('stampaFields')(treeData);
     }
-  })), _react.default.createElement("ul", {
-    className: "hierarchy__list"
-  }, items.map(function (item) {
-    return _react.default.createElement("li", {
-      className: "hierarchy__item",
-      key: item._stampa.key
-    }, item._stampa.name);
   })));
 }
 },{"react":"../node_modules/react/index.js","react-sortable-tree":"../node_modules/react-sortable-tree/dist/index.esm.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"App.js":[function(require,module,exports) {
@@ -55852,7 +55830,7 @@ function (_Component) {
         onChange: this.updateBlockTitle
       })), _react.default.createElement(_Grid.default, null)), _react.default.createElement("div", {
         className: "stampa__right"
-      }, _react.default.createElement(_Hierarchy.default, null), _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null))));
+      }, _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null), _react.default.createElement(_Hierarchy.default, null))));
     }
   }]);
 
@@ -56040,7 +56018,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38121" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34371" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

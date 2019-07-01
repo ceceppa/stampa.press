@@ -93,9 +93,9 @@ class App extends Component {
             <Grid />
           </div>
           <div className="stampa__right">
-            <Hierarchy />
             <BlockOptions />
             <FieldOptions />
+            <Hierarchy />
           </div>
         </div>
       </div>
