@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import SortableTree from 'react-sortable-tree';
+// import SortableTree from 'react-sortable-tree';
+import { SortableTreeWithoutDndContext as SortableTree } from 'react-sortable-tree';
 
 import Store from '../store/store';
 
@@ -24,6 +25,7 @@ export default function Hierarchy({ items }) {
           treeData={treeData}
           maxDepth={1}
           onChange={treeData => store.set('stampaFields')(treeData)}
+          canDrag={() => true}
         />
       </div>
     </ToggleGroup>

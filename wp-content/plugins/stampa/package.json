@@ -5,6 +5,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "react": "^16.8.6",
+    "react-beautiful-dnd": "^11.0.4",
     "react-dom": "^16.8.6",
     "react-sortable-tree": "^2.6.2",
     "shortid": "^2.2.14",

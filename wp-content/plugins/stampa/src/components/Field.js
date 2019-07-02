@@ -47,7 +47,7 @@ export default function Block({ field }) {
     e.stopPropagation();
 
     storeBlockPosition();
-    store.set('draggedFieldId')(field._stampa.key);
+    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
   });
 
   /**
@@ -63,7 +63,6 @@ export default function Block({ field }) {
     // Don't want/need to trigger a re-render of the block/app
     stampa.setResizeDirection(e.target.dataset.resize);
     stampa.setResizing(true);
-    store.set('draggedFieldId')(field._stampa.key);
   });
 
   /**
@@ -75,7 +74,10 @@ export default function Block({ field }) {
     store.set('activeFieldKey')(field._stampa.key);
   });
 
-  const gridArea = `${stampaField.startRow} / ${stampaField.startColumn} / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn + stampaField.startColumn}`;
+  const gridArea = `${stampaField.startRow} / ${
+    stampaField.startColumn
+  } / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn +
+    stampaField.startColumn}`;
 
   const activeBlock = store.get('activeFieldKey');
   const activeClass = activeBlock == field._stampa.key ? 'active' : '';
@@ -84,7 +86,9 @@ export default function Block({ field }) {
     <div
       draggable="true"
       className={`stampa-grid__field
-      stampa-field--${field._stampa.id} ${activeClass} ${resizingClass} ${fieldClassName}`}
+      stampa-field--${
+        field._stampa.id
+      } ${activeClass} ${resizingClass} ${fieldClassName}`}
       onDragStart={dragMe}
       data-key={field._stampa.key}
       style={{

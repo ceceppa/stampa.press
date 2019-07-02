@@ -18,8 +18,9 @@ export default function GroupFields({ group, fields }) {
                 key={key}
                 className="stampa-fields__item tooltip"
                 draggable="true"
-                onDragStart={() => store.set('draggedFieldId')(key)}
-                onDragEnd={() => store.set('draggedFieldId')(null)}
+                onDragStart={e =>
+                  e.dataTransfer.setData('stampa-field-key', key)
+                }
                 data-tooltip={field.tooltip}
               >
                 <img

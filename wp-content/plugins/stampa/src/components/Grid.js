@@ -14,13 +14,15 @@ export default function Grid() {
   const store = Store.useStore();
   const [drag, setDrag] = useState({});
 
-  const draggedFieldId = store.get('draggedFieldId');
   const fields = store.get('stampaFields');
 
-  const handleDragOver = e => {
-    e.preventDefault();
+  let draggedFieldId;
 
-    if (draggedFieldId) {
+  const handleDragOver = e => {
+    const isStampaField = e.dataTransfer.types.includes('stampa-field-key');
+
+    if (isStampaField) {
+      e.preventDefault();
       const clientRect = ref.current.getBoundingClientRect();
       const columns = store.get('gridColumns');
       const rows = store.get('gridRows');
@@ -57,7 +59,7 @@ export default function Grid() {
   const handleDrop = e => {
     handleDragLeave();
 
-    const draggedFieldId = store.get('draggedFieldId');
+    draggedFieldId = e.dataTransfer.getData('stampa-field-key');
 
     if (draggedFieldId == null) {
       return;
@@ -204,7 +206,7 @@ export default function Grid() {
         {fields.map(field => (
           <Field field={field} key={field._stampa.key} />
         ))}
-        {draggedFieldId && drag.over && (
+        {drag.over && (
           <div
             className="stampa-grid__highlight"
             style={{
