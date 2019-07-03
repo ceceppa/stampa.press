@@ -1,4 +1,10 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 
 import Store from '../store/store';
 import stampa from '../stampa';
@@ -13,23 +19,33 @@ import {
   addNewField,
 } from './Grid.utils';
 
-export default function Grid({
+const Grid = function({
   gridColumns,
   gridRows,
   gridGap,
   gridRowHeight,
+  acceptedGroups,
+  fields,
+  useClassName,
 }) {
   const ref = useRef();
   const store = Store.useStore();
   const [drag, setDrag] = useState({});
 
-  const fields = store.get('stampaFields');
-  const draggedFieldId = store.get('draggedFieldId');
-
   const handleDragOver = useCallback(e => {
     const isStampaField = e.dataTransfer.types.includes('stampa-field-key');
+    const draggedFieldGroup = stampa.getDraggedFieldGroup();
+    const isFieldGroupAccepted = acceptedGroups.indexOf(draggedFieldGroup) >= 0;
 
-    if (isStampaField) {
+    /**
+     * Prevent the parent grid from showing the highlighted cells
+     * if the child container does not accept the dragged field.
+    */
+    if (!isFieldGroupAccepted) {
+      e.stopPropagation();
+    }
+
+    if (isStampaField && isFieldGroupAccepted) {
       e.preventDefault();
 
       const clientRect = ref.current.getBoundingClientRect();
@@ -60,10 +76,23 @@ export default function Grid({
     }
   };
 
-  const minHeight = gridRowHeight * gridRows + 'px';
+  const resizingClass = stampa.isResizing() ? 'resizing' : '';
+
+  /**
+   * During the drag mode "container" elements don't need to:
+   * - change their opacity
+   * - have the "pointer-events" set to "none"
+   */
+  const isDragging = stampa.getDraggedFieldId() != null;
+  const draggingClass = isDragging ? 'dragging' : '';
+
+  const gridHeight = gridRowHeight * gridRows;
 
   return (
-    <div className="stampa-grid">
+    <div
+      className={`stampa-grid ${useClassName || ''}`}
+      data-accepted-groups={acceptedGroups.join(',')}
+    >
       <div
         className="stampa-grid__content editor-styles-wrapper"
         ref={ref}
@@ -74,11 +103,23 @@ export default function Grid({
           gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,
           gridTemplateRows: `repeat(${gridRows}, 1fr)`,
           gridGap: `${gridGap}px`,
-          height: minHeight,
+          height: `${gridHeight}px`,
         }}
       >
-        <CSSGrid />
-        {fields.map(field => <Field field={field} key={field._stampa.key} />)}
+        <CSSGrid
+          gridColumns={gridColumns}
+          gridRows={gridRows}
+          gridGap={gridGap}
+          gridHeight={gridHeight}
+        />
+        {fields.map(field => (
+          <Field
+            field={field}
+            key={field._stampa.key}
+            resizingClass={resizingClass}
+            draggingClass={draggingClass}
+          />
+        ))}
         {drag.over &&
           <div
             className="stampa-grid__highlight"
@@ -89,4 +130,6 @@ export default function Grid({
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(Grid);

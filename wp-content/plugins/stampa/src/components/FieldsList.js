@@ -1,16 +1,21 @@
 /* global stampa */
 import React, { useState } from 'react';
-import GroupFields from './GroupFields';
 
+import Store from '../store/store';
+import GroupFields from './GroupFields';
 import stampa from '../stampa';
 
 export default function FieldsList() {
+  const store = Store.useStore();
+  const [filter, setFilter] = useState('');
+
   const fields = stampa.getFields();
   let keys = Object.keys(fields);
-  const [filter, setFilter] = useState('');
 
   const updateFilter = e => {
     setFilter(e.target.value);
+
+    store.set('searchFilter')(e.target.value);
   };
 
   return (

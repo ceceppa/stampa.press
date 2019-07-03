@@ -1,0 +1,18 @@
+{
+  "group": "Fields",
+  "id": "post-selector",
+  "data": {
+    "label": "Post Selector",
+    "tooltip": "Post Selector",
+    "icon": "post-selector.svg",
+    "fieldClassName": "field-container",
+    "options": [],
+    "container": 1,
+    "acceptedGroups": ["post"],
+    "defaultSize": {
+      "rows": 3,
+      "columns": 3
+    }
+  },
+  "php": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></div>"
+}

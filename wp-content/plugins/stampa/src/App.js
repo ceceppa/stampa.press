@@ -95,6 +95,9 @@ class App extends Component {
               gridRows={this.props.store.get('gridRows')}
               gridGap={this.props.store.get('gridGap')}
               gridRowHeight={this.props.store.get('rowHeight')}
+              acceptedGroups={['fields', 'static']}
+              fields={this.props.store.get('stampaFields')}
+              useClassName="main-grid"
             />
           </div>
           <div className="stampa__right">

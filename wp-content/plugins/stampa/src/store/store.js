@@ -19,6 +19,7 @@ const initialState = {
   blockPosition: {},
   resizeDirection: null,
   activeFieldKey: null,
+  searchFilter: '',
 };
 
 // Create & export a store with an initial value.

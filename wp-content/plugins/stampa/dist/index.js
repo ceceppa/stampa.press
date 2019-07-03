@@ -27264,7 +27264,8 @@ var initialState = {
   resizingBlock: false,
   blockPosition: {},
   resizeDirection: null,
-  activeFieldKey: null
+  activeFieldKey: null,
+  searchFilter: ''
 }; // Create & export a store with an initial value.
 
 var _default = (0, _undux.createConnectedStore)(initialState, null);
@@ -27474,6 +27475,12 @@ var _default = {
   getDraggedField: function getDraggedField() {
     return this.draggedField;
   },
+  setDraggedFieldGroup: function setDraggedFieldGroup(fieldGroup) {
+    this.draggedFieldGroup = fieldGroup;
+  },
+  getDraggedFieldGroup: function getDraggedFieldGroup() {
+    return this.draggedFieldGroup;
+  },
 
   /**
    * Delete the active block
@@ -27532,6 +27539,8 @@ function GroupFields(_ref) {
   var store = _store.default.useStore();
 
   var keys = Object.keys(fields[group]);
+  var groupLowercase = group.toLowerCase();
+  var searchFilter = store.get('searchFilter').toLowerCase();
   return _react.default.createElement("div", {
     className: "stampa-fields__group__body"
   }, _react.default.createElement(_ToggleGroup.default, {
@@ -27547,9 +27556,14 @@ function GroupFields(_ref) {
       onDragStart: function onDragStart(e) {
         _stampa.default.setDraggedField(field);
 
+        _stampa.default.setDraggedFieldGroup(groupLowercase);
+
         e.dataTransfer.setData('stampa-field-key', key);
       },
-      "data-tooltip": field.tooltip
+      "data-tooltip": field.tooltip,
+      style: {
+        display: searchFilter == '' || groupLowercase.indexOf(searchFilter) >= 0 || field.label.toLowerCase().indexOf(searchFilter) >= 0 ? 'block' : 'none'
+      }
     }, _react.default.createElement("img", {
       className: "stampa-fields__image",
       src: field.icon,
@@ -27581,6 +27595,8 @@ exports.default = FieldsList;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _store = _interopRequireDefault(require("../store/store"));
+
 var _GroupFields = _interopRequireDefault(require("./GroupFields"));
 
 var _stampa = _interopRequireDefault(require("../stampa"));
@@ -27598,17 +27614,20 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function FieldsList() {
-  var fields = _stampa.default.getFields();
-
-  var keys = Object.keys(fields);
+  var store = _store.default.useStore();
 
   var _useState = (0, _react.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
       filter = _useState2[0],
       setFilter = _useState2[1];
 
+  var fields = _stampa.default.getFields();
+
+  var keys = Object.keys(fields);
+
   var updateFilter = function updateFilter(e) {
     setFilter(e.target.value);
+    store.set('searchFilter')(e.target.value);
   };
 
   return _react.default.createElement("aside", {
@@ -27633,7 +27652,7 @@ function FieldsList() {
     }));
   }));
 }
-},{"react":"../node_modules/react/index.js","./GroupFields":"components/GroupFields.js","../stampa":"stampa.js"}],"components/BlockOptions/Save.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./GroupFields":"components/GroupFields.js","../stampa":"stampa.js"}],"components/BlockOptions/Save.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27973,28 +27992,7 @@ function BlockOptions() {
     onChange: updateBackgroundOption
   })));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/FieldOptions/ButtonAddCustomOption.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = ButtonAddCustomOption;
-
-var _react = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function ButtonAddCustomOption() {
-  var addCustomOption = (0, _react.useCallback)(function () {});
-  return _react.default.createElement("button", {
-    name: "add-custom-option",
-    type: "button",
-    onClick: addCustomOption,
-    className: "button button-primary"
-  }, "Add custom option");
-}
-},{"react":"../node_modules/react/index.js"}],"components/FieldOptions/ButtonDeleteField.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/FieldOptions/ButtonDeleteField.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28107,8 +28105,6 @@ var _store = _interopRequireDefault(require("../store/store"));
 
 var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
 
-var _ButtonAddCustomOption = _interopRequireDefault(require("./FieldOptions/ButtonAddCustomOption"));
-
 var _ButtonDeleteField = _interopRequireDefault(require("./FieldOptions/ButtonDeleteField"));
 
 var _CheckboxField = _interopRequireDefault(require("./FieldOptions/CheckboxField"));
@@ -28122,6 +28118,8 @@ var _stampa = _interopRequireDefault(require("../stampa"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+// import ButtonAddCustomOption from './FieldOptions/ButtonAddCustomOption';
 
 /**
  * Dynamic components name
@@ -28291,13 +28289,13 @@ function FieldOptions(props) {
   }), _react.default.createElement("div", {
     key: "add-delete-buttons",
     className: "block-options__save"
-  }, _react.default.createElement(_ButtonAddCustomOption.default, null), _react.default.createElement(_ButtonDeleteField.default, {
+  }, _react.default.createElement(_ButtonDeleteField.default, {
     deleteactiveField: deleteactiveField
   }))], !activeField && _react.default.createElement("p", {
     className: "stampa--gray"
   }, "No block selected"));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonAddCustomOption":"components/FieldOptions/ButtonAddCustomOption.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28321,7 +28319,12 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var CSSGrid = _react.default.memo(function SVGGrid() {
+var CSSGrid = _react.default.memo(function SVGGrid(_ref) {
+  var gridColumns = _ref.gridColumns,
+      gridRows = _ref.gridRows,
+      gridGap = _ref.gridGap,
+      gridHeight = _ref.gridHeight,
+      showGrid = _ref.showGrid;
   var ref = (0, _react.useRef)();
 
   var store = _store.default.useStore();
@@ -28355,16 +28358,14 @@ var CSSGrid = _react.default.memo(function SVGGrid() {
 
   var updateGrid = function updateGrid() {
     var clientRect = ref.current.getBoundingClientRect();
-    var columns = store.get('gridColumns');
-    var rows = store.get('gridRows');
-    var gap = store.get('gridGap');
-    var width = (clientRect.width - gap * (columns - 1)) / columns;
-    var height = (clientRect.height + gap) / rows;
+    var width = (clientRect.width - gridGap * (gridColumns - 1)) / gridColumns;
+    var height = (gridHeight + gridGap) / gridRows;
+    console.info(gridHeight); // const height = (clientRect.height + gridGap) / gridRows;
 
-    if (store.get('gridShow')) {
-      updateBackgroundImage("linear-gradient(to right, #e2e4e7 ".concat(gap, "px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ").concat(gap, "px, transparent 1px)"));
-      updateBackgroundPosition("-".concat(gap, "px -").concat(gap, "px"));
-      updateBackgroundSize("".concat(width + gap, "px ").concat(height, "px"));
+    if (true) {
+      updateBackgroundImage("linear-gradient(to right, #e2e4e7 ".concat(gridGap, "px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ").concat(gridGap, "px, transparent 1px)"));
+      updateBackgroundPosition("-".concat(gridGap, "px -").concat(gridGap, "px"));
+      updateBackgroundSize("".concat(width + gridGap, "px ").concat(height, "px"));
     } else {
       updateBackgroundImage('none');
     }
@@ -28392,11 +28393,13 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = Block;
+exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
 var _store = _interopRequireDefault(require("../store/store"));
+
+var _Grid = _interopRequireDefault(require("./Grid"));
 
 var _stampa = _interopRequireDefault(require("../stampa"));
 
@@ -28404,15 +28407,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function Block(_ref) {
-  var field = _ref.field;
+var Field = _react.default.memo(function (_ref) {
+  var field = _ref.field,
+      resizingClass = _ref.resizingClass,
+      draggingClass = _ref.draggingClass;
   var ref = (0, _react.useRef)();
 
   var store = _store.default.useStore();
 
   var stampaField = field._stampa;
-  var isDragging = _stampa.default.getDraggedFieldId() != null;
-  var resizingClass = _stampa.default.isResizing() || isDragging ? 'resizing' : '';
   var contentClassName = field.contentClassName || '';
   var fieldHTML = field.html;
   var fieldClassName = field.fieldClassName || '';
@@ -28441,8 +28444,9 @@ function Block(_ref) {
       }
     }
     /**
-     * Store the block position and size (needed to nicely show the resize & moving squares)
-     */
+     * The 'no-drop' class is added externally via JS,
+     * so the re-render cause the class to be lost
+    */
 
   } catch (err) {
     _didIteratorError = true;
@@ -28458,6 +28462,38 @@ function Block(_ref) {
       }
     }
   }
+
+  (0, _react.useEffect)(function () {
+    var grid = ref.current.querySelector('.stampa-grid');
+
+    var fieldGroup = _stampa.default.getDraggedFieldGroup();
+
+    var fieldId = _stampa.default.getDraggedFieldId();
+
+    if (grid == null || fieldGroup == null || fieldId == field._stampa.key) {
+      return;
+    }
+
+    var acceptedGroups = grid.dataset.acceptedGroups;
+    var isFieldGroupAccepted = acceptedGroups.indexOf(fieldGroup) >= 0;
+    var gridClassList = grid.parentNode.classList;
+    var containsNoDrop = gridClassList.contains('no-drop');
+
+    var isResizing = _stampa.default.isResizing();
+
+    if (fieldGroup != null && !isResizing && !isFieldGroupAccepted) {
+      if (!containsNoDrop) {
+        gridClassList.add('no-drop');
+      }
+    } else {
+      if (containsNoDrop) {
+        gridClassList.remove('no-drop');
+      }
+    }
+  });
+  /**
+   * Store the block position and size (needed to nicely show the resize & moving squares)
+   */
 
   var storeBlockPosition = (0, _react.useCallback)(function (e) {
     //Calculate the offset from the cell clicked and the top left one.
@@ -28481,6 +28517,8 @@ function Block(_ref) {
     e.dataTransfer.setData('stampa-field-key', field._stampa.key);
 
     _stampa.default.setDraggedFieldId(field._stampa.key);
+
+    _stampa.default.setDraggedFieldGroup(field.group.toLowerCase());
   }); // Allow the block itself to be dragged
 
   var dragMe = (0, _react.useCallback)(function (e) {
@@ -28494,17 +28532,22 @@ function Block(_ref) {
    */
 
   var startResize = (0, _react.useCallback)(function (e) {
-    e.stopPropagation();
-    storeBlockPosition(e); // Don't want/need to trigger a re-render of the block/app
+    e.stopPropagation(); // Don't want/need to trigger a re-render of the block/app
 
     _stampa.default.setResizeDirection(e.target.dataset.resize);
 
     _stampa.default.setResizing(true);
+
+    storeBlockPosition(e);
   });
   var endResize = (0, _react.useCallback)(function (e) {
     _stampa.default.setResizeDirection(null);
 
-    _stampa.default.setResizing(false); // Need to trigger the re-render of the Grid
+    _stampa.default.setResizing(false);
+
+    _stampa.default.setDraggedFieldId(null);
+
+    _stampa.default.setDraggedFieldGroup(null); // Need to trigger the re-render of the Grid
 
 
     store.set('draggedFieldId')(null);
@@ -28523,7 +28566,7 @@ function Block(_ref) {
   var activeClass = activeBlock == field._stampa.key ? 'active' : '';
   return _react.default.createElement("div", {
     draggable: "true",
-    className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName),
+    className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName, " ").concat(draggingClass),
     ref: ref,
     onDragStart: dragMe,
     "data-key": field._stampa.key,
@@ -28537,7 +28580,16 @@ function Block(_ref) {
     src: field.icon,
     "aria-hidden": "true",
     draggable: "false"
-  }), _react.default.createElement("span", null, field._stampa.id)), _react.default.createElement("div", {
+  }), _react.default.createElement("span", null, field._stampa.id)), field.container && _react.default.createElement(_Grid.default, {
+    gridColumns: field._stampa.endColumn,
+    gridRows: field._stampa.endRow,
+    gridGap: 5,
+    gridRowHeight: 46,
+    acceptedGroups: field.acceptedGroups,
+    fields: field.fields || [],
+    draggable: true,
+    useClassName: "is-container"
+  }), field.container == null && _react.default.createElement("div", {
     dangerouslySetInnerHTML: {
       __html: fieldHTML
     },
@@ -28561,8 +28613,11 @@ function Block(_ref) {
     onDragStart: startResize,
     onDragEnd: endResize
   }));
-}
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
+});
+
+var _default = Field;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./Grid":"components/Grid.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
 'use strict';
 
 // Found this seed-based random generator somewhere
@@ -29051,6 +29106,8 @@ function getOccupiedArea(drag) {
 }
 
 function updateFieldPosition(draggedFieldId, drag, store) {
+  _stampa.default.setDraggedFieldGroup(null);
+
   if (drag.column == null || drag.row == null) {
     resetResizeData(store);
     return;
@@ -29185,6 +29242,8 @@ function addNewField(draggedFieldId, drag, store) {
   _stampa.default.setDraggedField(null);
 
   _stampa.default.setDraggedFieldId(null);
+
+  _stampa.default.setDraggedFieldGroup(null);
 }
 },{"shortid":"../node_modules/shortid/index.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
@@ -29192,7 +29251,7 @@ function addNewField(draggedFieldId, drag, store) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = Grid;
+exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -29218,11 +29277,14 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function Grid(_ref) {
+var Grid = function Grid(_ref) {
   var gridColumns = _ref.gridColumns,
       gridRows = _ref.gridRows,
       gridGap = _ref.gridGap,
-      gridRowHeight = _ref.gridRowHeight;
+      gridRowHeight = _ref.gridRowHeight,
+      acceptedGroups = _ref.acceptedGroups,
+      fields = _ref.fields,
+      useClassName = _ref.useClassName;
   var ref = (0, _react.useRef)();
 
   var store = _store.default.useStore();
@@ -29232,12 +29294,22 @@ function Grid(_ref) {
       drag = _useState2[0],
       setDrag = _useState2[1];
 
-  var fields = store.get('stampaFields');
-  var draggedFieldId = store.get('draggedFieldId');
   var handleDragOver = (0, _react.useCallback)(function (e) {
     var isStampaField = e.dataTransfer.types.includes('stampa-field-key');
 
-    if (isStampaField) {
+    var draggedFieldGroup = _stampa.default.getDraggedFieldGroup();
+
+    var isFieldGroupAccepted = acceptedGroups.indexOf(draggedFieldGroup) >= 0;
+    /**
+     * Prevent the parent grid from showing the highlighted cells
+     * if the child container does not accept the dragged field.
+    */
+
+    if (!isFieldGroupAccepted) {
+      e.stopPropagation();
+    }
+
+    if (isStampaField && isFieldGroupAccepted) {
       e.preventDefault();
       var clientRect = ref.current.getBoundingClientRect();
       (0, _Grid.updateDragData)(e, clientRect, gridColumns, gridRows, setDrag);
@@ -29269,9 +29341,19 @@ function Grid(_ref) {
     }
   };
 
-  var minHeight = gridRowHeight * gridRows + 'px';
+  var resizingClass = _stampa.default.isResizing() ? 'resizing' : '';
+  /**
+   * During the drag mode "container" elements don't need to:
+   * - change their opacity
+   * - have the "pointer-events" set to "none"
+   */
+
+  var isDragging = _stampa.default.getDraggedFieldId() != null;
+  var draggingClass = isDragging ? 'dragging' : '';
+  var gridHeight = gridRowHeight * gridRows;
   return _react.default.createElement("div", {
-    className: "stampa-grid"
+    className: "stampa-grid ".concat(useClassName || ''),
+    "data-accepted-groups": acceptedGroups.join(',')
   }, _react.default.createElement("div", {
     className: "stampa-grid__content editor-styles-wrapper",
     ref: ref,
@@ -29282,12 +29364,19 @@ function Grid(_ref) {
       gridTemplateColumns: "repeat(".concat(gridColumns, ", 1fr)"),
       gridTemplateRows: "repeat(".concat(gridRows, ", 1fr)"),
       gridGap: "".concat(gridGap, "px"),
-      height: minHeight
+      height: "".concat(gridHeight, "px")
     }
-  }, _react.default.createElement(_CSSGrid.default, null), fields.map(function (field) {
+  }, _react.default.createElement(_CSSGrid.default, {
+    gridColumns: gridColumns,
+    gridRows: gridRows,
+    gridGap: gridGap,
+    gridHeight: gridHeight
+  }), fields.map(function (field) {
     return _react.default.createElement(_Field.default, {
       field: field,
-      key: field._stampa.key
+      key: field._stampa.key,
+      resizingClass: resizingClass,
+      draggingClass: draggingClass
     });
   }), drag.over && _react.default.createElement("div", {
     className: "stampa-grid__highlight",
@@ -29295,7 +29384,11 @@ function Grid(_ref) {
       gridArea: _Grid.gridArea
     }
   })));
-}
+};
+
+var _default = _react.default.memo(Grid);
+
+exports.default = _default;
 },{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./CSSGrid":"components/CSSGrid.js","./Field":"components/Field.js","./Grid.utils":"components/Grid.utils.js"}],"../node_modules/babel-runtime/node_modules/core-js/library/modules/_defined.js":[function(require,module,exports) {
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function (it) {
@@ -55980,7 +56073,10 @@ function (_Component) {
         gridColumns: this.props.store.get('gridColumns'),
         gridRows: this.props.store.get('gridRows'),
         gridGap: this.props.store.get('gridGap'),
-        gridRowHeight: this.props.store.get('rowHeight')
+        gridRowHeight: this.props.store.get('rowHeight'),
+        acceptedGroups: ['fields', 'static'],
+        fields: this.props.store.get('stampaFields'),
+        useClassName: "main-grid"
       })), _react.default.createElement("div", {
         className: "stampa__right"
       }, _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null), _react.default.createElement(_Hierarchy.default, null))));
@@ -56171,7 +56267,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39107" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36999" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

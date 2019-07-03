@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
+
 import Store from '../store/store';
 import ToggleGroup from './ToggleGroup';
 import stampa from '../stampa';
 
 export default function GroupFields({ group, fields }) {
   const store = Store.useStore();
-
   const keys = Object.keys(fields[group]);
+  const groupLowercase = group.toLowerCase();
 
+  const searchFilter = store.get('searchFilter').toLowerCase();
   return (
     <div className="stampa-fields__group__body">
       <ToggleGroup label={group}>
         <ul className="stampa-fields__items">
           {keys.map(key => {
             const field = fields[group][key];
+
             return (
               <li
                 key={key}
@@ -21,9 +24,17 @@ export default function GroupFields({ group, fields }) {
                 draggable="true"
                 onDragStart={e => {
                   stampa.setDraggedField(field);
+                  stampa.setDraggedFieldGroup(groupLowercase);
                   e.dataTransfer.setData('stampa-field-key', key);
                 }}
                 data-tooltip={field.tooltip}
+                style={{
+                  display: searchFilter == '' ||
+                    groupLowercase.indexOf(searchFilter) >= 0 ||
+                    field.label.toLowerCase().indexOf(searchFilter) >= 0
+                    ? 'block'
+                    : 'none',
+                }}
               >
                 <img
                   className="stampa-fields__image"

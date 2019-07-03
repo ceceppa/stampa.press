@@ -111,6 +111,8 @@ function getOccupiedArea(drag) {
 }
 
 function updateFieldPosition(draggedFieldId, drag, store) {
+  stampa.setDraggedFieldGroup(null);
+
   if (drag.column == null || drag.row == null) {
     resetResizeData(store);
 
@@ -200,6 +202,7 @@ function addNewField(draggedFieldId, drag, store) {
   store.set('activeFieldKey')(field._stampa.key);
   stampa.setDraggedField(null);
   stampa.setDraggedFieldId(null);
+  stampa.setDraggedFieldGroup(null);
 }
 
 export { gridArea, updateDragData, updateFieldPosition, addNewField };

@@ -1,15 +1,15 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 
 import Store from '../store/store';
+import Grid from './Grid';
 import stampa from '../stampa';
 
-export default function Block({ field }) {
+const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   const ref = useRef();
 
   const store = Store.useStore();
   const stampaField = field._stampa;
-  const isDragging = stampa.getDraggedFieldId() != null;
-  const resizingClass = stampa.isResizing() || isDragging ? 'resizing' : '';
+
   const contentClassName = field.contentClassName || '';
 
   let fieldHTML = field.html;
@@ -32,6 +32,36 @@ export default function Block({ field }) {
       fieldClassName = fieldClassName.replace(re, value);
     }
   }
+
+  /**
+   * The 'no-drop' class is added externally via JS,
+   * so the re-render cause the class to be lost
+  */
+  useEffect(() => {
+    const grid = ref.current.querySelector('.stampa-grid');
+    const fieldGroup = stampa.getDraggedFieldGroup();
+    const fieldId = stampa.getDraggedFieldId();
+
+    if (grid == null || fieldGroup == null || fieldId == field._stampa.key) {
+      return;
+    }
+
+    const acceptedGroups = grid.dataset.acceptedGroups;
+    const isFieldGroupAccepted = acceptedGroups.indexOf(fieldGroup) >= 0;
+    const gridClassList = grid.parentNode.classList;
+    const containsNoDrop = gridClassList.contains('no-drop');
+    const isResizing = stampa.isResizing();
+
+    if (fieldGroup != null && !isResizing && !isFieldGroupAccepted) {
+      if (!containsNoDrop) {
+        gridClassList.add('no-drop');
+      }
+    } else {
+      if (containsNoDrop) {
+        gridClassList.remove('no-drop');
+      }
+    }
+  });
 
   /**
    * Store the block position and size (needed to nicely show the resize & moving squares)
@@ -59,6 +89,7 @@ export default function Block({ field }) {
 
     e.dataTransfer.setData('stampa-field-key', field._stampa.key);
     stampa.setDraggedFieldId(field._stampa.key);
+    stampa.setDraggedFieldGroup(field.group.toLowerCase());
   });
 
   // Allow the block itself to be dragged
@@ -76,16 +107,18 @@ export default function Block({ field }) {
   const startResize = useCallback(e => {
     e.stopPropagation();
 
-    storeBlockPosition(e);
-
     // Don't want/need to trigger a re-render of the block/app
     stampa.setResizeDirection(e.target.dataset.resize);
     stampa.setResizing(true);
+
+    storeBlockPosition(e);
   });
 
   const endResize = useCallback(e => {
     stampa.setResizeDirection(null);
     stampa.setResizing(false);
+    stampa.setDraggedFieldId(null);
+    stampa.setDraggedFieldGroup(null);
 
     // Need to trigger the re-render of the Grid
     store.set('draggedFieldId')(null);
@@ -109,7 +142,7 @@ export default function Block({ field }) {
     <div
       draggable="true"
       className={`stampa-grid__field
-      stampa-field--${field._stampa.id} ${activeClass} ${resizingClass} ${fieldClassName}`}
+      stampa-field--${field._stampa.id} ${activeClass} ${resizingClass} ${fieldClassName} ${draggingClass}`}
       ref={ref}
       onDragStart={dragMe}
       data-key={field._stampa.key}
@@ -122,10 +155,22 @@ export default function Block({ field }) {
         <img src={field.icon} aria-hidden="true" draggable="false" />
         <span>{field._stampa.id}</span>
       </div>
-      <div
-        dangerouslySetInnerHTML={{ __html: fieldHTML }}
-        className={`stampa-grid__field__content ${contentClassName}`}
-      />
+      {field.container &&
+        <Grid
+          gridColumns={field._stampa.endColumn}
+          gridRows={field._stampa.endRow}
+          gridGap={5}
+          gridRowHeight={46}
+          acceptedGroups={field.acceptedGroups}
+          fields={field.fields || []}
+          draggable={true}
+          useClassName="is-container"
+        />}
+      {field.container == null &&
+        <div
+          dangerouslySetInnerHTML={{ __html: fieldHTML }}
+          className={`stampa-grid__field__content ${contentClassName}`}
+        />}
 
       <div
         className="stampa-grid__field__resizer stampa-grid__field__resizer--width"
@@ -150,4 +195,6 @@ export default function Block({ field }) {
       />
     </div>
   );
-}
+});
+
+export default Field;

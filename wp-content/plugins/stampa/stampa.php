@@ -165,10 +165,11 @@ class Stampa {
 			$field = json_decode( file_get_contents( $file ) );
 
 			// "Adjust" the path for the images
-			$svg_path              = plugins_url( 'assets/svg/', __FILE__ );
-				$field->data->icon = $svg_path . $field->data->icon;
+			$svg_path           = plugins_url( 'assets/svg/', __FILE__ );
+			$field->data->group = $field->group;
+			$field->data->icon  = $svg_path . $field->data->icon;
 
-				self::add_field( $field->group, $field->id, (array) $field->data, $field->gutenberg, $field->php );
+			self::add_field( $field->group, $field->id, (array) $field->data, $field->gutenberg, $field->php );
 		}
 	}
 

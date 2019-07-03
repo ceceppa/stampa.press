@@ -1,0 +1,15 @@
+{
+  "group": "Post",
+  "id": "post-title",
+  "data": {
+    "label": "Title",
+    "tooltip": "The post title",
+    "icon": "post-selector.svg",
+    "options": [],
+    "defaultSize": {
+      "columns": 3,
+      "rows": 1
+    }
+  },
+  "php": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></div>"
+}

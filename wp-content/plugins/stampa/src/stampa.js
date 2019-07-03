@@ -103,6 +103,12 @@ export default {
   getDraggedField() {
     return this.draggedField;
   },
+  setDraggedFieldGroup(fieldGroup) {
+    this.draggedFieldGroup = fieldGroup;
+  },
+  getDraggedFieldGroup() {
+    return this.draggedFieldGroup;
+  },
   /**
    * Delete the active block
    *

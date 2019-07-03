@@ -3,7 +3,7 @@ import React, { Component, useCallback } from 'react';
 import Store from '../store/store';
 
 import ToggleGroup from './ToggleGroup';
-import ButtonAddCustomOption from './FieldOptions/ButtonAddCustomOption';
+// import ButtonAddCustomOption from './FieldOptions/ButtonAddCustomOption';
 import ButtonDeleteField from './FieldOptions/ButtonDeleteField';
 import CheckboxField from './FieldOptions/CheckboxField';
 import TextField from './FieldOptions/TextField';
@@ -124,7 +124,7 @@ export default function FieldOptions(props) {
         }),
         <hr key="hr-2" className="stampa-hr" />,
         <div key="add-delete-buttons" className="block-options__save">
-          <ButtonAddCustomOption />
+          {/* <ButtonAddCustomOption /> */}
           <ButtonDeleteField deleteactiveField={deleteactiveField} />
         </div>,
       ]}
