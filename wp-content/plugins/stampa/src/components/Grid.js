@@ -27,6 +27,7 @@ const Grid = function({
   acceptedGroups,
   fields,
   useClassName,
+  parentField,
 }) {
   const ref = useRef();
   const store = Store.useStore();
@@ -72,7 +73,7 @@ const Grid = function({
     if (isFieldOnBoard) {
       updateFieldPosition(draggedFieldId, drag, store);
     } else {
-      addNewField(draggedFieldId, drag, store);
+      addNewField(parentField, draggedFieldId, drag, store);
     }
   };
 

@@ -33,8 +33,6 @@ const CSSGrid = React.memo(function SVGGrid({
     const width =
       (clientRect.width - gridGap * (gridColumns - 1)) / gridColumns;
     const height = (gridHeight + gridGap) / gridRows;
-    console.info(gridHeight);
-    // const height = (clientRect.height + gridGap) / gridRows;
 
     if (true) {
       updateBackgroundImage(

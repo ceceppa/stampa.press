@@ -27558,7 +27558,17 @@ function GroupFields(_ref) {
 
         _stampa.default.setDraggedFieldGroup(groupLowercase);
 
+        store.set('draggedFieldId')(key);
         e.dataTransfer.setData('stampa-field-key', key);
+      },
+      onDragEnd: function onDragEnd() {
+        _stampa.default.setDraggedField(null);
+
+        _stampa.default.setDraggedFieldGroup(null);
+
+        _stampa.default.setDraggedFieldId(null);
+
+        store.set('draggedFieldId')(null);
       },
       "data-tooltip": field.tooltip,
       style: {
@@ -28360,7 +28370,6 @@ var CSSGrid = _react.default.memo(function SVGGrid(_ref) {
     var clientRect = ref.current.getBoundingClientRect();
     var width = (clientRect.width - gridGap * (gridColumns - 1)) / gridColumns;
     var height = (gridHeight + gridGap) / gridRows;
-    console.info(gridHeight); // const height = (clientRect.height + gridGap) / gridRows;
 
     if (true) {
       updateBackgroundImage("linear-gradient(to right, #e2e4e7 ".concat(gridGap, "px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ").concat(gridGap, "px, transparent 1px)"));
@@ -28504,6 +28513,7 @@ var Field = _react.default.memo(function (_ref) {
     var cellHeight = clientRect.height / stampaField.endRow;
     var offsetY = Math.floor(x / cellWidth);
     var offsetX = Math.floor(y / cellHeight);
+    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
 
     _stampa.default.setFieldPosition({
       startRow: stampaField.startRow,
@@ -28514,11 +28524,13 @@ var Field = _react.default.memo(function (_ref) {
       offsetY: offsetY
     });
 
-    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
-
     _stampa.default.setDraggedFieldId(field._stampa.key);
 
     _stampa.default.setDraggedFieldGroup(field.group.toLowerCase());
+
+    setTimeout(function () {
+      store.set('draggedFieldId')(field._stampa.key);
+    });
   }); // Allow the block itself to be dragged
 
   var dragMe = (0, _react.useCallback)(function (e) {
@@ -28587,6 +28599,7 @@ var Field = _react.default.memo(function (_ref) {
     gridRowHeight: 46,
     acceptedGroups: field.acceptedGroups,
     fields: field.fields || [],
+    parentField: field,
     draggable: true,
     useClassName: "is-container"
   }), field.container == null && _react.default.createElement("div", {
@@ -29179,7 +29192,7 @@ function resetResizeData(store) {
   _stampa.default.setDraggedField(null);
 }
 
-function addNewField(draggedFieldId, drag, store) {
+function addNewField(parentField, draggedFieldId, drag, store) {
   var fields = store.get('stampaFields');
 
   var field = _stampa.default.getFieldById(draggedFieldId);
@@ -29235,7 +29248,45 @@ function addNewField(draggedFieldId, drag, store) {
     }
   }
 
-  store.set('stampaFields')([].concat(_toConsumableArray(fields), [field])); // Set the last block as "active"
+  if (parentField) {
+    var _iteratorNormalCompletion3 = true;
+    var _didIteratorError3 = false;
+    var _iteratorError3 = undefined;
+
+    try {
+      for (var _iterator3 = fields[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        var _field = _step3.value;
+
+        if (_field.stampa._key == parentField._stampa.key) {
+          if (_field.fields == null) {
+            _field.fields = [];
+          }
+
+          _field.fields.push(_field);
+
+          break;
+        }
+      }
+    } catch (err) {
+      _didIteratorError3 = true;
+      _iteratorError3 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+          _iterator3.return();
+        }
+      } finally {
+        if (_didIteratorError3) {
+          throw _iteratorError3;
+        }
+      }
+    }
+
+    store.set('stampaFields')(fields);
+  } else {
+    store.set('stampaFields')([].concat(_toConsumableArray(fields), [field]));
+  } // Set the last block as "active"
+
 
   store.set('activeFieldKey')(field._stampa.key);
 
@@ -29284,7 +29335,8 @@ var Grid = function Grid(_ref) {
       gridRowHeight = _ref.gridRowHeight,
       acceptedGroups = _ref.acceptedGroups,
       fields = _ref.fields,
-      useClassName = _ref.useClassName;
+      useClassName = _ref.useClassName,
+      parentField = _ref.parentField;
   var ref = (0, _react.useRef)();
 
   var store = _store.default.useStore();
@@ -29337,7 +29389,7 @@ var Grid = function Grid(_ref) {
     if (isFieldOnBoard) {
       (0, _Grid.updateFieldPosition)(draggedFieldId, drag, store);
     } else {
-      (0, _Grid.addNewField)(draggedFieldId, drag, store);
+      (0, _Grid.addNewField)(parentField, draggedFieldId, drag, store);
     }
   };
 

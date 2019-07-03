@@ -78,6 +78,8 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
     const offsetY = Math.floor(x / cellWidth);
     const offsetX = Math.floor(y / cellHeight);
 
+    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
+
     stampa.setFieldPosition({
       startRow: stampaField.startRow,
       startColumn: stampaField.startColumn,
@@ -87,9 +89,12 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
       offsetY,
     });
 
-    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
     stampa.setDraggedFieldId(field._stampa.key);
     stampa.setDraggedFieldGroup(field.group.toLowerCase());
+
+    setTimeout(() => {
+      store.set('draggedFieldId')(field._stampa.key);
+    });
   });
 
   // Allow the block itself to be dragged
@@ -163,6 +168,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
           gridRowHeight={46}
           acceptedGroups={field.acceptedGroups}
           fields={field.fields || []}
+          parentField={field}
           draggable={true}
           useClassName="is-container"
         />}

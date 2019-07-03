@@ -25,7 +25,16 @@ export default function GroupFields({ group, fields }) {
                 onDragStart={e => {
                   stampa.setDraggedField(field);
                   stampa.setDraggedFieldGroup(groupLowercase);
+
+                  store.set('draggedFieldId')(key);
                   e.dataTransfer.setData('stampa-field-key', key);
+                }}
+                onDragEnd={() => {
+                  stampa.setDraggedField(null);
+                  stampa.setDraggedFieldGroup(null);
+                  stampa.setDraggedFieldId(null);
+
+                  store.set('draggedFieldId')(null);
                 }}
                 data-tooltip={field.tooltip}
                 style={{

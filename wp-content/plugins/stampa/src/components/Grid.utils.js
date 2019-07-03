@@ -162,7 +162,7 @@ function resetResizeData(store) {
   stampa.setDraggedField(null);
 }
 
-function addNewField(draggedFieldId, drag, store) {
+function addNewField(parentField, draggedFieldId, drag, store) {
   const fields = store.get('stampaFields');
   const field = stampa.getFieldById(draggedFieldId);
 
@@ -196,7 +196,22 @@ function addNewField(draggedFieldId, drag, store) {
     }
   }
 
-  store.set('stampaFields')([...fields, field]);
+  if (parentField) {
+    for (let field of fields) {
+      if (field.stampa._key == parentField._stampa.key) {
+        if (field.fields == null) {
+          field.fields = [];
+        }
+
+        field.fields.push(field);
+        break;
+      }
+    }
+
+    store.set('stampaFields')(fields);
+  } else {
+    store.set('stampaFields')([...fields, field]);
+  }
 
   // Set the last block as "active"
   store.set('activeFieldKey')(field._stampa.key);
