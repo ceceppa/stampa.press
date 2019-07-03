@@ -5,7 +5,9 @@
     "label": "Container",
     "tooltip": "Static <div /> element",
     "icon": "button.svg",
-    "options": []
+    "options": [],
+    "container": 1,
+    "acceptDropGroups": ["static", "stampa"]
   },
   "gutenberg": {
     "react": [

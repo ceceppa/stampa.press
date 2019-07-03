@@ -90,6 +90,19 @@ export default {
   getFieldPosition: function() {
     return this.fieldPosition;
   },
+  setDraggedFieldId(fieldId) {
+    this.draggedFieldId = fieldId;
+  },
+  getDraggedFieldId() {
+    return this.draggedFieldId || null;
+  },
+
+  setDraggedField(field) {
+    this.draggedField = field;
+  },
+  getDraggedField() {
+    return this.draggedField;
+  },
   /**
    * Delete the active block
    *
@@ -118,9 +131,6 @@ export default {
       str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
 
-    return str
-      .replace(/\W/g, '_')
-      .replace(/\s+/g, '_')
-      .replace(/^\d+/g, '');
+    return str.replace(/\W/g, '_').replace(/\s+/g, '_').replace(/^\d+/g, '');
   },
 };

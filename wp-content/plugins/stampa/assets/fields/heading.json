@@ -7,6 +7,10 @@
     "icon": "heading.svg",
     "html": "<{level}>{placeholder}</{level}>",
     "contentClassName": "wp-block-heading",
+    "defaultSize": {
+      "rows": 1,
+      "columns": 3
+    },
     "options": [
       {
         "name": "level",

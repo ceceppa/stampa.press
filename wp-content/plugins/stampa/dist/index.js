@@ -27350,69 +27350,7 @@ function toggleGroup(_ref) {
     }
   }, children));
 }
-},{"react":"../node_modules/react/index.js"}],"components/GroupFields.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = GroupFields;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _store = _interopRequireDefault(require("../store/store"));
-
-var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function GroupFields(_ref) {
-  var group = _ref.group,
-      fields = _ref.fields;
-
-  var store = _store.default.useStore();
-
-  var keys = Object.keys(fields[group]);
-  return _react.default.createElement("div", {
-    className: "stampa-fields__group__body"
-  }, _react.default.createElement(_ToggleGroup.default, {
-    label: group
-  }, _react.default.createElement("ul", {
-    className: "stampa-fields__items"
-  }, keys.map(function (key) {
-    var field = fields[group][key];
-    return _react.default.createElement("li", {
-      key: key,
-      className: "stampa-fields__item tooltip",
-      draggable: "true",
-      onDragStart: function onDragStart(e) {
-        return e.dataTransfer.setData('stampa-field-key', key);
-      },
-      "data-tooltip": field.tooltip
-    }, _react.default.createElement("img", {
-      className: "stampa-fields__image",
-      src: field.icon,
-      "aria-hidden": "true",
-      draggable: "false"
-    }), _react.default.createElement("span", {
-      className: "stampa-fields__label"
-    }, field.label), field.help && _react.default.createElement("a", {
-      href: field.help,
-      className: "stampa-fields__help",
-      target: "_blank"
-    }, _react.default.createElement("svg", {
-      xmlns: "http://www.w3.org/2000/svg",
-      viewBox: "0 0 437.6 437.6"
-    }, _react.default.createElement("path", {
-      d: "M194 142.8c.8 1.6 1.6 3.2 2.4 4.4.8 1.2 2 2.4 2.8 3.6 1.2 1.2 2.4 2.4 4 3.6 1.2.8 2.8 2 4.8 2.4 1.6.8 3.2 1.2 5.2 1.6 2 .4 3.6.4 5.2.4s3.6 0 5.2-.4 3.2-.8 4.4-1.6h.4c1.6-.8 3.2-1.6 4.8-2.8 1.2-.8 2.4-2 3.6-3.2l.4-.4c1.2-1.2 2-2.4 2.8-3.6s1.6-2.4 2-4c0-.4 0-.4.4-.8.8-1.6 1.2-3.6 1.6-5.2.4-1.6.4-3.6.4-5.2s0-3.6-.4-5.2-.8-3.2-1.6-5.2c-1.2-2.8-2.8-5.2-4.8-7.2l-.8-.8c-1.2-1.2-2.4-2-4-3.2-1.6-.8-2.8-1.6-4.4-2.4-1.6-.8-3.2-1.2-4.8-1.6-2-.4-3.6-.4-5.2-.4s-3.6 0-5.2.4-3.2.8-4.8 1.6h-.4c-1.6.8-3.2 1.6-4.4 2.4-1.6 1.2-2.8 2-4 3.2-1.2 1.2-2.4 2.4-3.2 3.6-.8 1.2-1.6 2.8-2.4 4.4-.8 1.6-1.2 3.2-1.6 4.8-.4 2-.4 3.6-.4 5.2s0 3.6.4 5.2c.4 3.2 1.2 4.8 1.6 6.4zM249.6 289.2h-9.2v-98c0-5.6-4.4-10.4-10.4-10.4h-42c-5.6 0-10.4 4.4-10.4 10.4v21.6c0 5.6 4.4 10.4 10.4 10.4h8.4v66.4H188c-5.6 0-10.4 4.4-10.4 10.4v21.6c0 5.6 4.4 10.4 10.4 10.4h61.6c5.6 0 10.4-4.4 10.4-10.4V300c0-6-4.8-10.8-10.4-10.8z"
-    }), _react.default.createElement("path", {
-      d: "M218.8 0C98 0 0 98 0 218.8s98 218.8 218.8 218.8 218.8-98 218.8-218.8S339.6 0 218.8 0zm0 408.8c-104.8 0-190-85.2-190-190s85.2-190 190-190 190 85.2 190 190-85.2 190-190 190z"
-    }))));
-  }))));
-}
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"stampa.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"stampa.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27524,6 +27462,18 @@ var _default = {
   getFieldPosition: function getFieldPosition() {
     return this.fieldPosition;
   },
+  setDraggedFieldId: function setDraggedFieldId(fieldId) {
+    this.draggedFieldId = fieldId;
+  },
+  getDraggedFieldId: function getDraggedFieldId() {
+    return this.draggedFieldId || null;
+  },
+  setDraggedField: function setDraggedField(field) {
+    this.draggedField = field;
+  },
+  getDraggedField: function getDraggedField() {
+    return this.draggedField;
+  },
 
   /**
    * Delete the active block
@@ -27555,7 +27505,73 @@ var _default = {
   }
 };
 exports.default = _default;
-},{}],"components/FieldsList.js":[function(require,module,exports) {
+},{}],"components/GroupFields.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = GroupFields;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+var _ToggleGroup = _interopRequireDefault(require("./ToggleGroup"));
+
+var _stampa = _interopRequireDefault(require("../stampa"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function GroupFields(_ref) {
+  var group = _ref.group,
+      fields = _ref.fields;
+
+  var store = _store.default.useStore();
+
+  var keys = Object.keys(fields[group]);
+  return _react.default.createElement("div", {
+    className: "stampa-fields__group__body"
+  }, _react.default.createElement(_ToggleGroup.default, {
+    label: group
+  }, _react.default.createElement("ul", {
+    className: "stampa-fields__items"
+  }, keys.map(function (key) {
+    var field = fields[group][key];
+    return _react.default.createElement("li", {
+      key: key,
+      className: "stampa-fields__item tooltip",
+      draggable: "true",
+      onDragStart: function onDragStart(e) {
+        _stampa.default.setDraggedField(field);
+
+        e.dataTransfer.setData('stampa-field-key', key);
+      },
+      "data-tooltip": field.tooltip
+    }, _react.default.createElement("img", {
+      className: "stampa-fields__image",
+      src: field.icon,
+      "aria-hidden": "true",
+      draggable: "false"
+    }), _react.default.createElement("span", {
+      className: "stampa-fields__label"
+    }, field.label), field.help && _react.default.createElement("a", {
+      href: field.help,
+      className: "stampa-fields__help",
+      target: "_blank"
+    }, _react.default.createElement("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 437.6 437.6"
+    }, _react.default.createElement("path", {
+      d: "M194 142.8c.8 1.6 1.6 3.2 2.4 4.4.8 1.2 2 2.4 2.8 3.6 1.2 1.2 2.4 2.4 4 3.6 1.2.8 2.8 2 4.8 2.4 1.6.8 3.2 1.2 5.2 1.6 2 .4 3.6.4 5.2.4s3.6 0 5.2-.4 3.2-.8 4.4-1.6h.4c1.6-.8 3.2-1.6 4.8-2.8 1.2-.8 2.4-2 3.6-3.2l.4-.4c1.2-1.2 2-2.4 2.8-3.6s1.6-2.4 2-4c0-.4 0-.4.4-.8.8-1.6 1.2-3.6 1.6-5.2.4-1.6.4-3.6.4-5.2s0-3.6-.4-5.2-.8-3.2-1.6-5.2c-1.2-2.8-2.8-5.2-4.8-7.2l-.8-.8c-1.2-1.2-2.4-2-4-3.2-1.6-.8-2.8-1.6-4.4-2.4-1.6-.8-3.2-1.2-4.8-1.6-2-.4-3.6-.4-5.2-.4s-3.6 0-5.2.4-3.2.8-4.8 1.6h-.4c-1.6.8-3.2 1.6-4.4 2.4-1.6 1.2-2.8 2-4 3.2-1.2 1.2-2.4 2.4-3.2 3.6-.8 1.2-1.6 2.8-2.4 4.4-.8 1.6-1.2 3.2-1.6 4.8-.4 2-.4 3.6-.4 5.2s0 3.6.4 5.2c.4 3.2 1.2 4.8 1.6 6.4zM249.6 289.2h-9.2v-98c0-5.6-4.4-10.4-10.4-10.4h-42c-5.6 0-10.4 4.4-10.4 10.4v21.6c0 5.6 4.4 10.4 10.4 10.4h8.4v66.4H188c-5.6 0-10.4 4.4-10.4 10.4v21.6c0 5.6 4.4 10.4 10.4 10.4h61.6c5.6 0 10.4-4.4 10.4-10.4V300c0-6-4.8-10.8-10.4-10.8z"
+    }), _react.default.createElement("path", {
+      d: "M218.8 0C98 0 0 98 0 218.8s98 218.8 218.8 218.8 218.8-98 218.8-218.8S339.6 0 218.8 0zm0 408.8c-104.8 0-190-85.2-190-190s85.2-190 190-190 190 85.2 190 190-85.2 190-190 190z"
+    }))));
+  }))));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","../stampa":"stampa.js"}],"components/FieldsList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28281,7 +28297,272 @@ function FieldOptions(props) {
     className: "stampa--gray"
   }, "No block selected"));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonAddCustomOption":"components/FieldOptions/ButtonAddCustomOption.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonAddCustomOption":"components/FieldOptions/ButtonAddCustomOption.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var CSSGrid = _react.default.memo(function SVGGrid() {
+  var ref = (0, _react.useRef)();
+
+  var store = _store.default.useStore();
+
+  var _useState = (0, _react.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      backgroundSize = _useState2[0],
+      updateBackgroundSize = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      backgroundPosition = _useState4[0],
+      updateBackgroundPosition = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(''),
+      _useState6 = _slicedToArray(_useState5, 2),
+      backgroundImage = _useState6[0],
+      updateBackgroundImage = _useState6[1];
+  /**
+   * Update the grid on window resize
+   */
+
+
+  var timeout = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      updateGrid();
+    }, 50);
+  });
+
+  var updateGrid = function updateGrid() {
+    var clientRect = ref.current.getBoundingClientRect();
+    var columns = store.get('gridColumns');
+    var rows = store.get('gridRows');
+    var gap = store.get('gridGap');
+    var width = (clientRect.width - gap * (columns - 1)) / columns;
+    var height = (clientRect.height + gap) / rows;
+
+    if (store.get('gridShow')) {
+      updateBackgroundImage("linear-gradient(to right, #e2e4e7 ".concat(gap, "px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ").concat(gap, "px, transparent 1px)"));
+      updateBackgroundPosition("-".concat(gap, "px -").concat(gap, "px"));
+      updateBackgroundSize("".concat(width + gap, "px ").concat(height, "px"));
+    } else {
+      updateBackgroundImage('none');
+    }
+  };
+
+  (0, _react.useEffect)(function () {
+    updateGrid();
+  });
+  return _react.default.createElement("div", {
+    className: "css-grid",
+    ref: ref,
+    style: {
+      backgroundSize: backgroundSize,
+      backgroundImage: backgroundImage,
+      backgroundPosition: backgroundPosition
+    }
+  });
+});
+
+var _default = CSSGrid;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Field.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Block;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+var _stampa = _interopRequireDefault(require("../stampa"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function Block(_ref) {
+  var field = _ref.field;
+  var ref = (0, _react.useRef)();
+
+  var store = _store.default.useStore();
+
+  var stampaField = field._stampa;
+  var isDragging = _stampa.default.getDraggedFieldId() != null;
+  var resizingClass = _stampa.default.isResizing() || isDragging ? 'resizing' : '';
+  var contentClassName = field.contentClassName || '';
+  var fieldHTML = field.html;
+  var fieldClassName = field.fieldClassName || '';
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = field.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var option = _step.value;
+
+      if (option && option.name) {
+        var value = field._values[option.name];
+
+        if (value == null) {
+          value = option.value;
+        }
+
+        var re = new RegExp("{".concat(option.name, "}"), 'g');
+
+        if (fieldHTML) {
+          fieldHTML = fieldHTML.replace(re, value);
+        }
+
+        fieldClassName = fieldClassName.replace(re, value);
+      }
+    }
+    /**
+     * Store the block position and size (needed to nicely show the resize & moving squares)
+     */
+
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  var storeBlockPosition = (0, _react.useCallback)(function (e) {
+    //Calculate the offset from the cell clicked and the top left one.
+    var clientRect = ref.current.getBoundingClientRect();
+    var x = e.clientX - clientRect.x;
+    var y = e.clientY - clientRect.y;
+    var cellWidth = clientRect.width / stampaField.endColumn;
+    var cellHeight = clientRect.height / stampaField.endRow;
+    var offsetY = Math.floor(x / cellWidth);
+    var offsetX = Math.floor(y / cellHeight);
+
+    _stampa.default.setFieldPosition({
+      startRow: stampaField.startRow,
+      startColumn: stampaField.startColumn,
+      endColumn: stampaField.endColumn,
+      endRow: stampaField.endRow,
+      offsetX: offsetX,
+      offsetY: offsetY
+    });
+
+    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
+
+    _stampa.default.setDraggedFieldId(field._stampa.key);
+  }); // Allow the block itself to be dragged
+
+  var dragMe = (0, _react.useCallback)(function (e) {
+    e.stopPropagation();
+    storeBlockPosition(e);
+  });
+  /**
+   * Let's resize the block :)
+   *
+   * @param {HTMLEvent} e event
+   */
+
+  var startResize = (0, _react.useCallback)(function (e) {
+    e.stopPropagation();
+    storeBlockPosition(e); // Don't want/need to trigger a re-render of the block/app
+
+    _stampa.default.setResizeDirection(e.target.dataset.resize);
+
+    _stampa.default.setResizing(true);
+  });
+  var endResize = (0, _react.useCallback)(function (e) {
+    _stampa.default.setResizeDirection(null);
+
+    _stampa.default.setResizing(false); // Need to trigger the re-render of the Grid
+
+
+    store.set('draggedFieldId')(null);
+  });
+  /**
+   * Activate the current block
+   *
+   * @param {HTMLEvent} e event
+   */
+
+  var setAsActive = (0, _react.useCallback)(function (e) {
+    store.set('activeFieldKey')(field._stampa.key);
+  });
+  var gridArea = "".concat(stampaField.startRow, " / ").concat(stampaField.startColumn, " / ").concat(stampaField.endRow + stampaField.startRow, " / ").concat(stampaField.endColumn + stampaField.startColumn);
+  var activeBlock = store.get('activeFieldKey');
+  var activeClass = activeBlock == field._stampa.key ? 'active' : '';
+  return _react.default.createElement("div", {
+    draggable: "true",
+    className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName),
+    ref: ref,
+    onDragStart: dragMe,
+    "data-key": field._stampa.key,
+    style: {
+      gridArea: gridArea
+    },
+    onClick: setAsActive
+  }, _react.default.createElement("div", {
+    className: "stampa-grid__field__type"
+  }, _react.default.createElement("img", {
+    src: field.icon,
+    "aria-hidden": "true",
+    draggable: "false"
+  }), _react.default.createElement("span", null, field._stampa.id)), _react.default.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: fieldHTML
+    },
+    className: "stampa-grid__field__content ".concat(contentClassName)
+  }), _react.default.createElement("div", {
+    className: "stampa-grid__field__resizer stampa-grid__field__resizer--width",
+    draggable: "true",
+    "data-resize": "width",
+    onDragStart: startResize,
+    onDragEnd: endResize
+  }), _react.default.createElement("div", {
+    className: "stampa-grid__field__resizer stampa-grid__field__resizer--height",
+    "data-resize": "height",
+    draggable: "true",
+    onDragStart: startResize,
+    onDragEnd: endResize
+  }), _react.default.createElement("div", {
+    className: "stampa-grid__field__resizer stampa-grid__field__resizer--se",
+    "data-resize": "se",
+    draggable: "true",
+    onDragStart: startResize,
+    onDragEnd: endResize
+  }));
+}
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"../node_modules/shortid/lib/random/random-from-seed.js":[function(require,module,exports) {
 'use strict';
 
 // Found this seed-based random generator somewhere
@@ -28650,151 +28931,171 @@ module.exports.isValid = isValid;
 'use strict';
 module.exports = require('./lib/index');
 
-},{"./lib/index":"../node_modules/shortid/lib/index.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+},{"./lib/index":"../node_modules/shortid/lib/index.js"}],"components/Grid.utils.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.updateDragData = updateDragData;
+exports.updateFieldPosition = updateFieldPosition;
+exports.addNewField = addNewField;
+exports.gridArea = void 0;
 
-var _react = _interopRequireWildcard(require("react"));
-
-var _store = _interopRequireDefault(require("../store/store"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var CSSGrid = _react.default.memo(function SVGGrid() {
-  var ref = (0, _react.useRef)();
-
-  var store = _store.default.useStore();
-
-  var _useState = (0, _react.useState)(''),
-      _useState2 = _slicedToArray(_useState, 2),
-      backgroundSize = _useState2[0],
-      updateBackgroundSize = _useState2[1];
-
-  var _useState3 = (0, _react.useState)(''),
-      _useState4 = _slicedToArray(_useState3, 2),
-      backgroundPosition = _useState4[0],
-      updateBackgroundPosition = _useState4[1];
-
-  var _useState5 = (0, _react.useState)(''),
-      _useState6 = _slicedToArray(_useState5, 2),
-      backgroundImage = _useState6[0],
-      updateBackgroundImage = _useState6[1];
-  /**
-   * Update the grid on window resize
-   */
-
-
-  var timeout = null;
-  window.addEventListener('resize', function () {
-    clearTimeout(timeout);
-    timeout = setTimeout(function () {
-      updateGrid();
-    }, 50);
-  });
-
-  var updateGrid = function updateGrid() {
-    var clientRect = ref.current.getBoundingClientRect();
-    var columns = store.get('gridColumns');
-    var rows = store.get('gridRows');
-    var gap = store.get('gridGap');
-    var width = (clientRect.width - gap * (columns - 1)) / columns;
-    var height = (clientRect.height + gap) / rows;
-
-    if (store.get('gridShow')) {
-      updateBackgroundImage("linear-gradient(to right, #e2e4e7 ".concat(gap, "px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ").concat(gap, "px, transparent 1px)"));
-      updateBackgroundPosition("-".concat(gap, "px -").concat(gap, "px"));
-      updateBackgroundSize("".concat(width + gap, "px ").concat(height, "px"));
-    } else {
-      updateBackgroundImage('none');
-    }
-  };
-
-  (0, _react.useEffect)(function () {
-    updateGrid();
-  });
-  return _react.default.createElement("div", {
-    className: "css-grid",
-    ref: ref,
-    style: {
-      backgroundSize: backgroundSize,
-      backgroundImage: backgroundImage,
-      backgroundPosition: backgroundPosition
-    }
-  });
-});
-
-var _default = CSSGrid;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/Field.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = Block;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _store = _interopRequireDefault(require("../store/store"));
+var _shortid = _interopRequireDefault(require("shortid"));
 
 var _stampa = _interopRequireDefault(require("../stampa"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function Block(_ref) {
-  var field = _ref.field;
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-  var store = _store.default.useStore();
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-  var stampaField = field._stampa;
-  var resizingClass = _stampa.default.isResizing() ? 'resizing' : '';
-  var contentClassName = field.contentClassName || '';
-  var fieldHTML = field.html;
-  var fieldClassName = field.fieldClassName || '';
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var oldX, oldY, gridArea;
+exports.gridArea = gridArea;
+
+function updateDragData(element, boundingClientRect, gridColumns, gridRows, setDragCallback) {
+  var _calculateCellXY = calculateCellXY(element, boundingClientRect, gridColumns, gridRows),
+      cellX = _calculateCellXY.cellX,
+      cellY = _calculateCellXY.cellY;
+
+  if (!Number.isNaN(cellX) && !Number.isNaN(cellY) && (cellX != oldX || cellY != oldY)) {
+    oldX = cellX;
+    oldY = cellY;
+    var dragData = {
+      column: cellX,
+      row: cellY,
+      over: true
+    };
+    exports.gridArea = gridArea = getGridArea(dragData);
+    setDragCallback(dragData);
+    return gridArea;
+  }
+
+  return null;
+}
+
+function calculateCellXY(element, boundingClientRect, gridColumns, gridRows) {
+  var x = element.clientX - boundingClientRect.x;
+  var y = element.clientY - boundingClientRect.y;
+  var cellWidth = boundingClientRect.width / gridColumns;
+  var cellHeight = boundingClientRect.height / gridRows;
+  return {
+    cellX: Math.ceil(x / cellWidth),
+    cellY: Math.ceil(y / cellHeight)
+  };
+}
+
+function getGridArea(drag) {
+  if (_stampa.default.isResizing()) {
+    return getResizingArea(drag);
+  }
+
+  return getOccupiedArea(drag);
+}
+
+function getResizingArea(drag) {
+  var _stampa$getFieldPosit = _stampa.default.getFieldPosition(),
+      startRow = _stampa$getFieldPosit.startRow,
+      startColumn = _stampa$getFieldPosit.startColumn,
+      endRow = _stampa$getFieldPosit.endRow,
+      endColumn = _stampa$getFieldPosit.endColumn;
+
+  var resize = _stampa.default.getResizeDirection();
+
+  if (resize == 'width') {
+    endColumn = Math.max(startColumn, drag.column + 1);
+    endRow += startRow;
+  } else if (resize == 'height') {
+    endRow = Math.max(startRow, drag.row + 1);
+    endColumn += startColumn;
+  } else {
+    endColumn = Math.max(startColumn, drag.column + 1);
+    endRow = Math.max(startRow, drag.row + 1);
+  }
+
+  if (!Number.isNaN(endRow) && !Number.isNaN(endColumn)) {
+    return "".concat(startRow, " / ").concat(startColumn, " / ").concat(endRow, " / ").concat(endColumn);
+  }
+}
+
+function getOccupiedArea(drag) {
+  var endRow = drag.row;
+  var endColumn = drag.column;
+
+  var draggedFieldId = _stampa.default.getDraggedFieldId(); // draggedFieldId starts with _ when dragging an element from the grid
+
+
+  if (draggedFieldId && draggedFieldId[0] == '_') {
+    var position = _stampa.default.getFieldPosition();
+
+    drag.row -= position.offsetX;
+    drag.column -= position.offsetY;
+    endRow += position.endRow - position.offsetX;
+    endColumn += position.endColumn - position.offsetY;
+  } else {
+    var field = _stampa.default.getDraggedField();
+
+    if (field.defaultSize) {
+      endRow += field.defaultSize.rows;
+      endColumn += field.defaultSize.columns;
+    }
+  }
+
+  return "".concat(drag.row, " / ").concat(drag.column, " / ").concat(endRow, " / ").concat(endColumn);
+}
+
+function updateFieldPosition(draggedFieldId, drag, store) {
+  if (drag.column == null || drag.row == null) {
+    resetResizeData(store);
+    return;
+  }
+
+  var fields = store.get('stampaFields');
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
 
   try {
-    for (var _iterator = field.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var option = _step.value;
+    for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var field = _step.value;
 
-      if (option && option.name) {
-        var value = field._values[option.name];
+      if (field._stampa.key === draggedFieldId) {
+        var resize = _stampa.default.getResizeDirection();
 
-        if (value == null) {
-          value = option.value;
+        var resizeWidth = false;
+        var resizeHeight = false;
+
+        if (resize == 'width') {
+          resizeWidth = true;
+        } else if (resize == 'height') {
+          resizeHeight = true;
+        } else if (resize == 'se') {
+          resizeWidth = true;
+          resizeHeight = true;
+        } else {
+          field._stampa.startRow = drag.row;
+          field._stampa.startColumn = drag.column;
         }
 
-        var re = new RegExp("{".concat(option.name, "}"), 'g');
-
-        if (fieldHTML) {
-          fieldHTML = fieldHTML.replace(re, value);
+        if (resizeWidth && drag.column >= field._stampa.startColumn) {
+          field._stampa.endColumn = drag.column - field._stampa.startColumn + 1;
         }
 
-        fieldClassName = fieldClassName.replace(re, value);
+        if (resizeHeight && drag.row >= field._stampa.startRow) {
+          field._stampa.endRow = drag.row - field._stampa.startRow + 1;
+        }
+
+        break;
       }
-    }
-    /**
-     * Store the block position and size (needed to nicely show the resize & moving squares)
-     */
 
+      store.set('stampaFields')(fields);
+    }
   } catch (err) {
     _didIteratorError = true;
     _iteratorError = err;
@@ -28810,84 +29111,82 @@ function Block(_ref) {
     }
   }
 
-  var storeBlockPosition = (0, _react.useCallback)(function () {
-    _stampa.default.setFieldPosition({
-      startRow: stampaField.startRow,
-      startColumn: stampaField.startColumn,
-      endColumn: stampaField.endColumn,
-      endRow: stampaField.endRow
-    });
-  }); // Allow the block itself to be dragged
-
-  var dragMe = (0, _react.useCallback)(function (e) {
-    e.stopPropagation();
-    storeBlockPosition();
-    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
-  });
-  /**
-   * Let's resize the block :)
-   *
-   * @param {HTMLEvent} e event
-   */
-
-  var startResize = (0, _react.useCallback)(function (e) {
-    e.stopPropagation();
-    storeBlockPosition(); // Don't want/need to trigger a re-render of the block/app
-
-    _stampa.default.setResizeDirection(e.target.dataset.resize);
-
-    _stampa.default.setResizing(true);
-  });
-  /**
-   * Activate the current block
-   *
-   * @param {HTMLEvent} e event
-   */
-
-  var setAsActive = (0, _react.useCallback)(function (e) {
-    store.set('activeFieldKey')(field._stampa.key);
-  });
-  var gridArea = "".concat(stampaField.startRow, " / ").concat(stampaField.startColumn, " / ").concat(stampaField.endRow + stampaField.startRow, " / ").concat(stampaField.endColumn + stampaField.startColumn);
-  var activeBlock = store.get('activeFieldKey');
-  var activeClass = activeBlock == field._stampa.key ? 'active' : '';
-  return _react.default.createElement("div", {
-    draggable: "true",
-    className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName),
-    onDragStart: dragMe,
-    "data-key": field._stampa.key,
-    style: {
-      gridArea: gridArea
-    },
-    onClick: setAsActive
-  }, _react.default.createElement("div", {
-    className: "stampa-grid__field__type"
-  }, _react.default.createElement("img", {
-    src: field.icon,
-    "aria-hidden": "true",
-    draggable: "false"
-  }), _react.default.createElement("span", null, field._stampa.id)), _react.default.createElement("div", {
-    dangerouslySetInnerHTML: {
-      __html: fieldHTML
-    },
-    className: "stampa-grid__field__content ".concat(contentClassName)
-  }), _react.default.createElement("div", {
-    className: "stampa-grid__field__resizer stampa-grid__field__resizer--width",
-    draggable: "true",
-    "data-resize": "width",
-    onDragStart: startResize
-  }), _react.default.createElement("div", {
-    className: "stampa-grid__field__resizer stampa-grid__field__resizer--height",
-    "data-resize": "height",
-    draggable: "true",
-    onDragStart: startResize
-  }), _react.default.createElement("div", {
-    className: "stampa-grid__field__resizer stampa-grid__field__resizer--se",
-    "data-resize": "se",
-    draggable: "true",
-    onDragStart: startResize
-  }));
+  resetResizeData(store);
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
+
+function resetResizeData(store) {
+  _stampa.default.setResizeDirection(null);
+
+  _stampa.default.setDraggedFieldId(null);
+
+  _stampa.default.setDraggedField(null);
+}
+
+function addNewField(draggedFieldId, drag, store) {
+  var fields = store.get('stampaFields');
+
+  var field = _stampa.default.getFieldById(draggedFieldId);
+
+  field._stampa = {
+    id: draggedFieldId,
+    key: "_".concat(_shortid.default.generate()),
+    startColumn: drag.column,
+    startRow: drag.row,
+    endColumn: 1,
+    endRow: 1,
+    name: draggedFieldId
+  };
+
+  if (field.defaultSize) {
+    field._stampa.endColumn = field.defaultSize.columns;
+    field._stampa.endRow = field.defaultSize.rows;
+  }
+
+  field._values = {};
+  /**
+   * All the checkbox option set by default to "false" have to create
+   * an empty record in field._values, otherwise it will automatically fallback
+   * to the default "value"
+   */
+
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = field.options[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var option = _step2.value;
+
+      if (option.type == 'checkbox' && option.checked == false) {
+        field._values[option.name] = '';
+      } else {
+        field._values[option.name] = option.value;
+      }
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  store.set('stampaFields')([].concat(_toConsumableArray(fields), [field])); // Set the last block as "active"
+
+  store.set('activeFieldKey')(field._stampa.key);
+
+  _stampa.default.setDraggedField(null);
+
+  _stampa.default.setDraggedFieldId(null);
+}
+},{"shortid":"../node_modules/shortid/index.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28897,8 +29196,6 @@ exports.default = Grid;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _shortid = _interopRequireDefault(require("shortid"));
-
 var _store = _interopRequireDefault(require("../store/store"));
 
 var _stampa = _interopRequireDefault(require("../stampa"));
@@ -28907,17 +29204,11 @@ var _CSSGrid = _interopRequireDefault(require("./CSSGrid"));
 
 var _Field = _interopRequireDefault(require("./Field"));
 
+var _Grid = require("./Grid.utils");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -28927,9 +29218,11 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var oldX, oldY;
-
-function Grid() {
+function Grid(_ref) {
+  var gridColumns = _ref.gridColumns,
+      gridRows = _ref.gridRows,
+      gridGap = _ref.gridGap,
+      gridRowHeight = _ref.gridRowHeight;
   var ref = (0, _react.useRef)();
 
   var store = _store.default.useStore();
@@ -28940,34 +29233,16 @@ function Grid() {
       setDrag = _useState2[1];
 
   var fields = store.get('stampaFields');
-  var draggedFieldId;
-
-  var handleDragOver = function handleDragOver(e) {
+  var draggedFieldId = store.get('draggedFieldId');
+  var handleDragOver = (0, _react.useCallback)(function (e) {
     var isStampaField = e.dataTransfer.types.includes('stampa-field-key');
 
     if (isStampaField) {
       e.preventDefault();
       var clientRect = ref.current.getBoundingClientRect();
-      var columns = store.get('gridColumns');
-      var rows = store.get('gridRows');
-      var x = e.clientX - clientRect.x;
-      var y = e.clientY - clientRect.y;
-      var cellWidth = clientRect.width / columns;
-      var cellHeight = clientRect.height / rows;
-      var cellX = Math.ceil(x / cellWidth);
-      var cellY = Math.ceil(y / cellHeight);
-
-      if (!Number.isNaN(cellX) && !Number.isNaN(cellY) && (cellX != oldX || cellY != oldY)) {
-        oldX = cellX;
-        oldY = cellY;
-        setDrag({
-          column: cellX,
-          row: cellY,
-          over: true
-        });
-      }
+      (0, _Grid.updateDragData)(e, clientRect, gridColumns, gridRows, setDrag);
     }
-  };
+  });
 
   var handleDragLeave = function handleDragLeave(e) {
     setDrag({
@@ -28977,151 +29252,24 @@ function Grid() {
 
   var handleDrop = function handleDrop(e) {
     handleDragLeave();
-    draggedFieldId = e.dataTransfer.getData('stampa-field-key');
+    var draggedFieldId = e.dataTransfer.getData('stampa-field-key');
 
     if (draggedFieldId == null) {
       return;
     }
 
     _stampa.default.setResizing(false);
-    /**
-     * Is a new item or am I moving a one from the board?
-     */
 
+    var isFieldOnBoard = draggedFieldId[0] == '_';
 
-    if (draggedFieldId[0] == '_') {
-      for (var i = 0, l = fields.length; i < l; ++i) {
-        var field = fields[i];
-
-        if (field._stampa.key === draggedFieldId) {
-          var resize = _stampa.default.getResizeDirection();
-
-          var resizeWidth = false;
-          var resizeHeight = false;
-
-          if (resize == 'width') {
-            resizeWidth = true;
-          } else if (resize == 'height') {
-            resizeHeight = true;
-          } else if (resize == 'se') {
-            resizeWidth = true;
-            resizeHeight = true;
-          } else {
-            field._stampa.startRow = drag.row;
-            field._stampa.startColumn = drag.column;
-          }
-
-          if (resizeWidth && drag.column >= field._stampa.startColumn) {
-            field._stampa.endColumn = drag.column - field._stampa.startColumn + 1;
-          }
-
-          if (resizeHeight && drag.row >= field._stampa.startRow) {
-            field._stampa.endRow = drag.row - field._stampa.startRow + 1;
-          }
-
-          break;
-        }
-      }
-
-      store.set('stampaFields')(fields);
-      store.set('draggedFieldId')(null);
-
-      _stampa.default.setResizeDirection(null); // store.set('resizeDirection')(null);
-
+    if (isFieldOnBoard) {
+      (0, _Grid.updateFieldPosition)(draggedFieldId, drag, store);
     } else {
-      var _field = _stampa.default.getFieldById(draggedFieldId);
-
-      _field._stampa = {
-        id: draggedFieldId,
-        key: "_".concat(_shortid.default.generate()),
-        startColumn: drag.column,
-        startRow: drag.row,
-        endColumn: 1,
-        endRow: 1,
-        name: draggedFieldId
-      };
-      _field._values = {};
-      /**
-       * All the checkbox option set by default to "false" have to create
-       * an empty record in field._values, otherwise it will automatically fallback
-       * to the default "value"
-       */
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = _field.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var option = _step.value;
-
-          if (option.type == 'checkbox' && option.checked == false) {
-            _field._values[option.name] = '';
-          } else {
-            _field._values[option.name] = option.value;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      store.set('stampaFields')([].concat(_toConsumableArray(fields), [_field])); // Set the last block as "active"
-
-      store.set('activeFieldKey')(_field._stampa.key);
+      (0, _Grid.addNewField)(draggedFieldId, drag, store);
     }
   };
 
-  var gridArea;
-
-  if (_stampa.default.isResizing()) {
-    var _stampa$getFieldPosit = _stampa.default.getFieldPosition(),
-        startRow = _stampa$getFieldPosit.startRow,
-        startColumn = _stampa$getFieldPosit.startColumn,
-        endRow = _stampa$getFieldPosit.endRow,
-        endColumn = _stampa$getFieldPosit.endColumn;
-
-    var resize = _stampa.default.getResizeDirection();
-
-    if (resize == 'width') {
-      endColumn = Math.max(startColumn, drag.column + 1);
-      endRow += startRow;
-    } else if (resize == 'height') {
-      endRow = Math.max(startRow, drag.row + 1);
-      endColumn += startColumn;
-    } else {
-      endColumn = Math.max(startColumn, drag.column + 1);
-      endRow = Math.max(startRow, drag.row + 1);
-    }
-
-    if (!Number.isNaN(endRow) && !Number.isNaN(endColumn)) {
-      gridArea = "".concat(startRow, " / ").concat(startColumn, " / ").concat(endRow, " / ").concat(endColumn);
-    }
-  } else {
-    var _endRow = drag.row;
-    var _endColumn = drag.column;
-
-    if (draggedFieldId && draggedFieldId[0] == '_') {
-      var position = _stampa.default.getFieldPosition();
-
-      _endRow += position.endRow;
-      _endColumn += position.endColumn;
-    }
-
-    gridArea = "".concat(drag.row, " / ").concat(drag.column, " / ").concat(_endRow, " / ").concat(_endColumn);
-  }
-
-  var minHeight = store.get('rowHeight') * store.get('gridRows') + 'px';
+  var minHeight = gridRowHeight * gridRows + 'px';
   return _react.default.createElement("div", {
     className: "stampa-grid"
   }, _react.default.createElement("div", {
@@ -29131,9 +29279,9 @@ function Grid() {
     onDragLeave: handleDragLeave,
     onDrop: handleDrop,
     style: {
-      gridTemplateColumns: "repeat(".concat(store.get('gridColumns'), ", 1fr)"),
-      gridTemplateRows: "repeat(".concat(store.get('gridRows'), ", 1fr)"),
-      gridGap: "".concat(store.get('gridGap'), "px"),
+      gridTemplateColumns: "repeat(".concat(gridColumns, ", 1fr)"),
+      gridTemplateRows: "repeat(".concat(gridRows, ", 1fr)"),
+      gridGap: "".concat(gridGap, "px"),
       height: minHeight
     }
   }, _react.default.createElement(_CSSGrid.default, null), fields.map(function (field) {
@@ -29144,11 +29292,11 @@ function Grid() {
   }), drag.over && _react.default.createElement("div", {
     className: "stampa-grid__highlight",
     style: {
-      gridArea: gridArea
+      gridArea: _Grid.gridArea
     }
   })));
 }
-},{"react":"../node_modules/react/index.js","shortid":"../node_modules/shortid/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./CSSGrid":"components/CSSGrid.js","./Field":"components/Field.js"}],"../node_modules/babel-runtime/node_modules/core-js/library/modules/_defined.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","../stampa":"stampa.js","./CSSGrid":"components/CSSGrid.js","./Field":"components/Field.js","./Grid.utils":"components/Grid.utils.js"}],"../node_modules/babel-runtime/node_modules/core-js/library/modules/_defined.js":[function(require,module,exports) {
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
@@ -55828,7 +55976,12 @@ function (_Component) {
         placeholder: "Block title",
         value: this.props.store.get('stampaBlockTitle'),
         onChange: this.updateBlockTitle
-      })), _react.default.createElement(_Grid.default, null)), _react.default.createElement("div", {
+      })), _react.default.createElement(_Grid.default, {
+        gridColumns: this.props.store.get('gridColumns'),
+        gridRows: this.props.store.get('gridRows'),
+        gridGap: this.props.store.get('gridGap'),
+        gridRowHeight: this.props.store.get('rowHeight')
+      })), _react.default.createElement("div", {
         className: "stampa__right"
       }, _react.default.createElement(_BlockOptions.default, null), _react.default.createElement(_FieldOptions.default, null), _react.default.createElement(_Hierarchy.default, null))));
     }
@@ -56018,7 +56171,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37687" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39107" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

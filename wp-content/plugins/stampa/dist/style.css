@@ -203,6 +203,7 @@
 
   .stampa-grid__field.resizing {
       opacity: 0.15;
+      pointer-events: none;
     }
 
   .stampa-grid__field.active {
@@ -210,8 +211,7 @@
       border-color: var(--stampa-active)
     }
 
-  .stampa-grid__field.active:hover {
-      }
+  .stampa-grid__field.active:hover {}
 
   .stampa-grid__field__content {
       padding: 0;
@@ -263,7 +263,6 @@
   pointer-events: none;
   opacity: 0.15;
 }
-
 .grid-options {
   position: fixed;
   left: 0;

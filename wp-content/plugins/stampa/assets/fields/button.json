@@ -7,6 +7,10 @@
     "icon": "button.svg",
     "contentClassName": "wp-block-button",
     "html": "<div class='wp-block-button__link'>{placeholder}</div>",
+    "defaultSize": {
+      "rows": 1,
+      "columns": 2
+    },
     "options": [
       {
         "name": "placeholder",

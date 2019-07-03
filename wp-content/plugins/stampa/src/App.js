@@ -90,7 +90,12 @@ class App extends Component {
                 onChange={this.updateBlockTitle}
               />
             </div>
-            <Grid />
+            <Grid
+              gridColumns={this.props.store.get('gridColumns')}
+              gridRows={this.props.store.get('gridRows')}
+              gridGap={this.props.store.get('gridGap')}
+              gridRowHeight={this.props.store.get('rowHeight')}
+            />
           </div>
           <div className="stampa__right">
             <BlockOptions />

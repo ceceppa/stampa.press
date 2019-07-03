@@ -18,7 +18,6 @@ class BlockGenerator extends Stampa {
 
 	private static $block_title          = null;
 	private static $block_css_class_name = null;
-	private static $fields               = [];
 	private static $grid_params          = null;
 	private static $fields_params        = null;
 	private static $options_params       = null;
@@ -101,32 +100,38 @@ class BlockGenerator extends Stampa {
 	 */
 	public static function save_and_generateblock( $request ) {
 		$params  = $request->get_params();
-		$post_ID = $params['id'];
+		self::$post_ID     = (int) $params['id'];
+		self::$block_title = $params['title'];
 
+		self::update_block_title_and_status();
+		self::update_block_metadata( $params );
+
+		$generate_code = isset( $params['generate'] );
+		if ( $generate_code ) {
+			self::generate_react_block();
+		}
+
+		return [ 'ID' => $post_ID ];
+	}
+
+	private static function update_block_title_and_status() {
 		$post_args = [
-			'ID'          => (int) $post_ID,
-			'post_title'  => $params['title'],
-			'post_name'   => sanitize_title( $params['title'] ),
+			'ID'          => (int) self::$post_ID,
+			'post_title'  => self::$block_title,
+			'post_name'   => sanitize_title( self::$block_title ),
 			'post_status' => 'publish',
 			'post_type'   => 'stampa-block',
 		];
 
 		wp_update_post( $post_args );
+	}
 
+	private static function update_block_metadata( array $params ) {
 		if ( ! isset( $params['fields'] ) || ! is_array( $params['fields'] ) ) {
 			$params['fields'] = [];
 		}
 
-		self::update_block_meta( $post_ID, $params );
-
-		if ( isset( $params['generate'] ) ) {
-			self::$post_ID     = $post_ID;
-			self::$block_title = $params['title'];
-
-			self::generate_react_block();
-		}
-
-		return [ 'ID' => $post_ID ];
+		self::update_block_meta( self::$post_ID, $params );
 	}
 
 	/**
@@ -160,9 +165,9 @@ class BlockGenerator extends Stampa {
 
 		self::$output_file = $output_folder . $file_name;
 
-		if ( self::check_if_origin_has_changed() ) {
+		if ( self::check_if_origin_been_modified() ) {
 			return [
-				'generation-skipped' => "md5 file don't match with the record ($md5)",
+				'generation-skipped' => "md5 file don't match with the record",
 			];
 		}
 
@@ -175,7 +180,13 @@ class BlockGenerator extends Stampa {
 		self::generate_basic_php_render_file();
 	}
 
-	private static function check_if_origin_has_changed() {
+	/**
+	 * If the destination file already exists make sure that no one edited it
+	 * comparing its md5 sum with the one stored in the database.
+	 *
+	 * @return void
+	 */
+	private static function check_if_origin_been_modified() {
 		if ( \file_exists( self::$output_file ) ) {
 			$md5     = md5_file( self::$output_file );
 			$old_md5 = get_post_meta( self::$post_ID, '_md5_sum', true );
@@ -197,7 +208,6 @@ class BlockGenerator extends Stampa {
 		self::$block_css_class_name = empty( $block_css_class ) ? self::$block_title : $block_css_class;
 		self::$block_css_class_name = sanitize_title( self::$block_css_class_name );
 		self::add_replace( 'block_css_class_name', self::$block_css_class_name );
-
 	}
 
 	private static function setup_boilerplate_wp_variables() {
@@ -208,6 +218,7 @@ class BlockGenerator extends Stampa {
 
 		foreach ( self::$fields_params as $stampa_field ) {
 			$field = self::get_field_by_id( $stampa_field['id'] );
+
 			if ( empty( $field ) ) {
 				continue;
 			}
