@@ -24,6 +24,11 @@
         "type": "number",
         "label": "Gap",
         "value": "5"
+      },
+      {
+        "name": "cpt",
+        "type": "select",
+        "label": "Post type"
       }
     ],
     "container": 1,
@@ -32,6 +37,9 @@
       "rows": 3,
       "columns": 3
     }
+  },
+  "gutenberg": {
+    "react": ["hello bello"]
   },
   "php": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></div>"
 }

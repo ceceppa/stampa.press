@@ -185,6 +185,9 @@ class Stampa {
 	public static function add_field( string $group, string $field_id, array $field_data, $gutenberg_data, $php_data ) {
 		$group = ucfirst( $group );
 
+		// Allow 3rdy part to have alter the field data.
+		$field_data = apply_filters( "stampa_add_field/{$field_id}", $field_data );
+
 		self::$fields[ $group ][ $field_id ] = $field_data;
 
 		// Gutenberg data is needed only for the back-end.

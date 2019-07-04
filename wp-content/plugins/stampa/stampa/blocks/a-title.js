@@ -56,7 +56,7 @@ registerBlockType("stampa/a-title", {
             height: "230px"
           }}
         >
-          {/* post-selector */}
+          {/* post-selector */}hello bello
           {/* post-title */}
           {/* wysiwyg */}
           <div
