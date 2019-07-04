@@ -28615,6 +28615,7 @@ var Field = _react.default.memo(function (_ref) {
 
   var setAsActive = (0, _react.useCallback)(function (e) {
     store.set('activeFieldKey')(field._stampa.key);
+    e.stopPropagation();
   });
   var gridArea = "".concat(stampaField.startRow, " / ").concat(stampaField.startColumn, " / ").concat(stampaField.endRow + stampaField.startRow, " / ").concat(stampaField.endColumn + stampaField.startColumn);
   var activeBlock = store.get('activeFieldKey');
@@ -29564,7 +29565,10 @@ var Grid = function Grid(_ref) {
   var heightUnit = gridRowHeight > 0 ? 'px' : '%';
   return _react.default.createElement("div", {
     className: "stampa-grid ".concat(useClassName || ''),
-    "data-accepted-groups": acceptedGroups.join(',')
+    "data-accepted-groups": acceptedGroups.join(','),
+    onClick: function onClick() {
+      return store.set('activeFieldKey')(null);
+    }
   }, _react.default.createElement("div", {
     className: "stampa-grid__content editor-styles-wrapper",
     ref: ref,

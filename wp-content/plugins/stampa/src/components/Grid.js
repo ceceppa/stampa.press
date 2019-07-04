@@ -95,6 +95,7 @@ const Grid = function({
     <div
       className={`stampa-grid ${useClassName || ''}`}
       data-accepted-groups={acceptedGroups.join(',')}
+      onClick={() => store.set('activeFieldKey')(null)}
     >
       <div
         className="stampa-grid__content editor-styles-wrapper"

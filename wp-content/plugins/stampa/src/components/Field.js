@@ -139,6 +139,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
    */
   const setAsActive = useCallback(e => {
     store.set('activeFieldKey')(field._stampa.key);
+    e.stopPropagation();
   });
 
   const gridArea = `${stampaField.startRow} / ${stampaField.startColumn} / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn + stampaField.startColumn}`;
