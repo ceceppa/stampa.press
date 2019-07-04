@@ -19,6 +19,7 @@ const initialState = {
   blockPosition: {},
   resizeDirection: null,
   activeFieldKey: null,
+  activeFieldId: null,
   searchFilter: '',
 };
 

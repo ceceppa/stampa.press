@@ -33,20 +33,14 @@ class App extends Component {
       store.set('stampaBlockOptions')(blockData.options);
 
       const fields = blockData.fields.map(field => {
-        field = Object.assign(stampa.getFieldById(field._stampa.id), field);
-        field._stampa.startColumn = parseInt(field._stampa.startColumn);
-        field._stampa.startRow = parseInt(field._stampa.startRow);
-        field._stampa.endRow = parseInt(field._stampa.endRow);
-        field._stampa.endColumn = parseInt(field._stampa.endColumn);
-
-        if (!field._values) {
-          field._values = {};
+        if (!field.values) {
+          field.values = {};
         }
 
         return field;
       });
 
-      store.set('stampaFields')(fields);
+      store.set('stampaFields')(blockData.fields);
     }
 
     this.updateBlockTitle = this.updateBlockTitle.bind(this);

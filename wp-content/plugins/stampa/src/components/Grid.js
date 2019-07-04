@@ -64,6 +64,7 @@ const Grid = function({
 
     const draggedFieldGroup = stampa.getDraggedFieldGroup();
     const isFieldGroupAccepted = acceptedGroups.indexOf(draggedFieldGroup) >= 0;
+
     if (isFieldGroupAccepted) {
       e.stopPropagation();
     }
@@ -104,10 +105,10 @@ const Grid = function({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         style={{
-          gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,
-          gridTemplateRows: `repeat(${gridRows}, 1fr)`,
-          gridGap: `${gridGap}px`,
-          height: `${gridHeight}${heightUnit}`,
+          gridTemplateColumns: `repeat(${+gridColumns}, 1fr)`,
+          gridTemplateRows: `repeat(${+gridRows}, 1fr)`,
+          gridGap: `${+gridGap}px`,
+          height: `${+gridHeight}${heightUnit}`,
         }}
       >
         {store.get('gridShow') &&
@@ -121,7 +122,7 @@ const Grid = function({
         {fields.map(field => (
           <Field
             field={field}
-            key={field._stampa.key}
+            key={field.key}
             resizingClass={resizingClass}
             draggingClass={draggingClass}
           />

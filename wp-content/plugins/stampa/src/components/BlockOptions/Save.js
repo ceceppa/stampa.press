@@ -10,15 +10,7 @@ export default function Save() {
   const saveBlock = useCallback((e, generate) => {
     setSavingState(true);
 
-    const fields = [];
-
-    for (const field of store.get('stampaFields')) {
-      fields.push({
-        id: field._stampa.id,
-        _values: field._values,
-        _stampa: field._stampa,
-      });
-    }
+    const fields = store.get('stampaFields');
 
     jQuery.ajax({
       type: 'PUT',

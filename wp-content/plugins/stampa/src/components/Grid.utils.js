@@ -121,27 +121,32 @@ function updateField(parentField, draggedFieldId, dragData, store) {
 
   const fields = store.get('stampaFields');
   const field = getField(draggedFieldId, fields);
-
   updateFieldSizeOrPosition(field, dragData);
 
   if (parentField) {
     checkAndUpdateFieldParent(field, fields, parentField);
   }
 
-  store.set('stampaFields')(fields);
   resetResizeData(store);
+  store.set('stampaFields')(fields);
 }
 
 function getField(draggedFieldId, fields) {
   for (let field of fields) {
-    if (field._stampa.key == draggedFieldId) {
+    if (field.key == draggedFieldId) {
       return field;
     }
 
     if (Array.isArray(field.fields)) {
-      return getField(draggedFieldId, field.fields);
+      const found = getField(draggedFieldId, field.fields);
+
+      if (found != null) {
+        return found;
+      }
     }
   }
+
+  return null;
 }
 
 function updateFieldSizeOrPosition(field, dragData) {
@@ -158,16 +163,16 @@ function updateFieldSizeOrPosition(field, dragData) {
     resizeWidth = true;
     resizeHeight = true;
   } else {
-    field._stampa.startRow = dragData.row;
-    field._stampa.startColumn = dragData.column;
+    field.position.startRow = dragData.row;
+    field.position.startColumn = dragData.column;
   }
 
-  if (resizeWidth && dragData.column >= field._stampa.startColumn) {
-    field._stampa.endColumn = dragData.column - field._stampa.startColumn + 1;
+  if (resizeWidth && dragData.column >= field.position.startColumn) {
+    field.position.endColumn = dragData.column - field.position.startColumn + 1;
   }
 
-  if (resizeHeight && dragData.row >= field._stampa.startRow) {
-    field._stampa.endRow = dragData.row - field._stampa.startRow + 1;
+  if (resizeHeight && dragData.row >= field.position.startRow) {
+    field.position.endRow = dragData.row - field.position.startRow + 1;
   }
 }
 
@@ -187,7 +192,7 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
 
 function isFieldChildOf(field, parentField) {
   for (let child of parentField.fields) {
-    if (child._stampa.key == field._stampa.key) {
+    if (child.key == field.key) {
       return true;
     }
   }
@@ -199,7 +204,7 @@ function removeFieldFromCurrentParent(field, fields) {
   for (let index in fields) {
     const child = fields[index];
 
-    if (child._stampa.key == field._stampa.key) {
+    if (child.key == field.key) {
       fields.splice(index, 1);
 
       break;
@@ -211,7 +216,7 @@ function removeFieldFromCurrentParent(field, fields) {
   }
 }
 
-function resetResizeData(store) {
+function resetResizeData() {
   stampa.setResizeDirection(null);
   stampa.setDraggedFieldId(null);
   stampa.setDraggedField(null);
@@ -219,61 +224,119 @@ function resetResizeData(store) {
 
 function addNewField(parentField, draggedFieldId, dragData, store) {
   const fields = store.get('stampaFields');
-  const field = stampa.getFieldById(draggedFieldId);
+  const sourceField = stampa.getFieldById(draggedFieldId);
 
-  setupFieldStampaData(field, draggedFieldId, dragData);
-  setupFieldValuesData(field);
+  /**
+   * When adding a new field, we're going to store only relevant data like:
+   * - position
+   * - values
+   * - id
+   * - key
+   * - etc...
+   *
+   * We don't save other all the other informations because this might change
+   * during the devolpemnt or in future release of the app, and we need flexibility.
+   */
+  const uniqueFieldName = getUniqueName(draggedFieldId, fields);
+  const newField = setupFieldStampaData(
+    uniqueFieldName,
+    sourceField,
+    draggedFieldId,
+    dragData
+  );
+
+  setupFieldValuesData(newField, sourceField);
 
   if (parentField) {
-    addNewFieldAsChildOf(parentField, field, store);
+    addNewFieldAsChildOf(parentField, newField, store);
   } else {
-    store.set('stampaFields')([...fields, field]);
+    store.set('stampaFields')([...fields, newField]);
   }
 
   // Set the last block as "active"
-  store.set('activeFieldKey')(field._stampa.key);
+  store.set('activeFieldId')(newField.id);
+  store.set('activeFieldKey')(newField.key);
   stampa.setDraggedField(null);
   stampa.setDraggedFieldId(null);
   stampa.setDraggedFieldGroup(null);
 }
 
-function setupFieldStampaData(field, draggedFieldId, dragData) {
-  field._stampa = {
-    id: draggedFieldId,
-    key: `_${shortid.generate()}`,
-    startColumn: dragData.column,
-    startRow: dragData.row,
-    endColumn: 1,
-    endRow: 1,
-    name: draggedFieldId,
-  };
+/**
+ * When dragging a new item we want make sure that its name is unique, as
+ * this property is used to generate the variable name of the field.
+ * So, having multiple fields with the same name would make them "linked" together
+ * and we don't want that.
+ *
+ * @param {*} fields
+ * @param {*} id
+ */
+function getUniqueName(fieldName, fields) {
+  for (let field of fields) {
+    if (field.name == fieldName) {
+      const re = new RegExp('\\d+$');
+      const match = fieldName.match(re);
 
-  if (field.defaultSize) {
-    field._stampa.endColumn = field.defaultSize.columns;
-    field._stampa.endRow = field.defaultSize.rows;
+      if (match) {
+        fieldName.replace(/\d+$/, '');
+
+        fieldName += +match[0] + 1;
+      } else {
+        fieldName += '1';
+      }
+
+      return getUniqueName(fieldName, fields);
+    }
   }
+  return fieldName;
 }
 
-function setupFieldValuesData(field) {
-  field._values = {};
+function setupFieldStampaData(
+  fieldName,
+  sourceField,
+  draggedFieldId,
+  dragData
+) {
+  const newFieldData = {
+    id: draggedFieldId,
+    key: `_${shortid.generate()}`,
+    name: fieldName,
+    group: sourceField.group.toLowerCase(),
+    position: {
+      startColumn: dragData.column,
+      startRow: dragData.row,
+      endColumn: 1,
+      endRow: 1,
+    },
+  };
+
+  if (sourceField.defaultSize) {
+    newFieldData.position.endColumn = sourceField.defaultSize.columns;
+    newFieldData.position.endRow = sourceField.defaultSize.rows;
+  }
+
+  return newFieldData;
+}
+
+function setupFieldValuesData(newField, sourceField) {
+  newField.values = {};
 
   /**
    * All the checkbox option set by default to "false" have to create
    * an empty record in field._values, otherwise it will automatically fallback
    * to the default "value"
    */
-  for (let option of field.options) {
+  for (let option of sourceField.options) {
     if (option.type == 'checkbox' && option.checked == false) {
-      field._values[option.name] = '';
+      newField.values[option.name] = '';
     } else {
-      field._values[option.name] = option.value;
+      newField.values[option.name] = option.value;
     }
   }
 }
 
 function addNewFieldAsChildOf(parentField, field, store) {
   const fields = appendChildToParent(
-    parentField._stampa.key,
+    parentField.key,
     store.get('stampaFields'),
     field
   );
@@ -283,7 +346,7 @@ function addNewFieldAsChildOf(parentField, field, store) {
 
 function appendChildToParent(parentKey, fields, newField) {
   for (let field of fields) {
-    if (field._stampa.key == parentKey) {
+    if (field.key == parentKey) {
       if (!Array.isArray(field.fields)) {
         field.fields = [];
       }

@@ -32,18 +32,13 @@ export default function FieldOptions(props) {
   const activeFieldKey = store.get('activeFieldKey');
 
   let activeField;
-  let fieldOptions = null;
+  let options = null;
   if (activeFieldKey) {
-    const fields = store.get('stampaFields');
+    const activeFieldId = store.get('activeFieldId');
+    const field = stampa.getFieldById(activeFieldId);
 
-    for (const field of fields) {
-      if (field._stampa.key == activeFieldKey) {
-        activeField = field;
-        fieldOptions = field.options;
-
-        break;
-      }
-    }
+    activeField = field;
+    options = field.options;
   }
 
   /**
@@ -52,24 +47,21 @@ export default function FieldOptions(props) {
    * @param {*} e
    */
   const updateFieldName = useCallback(e => {
-    const fields = store.get('stampaFields');
-
-    for (const field of fields) {
-      if (field._stampa.key == activeFieldKey) {
-        field._stampa.name = stampa.sanitizeVariableName(e.target.value);
-
-        break;
-      }
-    }
-
-    store.set('stampaFields')(fields);
+    // const fields = store.get('stampaFields');
+    // for (const field of fields) {
+    //   if (field.key == activeFieldKey) {
+    //     field.name = stampa.sanitizeVariableName(e.target.value);
+    //     break;
+    //   }
+    // }
+    // store.set('stampaFields')(fields);
   });
 
   const updateOptionValue = useCallback((e, name) => {
     const fields = store.get('stampaFields');
 
     for (const block of fields) {
-      if (block._stampa.key == activeFieldKey) {
+      if (block.key == activeFieldKey) {
         block._values[name] = e.target.value;
 
         break;
@@ -106,7 +98,7 @@ export default function FieldOptions(props) {
             type="text"
             name="field-name"
             id="field-name"
-            value={activeField._stampa.name}
+            value={activeField.name}
             onChange={updateFieldName}
           />
         </label>,

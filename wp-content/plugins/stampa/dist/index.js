@@ -27265,6 +27265,7 @@ var initialState = {
   blockPosition: {},
   resizeDirection: null,
   activeFieldKey: null,
+  activeFieldId: null,
   searchFilter: ''
 }; // Create & export a store with an initial value.
 
@@ -27556,6 +27557,8 @@ function GroupFields(_ref) {
       onDragStart: function onDragStart(e) {
         _stampa.default.setDraggedField(field);
 
+        _stampa.default.setDraggedFieldId(key);
+
         _stampa.default.setDraggedFieldGroup(groupLowercase);
 
         store.set('draggedFieldId')(key);
@@ -27698,35 +27701,7 @@ function Save() {
 
   var saveBlock = (0, _react.useCallback)(function (e, generate) {
     setSavingState(true);
-    var fields = [];
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = store.get('stampaFields')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var field = _step.value;
-        fields.push({
-          id: field._stampa.id,
-          _values: field._values,
-          _stampa: field._stampa
-        });
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return != null) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
+    var fields = store.get('stampaFields');
     jQuery.ajax({
       type: 'PUT',
       dataType: 'json',
@@ -28189,9 +28164,33 @@ function FieldOptions(props) {
 
   var activeFieldKey = store.get('activeFieldKey');
   var activeField;
-  var fieldOptions = null;
+  var options = null;
 
   if (activeFieldKey) {
+    var activeFieldId = store.get('activeFieldId');
+
+    var field = _stampa.default.getFieldById(activeFieldId);
+
+    activeField = field;
+    options = field.options;
+  }
+  /**
+   * Update the name option for the current field.
+   *
+   * @param {*} e
+   */
+
+
+  var updateFieldName = (0, _react.useCallback)(function (e) {// const fields = store.get('stampaFields');
+    // for (const field of fields) {
+    //   if (field.key == activeFieldKey) {
+    //     field.name = stampa.sanitizeVariableName(e.target.value);
+    //     break;
+    //   }
+    // }
+    // store.set('stampaFields')(fields);
+  });
+  var updateOptionValue = (0, _react.useCallback)(function (e, name) {
     var fields = store.get('stampaFields');
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
@@ -28199,11 +28198,10 @@ function FieldOptions(props) {
 
     try {
       for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var field = _step.value;
+        var block = _step.value;
 
-        if (field._stampa.key == activeFieldKey) {
-          activeField = field;
-          fieldOptions = field.options;
+        if (block.key == activeFieldKey) {
+          block._values[name] = e.target.value;
           break;
         }
       }
@@ -28218,75 +28216,6 @@ function FieldOptions(props) {
       } finally {
         if (_didIteratorError) {
           throw _iteratorError;
-        }
-      }
-    }
-  }
-  /**
-   * Update the name option for the current field.
-   *
-   * @param {*} e
-   */
-
-
-  var updateFieldName = (0, _react.useCallback)(function (e) {
-    var fields = store.get('stampaFields');
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
-
-    try {
-      for (var _iterator2 = fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var _field = _step2.value;
-
-        if (_field._stampa.key == activeFieldKey) {
-          _field._stampa.name = _stampa.default.sanitizeVariableName(e.target.value);
-          break;
-        }
-      }
-    } catch (err) {
-      _didIteratorError2 = true;
-      _iteratorError2 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-          _iterator2.return();
-        }
-      } finally {
-        if (_didIteratorError2) {
-          throw _iteratorError2;
-        }
-      }
-    }
-
-    store.set('stampaFields')(fields);
-  });
-  var updateOptionValue = (0, _react.useCallback)(function (e, name) {
-    var fields = store.get('stampaFields');
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
-
-    try {
-      for (var _iterator3 = fields[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var block = _step3.value;
-
-        if (block._stampa.key == activeFieldKey) {
-          block._values[name] = e.target.value;
-          break;
-        }
-      }
-    } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-          _iterator3.return();
-        }
-      } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
         }
       }
     }
@@ -28316,7 +28245,7 @@ function FieldOptions(props) {
     type: "text",
     name: "field-name",
     id: "field-name",
-    value: activeField._stampa.name,
+    value: activeField.name,
     onChange: updateFieldName
   })), _react.default.createElement("hr", {
     key: "hr-1",
@@ -28455,28 +28384,42 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 var Field = _react.default.memo(function (_ref) {
   var field = _ref.field,
       resizingClass = _ref.resizingClass,
       draggingClass = _ref.draggingClass;
   var ref = (0, _react.useRef)();
 
+  var _useState = (0, _react.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      noDropClass = _useState2[0],
+      setNoDropClass = _useState2[1];
+
   var store = _store.default.useStore();
 
-  var stampaField = field._stampa;
-  var contentClassName = field.contentClassName || '';
-  var fieldHTML = field.html;
-  var fieldClassName = field.fieldClassName || '';
+  var stampaField = _stampa.default.getFieldById(field.id);
+
+  var contentClassName = stampaField.contentClassName || '';
+  var fieldHTML = stampaField.html || '';
+  var fieldClassName = stampaField.fieldClassName || '';
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
 
   try {
-    for (var _iterator = field.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+    for (var _iterator = stampaField.options[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var option = _step.value;
 
       if (option && option.name) {
-        var value = field._values[option.name];
+        var value = field.values[option.name];
 
         if (value == null) {
           value = option.value;
@@ -28512,31 +28455,25 @@ var Field = _react.default.memo(function (_ref) {
   }
 
   (0, _react.useEffect)(function () {
-    var grid = ref.current.querySelector('.stampa-grid');
-
     var fieldGroup = _stampa.default.getDraggedFieldGroup();
 
     var fieldId = _stampa.default.getDraggedFieldId();
 
-    if (grid == null || fieldGroup == null || fieldId == field._stampa.key) {
+    var stampaField = _stampa.default.getFieldById(field.id);
+
+    if (stampaField.container != 1 || draggingClass.length == 0 || fieldGroup == null || fieldId == field.key) {
+      setNoDropClass('');
       return;
     }
 
-    var acceptedGroups = grid.dataset.acceptedGroups;
+    var acceptedGroups = stampaField.acceptedGroups;
     var isFieldGroupAccepted = acceptedGroups.indexOf(fieldGroup) >= 0;
-    var gridClassList = grid.parentNode.classList;
-    var containsNoDrop = gridClassList.contains('no-drop');
 
-    var isResizing = _stampa.default.isResizing();
-
-    if (fieldGroup != null && !isResizing && !isFieldGroupAccepted) {
-      if (!containsNoDrop) {
-        gridClassList.add('no-drop');
-      }
+    if (!isFieldGroupAccepted) {
+      setNoDropClass('no-drop');
     } else {
-      if (containsNoDrop) {
-        gridClassList.remove('no-drop');
-      }
+      // Don't have to set pointers-event none or change opacity
+      setNoDropClass('accept-drop');
     }
   });
   /**
@@ -28548,27 +28485,27 @@ var Field = _react.default.memo(function (_ref) {
     var clientRect = ref.current.getBoundingClientRect();
     var x = e.clientX - clientRect.x;
     var y = e.clientY - clientRect.y;
-    var cellWidth = clientRect.width / stampaField.endColumn;
-    var cellHeight = clientRect.height / stampaField.endRow;
+    var cellWidth = clientRect.width / field.position.endColumn;
+    var cellHeight = clientRect.height / field.position.endRow;
     var offsetY = Math.floor(x / cellWidth);
     var offsetX = Math.floor(y / cellHeight);
-    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
+    e.dataTransfer.setData('stampa-field-key', field.key);
 
     _stampa.default.setFieldPosition({
-      startRow: stampaField.startRow,
-      startColumn: stampaField.startColumn,
-      endColumn: stampaField.endColumn,
-      endRow: stampaField.endRow,
+      startRow: field.position.startRow,
+      startColumn: field.position.startColumn,
+      endColumn: field.position.endColumn,
+      endRow: field.position.endRow,
       offsetX: offsetX,
       offsetY: offsetY
     });
 
-    _stampa.default.setDraggedFieldId(field._stampa.key);
+    _stampa.default.setDraggedFieldId(field.key);
 
     _stampa.default.setDraggedFieldGroup(field.group.toLowerCase());
 
     setTimeout(function () {
-      store.set('draggedFieldId')(field._stampa.key);
+      store.set('draggedFieldId')(field.key);
     });
   }); // Allow the block itself to be dragged
 
@@ -28614,12 +28551,17 @@ var Field = _react.default.memo(function (_ref) {
    */
 
   var setAsActive = (0, _react.useCallback)(function (e) {
-    store.set('activeFieldKey')(field._stampa.key);
+    store.set('activeFieldId')(field.id);
+    store.set('activeFieldKey')(field.key);
     e.stopPropagation();
   });
-  var gridArea = "".concat(stampaField.startRow, " / ").concat(stampaField.startColumn, " / ").concat(stampaField.endRow + stampaField.startRow, " / ").concat(stampaField.endColumn + stampaField.startColumn);
+  /**
+   * Data saved with PHP using json_encode gets converted to string, but we need numbers...
+   */
+
+  var gridArea = "".concat(+field.position.startRow, " / ").concat(+field.position.startColumn, " / ").concat(+field.position.endRow + +field.position.startRow, " / ").concat(+field.position.endColumn + +field.position.startColumn);
   var activeBlock = store.get('activeFieldKey');
-  var activeClass = activeBlock == field._stampa.key ? 'active' : '';
+  var activeClass = activeBlock == field.key ? 'active' : '';
   /**
    * Ignore the resizing & dragging class if I'm dragging anything in
    * my container
@@ -28636,31 +28578,32 @@ var Field = _react.default.memo(function (_ref) {
 
   return _react.default.createElement("div", {
     draggable: "true",
-    className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName, " ").concat(draggingClass),
+    className: "stampa-grid__field\n      stampa-field--".concat(field.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName, " ").concat(draggingClass, " ").concat(noDropClass),
     ref: ref,
     onDragStart: dragMe,
-    "data-key": field._stampa.key,
+    onDragEnd: endResize,
+    "data-key": field.key,
     style: {
       gridArea: gridArea
     },
     onClick: setAsActive
   }, _react.default.createElement("div", {
     className: "stampa-grid__field__type"
-  }, !field.container && _react.default.createElement("img", {
+  }, !stampaField.container && _react.default.createElement("img", {
     src: field.icon,
     "aria-hidden": "true",
     draggable: "false"
-  }), _react.default.createElement("span", null, field._stampa.id)), field.container && _react.default.createElement(_Grid.default, {
-    gridColumns: +field._values.columns || field._stampa.endColumn,
-    gridRows: +field._values.rows || field._stampa.endRow,
-    gridGap: +field._values.gap || store.get('gridGap'),
+  }), _react.default.createElement("span", null, field.id)), stampaField.container && _react.default.createElement(_Grid.default, {
+    gridColumns: +field.values.columns || field.position.endColumn,
+    gridRows: +field.values.rows || field.position.endRow,
+    gridGap: +field.values.gap || store.get('gridGap'),
     gridRowHeight: -1,
-    acceptedGroups: field.acceptedGroups,
+    acceptedGroups: stampaField.acceptedGroups,
     fields: field.fields || [],
     parentField: field,
     draggable: true,
     useClassName: "is-container"
-  }), field.container == null && _react.default.createElement("div", {
+  }), stampaField.container == null && _react.default.createElement("div", {
     dangerouslySetInnerHTML: {
       __html: fieldHTML
     },
@@ -29192,8 +29135,8 @@ function updateField(parentField, draggedFieldId, dragData, store) {
     checkAndUpdateFieldParent(field, fields, parentField);
   }
 
-  store.set('stampaFields')(fields);
   resetResizeData(store);
+  store.set('stampaFields')(fields);
 }
 
 function getField(draggedFieldId, fields) {
@@ -29205,12 +29148,16 @@ function getField(draggedFieldId, fields) {
     for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var field = _step.value;
 
-      if (field._stampa.key == draggedFieldId) {
+      if (field.key == draggedFieldId) {
         return field;
       }
 
       if (Array.isArray(field.fields)) {
-        return getField(draggedFieldId, field.fields);
+        var found = getField(draggedFieldId, field.fields);
+
+        if (found != null) {
+          return found;
+        }
       }
     }
   } catch (err) {
@@ -29227,6 +29174,8 @@ function getField(draggedFieldId, fields) {
       }
     }
   }
+
+  return null;
 }
 
 function updateFieldSizeOrPosition(field, dragData) {
@@ -29243,16 +29192,16 @@ function updateFieldSizeOrPosition(field, dragData) {
     resizeWidth = true;
     resizeHeight = true;
   } else {
-    field._stampa.startRow = dragData.row;
-    field._stampa.startColumn = dragData.column;
+    field.position.startRow = dragData.row;
+    field.position.startColumn = dragData.column;
   }
 
-  if (resizeWidth && dragData.column >= field._stampa.startColumn) {
-    field._stampa.endColumn = dragData.column - field._stampa.startColumn + 1;
+  if (resizeWidth && dragData.column >= field.position.startColumn) {
+    field.position.endColumn = dragData.column - field.position.startColumn + 1;
   }
 
-  if (resizeHeight && dragData.row >= field._stampa.startRow) {
-    field._stampa.endRow = dragData.row - field._stampa.startRow + 1;
+  if (resizeHeight && dragData.row >= field.position.startRow) {
+    field.position.endRow = dragData.row - field.position.startRow + 1;
   }
 }
 
@@ -29279,7 +29228,7 @@ function isFieldChildOf(field, parentField) {
     for (var _iterator2 = parentField.fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
       var child = _step2.value;
 
-      if (child._stampa.key == field._stampa.key) {
+      if (child.key == field.key) {
         return true;
       }
     }
@@ -29305,7 +29254,7 @@ function removeFieldFromCurrentParent(field, fields) {
   for (var index in fields) {
     var child = fields[index];
 
-    if (child._stampa.key == field._stampa.key) {
+    if (child.key == field.key) {
       fields.splice(index, 1);
       break;
     }
@@ -29316,7 +29265,7 @@ function removeFieldFromCurrentParent(field, fields) {
   }
 }
 
-function resetResizeData(store) {
+function resetResizeData() {
   _stampa.default.setResizeDirection(null);
 
   _stampa.default.setDraggedFieldId(null);
@@ -29327,19 +29276,33 @@ function resetResizeData(store) {
 function addNewField(parentField, draggedFieldId, dragData, store) {
   var fields = store.get('stampaFields');
 
-  var field = _stampa.default.getFieldById(draggedFieldId);
+  var sourceField = _stampa.default.getFieldById(draggedFieldId);
+  /**
+   * When adding a new field, we're going to store only relevant data like:
+   * - position
+   * - values
+   * - id
+   * - key
+   * - etc...
+   *
+   * We don't save other all the other informations because this might change
+   * during the devolpemnt or in future release of the app, and we need flexibility.
+   */
 
-  setupFieldStampaData(field, draggedFieldId, dragData);
-  setupFieldValuesData(field);
+
+  var uniqueFieldName = getUniqueName(draggedFieldId, fields);
+  var newField = setupFieldStampaData(uniqueFieldName, sourceField, draggedFieldId, dragData);
+  setupFieldValuesData(newField, sourceField);
 
   if (parentField) {
-    addNewFieldAsChildOf(parentField, field, store);
+    addNewFieldAsChildOf(parentField, newField, store);
   } else {
-    store.set('stampaFields')([].concat(_toConsumableArray(fields), [field]));
+    store.set('stampaFields')([].concat(_toConsumableArray(fields), [newField]));
   } // Set the last block as "active"
 
 
-  store.set('activeFieldKey')(field._stampa.key);
+  store.set('activeFieldId')(newField.id);
+  store.set('activeFieldKey')(newField.key);
 
   _stampa.default.setDraggedField(null);
 
@@ -29347,44 +29310,38 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
 
   _stampa.default.setDraggedFieldGroup(null);
 }
+/**
+ * When dragging a new item we want make sure that its name is unique, as
+ * this property is used to generate the variable name of the field.
+ * So, having multiple fields with the same name would make them "linked" together
+ * and we don't want that.
+ *
+ * @param {*} fields
+ * @param {*} id
+ */
 
-function setupFieldStampaData(field, draggedFieldId, dragData) {
-  field._stampa = {
-    id: draggedFieldId,
-    key: "_".concat(_shortid.default.generate()),
-    startColumn: dragData.column,
-    startRow: dragData.row,
-    endColumn: 1,
-    endRow: 1,
-    name: draggedFieldId
-  };
 
-  if (field.defaultSize) {
-    field._stampa.endColumn = field.defaultSize.columns;
-    field._stampa.endRow = field.defaultSize.rows;
-  }
-}
-
-function setupFieldValuesData(field) {
-  field._values = {};
-  /**
-   * All the checkbox option set by default to "false" have to create
-   * an empty record in field._values, otherwise it will automatically fallback
-   * to the default "value"
-   */
-
+function getUniqueName(fieldName, fields) {
   var _iteratorNormalCompletion3 = true;
   var _didIteratorError3 = false;
   var _iteratorError3 = undefined;
 
   try {
-    for (var _iterator3 = field.options[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-      var option = _step3.value;
+    for (var _iterator3 = fields[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var field = _step3.value;
 
-      if (option.type == 'checkbox' && option.checked == false) {
-        field._values[option.name] = '';
-      } else {
-        field._values[option.name] = option.value;
+      if (field.name == fieldName) {
+        var re = new RegExp('\\d+$');
+        var match = fieldName.match(re);
+
+        if (match) {
+          fieldName.replace(/\d+$/, '');
+          fieldName += +match[0] + 1;
+        } else {
+          fieldName += '1';
+        }
+
+        return getUniqueName(fieldName, fields);
       }
     }
   } catch (err) {
@@ -29401,33 +29358,52 @@ function setupFieldValuesData(field) {
       }
     }
   }
+
+  return fieldName;
 }
 
-function addNewFieldAsChildOf(parentField, field, store) {
-  var fields = appendChildToParent(parentField._stampa.key, store.get('stampaFields'), field);
-  store.set('stampaFields')(fields);
+function setupFieldStampaData(fieldName, sourceField, draggedFieldId, dragData) {
+  var newFieldData = {
+    id: draggedFieldId,
+    key: "_".concat(_shortid.default.generate()),
+    name: fieldName,
+    group: sourceField.group.toLowerCase(),
+    position: {
+      startColumn: dragData.column,
+      startRow: dragData.row,
+      endColumn: 1,
+      endRow: 1
+    }
+  };
+
+  if (sourceField.defaultSize) {
+    newFieldData.position.endColumn = sourceField.defaultSize.columns;
+    newFieldData.position.endRow = sourceField.defaultSize.rows;
+  }
+
+  return newFieldData;
 }
 
-function appendChildToParent(parentKey, fields, newField) {
+function setupFieldValuesData(newField, sourceField) {
+  newField.values = {};
+  /**
+   * All the checkbox option set by default to "false" have to create
+   * an empty record in field._values, otherwise it will automatically fallback
+   * to the default "value"
+   */
+
   var _iteratorNormalCompletion4 = true;
   var _didIteratorError4 = false;
   var _iteratorError4 = undefined;
 
   try {
-    for (var _iterator4 = fields[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-      var field = _step4.value;
+    for (var _iterator4 = sourceField.options[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var option = _step4.value;
 
-      if (field._stampa.key == parentKey) {
-        if (!Array.isArray(field.fields)) {
-          field.fields = [];
-        }
-
-        field.fields.push(newField);
-        break;
-      }
-
-      if (Array.isArray(field.fields)) {
-        appendChildToParent(parentKey, field.fields, newField);
+      if (option.type == 'checkbox' && option.checked == false) {
+        newField.values[option.name] = '';
+      } else {
+        newField.values[option.name] = option.value;
       }
     }
   } catch (err) {
@@ -29441,6 +29417,49 @@ function appendChildToParent(parentKey, fields, newField) {
     } finally {
       if (_didIteratorError4) {
         throw _iteratorError4;
+      }
+    }
+  }
+}
+
+function addNewFieldAsChildOf(parentField, field, store) {
+  var fields = appendChildToParent(parentField.key, store.get('stampaFields'), field);
+  store.set('stampaFields')(fields);
+}
+
+function appendChildToParent(parentKey, fields, newField) {
+  var _iteratorNormalCompletion5 = true;
+  var _didIteratorError5 = false;
+  var _iteratorError5 = undefined;
+
+  try {
+    for (var _iterator5 = fields[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+      var field = _step5.value;
+
+      if (field.key == parentKey) {
+        if (!Array.isArray(field.fields)) {
+          field.fields = [];
+        }
+
+        field.fields.push(newField);
+        break;
+      }
+
+      if (Array.isArray(field.fields)) {
+        appendChildToParent(parentKey, field.fields, newField);
+      }
+    }
+  } catch (err) {
+    _didIteratorError5 = true;
+    _iteratorError5 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
+        _iterator5.return();
+      }
+    } finally {
+      if (_didIteratorError5) {
+        throw _iteratorError5;
       }
     }
   }
@@ -29576,10 +29595,10 @@ var Grid = function Grid(_ref) {
     onDragLeave: handleDragLeave,
     onDrop: handleDrop,
     style: {
-      gridTemplateColumns: "repeat(".concat(gridColumns, ", 1fr)"),
-      gridTemplateRows: "repeat(".concat(gridRows, ", 1fr)"),
-      gridGap: "".concat(gridGap, "px"),
-      height: "".concat(gridHeight).concat(heightUnit)
+      gridTemplateColumns: "repeat(".concat(+gridColumns, ", 1fr)"),
+      gridTemplateRows: "repeat(".concat(+gridRows, ", 1fr)"),
+      gridGap: "".concat(+gridGap, "px"),
+      height: "".concat(+gridHeight).concat(heightUnit)
     }
   }, store.get('gridShow') && _react.default.createElement(_CSSGrid.default, {
     gridColumns: gridColumns,
@@ -29590,7 +29609,7 @@ var Grid = function Grid(_ref) {
   }), fields.map(function (field) {
     return _react.default.createElement(_Field.default, {
       field: field,
-      key: field._stampa.key,
+      key: field.key,
       resizingClass: resizingClass,
       draggingClass: draggingClass
     });
@@ -56227,19 +56246,13 @@ function (_Component) {
       blockData.options.hasBackgroundOption = blockData.options.hasBackgroundOption == 'true';
       store.set('stampaBlockOptions')(blockData.options);
       var fields = blockData.fields.map(function (field) {
-        field = Object.assign(_stampa.default.getFieldById(field._stampa.id), field);
-        field._stampa.startColumn = parseInt(field._stampa.startColumn);
-        field._stampa.startRow = parseInt(field._stampa.startRow);
-        field._stampa.endRow = parseInt(field._stampa.endRow);
-        field._stampa.endColumn = parseInt(field._stampa.endColumn);
-
-        if (!field._values) {
-          field._values = {};
+        if (!field.values) {
+          field.values = {};
         }
 
         return field;
       });
-      store.set('stampaFields')(fields);
+      store.set('stampaFields')(blockData.fields);
     }
 
     _this.updateBlockTitle = _this.updateBlockTitle.bind(_assertThisInitialized(_this));
@@ -56485,7 +56498,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40017" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34975" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

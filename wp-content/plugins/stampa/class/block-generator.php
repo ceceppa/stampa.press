@@ -63,7 +63,7 @@ class BlockGenerator extends Stampa {
 			'/block/(?P<id>[\\d]+)',
 			array(
 				'methods'  => 'PUT',
-				'callback' => __CLASS__ . '::save_and_generateblock',
+				'callback' => __CLASS__ . '::save_and_generate_block',
 				'args'     => [
 					'title'   => [
 						'required'    => true,
@@ -98,7 +98,7 @@ class BlockGenerator extends Stampa {
 	 *
 	 * @return array
 	 */
-	public static function save_and_generateblock( $request ) {
+	public static function save_and_generate_block( $request ) {
 		$params  = $request->get_params();
 		self::$post_ID     = (int) $params['id'];
 		self::$block_title = $params['title'];
@@ -111,7 +111,7 @@ class BlockGenerator extends Stampa {
 			self::generate_react_block();
 		}
 
-		return [ 'ID' => $post_ID ];
+		return [ 'ID' => self::$post_ID ];
 	}
 
 	private static function update_block_title_and_status() {
@@ -131,25 +131,15 @@ class BlockGenerator extends Stampa {
 			$params['fields'] = [];
 		}
 
-		self::update_block_meta( self::$post_ID, $params );
-	}
-
-	/**
-	 * Save the meta data neede by Stampa.
-	 *
-	 * @param string $post_ID the post ID.
-	 * @param array  $params the array containing the data to save.
-	 *
-	 * @return array
-	 */
-	private static function update_block_meta( $post_ID, $params ) {
 		self::$grid_params    = apply_filters( 'stampa/save-block/grid', $params['grid'] );
 		self::$fields_params  = apply_filters( 'stampa/save-block/fields', $params['fields'] );
 		self::$options_params = apply_filters( 'stampa/save-block/options', $params['options'] );
 
-		update_post_meta( $post_ID, '_stampa_grid', json_encode( self::$grid_params ) );
-		update_post_meta( $post_ID, '_stampa_fields', json_encode( self::$fields_params ) );
-		update_post_meta( $post_ID, '_stampa_options', json_encode( self::$options_params ) );
+		update_post_meta( self::$post_ID, '_stampa_grid', json_encode( self::$grid_params ) );
+		update_post_meta( self::$post_ID, '_stampa_fields', json_encode( self::$fields_params ) );
+		update_post_meta( self::$post_ID, '_stampa_options', json_encode( self::$options_params ) );
+
+		error_log( print_r( $params, true ) );
 	}
 
 	/**

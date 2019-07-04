@@ -246,9 +246,24 @@
       pointer-events: none;
     }
 
-.stampa-grid__field.dragging:not(.no-drop) {
+.stampa-grid__field.dragging {
       opacity: 0.15;
       pointer-events: none;
+    }
+
+.stampa-grid__field.no-drop {
+      opacity: 0.8;
+      background: var(--stampa-red);
+      pointer-events: none;
+    }
+
+.stampa-grid__field.no-drop * {
+        opacity: 0.1;
+      }
+
+.stampa-grid__field.accept-drop {
+      opacity: 1;
+      pointer-events: auto;
     }
 
 .stampa-grid__field.active {
@@ -260,6 +275,8 @@
 .stampa-grid__field__content {
       padding: 0;
       margin: 0;
+      width: 100%;
+      height: 100%;
     }
 
 .stampa-grid__field__resizer {
@@ -308,15 +325,6 @@
   -webkit-transition: all 0.15s ease;
   transition: all 0.15s ease;
 }
-
-.stampa-grid.no-drop .stampa-grid__content, .stampa-grid__field.no-drop .stampa-grid__content {
-    background: var(--stampa-red);
-    pointer-events: none;
-  }
-
-.stampa-grid.no-drop .stampa-grid__content *, .stampa-grid__field.no-drop .stampa-grid__content * {
-      opacity: 0.1;
-    }
 .grid-options {
   position: fixed;
   left: 0;

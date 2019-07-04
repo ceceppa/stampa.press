@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useRef, useEffect, useState } from 'react';
 
 import Store from '../store/store';
 import Grid from './Grid';
@@ -6,18 +6,18 @@ import stampa from '../stampa';
 
 const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   const ref = useRef();
+  const [noDropClass, setNoDropClass] = useState('');
 
   const store = Store.useStore();
-  const stampaField = field._stampa;
+  const stampaField = stampa.getFieldById(field.id);
 
-  const contentClassName = field.contentClassName || '';
+  const contentClassName = stampaField.contentClassName || '';
+  let fieldHTML = stampaField.html || '';
+  let fieldClassName = stampaField.fieldClassName || '';
 
-  let fieldHTML = field.html;
-  let fieldClassName = field.fieldClassName || '';
-
-  for (let option of field.options) {
+  for (let option of stampaField.options) {
     if (option && option.name) {
-      let value = field._values[option.name];
+      let value = field.values[option.name];
 
       if (value == null) {
         value = option.value;
@@ -38,28 +38,28 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
    * so the re-render cause the class to be lost
   */
   useEffect(() => {
-    const grid = ref.current.querySelector('.stampa-grid');
     const fieldGroup = stampa.getDraggedFieldGroup();
     const fieldId = stampa.getDraggedFieldId();
+    const stampaField = stampa.getFieldById(field.id);
 
-    if (grid == null || fieldGroup == null || fieldId == field._stampa.key) {
+    if (
+      stampaField.container != 1 ||
+      draggingClass.length == 0 ||
+      fieldGroup == null ||
+      fieldId == field.key
+    ) {
+      setNoDropClass('');
       return;
     }
 
-    const acceptedGroups = grid.dataset.acceptedGroups;
+    const acceptedGroups = stampaField.acceptedGroups;
     const isFieldGroupAccepted = acceptedGroups.indexOf(fieldGroup) >= 0;
-    const gridClassList = grid.parentNode.classList;
-    const containsNoDrop = gridClassList.contains('no-drop');
-    const isResizing = stampa.isResizing();
 
-    if (fieldGroup != null && !isResizing && !isFieldGroupAccepted) {
-      if (!containsNoDrop) {
-        gridClassList.add('no-drop');
-      }
+    if (!isFieldGroupAccepted) {
+      setNoDropClass('no-drop');
     } else {
-      if (containsNoDrop) {
-        gridClassList.remove('no-drop');
-      }
+      // Don't have to set pointers-event none or change opacity
+      setNoDropClass('accept-drop');
     }
   });
 
@@ -72,28 +72,28 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
 
     const x = e.clientX - clientRect.x;
     const y = e.clientY - clientRect.y;
-    const cellWidth = clientRect.width / stampaField.endColumn;
-    const cellHeight = clientRect.height / stampaField.endRow;
+    const cellWidth = clientRect.width / field.position.endColumn;
+    const cellHeight = clientRect.height / field.position.endRow;
 
     const offsetY = Math.floor(x / cellWidth);
     const offsetX = Math.floor(y / cellHeight);
 
-    e.dataTransfer.setData('stampa-field-key', field._stampa.key);
+    e.dataTransfer.setData('stampa-field-key', field.key);
 
     stampa.setFieldPosition({
-      startRow: stampaField.startRow,
-      startColumn: stampaField.startColumn,
-      endColumn: stampaField.endColumn,
-      endRow: stampaField.endRow,
+      startRow: field.position.startRow,
+      startColumn: field.position.startColumn,
+      endColumn: field.position.endColumn,
+      endRow: field.position.endRow,
       offsetX,
       offsetY,
     });
 
-    stampa.setDraggedFieldId(field._stampa.key);
+    stampa.setDraggedFieldId(field.key);
     stampa.setDraggedFieldGroup(field.group.toLowerCase());
 
     setTimeout(() => {
-      store.set('draggedFieldId')(field._stampa.key);
+      store.set('draggedFieldId')(field.key);
     });
   });
 
@@ -138,14 +138,19 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
    * @param {HTMLEvent} e event
    */
   const setAsActive = useCallback(e => {
-    store.set('activeFieldKey')(field._stampa.key);
+    store.set('activeFieldId')(field.id);
+    store.set('activeFieldKey')(field.key);
+
     e.stopPropagation();
   });
 
-  const gridArea = `${stampaField.startRow} / ${stampaField.startColumn} / ${stampaField.endRow + stampaField.startRow} / ${stampaField.endColumn + stampaField.startColumn}`;
+  /**
+   * Data saved with PHP using json_encode gets converted to string, but we need numbers...
+   */
+  const gridArea = `${+field.position.startRow} / ${+field.position.startColumn} / ${+field.position.endRow + +field.position.startRow} / ${+field.position.endColumn + +field.position.startColumn}`;
 
   const activeBlock = store.get('activeFieldKey');
-  const activeClass = activeBlock == field._stampa.key ? 'active' : '';
+  const activeClass = activeBlock == field.key ? 'active' : '';
 
   /**
    * Ignore the resizing & dragging class if I'm dragging anything in
@@ -164,33 +169,34 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
     <div
       draggable="true"
       className={`stampa-grid__field
-      stampa-field--${field._stampa.id} ${activeClass} ${resizingClass} ${fieldClassName} ${draggingClass}`}
+      stampa-field--${field.id} ${activeClass} ${resizingClass} ${fieldClassName} ${draggingClass} ${noDropClass}`}
       ref={ref}
       onDragStart={dragMe}
-      data-key={field._stampa.key}
+      onDragEnd={endResize}
+      data-key={field.key}
       style={{
         gridArea,
       }}
       onClick={setAsActive}
     >
       <div className="stampa-grid__field__type">
-        {!field.container &&
+        {!stampaField.container &&
           <img src={field.icon} aria-hidden="true" draggable="false" />}
-        <span>{field._stampa.id}</span>
+        <span>{field.id}</span>
       </div>
-      {field.container &&
+      {stampaField.container &&
         <Grid
-          gridColumns={+field._values.columns || field._stampa.endColumn}
-          gridRows={+field._values.rows || field._stampa.endRow}
-          gridGap={+field._values.gap || store.get('gridGap')}
+          gridColumns={+field.values.columns || field.position.endColumn}
+          gridRows={+field.values.rows || field.position.endRow}
+          gridGap={+field.values.gap || store.get('gridGap')}
           gridRowHeight={-1}
-          acceptedGroups={field.acceptedGroups}
+          acceptedGroups={stampaField.acceptedGroups}
           fields={field.fields || []}
           parentField={field}
           draggable={true}
           useClassName="is-container"
         />}
-      {field.container == null &&
+      {stampaField.container == null &&
         <div
           dangerouslySetInnerHTML={{ __html: fieldHTML }}
           className={`stampa-grid__field__content ${contentClassName}`}

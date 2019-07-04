@@ -24,6 +24,7 @@ export default function GroupFields({ group, fields }) {
                 draggable="true"
                 onDragStart={e => {
                   stampa.setDraggedField(field);
+                  stampa.setDraggedFieldId(key);
                   stampa.setDraggedFieldGroup(groupLowercase);
 
                   store.set('draggedFieldId')(key);
