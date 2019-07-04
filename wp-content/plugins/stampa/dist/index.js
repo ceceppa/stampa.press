@@ -28548,6 +28548,8 @@ var Field = _react.default.memo(function (_ref) {
 
     _stampa.default.setResizeDirection(e.target.dataset.resize);
 
+    _stampa.default.setDraggedFieldGroup(field.group.toLowerCase());
+
     _stampa.default.setResizing(true);
 
     storeBlockPosition(e);
@@ -28562,7 +28564,9 @@ var Field = _react.default.memo(function (_ref) {
     _stampa.default.setDraggedFieldGroup(null); // Need to trigger the re-render of the Grid
 
 
-    store.set('draggedFieldId')(null);
+    setTimeout(function () {
+      store.set('draggedFieldId')(null);
+    });
   });
   /**
    * Activate the current block
@@ -28576,6 +28580,20 @@ var Field = _react.default.memo(function (_ref) {
   var gridArea = "".concat(stampaField.startRow, " / ").concat(stampaField.startColumn, " / ").concat(stampaField.endRow + stampaField.startRow, " / ").concat(stampaField.endColumn + stampaField.startColumn);
   var activeBlock = store.get('activeFieldKey');
   var activeClass = activeBlock == field._stampa.key ? 'active' : '';
+  /**
+   * Ignore the resizing & dragging class if I'm dragging anything in
+   * my container
+  */
+
+  if (field.container == 1 && (resizingClass.length || draggingClass.length)) {
+    var draggedFieldGroup = _stampa.default.getDraggedFieldGroup();
+
+    if (field.acceptedGroups.indexOf(draggedFieldGroup) >= 0) {
+      resizingClass = '';
+      draggingClass = '';
+    }
+  }
+
   return _react.default.createElement("div", {
     draggable: "true",
     className: "stampa-grid__field\n      stampa-field--".concat(field._stampa.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName, " ").concat(draggingClass),
@@ -28588,7 +28606,7 @@ var Field = _react.default.memo(function (_ref) {
     onClick: setAsActive
   }, _react.default.createElement("div", {
     className: "stampa-grid__field__type"
-  }, _react.default.createElement("img", {
+  }, !field.container && _react.default.createElement("img", {
     src: field.icon,
     "aria-hidden": "true",
     draggable: "false"
@@ -29006,7 +29024,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.updateDragData = updateDragData;
-exports.updateFieldPosition = updateFieldPosition;
+exports.updateField = updateField;
 exports.addNewField = addNewField;
 exports.gridArea = void 0;
 
@@ -29118,15 +29136,27 @@ function getOccupiedArea(drag) {
   return "".concat(drag.row, " / ").concat(drag.column, " / ").concat(endRow, " / ").concat(endColumn);
 }
 
-function updateFieldPosition(draggedFieldId, drag, store) {
+function updateField(parentField, draggedFieldId, dragData, store) {
   _stampa.default.setDraggedFieldGroup(null);
 
-  if (drag.column == null || drag.row == null) {
+  if (dragData.column == null || dragData.row == null) {
     resetResizeData(store);
     return;
   }
 
   var fields = store.get('stampaFields');
+  var field = getField(draggedFieldId, fields);
+  updateFieldSizeOrPosition(field, dragData);
+
+  if (parentField) {
+    checkAndUpdateFieldParent(field, fields, parentField);
+  }
+
+  store.set('stampaFields')(fields);
+  resetResizeData(store);
+}
+
+function getField(draggedFieldId, fields) {
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -29135,36 +29165,13 @@ function updateFieldPosition(draggedFieldId, drag, store) {
     for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var field = _step.value;
 
-      if (field._stampa.key === draggedFieldId) {
-        var resize = _stampa.default.getResizeDirection();
-
-        var resizeWidth = false;
-        var resizeHeight = false;
-
-        if (resize == 'width') {
-          resizeWidth = true;
-        } else if (resize == 'height') {
-          resizeHeight = true;
-        } else if (resize == 'se') {
-          resizeWidth = true;
-          resizeHeight = true;
-        } else {
-          field._stampa.startRow = drag.row;
-          field._stampa.startColumn = drag.column;
-        }
-
-        if (resizeWidth && drag.column >= field._stampa.startColumn) {
-          field._stampa.endColumn = drag.column - field._stampa.startColumn + 1;
-        }
-
-        if (resizeHeight && drag.row >= field._stampa.startRow) {
-          field._stampa.endRow = drag.row - field._stampa.startRow + 1;
-        }
-
-        break;
+      if (field._stampa.key == draggedFieldId) {
+        return field;
       }
 
-      store.set('stampaFields')(fields);
+      if (Array.isArray(field.fields)) {
+        return getField(draggedFieldId, field.fields);
+      }
     }
   } catch (err) {
     _didIteratorError = true;
@@ -29180,57 +29187,60 @@ function updateFieldPosition(draggedFieldId, drag, store) {
       }
     }
   }
-
-  resetResizeData(store);
 }
 
-function resetResizeData(store) {
-  _stampa.default.setResizeDirection(null);
+function updateFieldSizeOrPosition(field, dragData) {
+  var resize = _stampa.default.getResizeDirection();
 
-  _stampa.default.setDraggedFieldId(null);
+  var resizeWidth = false;
+  var resizeHeight = false;
 
-  _stampa.default.setDraggedField(null);
-}
-
-function addNewField(parentField, draggedFieldId, drag, store) {
-  var fields = store.get('stampaFields');
-
-  var field = _stampa.default.getFieldById(draggedFieldId);
-
-  field._stampa = {
-    id: draggedFieldId,
-    key: "_".concat(_shortid.default.generate()),
-    startColumn: drag.column,
-    startRow: drag.row,
-    endColumn: 1,
-    endRow: 1,
-    name: draggedFieldId
-  };
-
-  if (field.defaultSize) {
-    field._stampa.endColumn = field.defaultSize.columns;
-    field._stampa.endRow = field.defaultSize.rows;
+  if (resize == 'width') {
+    resizeWidth = true;
+  } else if (resize == 'height') {
+    resizeHeight = true;
+  } else if (resize == 'se') {
+    resizeWidth = true;
+    resizeHeight = true;
+  } else {
+    field._stampa.startRow = dragData.row;
+    field._stampa.startColumn = dragData.column;
   }
 
-  field._values = {};
-  /**
-   * All the checkbox option set by default to "false" have to create
-   * an empty record in field._values, otherwise it will automatically fallback
-   * to the default "value"
-   */
+  if (resizeWidth && dragData.column >= field._stampa.startColumn) {
+    field._stampa.endColumn = dragData.column - field._stampa.startColumn + 1;
+  }
 
+  if (resizeHeight && dragData.row >= field._stampa.startRow) {
+    field._stampa.endRow = dragData.row - field._stampa.startRow + 1;
+  }
+}
+
+function checkAndUpdateFieldParent(field, fields, parentField) {
+  if (isFieldChildOf(field, parentField)) {
+    return;
+  }
+
+  removeFieldFromCurrentParent(field, fields);
+
+  if (!Array.isArray(parentFields.fields)) {
+    parentField.fields = [];
+  }
+
+  parentField.fields.push(field);
+}
+
+function isFieldChildOf(field, parentField) {
   var _iteratorNormalCompletion2 = true;
   var _didIteratorError2 = false;
   var _iteratorError2 = undefined;
 
   try {
-    for (var _iterator2 = field.options[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var option = _step2.value;
+    for (var _iterator2 = parentField.fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var child = _step2.value;
 
-      if (option.type == 'checkbox' && option.checked == false) {
-        field._values[option.name] = '';
-      } else {
-        field._values[option.name] = option.value;
+      if (child._stampa.key == field._stampa.key) {
+        return true;
       }
     }
   } catch (err) {
@@ -29248,41 +29258,42 @@ function addNewField(parentField, draggedFieldId, drag, store) {
     }
   }
 
-  if (parentField) {
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
+  return false;
+}
 
-    try {
-      for (var _iterator3 = fields[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var _field = _step3.value;
+function removeFieldFromCurrentParent(field, fields) {
+  for (var index in fields) {
+    var child = fields[index];
 
-        if (_field.stampa._key == parentField._stampa.key) {
-          if (_field.fields == null) {
-            _field.fields = [];
-          }
-
-          _field.fields.push(_field);
-
-          break;
-        }
-      }
-    } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-          _iterator3.return();
-        }
-      } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
-        }
-      }
+    if (child._stampa.key == field._stampa.key) {
+      fields.splice(index, 1);
+      break;
     }
 
-    store.set('stampaFields')(fields);
+    if (Array.isArray(field.fields)) {
+      removeFieldFromCurrentParent(field, fields);
+    }
+  }
+}
+
+function resetResizeData(store) {
+  _stampa.default.setResizeDirection(null);
+
+  _stampa.default.setDraggedFieldId(null);
+
+  _stampa.default.setDraggedField(null);
+}
+
+function addNewField(parentField, draggedFieldId, drag, store) {
+  var fields = store.get('stampaFields');
+
+  var field = _stampa.default.getFieldById(draggedFieldId);
+
+  setupFieldStampaData(field, draggedFieldId, drag);
+  setupFieldValuesData(field);
+
+  if (parentField) {
+    addNewFieldAsChildOf(parentField, field, store);
   } else {
     store.set('stampaFields')([].concat(_toConsumableArray(fields), [field]));
   } // Set the last block as "active"
@@ -29295,6 +29306,106 @@ function addNewField(parentField, draggedFieldId, drag, store) {
   _stampa.default.setDraggedFieldId(null);
 
   _stampa.default.setDraggedFieldGroup(null);
+}
+
+function setupFieldStampaData(field, draggedFieldId, drag) {
+  field._stampa = {
+    id: draggedFieldId,
+    key: "_".concat(_shortid.default.generate()),
+    startColumn: drag.column,
+    startRow: drag.row,
+    endColumn: 1,
+    endRow: 1,
+    name: draggedFieldId
+  };
+
+  if (field.defaultSize) {
+    field._stampa.endColumn = field.defaultSize.columns;
+    field._stampa.endRow = field.defaultSize.rows;
+  }
+}
+
+function setupFieldValuesData(field) {
+  field._values = {};
+  /**
+   * All the checkbox option set by default to "false" have to create
+   * an empty record in field._values, otherwise it will automatically fallback
+   * to the default "value"
+   */
+
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
+
+  try {
+    for (var _iterator3 = field.options[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var option = _step3.value;
+
+      if (option.type == 'checkbox' && option.checked == false) {
+        field._values[option.name] = '';
+      } else {
+        field._values[option.name] = option.value;
+      }
+    }
+  } catch (err) {
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+        _iterator3.return();
+      }
+    } finally {
+      if (_didIteratorError3) {
+        throw _iteratorError3;
+      }
+    }
+  }
+}
+
+function addNewFieldAsChildOf(parentField, field, store) {
+  var fields = appendChildToParent(parentField._stampa.key, store.get('stampaFields'), field);
+  store.set('stampaFields')(fields);
+}
+
+function appendChildToParent(parentKey, fields, newField) {
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
+
+  try {
+    for (var _iterator4 = fields[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var field = _step4.value;
+
+      if (field._stampa.key == parentKey) {
+        if (field.fields == null) {
+          field.fields = [];
+        }
+
+        field.fields.push(newField);
+        break;
+      }
+
+      if (Array.isArray(field.fields)) {
+        appendChildToParent(parentKey, field.fields, newField);
+      }
+    }
+  } catch (err) {
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+        _iterator4.return();
+      }
+    } finally {
+      if (_didIteratorError4) {
+        throw _iteratorError4;
+      }
+    }
+  }
+
+  return fields;
 }
 },{"shortid":"../node_modules/shortid/index.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
@@ -29387,7 +29498,7 @@ var Grid = function Grid(_ref) {
     var isFieldOnBoard = draggedFieldId[0] == '_';
 
     if (isFieldOnBoard) {
-      (0, _Grid.updateFieldPosition)(draggedFieldId, drag, store);
+      (0, _Grid.updateField)(parentField, draggedFieldId, drag, store);
     } else {
       (0, _Grid.addNewField)(parentField, draggedFieldId, drag, store);
     }
@@ -56319,7 +56430,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36999" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39567" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

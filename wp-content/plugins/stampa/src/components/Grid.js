@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 
 import Store from '../store/store';
 import stampa from '../stampa';
@@ -15,7 +9,7 @@ import Field from './Field';
 import {
   gridArea,
   updateDragData,
-  updateFieldPosition,
+  updateField,
   addNewField,
 } from './Grid.utils';
 
@@ -71,7 +65,7 @@ const Grid = function({
 
     const isFieldOnBoard = draggedFieldId[0] == '_';
     if (isFieldOnBoard) {
-      updateFieldPosition(draggedFieldId, drag, store);
+      updateField(parentField, draggedFieldId, drag, store);
     } else {
       addNewField(parentField, draggedFieldId, drag, store);
     }

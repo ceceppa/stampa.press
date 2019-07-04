@@ -1,6 +1,7 @@
 :root {
   --stampa-dark: #191e23;
   --stampa-border: #e2e4e7;
+  --stampa-border-container: #a89f68;
   --stampa-hover: #f8f9f9;
   --stampa-white: #fff;
   --stampa-blue: #0085ba;
@@ -188,6 +189,32 @@
                 transform: translateX(0);
         right: 0;
       }
+
+.stampa-grid__field.field-container {
+      border-width: 2px;
+      border-color: #a89f68;
+      border-color: var(--stampa-border-container);
+      overflow: visible;
+      position: relative;
+    }
+
+.stampa-grid__field.field-container >.stampa-grid__field__type {
+        left: 50%;
+        top: -2px;
+        -webkit-transform: translate(-50%, -80%);
+                transform: translate(-50%, -80%);
+        white-space: nowrap;
+        width: auto;
+        opacity: 0;
+        right: auto;
+        pointer-events: none;
+      }
+
+.stampa-grid__field.field-container:hover >.stampa-grid__field__type {
+          opacity: 1;
+          -webkit-transform: translate(-50%, -100%);
+                  transform: translate(-50%, -100%);
+        }
 
 .stampa-grid__field__type {
       background: #eee;

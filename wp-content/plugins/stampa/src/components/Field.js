@@ -114,6 +114,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
 
     // Don't want/need to trigger a re-render of the block/app
     stampa.setResizeDirection(e.target.dataset.resize);
+    stampa.setDraggedFieldGroup(field.group.toLowerCase());
     stampa.setResizing(true);
 
     storeBlockPosition(e);
@@ -126,7 +127,9 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
     stampa.setDraggedFieldGroup(null);
 
     // Need to trigger the re-render of the Grid
-    store.set('draggedFieldId')(null);
+    setTimeout(() => {
+      store.set('draggedFieldId')(null);
+    });
   });
 
   /**
@@ -143,6 +146,19 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   const activeBlock = store.get('activeFieldKey');
   const activeClass = activeBlock == field._stampa.key ? 'active' : '';
 
+  /**
+   * Ignore the resizing & dragging class if I'm dragging anything in
+   * my container
+  */
+  if (field.container == 1 && (resizingClass.length || draggingClass.length)) {
+    const draggedFieldGroup = stampa.getDraggedFieldGroup();
+
+    if (field.acceptedGroups.indexOf(draggedFieldGroup) >= 0) {
+      resizingClass = '';
+      draggingClass = '';
+    }
+  }
+
   return (
     <div
       draggable="true"
@@ -157,7 +173,8 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
       onClick={setAsActive}
     >
       <div className="stampa-grid__field__type">
-        <img src={field.icon} aria-hidden="true" draggable="false" />
+        {!field.container &&
+          <img src={field.icon} aria-hidden="true" draggable="false" />}
         <span>{field._stampa.id}</span>
       </div>
       {field.container &&

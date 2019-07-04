@@ -92,6 +92,7 @@ class Stampa {
 			'fields'   => self::$fields,
 			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
 			'post_ID'  => intval( $post_id ),
+			'svg_path' => plugins_url( 'assets/svg/', __FILE__ ),
 		);
 
 		global $pagenow;

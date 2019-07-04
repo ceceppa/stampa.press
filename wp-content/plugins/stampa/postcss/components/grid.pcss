@@ -61,6 +61,31 @@
       }
     }
 
+    &.field-container {
+      border-width: 2px;
+      border-color: var(--stampa-border-container);
+      overflow: visible;
+      position: relative;
+
+      >.stampa-grid__field__type {
+        left: 50%;
+        top: -2px;
+        transform: translate(-50%, -80%);
+        white-space: nowrap;
+        width: auto;
+        opacity: 0;
+        right: auto;
+        pointer-events: none;
+      }
+
+      &:hover {
+        >.stampa-grid__field__type {
+          opacity: 1;
+          transform: translate(-50%, -100%);
+        }
+      }
+    }
+
     &__type {
       background: #eee;
       position: absolute;
