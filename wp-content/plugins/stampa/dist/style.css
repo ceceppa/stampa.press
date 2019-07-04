@@ -210,6 +210,10 @@
         pointer-events: none;
       }
 
+.stampa-grid__field.field-container >.stampa-grid__field__resizer--height {
+        bottom: -3px;
+      }
+
 .stampa-grid__field.field-container:hover >.stampa-grid__field__type {
           opacity: 1;
           -webkit-transform: translate(-50%, -100%);

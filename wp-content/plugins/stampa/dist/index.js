@@ -29284,12 +29284,12 @@ function resetResizeData(store) {
   _stampa.default.setDraggedField(null);
 }
 
-function addNewField(parentField, draggedFieldId, drag, store) {
+function addNewField(parentField, draggedFieldId, dragData, store) {
   var fields = store.get('stampaFields');
 
   var field = _stampa.default.getFieldById(draggedFieldId);
 
-  setupFieldStampaData(field, draggedFieldId, drag);
+  setupFieldStampaData(field, draggedFieldId, dragData);
   setupFieldValuesData(field);
 
   if (parentField) {
@@ -29308,12 +29308,12 @@ function addNewField(parentField, draggedFieldId, drag, store) {
   _stampa.default.setDraggedFieldGroup(null);
 }
 
-function setupFieldStampaData(field, draggedFieldId, drag) {
+function setupFieldStampaData(field, draggedFieldId, dragData) {
   field._stampa = {
     id: draggedFieldId,
     key: "_".concat(_shortid.default.generate()),
-    startColumn: drag.column,
-    startRow: drag.row,
+    startColumn: dragData.column,
+    startRow: dragData.row,
     endColumn: 1,
     endRow: 1,
     name: draggedFieldId
@@ -29378,7 +29378,7 @@ function appendChildToParent(parentKey, fields, newField) {
       var field = _step4.value;
 
       if (field._stampa.key == parentKey) {
-        if (field.fields == null) {
+        if (!Array.isArray(field.fields)) {
           field.fields = [];
         }
 
@@ -29487,6 +29487,7 @@ var Grid = function Grid(_ref) {
 
   var handleDrop = function handleDrop(e) {
     handleDragLeave();
+    e.stopPropagation();
     var draggedFieldId = e.dataTransfer.getData('stampa-field-key');
 
     if (draggedFieldId == null) {

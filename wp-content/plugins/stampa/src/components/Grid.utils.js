@@ -217,11 +217,11 @@ function resetResizeData(store) {
   stampa.setDraggedField(null);
 }
 
-function addNewField(parentField, draggedFieldId, drag, store) {
+function addNewField(parentField, draggedFieldId, dragData, store) {
   const fields = store.get('stampaFields');
   const field = stampa.getFieldById(draggedFieldId);
 
-  setupFieldStampaData(field, draggedFieldId, drag);
+  setupFieldStampaData(field, draggedFieldId, dragData);
   setupFieldValuesData(field);
 
   if (parentField) {
@@ -237,12 +237,12 @@ function addNewField(parentField, draggedFieldId, drag, store) {
   stampa.setDraggedFieldGroup(null);
 }
 
-function setupFieldStampaData(field, draggedFieldId, drag) {
+function setupFieldStampaData(field, draggedFieldId, dragData) {
   field._stampa = {
     id: draggedFieldId,
     key: `_${shortid.generate()}`,
-    startColumn: drag.column,
-    startRow: drag.row,
+    startColumn: dragData.column,
+    startRow: dragData.row,
     endColumn: 1,
     endRow: 1,
     name: draggedFieldId,
@@ -284,7 +284,7 @@ function addNewFieldAsChildOf(parentField, field, store) {
 function appendChildToParent(parentKey, fields, newField) {
   for (let field of fields) {
     if (field._stampa.key == parentKey) {
-      if (field.fields == null) {
+      if (!Array.isArray(field.fields)) {
         field.fields = [];
       }
 

@@ -55,6 +55,7 @@ const Grid = function({
 
   const handleDrop = e => {
     handleDragLeave();
+    e.stopPropagation();
 
     const draggedFieldId = e.dataTransfer.getData('stampa-field-key');
 
