@@ -7,3 +7,4 @@ import './blocks/m05-block';
 import './blocks/m00-title2';
 import './blocks/alessandro';
 import './blocks/blondie';
+import './blocks/a-title'

@@ -138,8 +138,6 @@ class BlockGenerator extends Stampa {
 		update_post_meta( self::$post_ID, '_stampa_grid', json_encode( self::$grid_params ) );
 		update_post_meta( self::$post_ID, '_stampa_fields', json_encode( self::$fields_params ) );
 		update_post_meta( self::$post_ID, '_stampa_options', json_encode( self::$options_params ) );
-
-		error_log( print_r( $params, true ) );
 	}
 
 	/**
@@ -164,7 +162,7 @@ class BlockGenerator extends Stampa {
 		self::setup_block_information();
 		self::setup_boilerplate_wp_variables();
 		self::generate_options();
-		self::generate_block_body();
+		self::generate_block_body( self::$fields_params );
 		self::setup_grid_style();
 		self::save_js_file();
 		self::generate_basic_php_render_file();
@@ -337,32 +335,32 @@ class BlockGenerator extends Stampa {
 	 * @param array $fields_params the fields to render.
 	 * @return void
 	 */
-	private static function generate_block_body() {
+	private static function generate_block_body( array $fields ) {
 		self::add_replace( 'render_content', [], '' );
 
-		foreach ( self::$fields_params as $field ) {
+		foreach ( $fields as $field ) {
 			$default = self::get_field_by_id( $field['id'] );
-			$stampa  = $field['_stampa'];
+			$field_position  = $field['position'];
 
-			$react_code  = '{/* ' . $stampa['name'] . ' */}';
-			$react_code .= join( PHP_EOL, $default['gutenberg']->react );
+			$react_code  = '{/* ' . $field['name'] . ' */}';
+			$react_code .= join( PHP_EOL, $default['gutenberg']->react ?? [] );
 
-			self::add_replace( 'grid_row_start', $stampa['startRow'] );
-			self::add_replace( 'grid_row_end', intval( $stampa['startRow'] ) + intval( $stampa['endRow'] ) );
-			self::add_replace( 'grid_column_start', $stampa['startColumn'] );
-			self::add_replace( 'grid_column_end', intval( $stampa['startColumn'] ) + intval( $stampa['endColumn'] ) );
-			self::add_replace( 'field_name', $stampa['name'] );
+			self::add_replace( 'grid_row_start', $field_position['startRow'] );
+			self::add_replace( 'grid_row_end', intval( $field_position['startRow'] ) + intval( $field_position['endRow'] ) );
+			self::add_replace( 'grid_column_start', $field_position['startColumn'] );
+			self::add_replace( 'grid_column_end', intval( $field_position['startColumn'] ) + intval( $field_position['endColumn'] ) );
+			self::add_replace( 'field_name', $field['name'] );
 
 			// The values.
-			if ( ! isset( $field['_values'] ) ) {
-				$field['_values'] = [];
+			if ( ! isset( $field['values'] ) ) {
+				$field['values'] = [];
 			}
 
-			foreach ( $field['_values'] as $key => $value ) {
+			foreach ( $field['values'] as $key => $value ) {
 				self::add_replace( 'value.' . $key, $value );
 			}
 
-			$attribute_name = $stampa['name'];
+			$attribute_name = $field['name'];
 			if ( isset( $default['gutenberg']->attribute_type ) ) {
 				self::add_replace(
 					'attributes',
@@ -380,6 +378,14 @@ class BlockGenerator extends Stampa {
 					self::replace( $react_code ),
 				]
 			);
+
+			$has_sub_fields = isset( $field['fields']) &&
+												is_array( $field['fields'] ) &&
+												! empty( $field['fields'] );
+
+			if ( $has_sub_fields ) {
+				self::generate_block_body( $field['fields'] );
+			}
 		}
 	}
 
@@ -466,7 +472,7 @@ class BlockGenerator extends Stampa {
 		$css_content = sprintf( '.%s {', self::$block_css_class_name );
 
 		foreach ( self::$fields_params as $field ) {
-			$css_content .= sprintf( '%s  &__%s {%s  }', PHP_EOL, $field['_stampa']['name'], PHP_EOL );
+			$css_content .= sprintf( '%s  &__%s {%s  }', PHP_EOL, $field['name'], PHP_EOL );
 		}
 
 		$css_content .= '}';
@@ -514,7 +520,7 @@ class BlockGenerator extends Stampa {
 			$field = self::get_field_by_id( $stampa_field['id'] );
 
 			if ( isset( $field['php'] ) ) {
-				self::add_replace( 'field_name', $stampa_field['_stampa']['name'] );
+				self::add_replace( 'field_name', $stampa_field['name'] );
 
 				$php_content .= self::replace( $field['php'] ) . PHP_EOL;
 			}
