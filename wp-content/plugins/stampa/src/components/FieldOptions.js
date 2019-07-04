@@ -8,6 +8,7 @@ import ButtonDeleteField from './FieldOptions/ButtonDeleteField';
 import CheckboxField from './FieldOptions/CheckboxField';
 import TextField from './FieldOptions/TextField';
 import SelectField from './FieldOptions/SelectField';
+import NumberField from './FieldOptions/NumberField';
 
 import stampa from '../stampa';
 
@@ -18,6 +19,7 @@ const components = {
   checkbox: CheckboxField,
   text: TextField,
   select: SelectField,
+  number: NumberField,
 };
 
 export default function FieldOptions(props) {

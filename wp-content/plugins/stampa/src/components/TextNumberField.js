@@ -1,7 +1,7 @@
 import React from 'react';
 import Store from '../store/store';
 
-export default function NumberSlider({ id, label, storeKey, min }) {
+export default function NumberField({ id, label, storeKey, min }) {
   const store = Store.useStore();
   const value = store.get(storeKey);
 

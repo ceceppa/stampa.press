@@ -55,13 +55,19 @@ const Grid = function({
 
   const handleDrop = e => {
     handleDragLeave();
-    e.stopPropagation();
 
     const draggedFieldId = e.dataTransfer.getData('stampa-field-key');
 
     if (draggedFieldId == null) {
       return;
     }
+
+    const draggedFieldGroup = stampa.getDraggedFieldGroup();
+    const isFieldGroupAccepted = acceptedGroups.indexOf(draggedFieldGroup) >= 0;
+    if (isFieldGroupAccepted) {
+      e.stopPropagation();
+    }
+
     stampa.setResizing(false);
 
     const isFieldOnBoard = draggedFieldId[0] == '_';
@@ -82,7 +88,8 @@ const Grid = function({
   const isDragging = stampa.getDraggedFieldId() != null;
   const draggingClass = isDragging ? 'dragging' : '';
 
-  const gridHeight = gridRowHeight * gridRows;
+  const gridHeight = gridRowHeight > 0 ? gridRowHeight * gridRows : 100;
+  const heightUnit = gridRowHeight > 0 ? 'px' : '%';
 
   return (
     <div
@@ -99,15 +106,17 @@ const Grid = function({
           gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,
           gridTemplateRows: `repeat(${gridRows}, 1fr)`,
           gridGap: `${gridGap}px`,
-          height: `${gridHeight}px`,
+          height: `${gridHeight}${heightUnit}`,
         }}
       >
-        <CSSGrid
-          gridColumns={gridColumns}
-          gridRows={gridRows}
-          gridGap={gridGap}
-          gridHeight={gridHeight}
-        />
+        {store.get('gridShow') &&
+          <CSSGrid
+            gridColumns={gridColumns}
+            gridRows={gridRows}
+            gridGap={gridGap}
+            gridHeight={gridHeight}
+            gridHeightUnit={heightUnit}
+          />}
         {fields.map(field => (
           <Field
             field={field}

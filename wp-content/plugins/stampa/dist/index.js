@@ -27780,13 +27780,13 @@ function Save() {
     }
   }, "Save & Generate"));
 }
-},{"react":"../node_modules/react/index.js","../../store/store":"store/store.js","../../stampa":"stampa.js"}],"components/NumberSlider.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../../store/store":"store/store.js","../../stampa":"stampa.js"}],"components/TextNumberField.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = NumberSlider;
+exports.default = NumberField;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -27794,7 +27794,7 @@ var _store = _interopRequireDefault(require("../store/store"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function NumberSlider(_ref) {
+function NumberField(_ref) {
   var id = _ref.id,
       label = _ref.label,
       storeKey = _ref.storeKey,
@@ -27825,64 +27825,7 @@ function NumberSlider(_ref) {
     onChange: updateValue
   }));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/FieldOptions/CheckboxField.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = CheckboxField;
-
-var _react = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function CheckboxField(_ref) {
-  var option = _ref.option,
-      selectedValues = _ref.selectedValues,
-      updateOptionValue = _ref.updateOptionValue;
-
-  if (selectedValues == null) {
-    selectedValues = {};
-  }
-  /**
-   * Update the state for the checkbox
-   */
-
-
-  var updateOptionChecked = (0, _react.useCallback)(function (e, name, value) {
-    if (e.target.checked) {
-      e.target.value = value;
-    } else {
-      e.target.value = '';
-    }
-
-    updateOptionValue(e, name);
-  });
-  var isChecked = option.checked || false;
-
-  if (selectedValues[option.name] != null) {
-    isChecked = selectedValues[option.name] === option.value;
-  }
-
-  return _react.default.createElement("label", {
-    htmlFor: "field-".concat(option.name),
-    className: "stampa-checkbox"
-  }, _react.default.createElement("span", {
-    className: "stampa-checkbox__label"
-  }, option.label, ":"), _react.default.createElement("input", {
-    className: "stampa-checkbox__input",
-    type: "checkbox",
-    name: "field-".concat(option.name),
-    id: "field-".concat(option.name),
-    value: option.value,
-    checked: isChecked,
-    onChange: function onChange(e) {
-      return updateOptionChecked(e, option.name, option.value);
-    }
-  }));
-}
-},{"react":"../node_modules/react/index.js"}],"components/GridOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js"}],"components/GridOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27896,9 +27839,7 @@ var _store = _interopRequireDefault(require("../store/store"));
 
 var _Save = _interopRequireDefault(require("./BlockOptions/Save"));
 
-var _NumberSlider = _interopRequireDefault(require("./NumberSlider"));
-
-var _CheckboxField = _interopRequireDefault(require("./FieldOptions/CheckboxField"));
+var _TextNumberField = _interopRequireDefault(require("./TextNumberField"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27908,19 +27849,19 @@ function GridOptions() {
   var showGrid = store.get('gridShow');
   return _react.default.createElement("div", {
     className: "grid-options stampa__border--bottom"
-  }, _react.default.createElement(_NumberSlider.default, {
+  }, _react.default.createElement(_TextNumberField.default, {
     id: "columns",
     label: "Columns:",
     storeKey: "gridColumns"
-  }), _react.default.createElement(_NumberSlider.default, {
+  }), _react.default.createElement(_TextNumberField.default, {
     id: "rows",
     label: "Rows:",
     storeKey: "gridRows"
-  }), _react.default.createElement(_NumberSlider.default, {
+  }), _react.default.createElement(_TextNumberField.default, {
     id: "gap",
     label: "Gap:",
     storeKey: "gridGap"
-  }), _react.default.createElement(_NumberSlider.default, {
+  }), _react.default.createElement(_TextNumberField.default, {
     id: "rowHeight",
     label: "Row Height (px):",
     storeKey: "rowHeight"
@@ -27940,7 +27881,7 @@ function GridOptions() {
     className: "stampa-checkbox__label"
   }, "Show grid:")), _react.default.createElement(_Save.default, null));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./NumberSlider":"components/NumberSlider.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js"}],"components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./BlockOptions/Save":"components/BlockOptions/Save.js","./TextNumberField":"components/TextNumberField.js"}],"components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28023,6 +27964,63 @@ function ButtonDeleteField(_ref) {
     className: "button button-link-delete"
   }, "Delete field");
 }
+},{"react":"../node_modules/react/index.js"}],"components/FieldOptions/CheckboxField.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = CheckboxField;
+
+var _react = _interopRequireWildcard(require("react"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function CheckboxField(_ref) {
+  var option = _ref.option,
+      selectedValues = _ref.selectedValues,
+      updateOptionValue = _ref.updateOptionValue;
+
+  if (selectedValues == null) {
+    selectedValues = {};
+  }
+  /**
+   * Update the state for the checkbox
+   */
+
+
+  var updateOptionChecked = (0, _react.useCallback)(function (e, name, value) {
+    if (e.target.checked) {
+      e.target.value = value;
+    } else {
+      e.target.value = '';
+    }
+
+    updateOptionValue(e, name);
+  });
+  var isChecked = option.checked || false;
+
+  if (selectedValues[option.name] != null) {
+    isChecked = selectedValues[option.name] === option.value;
+  }
+
+  return _react.default.createElement("label", {
+    htmlFor: "field-".concat(option.name),
+    className: "stampa-checkbox"
+  }, _react.default.createElement("span", {
+    className: "stampa-checkbox__label"
+  }, option.label, ":"), _react.default.createElement("input", {
+    className: "stampa-checkbox__input",
+    type: "checkbox",
+    name: "field-".concat(option.name),
+    id: "field-".concat(option.name),
+    value: option.value,
+    checked: isChecked,
+    onChange: function onChange(e) {
+      return updateOptionChecked(e, option.name, option.value);
+    }
+  }));
+}
 },{"react":"../node_modules/react/index.js"}],"components/FieldOptions/TextField.js":[function(require,module,exports) {
 "use strict";
 
@@ -28101,6 +28099,43 @@ function SelectField(_ref) {
     }, value);
   })));
 }
+},{"react":"../node_modules/react/index.js"}],"components/FieldOptions/NumberField.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = TextField;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function TextField(_ref) {
+  var option = _ref.option,
+      selectedValues = _ref.selectedValues,
+      updateOptionValue = _ref.updateOptionValue;
+
+  if (selectedValues == null) {
+    selectedValues = {};
+  }
+
+  return _react.default.createElement("label", {
+    htmlFor: "field-".concat(option.name),
+    className: "stampa-number"
+  }, _react.default.createElement("span", {
+    className: "stampa-number__label"
+  }, option.label, ":"), _react.default.createElement("input", {
+    className: "stampa-number__input",
+    type: "number",
+    name: "field-".concat(option.name),
+    id: "field-".concat(option.name),
+    value: selectedValues[option.name] || option.value,
+    onChange: function onChange(e) {
+      return updateOptionValue(e, option.name);
+    }
+  }));
+}
 },{"react":"../node_modules/react/index.js"}],"components/FieldOptions.js":[function(require,module,exports) {
 "use strict";
 
@@ -28123,6 +28158,8 @@ var _TextField = _interopRequireDefault(require("./FieldOptions/TextField"));
 
 var _SelectField = _interopRequireDefault(require("./FieldOptions/SelectField"));
 
+var _NumberField = _interopRequireDefault(require("./FieldOptions/NumberField"));
+
 var _stampa = _interopRequireDefault(require("../stampa"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28137,7 +28174,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var components = {
   checkbox: _CheckboxField.default,
   text: _TextField.default,
-  select: _SelectField.default
+  select: _SelectField.default,
+  number: _NumberField.default
 };
 
 function FieldOptions(props) {
@@ -28305,7 +28343,7 @@ function FieldOptions(props) {
     className: "stampa--gray"
   }, "No block selected"));
 }
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","./FieldOptions/NumberField":"components/FieldOptions/NumberField.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28334,7 +28372,7 @@ var CSSGrid = _react.default.memo(function SVGGrid(_ref) {
       gridRows = _ref.gridRows,
       gridGap = _ref.gridGap,
       gridHeight = _ref.gridHeight,
-      showGrid = _ref.showGrid;
+      gridHeightUnit = _ref.gridHeightUnit;
   var ref = (0, _react.useRef)();
 
   var store = _store.default.useStore();
@@ -28369,7 +28407,8 @@ var CSSGrid = _react.default.memo(function SVGGrid(_ref) {
   var updateGrid = function updateGrid() {
     var clientRect = ref.current.getBoundingClientRect();
     var width = (clientRect.width - gridGap * (gridColumns - 1)) / gridColumns;
-    var height = (gridHeight + gridGap) / gridRows;
+    var clientHeight = gridHeightUnit == 'px' ? gridHeight : clientRect.height;
+    var height = (clientHeight + gridGap) / gridRows;
 
     if (true) {
       updateBackgroundImage("linear-gradient(to right, #e2e4e7 ".concat(gridGap, "px, transparent 1px), linear-gradient(to bottom, #e2e4e7 ").concat(gridGap, "px, transparent 1px)"));
@@ -28611,10 +28650,10 @@ var Field = _react.default.memo(function (_ref) {
     "aria-hidden": "true",
     draggable: "false"
   }), _react.default.createElement("span", null, field._stampa.id)), field.container && _react.default.createElement(_Grid.default, {
-    gridColumns: field._stampa.endColumn,
-    gridRows: field._stampa.endRow,
-    gridGap: 5,
-    gridRowHeight: 46,
+    gridColumns: +field._values.columns || field._stampa.endColumn,
+    gridRows: +field._values.rows || field._stampa.endRow,
+    gridGap: +field._values.gap || store.get('gridGap'),
+    gridRowHeight: -1,
     acceptedGroups: field.acceptedGroups,
     fields: field.fields || [],
     parentField: field,
@@ -29487,11 +29526,18 @@ var Grid = function Grid(_ref) {
 
   var handleDrop = function handleDrop(e) {
     handleDragLeave();
-    e.stopPropagation();
     var draggedFieldId = e.dataTransfer.getData('stampa-field-key');
 
     if (draggedFieldId == null) {
       return;
+    }
+
+    var draggedFieldGroup = _stampa.default.getDraggedFieldGroup();
+
+    var isFieldGroupAccepted = acceptedGroups.indexOf(draggedFieldGroup) >= 0;
+
+    if (isFieldGroupAccepted) {
+      e.stopPropagation();
     }
 
     _stampa.default.setResizing(false);
@@ -29514,7 +29560,8 @@ var Grid = function Grid(_ref) {
 
   var isDragging = _stampa.default.getDraggedFieldId() != null;
   var draggingClass = isDragging ? 'dragging' : '';
-  var gridHeight = gridRowHeight * gridRows;
+  var gridHeight = gridRowHeight > 0 ? gridRowHeight * gridRows : 100;
+  var heightUnit = gridRowHeight > 0 ? 'px' : '%';
   return _react.default.createElement("div", {
     className: "stampa-grid ".concat(useClassName || ''),
     "data-accepted-groups": acceptedGroups.join(',')
@@ -29528,13 +29575,14 @@ var Grid = function Grid(_ref) {
       gridTemplateColumns: "repeat(".concat(gridColumns, ", 1fr)"),
       gridTemplateRows: "repeat(".concat(gridRows, ", 1fr)"),
       gridGap: "".concat(gridGap, "px"),
-      height: "".concat(gridHeight, "px")
+      height: "".concat(gridHeight).concat(heightUnit)
     }
-  }, _react.default.createElement(_CSSGrid.default, {
+  }, store.get('gridShow') && _react.default.createElement(_CSSGrid.default, {
     gridColumns: gridColumns,
     gridRows: gridRows,
     gridGap: gridGap,
-    gridHeight: gridHeight
+    gridHeight: gridHeight,
+    gridHeightUnit: heightUnit
   }), fields.map(function (field) {
     return _react.default.createElement(_Field.default, {
       field: field,
@@ -56392,10 +56440,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var stampaElements = document.querySelectorAll('.stampa-app');
 
 if (stampaElements.length) {
+  document.body.classList.add('is-stampa-app');
   /**
    * Prevent the custom style from the TinyMCE editor to ovewrite the
    * Gutenberg one.
    */
+
   _reactDom.default.render(_react.default.createElement(_store.default.Container, null, _react.default.createElement(_App.default, null)), stampaElements[stampaElements.length - 1]);
 } // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
@@ -56431,7 +56481,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39567" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40017" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -7,7 +7,7 @@ const CSSGrid = React.memo(function SVGGrid({
   gridRows,
   gridGap,
   gridHeight,
-  showGrid,
+  gridHeightUnit,
 }) {
   const ref = useRef();
   const store = Store.useStore();
@@ -32,7 +32,11 @@ const CSSGrid = React.memo(function SVGGrid({
 
     const width =
       (clientRect.width - gridGap * (gridColumns - 1)) / gridColumns;
-    const height = (gridHeight + gridGap) / gridRows;
+
+    const clientHeight = gridHeightUnit == 'px'
+      ? gridHeight
+      : clientRect.height;
+    const height = (clientHeight + gridGap) / gridRows;
 
     if (true) {
       updateBackgroundImage(

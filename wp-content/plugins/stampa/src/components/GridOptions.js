@@ -3,8 +3,7 @@ import React from 'react';
 import Store from '../store/store';
 
 import SaveBlock from './BlockOptions/Save';
-import NumberSlider from './NumberSlider';
-import CheckboxField from './FieldOptions/CheckboxField';
+import NumberField from './TextNumberField';
 
 export default function GridOptions() {
   const store = Store.useStore();
@@ -13,16 +12,16 @@ export default function GridOptions() {
   return (
     <div className="grid-options stampa__border--bottom">
       {/* Columns */}
-      <NumberSlider id="columns" label="Columns:" storeKey="gridColumns" />
+      <NumberField id="columns" label="Columns:" storeKey="gridColumns" />
 
       {/* Rows */}
-      <NumberSlider id="rows" label="Rows:" storeKey="gridRows" />
+      <NumberField id="rows" label="Rows:" storeKey="gridRows" />
 
       {/* Gap */}
-      <NumberSlider id="gap" label="Gap:" storeKey="gridGap" />
+      <NumberField id="gap" label="Gap:" storeKey="gridGap" />
 
       {/* Row height */}
-      <NumberSlider
+      <NumberField
         id="rowHeight"
         label="Row Height (px):"
         storeKey="rowHeight"

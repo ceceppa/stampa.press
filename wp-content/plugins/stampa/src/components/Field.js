@@ -179,10 +179,10 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
       </div>
       {field.container &&
         <Grid
-          gridColumns={field._stampa.endColumn}
-          gridRows={field._stampa.endRow}
-          gridGap={5}
-          gridRowHeight={46}
+          gridColumns={+field._values.columns || field._stampa.endColumn}
+          gridRows={+field._values.rows || field._stampa.endRow}
+          gridGap={+field._values.gap || store.get('gridGap')}
+          gridRowHeight={-1}
           acceptedGroups={field.acceptedGroups}
           fields={field.fields || []}
           parentField={field}

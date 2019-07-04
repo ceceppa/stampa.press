@@ -6,7 +6,26 @@
     "tooltip": "Post Selector",
     "icon": "post-selector.svg",
     "fieldClassName": "field-container",
-    "options": [],
+    "options": [
+      {
+        "name": "columns",
+        "type": "number",
+        "label": "Columns",
+        "value": "6"
+      },
+      {
+        "name": "rows",
+        "type": "number",
+        "label": "Rows",
+        "value": "5"
+      },
+      {
+        "name": "gap",
+        "type": "number",
+        "label": "Gap",
+        "value": "5"
+      }
+    ],
     "container": 1,
     "acceptedGroups": ["post"],
     "defaultSize": {

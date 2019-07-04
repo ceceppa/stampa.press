@@ -9,6 +9,8 @@ import * as serviceWorker from './serviceWorker';
 const stampaElements = document.querySelectorAll('.stampa-app');
 
 if (stampaElements.length) {
+  document.body.classList.add('is-stampa-app');
+
   /**
    * Prevent the custom style from the TinyMCE editor to ovewrite the
    * Gutenberg one.
