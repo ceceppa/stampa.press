@@ -237,7 +237,7 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
    * We don't save other all the other informations because this might change
    * during the devolpemnt or in future release of the app, and we need flexibility.
    */
-  const uniqueFieldName = getUniqueName(draggedFieldId, fields);
+  const uniqueFieldName = generateUniqueName(draggedFieldId, fields);
   const newField = setupFieldStampaData(
     uniqueFieldName,
     sourceField,
@@ -270,21 +270,21 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
  * @param {*} fields
  * @param {*} id
  */
-function getUniqueName(fieldName, fields) {
+function generateUniqueName(fieldName, fields) {
   for (let field of fields) {
     if (field.name == fieldName) {
       const re = new RegExp('\\d+$');
       const match = fieldName.match(re);
 
       if (match) {
-        fieldName.replace(/\d+$/, '');
+        fieldName = fieldName.replace(/\d+$/, '');
 
         fieldName += +match[0] + 1;
       } else {
         fieldName += '1';
       }
 
-      return getUniqueName(fieldName, fields);
+      return generateUniqueName(fieldName, fields);
     }
   }
   return fieldName;

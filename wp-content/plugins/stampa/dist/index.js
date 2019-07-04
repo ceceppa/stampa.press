@@ -28111,13 +28111,59 @@ function TextField(_ref) {
     }
   }));
 }
-},{"react":"../node_modules/react/index.js"}],"components/FieldOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"components/FieldOptions.utils.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = FieldOptions;
+exports.getFieldByKey = getFieldByKey;
+
+function getFieldByKey(fields, fieldKey) {
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var field = _step.value;
+
+      if (field.key == fieldKey) {
+        return field;
+      }
+
+      if (Array.isArray(field.fields)) {
+        var found = getFieldByKey(field.fields, fieldKey);
+
+        if (found) {
+          return found;
+        }
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return null;
+}
+},{}],"components/FieldOptions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -28137,6 +28183,8 @@ var _NumberField = _interopRequireDefault(require("./FieldOptions/NumberField"))
 
 var _stampa = _interopRequireDefault(require("../stampa"));
 
+var _FieldOptions = require("./FieldOptions.utils");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -28153,7 +28201,7 @@ var components = {
   number: _NumberField.default
 };
 
-function FieldOptions(props) {
+var FieldOptions = function FieldOptions(props) {
   var store;
 
   if (props && props.store) {
@@ -28162,64 +28210,29 @@ function FieldOptions(props) {
     store = _store.default.useStore();
   }
 
-  var activeFieldKey = store.get('activeFieldKey');
-  var activeField;
-  var options = null;
+  var activeFieldId = store.get('activeFieldId');
+  var activeField = null;
+  var activeFieldKey = null;
+  var stampaField = null;
 
-  if (activeFieldKey) {
-    var activeFieldId = store.get('activeFieldId');
-
-    var field = _stampa.default.getFieldById(activeFieldId);
-
-    activeField = field;
-    options = field.options;
+  if (activeFieldId) {
+    stampaField = _stampa.default.getFieldById(activeFieldId);
+    activeFieldKey = store.get('activeFieldKey');
+    var fields = store.get('stampaFields');
+    activeField = (0, _FieldOptions.getFieldByKey)(fields, activeFieldKey);
+    console.info(activeField);
   }
-  /**
-   * Update the name option for the current field.
-   *
-   * @param {*} e
-   */
 
-
-  var updateFieldName = (0, _react.useCallback)(function (e) {// const fields = store.get('stampaFields');
-    // for (const field of fields) {
-    //   if (field.key == activeFieldKey) {
-    //     field.name = stampa.sanitizeVariableName(e.target.value);
-    //     break;
-    //   }
-    // }
-    // store.set('stampaFields')(fields);
+  var updateFieldName = (0, _react.useCallback)(function (e) {
+    var fields = store.get('stampaFields');
+    var field = (0, _FieldOptions.getFieldByKey)(fields, activeFieldKey);
+    field.name = _stampa.default.sanitizeVariableName(e.target.value);
+    store.set('stampaFields')(fields);
   });
   var updateOptionValue = (0, _react.useCallback)(function (e, name) {
     var fields = store.get('stampaFields');
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var block = _step.value;
-
-        if (block.key == activeFieldKey) {
-          block._values[name] = e.target.value;
-          break;
-        }
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return != null) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
+    var field = (0, _FieldOptions.getFieldByKey)(fields, activeFieldKey);
+    field.values[name] = e.target.value;
     store.set('stampaFields')(fields);
   });
   /**
@@ -28252,12 +28265,12 @@ function FieldOptions(props) {
     className: "stampa-hr"
   }), _react.default.createElement("h3", {
     key: "h3-tag"
-  }, "Options:"), activeField.options.map(function (option) {
+  }, "Options:"), stampaField.options.map(function (option) {
     var Component = components[option.type];
     return _react.default.createElement(Component, {
       option: option,
       updateOptionValue: updateOptionValue,
-      selectedValues: activeField._values,
+      selectedValues: activeField.values,
       key: option.name
     });
   }), _react.default.createElement("hr", {
@@ -28271,8 +28284,12 @@ function FieldOptions(props) {
   }))], !activeField && _react.default.createElement("p", {
     className: "stampa--gray"
   }, "No block selected"));
-}
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","./FieldOptions/NumberField":"components/FieldOptions/NumberField.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+};
+
+var _default = _react.default.memo(FieldOptions);
+
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","./FieldOptions/NumberField":"components/FieldOptions/NumberField.js","../stampa":"stampa.js","./FieldOptions.utils":"components/FieldOptions.utils.js"}],"components/CSSGrid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29290,7 +29307,7 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
    */
 
 
-  var uniqueFieldName = getUniqueName(draggedFieldId, fields);
+  var uniqueFieldName = generateUniqueName(draggedFieldId, fields);
   var newField = setupFieldStampaData(uniqueFieldName, sourceField, draggedFieldId, dragData);
   setupFieldValuesData(newField, sourceField);
 
@@ -29321,7 +29338,7 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
  */
 
 
-function getUniqueName(fieldName, fields) {
+function generateUniqueName(fieldName, fields) {
   var _iteratorNormalCompletion3 = true;
   var _didIteratorError3 = false;
   var _iteratorError3 = undefined;
@@ -29335,13 +29352,13 @@ function getUniqueName(fieldName, fields) {
         var match = fieldName.match(re);
 
         if (match) {
-          fieldName.replace(/\d+$/, '');
+          fieldName = fieldName.replace(/\d+$/, '');
           fieldName += +match[0] + 1;
         } else {
           fieldName += '1';
         }
 
-        return getUniqueName(fieldName, fields);
+        return generateUniqueName(fieldName, fields);
       }
     }
   } catch (err) {
@@ -56498,7 +56515,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34975" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37593" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

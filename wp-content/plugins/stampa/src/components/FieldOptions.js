@@ -11,6 +11,7 @@ import SelectField from './FieldOptions/SelectField';
 import NumberField from './FieldOptions/NumberField';
 
 import stampa from '../stampa';
+import { getFieldByKey } from './FieldOptions.utils';
 
 /**
  * Dynamic components name
@@ -22,51 +23,43 @@ const components = {
   number: NumberField,
 };
 
-export default function FieldOptions(props) {
+const FieldOptions = function(props) {
   let store;
   if (props && props.store) {
     store = props.store.store;
   } else {
     store = Store.useStore();
   }
-  const activeFieldKey = store.get('activeFieldKey');
+  const activeFieldId = store.get('activeFieldId');
+  let activeField = null;
+  let activeFieldKey = null;
+  let stampaField = null;
 
-  let activeField;
-  let options = null;
-  if (activeFieldKey) {
-    const activeFieldId = store.get('activeFieldId');
-    const field = stampa.getFieldById(activeFieldId);
+  if (activeFieldId) {
+    stampaField = stampa.getFieldById(activeFieldId);
 
-    activeField = field;
-    options = field.options;
+    activeFieldKey = store.get('activeFieldKey');
+
+    const fields = store.get('stampaFields');
+    activeField = getFieldByKey(fields, activeFieldKey);
+
+    console.info(activeField);
   }
 
-  /**
-   * Update the name option for the current field.
-   *
-   * @param {*} e
-   */
   const updateFieldName = useCallback(e => {
-    // const fields = store.get('stampaFields');
-    // for (const field of fields) {
-    //   if (field.key == activeFieldKey) {
-    //     field.name = stampa.sanitizeVariableName(e.target.value);
-    //     break;
-    //   }
-    // }
-    // store.set('stampaFields')(fields);
+    const fields = store.get('stampaFields');
+    const field = getFieldByKey(fields, activeFieldKey);
+
+    field.name = stampa.sanitizeVariableName(e.target.value);
+
+    store.set('stampaFields')(fields);
   });
 
   const updateOptionValue = useCallback((e, name) => {
     const fields = store.get('stampaFields');
+    const field = getFieldByKey(fields, activeFieldKey);
 
-    for (const block of fields) {
-      if (block.key == activeFieldKey) {
-        block._values[name] = e.target.value;
-
-        break;
-      }
-    }
+    field.values[name] = e.target.value;
 
     store.set('stampaFields')(fields);
   });
@@ -104,14 +97,14 @@ export default function FieldOptions(props) {
         </label>,
         <hr key="hr-1" className="stampa-hr" />,
         <h3 key="h3-tag">Options:</h3>,
-        activeField.options.map(option => {
+        stampaField.options.map(option => {
           const Component = components[option.type];
 
           return (
             <Component
               option={option}
               updateOptionValue={updateOptionValue}
-              selectedValues={activeField._values}
+              selectedValues={activeField.values}
               key={option.name}
             />
           );
@@ -125,4 +118,6 @@ export default function FieldOptions(props) {
       {!activeField && <p className="stampa--gray">No block selected</p>}
     </ToggleGroup>
   );
-}
+};
+
+export default React.memo(FieldOptions);
