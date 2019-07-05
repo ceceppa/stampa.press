@@ -165,6 +165,12 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
     }
   }
 
+  const fieldGridPosition = {
+    columns: (field.values && field.values.columns) || field.position.endColumn,
+    rows: (field.values && field.values.rows) || field.position.endRow,
+    gap: (field.values && field.values.gap) || store.get('gridGap'),
+  };
+
   return (
     <div
       draggable="true"
@@ -180,15 +186,17 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
       onClick={setAsActive}
     >
       <div className="stampa-grid__field__type">
+        {stampaField.container && <span>{field.name}</span>}
         {!stampaField.container &&
-          <img src={field.icon} aria-hidden="true" draggable="false" />}
-        <span>{field.id}</span>
+          (<img src={field.icon} aria-hidden="true" draggable="false" />, (
+            <span>{field.id}</span>
+          ))}
       </div>
       {stampaField.container &&
         <Grid
-          gridColumns={+field.values.columns || field.position.endColumn}
-          gridRows={+field.values.rows || field.position.endRow}
-          gridGap={+field.values.gap || store.get('gridGap')}
+          gridColumns={+fieldGridPosition.columns}
+          gridRows={+fieldGridPosition.rows}
+          gridGap={+fieldGridPosition.gap}
           gridRowHeight={-1}
           acceptedGroups={stampaField.acceptedGroups}
           fields={field.fields || []}

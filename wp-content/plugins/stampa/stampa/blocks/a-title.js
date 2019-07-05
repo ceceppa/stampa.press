@@ -51,27 +51,88 @@ registerBlockType("stampa/a-title", {
             display: "grid",
             gridTemplateColumns:
               "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-            gridTemplateRows: "1fr 1fr 1fr 1fr 1fr ",
+            gridTemplateRows:
+              "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
             gridGap: "5px",
-            height: "230px"
+            height: "690px"
           }}
         >
-          {/* post-title */}
-          {/* wysiwyg1 */}
+          {/* post-selector */}
+          <StampaPostSelector>{/* post-title */}</StampaPostSelector>
+          {/* wysiwyg */}
           <div
-            className="stampa-field stampa-field--wysiwyg field--wysiwyg1"
+            className="stampa-field stampa-field--wysiwyg field--static-image"
             style={{
-              gridRowStart: 2,
-              gridColumnStart: 5,
+              gridRowStart: 3,
+              gridColumnStart: 1,
               gridRowEnd: 5,
-              gridColumnEnd: 10
+              gridColumnEnd: 3
             }}
           >
             <RichText
               placeholder="yet another field"
-              value={attributes.wysiwyg1}
-              onChange={value => updateAttribute("wysiwyg1", value)}
+              value={attributes.static - image}
+              onChange={value => updateAttribute("static-image", value)}
             />
+          </div>
+          {/* wysiwyg1 */}
+          <div
+            className="stampa-field stampa-field--wysiwyg field--static-image"
+            style={{
+              gridRowStart: 3,
+              gridColumnStart: 1,
+              gridRowEnd: 5,
+              gridColumnEnd: 3
+            }}
+          >
+            <RichText
+              placeholder="yet another field"
+              value={attributes.static - image}
+              onChange={value => updateAttribute("static-image", value)}
+            />
+          </div>
+          {/* container */}
+          <div
+            className="stampa-field container field--static-image"
+            style={{
+              gridRowStart: 3,
+              gridColumnStart: 1,
+              gridRowEnd: 5,
+              gridColumnEnd: 3
+            }}
+          >
+            {/* static-label */}
+            <span
+              className="stampa-field stampa-field--label field--static-image"
+              style={{
+                gridRowStart: 3,
+                gridColumnStart: 1,
+                gridRowEnd: 5,
+                gridColumnEnd: 3
+              }}
+            >
+              Label
+            </span>
+            {/* container12 */}
+            <div
+              className="stampa-field container field--static-image"
+              style={{
+                gridRowStart: 3,
+                gridColumnStart: 1,
+                gridRowEnd: 5,
+                gridColumnEnd: 3
+              }}
+            ></div>
+            {/* static-image */}
+            <div
+              className="stampa-field field--static-image"
+              style={{
+                gridRowStart: 3,
+                gridColumnStart: 1,
+                gridRowEnd: 5,
+                gridColumnEnd: 3
+              }}
+            ></div>
           </div>
         </div>
       </div>

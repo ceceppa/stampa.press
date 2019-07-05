@@ -162,14 +162,15 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
   if (isFieldChildOf(field, parentField)) {
     return;
   }
-
   removeFieldFromCurrentParent(field, fields);
+  console.info(fields);
 
-  if (!Array.isArray(parentFields.fields)) {
-    parentField.fields = [];
+  const parent = stampa.findFieldByKey(fields, parentField.key);
+  if (!Array.isArray(parent.fields)) {
+    parent.fields = [];
   }
 
-  parentField.fields.push(field);
+  parent.fields.push(field);
 }
 
 function isFieldChildOf(field, parentField) {
@@ -182,18 +183,18 @@ function isFieldChildOf(field, parentField) {
   return false;
 }
 
-function removeFieldFromCurrentParent(field, fields) {
+function removeFieldFromCurrentParent(fieldToRemove, fields) {
   for (let index in fields) {
     const child = fields[index];
 
-    if (child.key == field.key) {
+    if (child.key == fieldToRemove.key) {
       fields.splice(index, 1);
 
       break;
     }
 
-    if (Array.isArray(field.fields)) {
-      removeFieldFromCurrentParent(field, fields);
+    if (Array.isArray(child.fields)) {
+      removeFieldFromCurrentParent(fieldToRemove, child.fields);
     }
   }
 }
@@ -316,20 +317,22 @@ function setupFieldValuesData(newField, sourceField) {
   }
 }
 
-function addNewFieldAsChildOf(parentField, field, store) {
-  const fields = appendChildToParent(
-    parentField.key,
-    store.get('stampaFields'),
-    field
-  );
+function addNewFieldAsChildOf(parentField, newField, store) {
+  const fields = store.get('stampaFields');
+
+  appendChildToParent(parentField.key, fields, newField);
 
   store.set('stampaFields')(fields);
 }
 
 function appendChildToParent(parentKey, fields, newField) {
-  const field = stampa.findFieldByKey(fields, field);
+  const field = stampa.findFieldByKey(fields, parentKey);
 
   if (field) {
+    if (!Array.isArray(field.fields)) {
+      field.fields = [];
+    }
+
     field.fields.push(newField);
   }
 }

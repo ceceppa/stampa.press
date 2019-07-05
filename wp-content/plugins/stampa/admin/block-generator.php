@@ -166,8 +166,7 @@ class BlockGenerator extends Stampa {
 		self::setup_boilerplate_wp_variables();
 		self::generate_options();
 
-		self::add_replace( 'render_content', [], '' );
-		self::generate_block_body( self::$fields_params );
+		self::generate_block_body();
 		self::setup_grid_style();
 		self::save_js_file();
 		self::generate_basic_php_render_file();
@@ -333,7 +332,7 @@ class BlockGenerator extends Stampa {
 					 * discard the label one.
 					 */
 					$values = $to['values'];
-					if ( is_array( $values ) && ! empty( $values ) && is_array( $values[0] )) {
+					if ( is_array( $values ) && ! empty( $values ) && is_array( $values[0] ) ) {
 						$values = wp_list_pluck( $values, 'value' );
 					}
 					$unique_values = array_unique( $values );
@@ -347,13 +346,27 @@ class BlockGenerator extends Stampa {
 		return $subject;
 	}
 
-	private static function generate_block_body( array $fields ) {
+	private static function generate_block_body() {
+		self::add_replace( 'render_content', [], '' );
+
+		$react_code = self::generate_block_body_from_fields( self::$fields_params );
+		self::add_replace(
+			'render_content',
+			[ 
+				self::replace( $react_code ),
+			]
+		);
+	}
+
+	private static function generate_block_body_from_fields( array $fields ) : string {
+		$react_code = '';
+
 		foreach ( $fields as $field ) {
 			$default        = self::get_field_by_id( $field['id'] );
 			$field_position = $field['position'];
 
 			$gutenberg  = $default['gutenberg'];
-			$react_code = '{/* ' . $field['name'] . ' */}';
+			$react_code .= '{/* ' . $field['name'] . ' */}';
 
 			if ( isset( $gutenberg->react ) ) {
 				$react_code .= join( PHP_EOL, $gutenberg->react );
@@ -395,7 +408,7 @@ class BlockGenerator extends Stampa {
 												! empty( $field['fields'] );
 
 			if ( $has_sub_fields ) {
-				self::generate_block_body( $field['fields'] );
+				$react_code .= self::generate_block_body_from_fields( $field['fields'] );
 			}
 
 			if ( isset( $gutenberg->react_end_block ) ) {
@@ -403,12 +416,7 @@ class BlockGenerator extends Stampa {
 			}
 		}
 
-		self::add_replace(
-			'render_content',
-			[
-				self::replace( $react_code ),
-			]
-		);
+		return $react_code;
 	}
 
 
@@ -545,21 +553,22 @@ class BlockGenerator extends Stampa {
 		file_put_contents( self::$php_output_file, $php_content );
 	}
 
-	private static function generate_php_code_from_fields_data( array $fields ) : string {
+	private static function generate_php_code_from_fields_data( array $fields, $indent = 2 ) : string {
 		$php_content = '';
+		$tabs_index = str_repeat( "\t", $indent );
 
 		foreach ( $fields as $field ) {
+			self::add_replace( 'field_name', $field['name'] );
+
 			$default = self::get_field_by_id( $field['id'] );
 
 			$php = $default['php'] ?? null;
 			if ( is_string( $php ) ) {
-				self::add_replace( 'field_name', $field['name'] );
-
-				$php_content .= self::replace( $default['php'] ) . PHP_EOL;
+				$php_content .= $tabs_index . self::replace( $default['php'] ) . PHP_EOL;
 			}
 
 			if ( isset( $php->start_block ) ) {
-				$php_content .= self::replace( $php->start_block );
+				$php_content .= $tabs_index . self::replace( $php->start_block ) . PHP_EOL;
 			}
 
 			$has_sub_fields = isset( $field['fields'] ) &&
@@ -567,11 +576,11 @@ class BlockGenerator extends Stampa {
 												! empty( $field['fields'] );
 
 			if ( $has_sub_fields ) {
-				$php_content .= self::generate_php_code_from_fields_data( $field['fields'] );
+				$php_content .= $tabs_index . self::generate_php_code_from_fields_data( $field['fields'], $indent + 2 ) . PHP_EOL;
 			}
 
 			if ( isset( $php->end_block ) ) {
-				$php_content .= self::replace( $php->end_block );
+				$php_content .= $tabs_index . self::replace( $php->end_block ) . PHP_EOL;
 			}
 		}
 

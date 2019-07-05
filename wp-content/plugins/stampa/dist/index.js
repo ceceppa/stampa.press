@@ -37326,6 +37326,11 @@ var Field = _react.default.memo(function (_ref) {
     }
   }
 
+  var fieldGridPosition = {
+    columns: field.values && field.values.columns || field.position.endColumn,
+    rows: field.values && field.values.rows || field.position.endRow,
+    gap: field.values && field.values.gap || store.get('gridGap')
+  };
   return _react.default.createElement("div", {
     draggable: "true",
     className: "stampa-grid__field\n      stampa-field--".concat(field.id, " ").concat(activeClass, " ").concat(resizingClass, " ").concat(fieldClassName, " ").concat(draggingClass, " ").concat(noDropClass),
@@ -37339,14 +37344,14 @@ var Field = _react.default.memo(function (_ref) {
     onClick: setAsActive
   }, _react.default.createElement("div", {
     className: "stampa-grid__field__type"
-  }, !stampaField.container && _react.default.createElement("img", {
+  }, stampaField.container && _react.default.createElement("span", null, field.name), !stampaField.container && (_react.default.createElement("img", {
     src: field.icon,
     "aria-hidden": "true",
     draggable: "false"
-  }), _react.default.createElement("span", null, field.id)), stampaField.container && _react.default.createElement(_Grid.default, {
-    gridColumns: +field.values.columns || field.position.endColumn,
-    gridRows: +field.values.rows || field.position.endRow,
-    gridGap: +field.values.gap || store.get('gridGap'),
+  }), _react.default.createElement("span", null, field.id))), stampaField.container && _react.default.createElement(_Grid.default, {
+    gridColumns: +fieldGridPosition.columns,
+    gridRows: +fieldGridPosition.rows,
+    gridGap: +fieldGridPosition.gap,
     gridRowHeight: -1,
     acceptedGroups: stampaField.acceptedGroups,
     fields: field.fields || [],
@@ -37924,12 +37929,15 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
   }
 
   removeFieldFromCurrentParent(field, fields);
+  console.info(fields);
 
-  if (!Array.isArray(parentFields.fields)) {
-    parentField.fields = [];
+  var parent = _stampa.default.findFieldByKey(fields, parentField.key);
+
+  if (!Array.isArray(parent.fields)) {
+    parent.fields = [];
   }
 
-  parentField.fields.push(field);
+  parent.fields.push(field);
 }
 
 function isFieldChildOf(field, parentField) {
@@ -37963,17 +37971,17 @@ function isFieldChildOf(field, parentField) {
   return false;
 }
 
-function removeFieldFromCurrentParent(field, fields) {
+function removeFieldFromCurrentParent(fieldToRemove, fields) {
   for (var index in fields) {
     var child = fields[index];
 
-    if (child.key == field.key) {
+    if (child.key == fieldToRemove.key) {
       fields.splice(index, 1);
       break;
     }
 
-    if (Array.isArray(field.fields)) {
-      removeFieldFromCurrentParent(field, fields);
+    if (Array.isArray(child.fields)) {
+      removeFieldFromCurrentParent(fieldToRemove, child.fields);
     }
   }
 }
@@ -38135,15 +38143,20 @@ function setupFieldValuesData(newField, sourceField) {
   }
 }
 
-function addNewFieldAsChildOf(parentField, field, store) {
-  var fields = appendChildToParent(parentField.key, store.get('stampaFields'), field);
+function addNewFieldAsChildOf(parentField, newField, store) {
+  var fields = store.get('stampaFields');
+  appendChildToParent(parentField.key, fields, newField);
   store.set('stampaFields')(fields);
 }
 
 function appendChildToParent(parentKey, fields, newField) {
-  var field = _stampa.default.findFieldByKey(fields, field);
+  var field = _stampa.default.findFieldByKey(fields, parentKey);
 
   if (field) {
+    if (!Array.isArray(field.fields)) {
+      field.fields = [];
+    }
+
     field.fields.push(newField);
   }
 }
@@ -38214,6 +38227,7 @@ var Grid = function Grid(_ref) {
 
     if (isStampaField && isFieldGroupAccepted) {
       e.preventDefault();
+      e.stopPropagation();
       var clientRect = ref.current.getBoundingClientRect();
       (0, _Grid.updateDragData)(e, clientRect, gridColumns, gridRows, setDrag);
     }

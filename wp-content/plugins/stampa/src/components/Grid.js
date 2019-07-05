@@ -42,6 +42,7 @@ const Grid = function({
 
     if (isStampaField && isFieldGroupAccepted) {
       e.preventDefault();
+      e.stopPropagation();
 
       const clientRect = ref.current.getBoundingClientRect();
 

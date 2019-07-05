@@ -5,7 +5,11 @@
     "label": "Image",
     "tooltip": "Image",
     "icon": "button.svg",
-    "options": []
+    "options": [],
+    "defaultSize": {
+      "rows": 2,
+      "columns": 2
+    }
   },
   "gutenberg": {
     "react": [

@@ -7,15 +7,23 @@
     "icon": "button.svg",
     "options": [],
     "container": 1,
-    "acceptDropGroups": ["static", "stampa"]
+    "acceptedGroups": ["static", "stampa"],
+    "fieldClassName": "field-container",
+    "defaultSize": {
+      "rows": 3,
+      "columns": 3
+    }
   },
   "gutenberg": {
-    "react": [
+    "react_start_block": [
       "<div",
       " className=\"stampa-field container field--{{stampa.field_name}}\"",
-      " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>",
-      "</div>"
-    ]
+      " style={{gridRowStart: {{stampa.grid_row_start}}, gridColumnStart: {{stampa.grid_column_start}}, gridRowEnd: {{stampa.grid_row_end}}, gridColumnEnd: {{stampa.grid_column_end}}}}>"
+    ],
+    "react_end_block": ["</div>"]
   },
-  "php": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></div>"
+  "php": {
+    "start_block": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?>",
+    "end_block": "</div><!-- container -->"
+  }
 }

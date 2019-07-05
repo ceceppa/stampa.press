@@ -12,7 +12,11 @@
         "label": "Label",
         "value": "Label"
       }
-    ]
+    ],
+    "defaultSize": {
+      "rows": 1,
+      "columns": 3
+    }
   },
   "gutenberg": {
     "react": [
