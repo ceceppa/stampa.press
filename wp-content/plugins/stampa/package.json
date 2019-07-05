@@ -7,6 +7,7 @@
     "react": "^16.8.6",
     "react-beautiful-dnd": "^11.0.4",
     "react-dom": "^16.8.6",
+    "react-select": "^3.0.4",
     "react-sortable-tree": "^2.6.2",
     "shortid": "^2.2.14",
     "store": "^2.0.12",

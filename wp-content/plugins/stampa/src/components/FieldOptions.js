@@ -42,8 +42,6 @@ const FieldOptions = function(props) {
 
     const fields = store.get('stampaFields');
     activeField = getFieldByKey(fields, activeFieldKey);
-
-    console.info(activeField);
   }
 
   const updateFieldName = useCallback(e => {

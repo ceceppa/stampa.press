@@ -26,9 +26,14 @@
         "value": "5"
       },
       {
-        "name": "cpt",
+        "name": "post_types",
         "type": "select",
-        "label": "Post type"
+        "label": "Filter by Post type"
+      },
+      {
+        "name": "taxonomies",
+        "type": "select",
+        "label": "Filter by Taxonomy"
       }
     ],
     "container": 1,

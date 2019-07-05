@@ -1,4 +1,6 @@
 import React from 'react';
+import SimpleSelect from './SimpleSelect';
+import MultiSelect from './MultiSelect';
 
 export default function SelectField({
   option,
@@ -9,24 +11,25 @@ export default function SelectField({
     selectedValues = {};
   }
 
+  const areValuesAnArray = Array.isArray(option.values);
+
   return (
     <div className="stampa-select">
       <label htmlFor={`field-${option.name}`} className="stampa-select__name">
         {option.label}:
       </label>
-      <select
-        className="stampa-select__select"
-        name={`field-${option.name}`}
-        id={`field-${option.name}`}
-        onChange={e => updateOptionValue(e, option.name)}
-        defaultValue={selectedValues[option.name] || option.value}
-      >
-        {option.values.map(value => (
-          <option key={value} value={value}>
-            {value}
-          </option>
-        ))}
-      </select>
+      {areValuesAnArray &&
+        <SimpleSelect
+          optin={option}
+          selectedValues={selectedValues}
+          updateOptionValue={updateOptionValue}
+        />}
+      {!areValuesAnArray &&
+        <MultiSelect
+          option={option}
+          selectedValues={selectedValues}
+          updateOptionValue={updateOptionValue}
+        />}
     </div>
   );
 }

@@ -97,7 +97,7 @@ class App extends Component {
           <div className="stampa__right">
             <BlockOptions />
             <FieldOptions />
-            <Hierarchy />
+            {/* <Hierarchy /> */}
           </div>
         </div>
       </div>
