@@ -553,7 +553,7 @@ class BlockGenerator extends Stampa {
 		file_put_contents( self::$php_output_file, $php_content );
 	}
 
-	private static function generate_php_code_from_fields_data( array $fields, $indent = 2 ) : string {
+	private static function generate_php_code_from_fields_data( array $fields, $indent = 1 ) : string {
 		$php_content = '';
 		$tabs_index = str_repeat( "\t", $indent );
 
@@ -576,10 +576,12 @@ class BlockGenerator extends Stampa {
 												! empty( $field['fields'] );
 
 			if ( $has_sub_fields ) {
-				$php_content .= $tabs_index . self::generate_php_code_from_fields_data( $field['fields'], $indent + 2 ) . PHP_EOL;
+				$php_content .= self::generate_php_code_from_fields_data( $field['fields'], $indent + 1 ) . PHP_EOL;
 			}
 
 			if ( isset( $php->end_block ) ) {
+				self::add_replace( 'field_name', $field['name'] );
+
 				$php_content .= $tabs_index . self::replace( $php->end_block ) . PHP_EOL;
 			}
 		}

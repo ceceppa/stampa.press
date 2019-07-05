@@ -23,7 +23,7 @@
     "react_end_block": ["</div>"]
   },
   "php": {
-    "start_block": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?>",
-    "end_block": "</div><!-- container -->"
+    "start_block": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'>",
+    "end_block": "</div><!-- container: {{stampa.field_name}} -->"
   }
 }

@@ -37929,7 +37929,6 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
   }
 
   removeFieldFromCurrentParent(field, fields);
-  console.info(fields);
 
   var parent = _stampa.default.findFieldByKey(fields, parentField.key);
 
@@ -37941,6 +37940,10 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
 }
 
 function isFieldChildOf(field, parentField) {
+  if (!Array.isArray(parentField.fields)) {
+    return false;
+  }
+
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;

@@ -163,7 +163,6 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
     return;
   }
   removeFieldFromCurrentParent(field, fields);
-  console.info(fields);
 
   const parent = stampa.findFieldByKey(fields, parentField.key);
   if (!Array.isArray(parent.fields)) {
@@ -174,6 +173,10 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
 }
 
 function isFieldChildOf(field, parentField) {
+  if (!Array.isArray(parentField.fields)) {
+    return false;
+  }
+
   for (let child of parentField.fields) {
     if (child.key == field.key) {
       return true;

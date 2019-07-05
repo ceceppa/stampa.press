@@ -61,78 +61,113 @@ registerBlockType("stampa/a-title", {
           <StampaPostSelector>{/* post-title */}</StampaPostSelector>
           {/* wysiwyg */}
           <div
-            className="stampa-field stampa-field--wysiwyg field--static-image"
+            className="stampa-field stampa-field--wysiwyg field--static-label"
             style={{
-              gridRowStart: 3,
+              gridRowStart: 1,
               gridColumnStart: 1,
-              gridRowEnd: 5,
-              gridColumnEnd: 3
+              gridRowEnd: 2,
+              gridColumnEnd: 5
             }}
           >
             <RichText
               placeholder="yet another field"
-              value={attributes.static - image}
-              onChange={value => updateAttribute("static-image", value)}
+              value={attributes.static - label}
+              onChange={value => updateAttribute("static-label", value)}
             />
           </div>
           {/* wysiwyg1 */}
           <div
-            className="stampa-field stampa-field--wysiwyg field--static-image"
+            className="stampa-field stampa-field--wysiwyg field--static-label"
             style={{
-              gridRowStart: 3,
+              gridRowStart: 1,
               gridColumnStart: 1,
-              gridRowEnd: 5,
-              gridColumnEnd: 3
+              gridRowEnd: 2,
+              gridColumnEnd: 5
             }}
           >
             <RichText
               placeholder="yet another field"
-              value={attributes.static - image}
-              onChange={value => updateAttribute("static-image", value)}
+              value={attributes.static - label}
+              onChange={value => updateAttribute("static-label", value)}
             />
           </div>
           {/* container */}
           <div
-            className="stampa-field container field--static-image"
+            className="stampa-field container field--static-label"
             style={{
-              gridRowStart: 3,
+              gridRowStart: 1,
               gridColumnStart: 1,
-              gridRowEnd: 5,
-              gridColumnEnd: 3
+              gridRowEnd: 2,
+              gridColumnEnd: 5
             }}
           >
             {/* static-label */}
             <span
-              className="stampa-field stampa-field--label field--static-image"
+              className="stampa-field stampa-field--label field--static-label"
               style={{
-                gridRowStart: 3,
+                gridRowStart: 1,
                 gridColumnStart: 1,
-                gridRowEnd: 5,
-                gridColumnEnd: 3
+                gridRowEnd: 2,
+                gridColumnEnd: 5
               }}
             >
               Label
             </span>
-            {/* container12 */}
+            {/* container2 */}
             <div
-              className="stampa-field container field--static-image"
+              className="stampa-field container field--static-label"
               style={{
-                gridRowStart: 3,
+                gridRowStart: 1,
                 gridColumnStart: 1,
-                gridRowEnd: 5,
-                gridColumnEnd: 3
+                gridRowEnd: 2,
+                gridColumnEnd: 5
               }}
-            ></div>
-            {/* static-image */}
-            <div
-              className="stampa-field field--static-image"
-              style={{
-                gridRowStart: 3,
-                gridColumnStart: 1,
-                gridRowEnd: 5,
-                gridColumnEnd: 3
-              }}
-            ></div>
+            >
+              {/* static-image */}
+              <div
+                className="stampa-field field--static-label"
+                style={{
+                  gridRowStart: 1,
+                  gridColumnStart: 1,
+                  gridRowEnd: 2,
+                  gridColumnEnd: 5
+                }}
+              ></div>
+              {/* container3 */}
+              <div
+                className="stampa-field container field--static-label"
+                style={{
+                  gridRowStart: 1,
+                  gridColumnStart: 1,
+                  gridRowEnd: 2,
+                  gridColumnEnd: 5
+                }}
+              >
+                {/* container4 */}
+                <div
+                  className="stampa-field container field--static-label"
+                  style={{
+                    gridRowStart: 1,
+                    gridColumnStart: 1,
+                    gridRowEnd: 2,
+                    gridColumnEnd: 5
+                  }}
+                >
+                  {/* static-label */}
+                  <span
+                    className="stampa-field stampa-field--label field--static-label"
+                    style={{
+                      gridRowStart: 1,
+                      gridColumnStart: 1,
+                      gridRowEnd: 2,
+                      gridColumnEnd: 5
+                    }}
+                  >
+                    Label
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
