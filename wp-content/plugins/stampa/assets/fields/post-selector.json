@@ -44,7 +44,11 @@
     }
   },
   "gutenberg": {
-    "react": ["hello bello"]
+    "react_start_block": ["<StampaPostSelector>"],
+    "react_end_block": ["</StampaPostSelector>"]
   },
-  "php": "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo $block_data['{{stampa.field_name}}'] ?></div>"
+  "php": {
+    "start_block": "<div>",
+    "end_block": "</div>"
+  }
 }

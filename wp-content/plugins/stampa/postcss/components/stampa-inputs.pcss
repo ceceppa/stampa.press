@@ -25,19 +25,21 @@
   }
 }
 
+.stampa-text,
 .stampa-select {
-  &__select {
-    width: 38%;
-  }
-}
-
-.stampa-text {
   display: flex;
   justify-content: space-between;
 
-  &__label {
+  &__label,
+  &__name {
     width: 38%;
     align-self: center;
+
+    /* for MultiSelect (react-select) */
+    +div {
+      width: 60%;
+    }
+
   }
 
   &__input {

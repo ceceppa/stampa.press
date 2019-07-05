@@ -120,7 +120,7 @@ function updateField(parentField, draggedFieldId, dragData, store) {
   }
 
   const fields = store.get('stampaFields');
-  const field = getField(draggedFieldId, fields);
+  const field = stampa.findFieldByKey(fields, draggedFieldId);
   updateFieldSizeOrPosition(field, dragData);
 
   if (parentField) {
@@ -129,24 +129,6 @@ function updateField(parentField, draggedFieldId, dragData, store) {
 
   resetResizeData(store);
   store.set('stampaFields')(fields);
-}
-
-function getField(draggedFieldId, fields) {
-  for (let field of fields) {
-    if (field.key == draggedFieldId) {
-      return field;
-    }
-
-    if (Array.isArray(field.fields)) {
-      const found = getField(draggedFieldId, field.fields);
-
-      if (found != null) {
-        return found;
-      }
-    }
-  }
-
-  return null;
 }
 
 function updateFieldSizeOrPosition(field, dragData) {
@@ -345,22 +327,11 @@ function addNewFieldAsChildOf(parentField, field, store) {
 }
 
 function appendChildToParent(parentKey, fields, newField) {
-  for (let field of fields) {
-    if (field.key == parentKey) {
-      if (!Array.isArray(field.fields)) {
-        field.fields = [];
-      }
+  const field = stampa.findFieldByKey(fields, field);
 
-      field.fields.push(newField);
-      break;
-    }
-
-    if (Array.isArray(field.fields)) {
-      appendChildToParent(parentKey, field.fields, newField);
-    }
+  if (field) {
+    field.fields.push(newField);
   }
-
-  return fields;
 }
 
 export { gridArea, updateDragData, updateField, addNewField };

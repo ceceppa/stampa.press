@@ -27510,6 +27510,44 @@ var _default = {
     }
 
     return str.replace(/\W/g, '_').replace(/\s+/g, '_').replace(/^\d+/g, '');
+  },
+  findFieldByKey: function findFieldByKey(fields, fieldKey) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var field = _step.value;
+
+        if (field.key == fieldKey) {
+          return field;
+        }
+
+        if (Array.isArray(field.fields)) {
+          var found = this.findFieldByKey(field.fields, fieldKey);
+
+          if (found) {
+            return found;
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return null;
   }
 };
 exports.default = _default;
@@ -27719,7 +27757,7 @@ function Save() {
         generate: generate
       },
       beforeSend: function beforeSend(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', _stampa.default.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', window.stampa.nonce);
       },
       success: function success(data) {
         setSavingState(false);
@@ -36753,10 +36791,20 @@ var MultiSelect = function MultiSelect(_ref) {
   });
   return _react.default.createElement(_reactSelect.default, {
     options: options,
-    onChange: function onChange(e) {
-      return updateOptionValue(e, e.value);
+    isMulti: true,
+    onChange: function onChange(selectedOption) {
+      /**
+       * "Emulates" the event parameter to be able to use the updateOptionValue
+       * function without any changes
+       */
+      var e = {
+        target: {
+          value: selectedOption
+        }
+      };
+      updateOptionValue(e, option.name);
     },
-    defaultValue: selectedValues[option.name] || option.value
+    value: selectedValues[option.name] || option.value
   });
 };
 
@@ -36841,53 +36889,7 @@ function TextField(_ref) {
     }
   }));
 }
-},{"react":"../node_modules/react/index.js"}],"components/FieldOptions.utils.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getFieldByKey = getFieldByKey;
-
-function getFieldByKey(fields, fieldKey) {
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var field = _step.value;
-
-      if (field.key == fieldKey) {
-        return field;
-      }
-
-      if (Array.isArray(field.fields)) {
-        var found = getFieldByKey(field.fields, fieldKey);
-
-        if (found) {
-          return found;
-        }
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return null;
-}
-},{}],"components/FieldOptions.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"components/FieldOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36912,8 +36914,6 @@ var _SelectField = _interopRequireDefault(require("./FieldOptions/SelectField"))
 var _NumberField = _interopRequireDefault(require("./FieldOptions/NumberField"));
 
 var _stampa = _interopRequireDefault(require("../stampa"));
-
-var _FieldOptions = require("./FieldOptions.utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36947,20 +36947,24 @@ var FieldOptions = function FieldOptions(props) {
 
   if (activeFieldId) {
     stampaField = _stampa.default.getFieldById(activeFieldId);
-    activeFieldKey = store.get('activeFieldKey');
     var fields = store.get('stampaFields');
-    activeField = (0, _FieldOptions.getFieldByKey)(fields, activeFieldKey);
+    activeFieldKey = store.get('activeFieldKey');
+    activeField = _stampa.default.findFieldByKey(fields, activeFieldKey);
   }
 
   var updateFieldName = (0, _react.useCallback)(function (e) {
     var fields = store.get('stampaFields');
-    var field = (0, _FieldOptions.getFieldByKey)(fields, activeFieldKey);
+
+    var field = _stampa.default.findFieldByKey(fields, activeFieldKey);
+
     field.name = _stampa.default.sanitizeVariableName(e.target.value);
     store.set('stampaFields')(fields);
   });
   var updateOptionValue = (0, _react.useCallback)(function (e, name) {
     var fields = store.get('stampaFields');
-    var field = (0, _FieldOptions.getFieldByKey)(fields, activeFieldKey);
+
+    var field = _stampa.default.findFieldByKey(fields, activeFieldKey);
+
     field.values[name] = e.target.value;
     store.set('stampaFields')(fields);
   });
@@ -37018,7 +37022,7 @@ var FieldOptions = function FieldOptions(props) {
 var _default = _react.default.memo(FieldOptions);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","./FieldOptions/NumberField":"components/FieldOptions/NumberField.js","../stampa":"stampa.js","./FieldOptions.utils":"components/FieldOptions.utils.js"}],"components/CSSGrid.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js","./FieldOptions/ButtonDeleteField":"components/FieldOptions/ButtonDeleteField.js","./FieldOptions/CheckboxField":"components/FieldOptions/CheckboxField.js","./FieldOptions/TextField":"components/FieldOptions/TextField.js","./FieldOptions/SelectField":"components/FieldOptions/SelectField.js","./FieldOptions/NumberField":"components/FieldOptions/NumberField.js","../stampa":"stampa.js"}],"components/CSSGrid.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37874,7 +37878,9 @@ function updateField(parentField, draggedFieldId, dragData, store) {
   }
 
   var fields = store.get('stampaFields');
-  var field = getField(draggedFieldId, fields);
+
+  var field = _stampa.default.findFieldByKey(fields, draggedFieldId);
+
   updateFieldSizeOrPosition(field, dragData);
 
   if (parentField) {
@@ -37883,45 +37889,6 @@ function updateField(parentField, draggedFieldId, dragData, store) {
 
   resetResizeData(store);
   store.set('stampaFields')(fields);
-}
-
-function getField(draggedFieldId, fields) {
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var field = _step.value;
-
-      if (field.key == draggedFieldId) {
-        return field;
-      }
-
-      if (Array.isArray(field.fields)) {
-        var found = getField(draggedFieldId, field.fields);
-
-        if (found != null) {
-          return found;
-        }
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return null;
 }
 
 function updateFieldSizeOrPosition(field, dragData) {
@@ -37966,29 +37933,29 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
 }
 
 function isFieldChildOf(field, parentField) {
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
 
   try {
-    for (var _iterator2 = parentField.fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var child = _step2.value;
+    for (var _iterator = parentField.fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var child = _step.value;
 
       if (child.key == field.key) {
         return true;
       }
     }
   } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
+    _didIteratorError = true;
+    _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-        _iterator2.return();
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
       }
     } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
+      if (_didIteratorError) {
+        throw _iteratorError;
       }
     }
   }
@@ -38068,13 +38035,13 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
 
 
 function generateUniqueName(fieldName, fields) {
-  var _iteratorNormalCompletion3 = true;
-  var _didIteratorError3 = false;
-  var _iteratorError3 = undefined;
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
 
   try {
-    for (var _iterator3 = fields[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-      var field = _step3.value;
+    for (var _iterator2 = fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var field = _step2.value;
 
       if (field.name == fieldName) {
         var re = new RegExp('\\d+$');
@@ -38091,16 +38058,16 @@ function generateUniqueName(fieldName, fields) {
       }
     }
   } catch (err) {
-    _didIteratorError3 = true;
-    _iteratorError3 = err;
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-        _iterator3.return();
+      if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+        _iterator2.return();
       }
     } finally {
-      if (_didIteratorError3) {
-        throw _iteratorError3;
+      if (_didIteratorError2) {
+        throw _iteratorError2;
       }
     }
   }
@@ -38138,13 +38105,13 @@ function setupFieldValuesData(newField, sourceField) {
    * to the default "value"
    */
 
-  var _iteratorNormalCompletion4 = true;
-  var _didIteratorError4 = false;
-  var _iteratorError4 = undefined;
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
 
   try {
-    for (var _iterator4 = sourceField.options[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-      var option = _step4.value;
+    for (var _iterator3 = sourceField.options[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var option = _step3.value;
 
       if (option.type == 'checkbox' && option.checked == false) {
         newField.values[option.name] = '';
@@ -38153,16 +38120,16 @@ function setupFieldValuesData(newField, sourceField) {
       }
     }
   } catch (err) {
-    _didIteratorError4 = true;
-    _iteratorError4 = err;
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-        _iterator4.return();
+      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+        _iterator3.return();
       }
     } finally {
-      if (_didIteratorError4) {
-        throw _iteratorError4;
+      if (_didIteratorError3) {
+        throw _iteratorError3;
       }
     }
   }
@@ -38174,43 +38141,11 @@ function addNewFieldAsChildOf(parentField, field, store) {
 }
 
 function appendChildToParent(parentKey, fields, newField) {
-  var _iteratorNormalCompletion5 = true;
-  var _didIteratorError5 = false;
-  var _iteratorError5 = undefined;
+  var field = _stampa.default.findFieldByKey(fields, field);
 
-  try {
-    for (var _iterator5 = fields[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-      var field = _step5.value;
-
-      if (field.key == parentKey) {
-        if (!Array.isArray(field.fields)) {
-          field.fields = [];
-        }
-
-        field.fields.push(newField);
-        break;
-      }
-
-      if (Array.isArray(field.fields)) {
-        appendChildToParent(parentKey, field.fields, newField);
-      }
-    }
-  } catch (err) {
-    _didIteratorError5 = true;
-    _iteratorError5 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
-        _iterator5.return();
-      }
-    } finally {
-      if (_didIteratorError5) {
-        throw _iteratorError5;
-      }
-    }
+  if (field) {
+    field.fields.push(newField);
   }
-
-  return fields;
 }
 },{"shortid":"../node_modules/shortid/index.js","../stampa":"stampa.js"}],"components/Grid.js":[function(require,module,exports) {
 "use strict";
@@ -63896,7 +63831,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38869" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35045" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -15,8 +15,20 @@ const MultiSelect = function({ option, selectedValues, updateOptionValue }) {
   return (
     <ReactSelect
       options={options}
-      onChange={e => updateOptionValue(e, e.value)}
-      defaultValue={selectedValues[option.name] || option.value}
+      isMulti={true}
+      onChange={selectedOption => {
+        /**
+         * "Emulates" the event parameter to be able to use the updateOptionValue
+         * function without any changes
+         */
+        const e = {
+          target: {
+            value: selectedOption,
+          },
+        };
+        updateOptionValue(e, option.name);
+      }}
+      value={selectedValues[option.name] || option.value}
     />
   );
 };

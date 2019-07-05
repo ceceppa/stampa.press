@@ -29,7 +29,7 @@ export default function Save() {
         generate,
       },
       beforeSend: xhr => {
-        xhr.setRequestHeader('X-WP-Nonce', stampa.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', window.stampa.nonce);
       },
       success: data => {
         setSavingState(false);

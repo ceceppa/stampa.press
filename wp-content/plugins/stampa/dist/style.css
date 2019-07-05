@@ -537,23 +537,30 @@
     margin: 0;
   }
 
-.stampa-select__select {
-    width: 38%;
-  }
-
-.stampa-text {
+.stampa-text,
+.stampa-select {
   display: -webkit-box;
   display: flex;
   -webkit-box-pack: justify;
           justify-content: space-between;
 }
 
-.stampa-text__label {
+.stampa-text__label,
+  .stampa-text__name,
+  .stampa-select__label,
+  .stampa-select__name {
     width: 38%;
     align-self: center;
+
   }
 
-.stampa-text__input {
+/* for MultiSelect (react-select) */
+
+.stampa-text__label +div, .stampa-text__name +div, .stampa-select__label +div, .stampa-select__name +div {
+      width: 60%;
+    }
+
+.stampa-text__input, .stampa-select__input {
     width: 60%;
   }
 
@@ -562,7 +569,6 @@
  * conflicts with this one, and I don't like using !important
  */
 .stampa-checkbox .stampa-checkbox__input {
-      border: 2px solid #6c7781;
       border: 2px solid var(--stampa-checkbox-border);
       border-radius: 2px;
 

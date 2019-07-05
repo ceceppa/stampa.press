@@ -139,4 +139,21 @@ export default {
 
     return str.replace(/\W/g, '_').replace(/\s+/g, '_').replace(/^\d+/g, '');
   },
+  findFieldByKey(fields, fieldKey) {
+    for (let field of fields) {
+      if (field.key == fieldKey) {
+        return field;
+      }
+
+      if (Array.isArray(field.fields)) {
+        const found = this.findFieldByKey(field.fields, fieldKey);
+
+        if (found) {
+          return found;
+        }
+      }
+    }
+
+    return null;
+  },
 };

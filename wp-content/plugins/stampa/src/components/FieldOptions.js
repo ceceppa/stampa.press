@@ -11,7 +11,6 @@ import SelectField from './FieldOptions/SelectField';
 import NumberField from './FieldOptions/NumberField';
 
 import stampa from '../stampa';
-import { getFieldByKey } from './FieldOptions.utils';
 
 /**
  * Dynamic components name
@@ -37,16 +36,15 @@ const FieldOptions = function(props) {
 
   if (activeFieldId) {
     stampaField = stampa.getFieldById(activeFieldId);
+    const fields = store.get('stampaFields');
 
     activeFieldKey = store.get('activeFieldKey');
-
-    const fields = store.get('stampaFields');
-    activeField = getFieldByKey(fields, activeFieldKey);
+    activeField = stampa.findFieldByKey(fields, activeFieldKey);
   }
 
   const updateFieldName = useCallback(e => {
     const fields = store.get('stampaFields');
-    const field = getFieldByKey(fields, activeFieldKey);
+    const field = stampa.findFieldByKey(fields, activeFieldKey);
 
     field.name = stampa.sanitizeVariableName(e.target.value);
 
@@ -55,7 +53,7 @@ const FieldOptions = function(props) {
 
   const updateOptionValue = useCallback((e, name) => {
     const fields = store.get('stampaFields');
-    const field = getFieldByKey(fields, activeFieldKey);
+    const field = stampa.findFieldByKey(fields, activeFieldKey);
 
     field.values[name] = e.target.value;
 

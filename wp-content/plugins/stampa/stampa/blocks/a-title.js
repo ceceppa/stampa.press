@@ -56,24 +56,7 @@ registerBlockType("stampa/a-title", {
             height: "230px"
           }}
         >
-          {/* post-selector */}hello bello
           {/* post-title */}
-          {/* wysiwyg */}
-          <div
-            className="stampa-field stampa-field--wysiwyg field--wysiwyg"
-            style={{
-              gridRowStart: 1,
-              gridColumnStart: 8,
-              gridRowEnd: 4,
-              gridColumnEnd: 13
-            }}
-          >
-            <RichText
-              placeholder="Hello spenk"
-              value={attributes.wysiwyg}
-              onChange={value => updateAttribute("wysiwyg", value)}
-            />
-          </div>
           {/* wysiwyg1 */}
           <div
             className="stampa-field stampa-field--wysiwyg field--wysiwyg1"

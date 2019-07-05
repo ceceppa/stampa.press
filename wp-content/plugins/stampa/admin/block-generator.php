@@ -62,9 +62,9 @@ class BlockGenerator extends Stampa {
 			'stampa/v1',
 			'/block/(?P<id>[\\d]+)',
 			array(
-				'methods'  => 'PUT',
-				'callback' => __CLASS__ . '::save_and_generate_block',
-				'args'     => [
+				'methods'             => 'PUT',
+				'callback'            => __CLASS__ . '::save_and_generate_block',
+				'args'                => [
 					'title'   => [
 						'required'    => true,
 						'type'        => 'string',
@@ -86,9 +86,12 @@ class BlockGenerator extends Stampa {
 						'description' => 'the grid options',
 					],
 				],
-				// 'permission_callback' => function () {
-				// return current_user_can( 'manage_options' );
-				// },
+				'permission_callback' => function ( $request ) {
+					$params = $request->get_headers();
+					$nonce  = isset( $params['x_wp_nonce'] ) ? join( '', $params['x_wp_nonce'] ) : null;
+
+					return wp_verify_nonce( $nonce, 'wp_rest' );
+				},
 			)
 		);
 	}
@@ -99,7 +102,7 @@ class BlockGenerator extends Stampa {
 	 * @return array
 	 */
 	public static function save_and_generate_block( $request ) {
-		$params  = $request->get_params();
+		$params            = $request->get_params();
 		self::$post_ID     = (int) $params['id'];
 		self::$block_title = $params['title'];
 
@@ -162,6 +165,8 @@ class BlockGenerator extends Stampa {
 		self::setup_block_information();
 		self::setup_boilerplate_wp_variables();
 		self::generate_options();
+
+		self::add_replace( 'render_content', [], '' );
 		self::generate_block_body( self::$fields_params );
 		self::setup_grid_style();
 		self::save_js_file();
@@ -180,7 +185,8 @@ class BlockGenerator extends Stampa {
 			$old_md5 = get_post_meta( self::$post_ID, '_md5_sum', true );
 
 			if ( ! empty( $old_md5 ) && $md5 !== $old_md5 ) {
-				error_log( print_r( $md5, true ) );
+				error_log( 'Original JS checksum:' . $md5 );
+
 				return true;
 			}
 		}
@@ -262,6 +268,8 @@ class BlockGenerator extends Stampa {
 
 		if ( $return_val > 0 ) {
 			error_log( print_r( self::$temp_file, true ) );
+
+			delete_post_meta( self::$post_ID, '_md5_sum' );
 			throw new \Error( 'Prettier failed' );
 		}
 
@@ -319,7 +327,17 @@ class BlockGenerator extends Stampa {
 				if ( $to['_encode'] ) {
 					$to = json_encode( $to['values'] );
 				} else {
-					$to = join( PHP_EOL . $to['_glue'], array_unique( $to['values'] ) );
+					/**
+					 * The MultiSelect returns an array of objects, in this case
+					 * we need to keep only the "value" part of the object and
+					 * discard the label one.
+					 */
+					$values = $to['values'];
+					if ( is_array( $values ) && ! empty( $values ) && is_array( $values[0] )) {
+						$values = wp_list_pluck( $values, 'value' );
+					}
+					$unique_values = array_unique( $values );
+					$to            = join( PHP_EOL . $to['_glue'], $unique_values );
 				}
 			}
 
@@ -329,21 +347,21 @@ class BlockGenerator extends Stampa {
 		return $subject;
 	}
 
-	/**
-	 * Generate the block body
-	 *
-	 * @param array $fields_params the fields to render.
-	 * @return void
-	 */
 	private static function generate_block_body( array $fields ) {
-		self::add_replace( 'render_content', [], '' );
-
 		foreach ( $fields as $field ) {
-			$default = self::get_field_by_id( $field['id'] );
-			$field_position  = $field['position'];
+			$default        = self::get_field_by_id( $field['id'] );
+			$field_position = $field['position'];
 
-			$react_code  = '{/* ' . $field['name'] . ' */}';
-			$react_code .= join( PHP_EOL, $default['gutenberg']->react ?? [] );
+			$gutenberg  = $default['gutenberg'];
+			$react_code = '{/* ' . $field['name'] . ' */}';
+
+			if ( isset( $gutenberg->react ) ) {
+				$react_code .= join( PHP_EOL, $gutenberg->react );
+			}
+
+			if ( isset( $gutenberg->react_start_block ) ) {
+				$react_code .= join( PHP_EOL, $gutenberg->react_start_block );
+			}
 
 			self::add_replace( 'grid_row_start', $field_position['startRow'] );
 			self::add_replace( 'grid_row_end', intval( $field_position['startRow'] ) + intval( $field_position['endRow'] ) );
@@ -372,21 +390,25 @@ class BlockGenerator extends Stampa {
 				);
 			}
 
-			self::add_replace(
-				'render_content',
-				[
-					self::replace( $react_code ),
-				]
-			);
-
-			$has_sub_fields = isset( $field['fields']) &&
+			$has_sub_fields = isset( $field['fields'] ) &&
 												is_array( $field['fields'] ) &&
 												! empty( $field['fields'] );
 
 			if ( $has_sub_fields ) {
 				self::generate_block_body( $field['fields'] );
 			}
+
+			if ( isset( $gutenberg->react_end_block ) ) {
+				$react_code .= join( PHP_EOL, $gutenberg->react_end_block );
+			}
 		}
+
+		self::add_replace(
+			'render_content',
+			[
+				self::replace( $react_code ),
+			]
+		);
 	}
 
 
@@ -516,19 +538,44 @@ class BlockGenerator extends Stampa {
 	private static function generate_the_basic_php_code() {
 		$php_content = sprintf( '<section class="%s">%s', self::$block_css_class_name, \PHP_EOL );
 
-		foreach ( self::$fields_params as $stampa_field ) {
-			$field = self::get_field_by_id( $stampa_field['id'] );
-
-			if ( isset( $field['php'] ) ) {
-				self::add_replace( 'field_name', $stampa_field['name'] );
-
-				$php_content .= self::replace( $field['php'] ) . PHP_EOL;
-			}
-		}
+		$php_content .= self::generate_php_code_from_fields_data( self::$fields_params );
 
 		$php_content .= '</section>';
 
 		file_put_contents( self::$php_output_file, $php_content );
+	}
+
+	private static function generate_php_code_from_fields_data( array $fields ) : string {
+		$php_content = '';
+
+		foreach ( $fields as $field ) {
+			$default = self::get_field_by_id( $field['id'] );
+
+			$php = $default['php'] ?? null;
+			if ( is_string( $php ) ) {
+				self::add_replace( 'field_name', $field['name'] );
+
+				$php_content .= self::replace( $default['php'] ) . PHP_EOL;
+			}
+
+			if ( isset( $php->start_block ) ) {
+				$php_content .= self::replace( $php->start_block );
+			}
+
+			$has_sub_fields = isset( $field['fields'] ) &&
+												is_array( $field['fields'] ) &&
+												! empty( $field['fields'] );
+
+			if ( $has_sub_fields ) {
+				$php_content .= self::generate_php_code_from_fields_data( $field['fields'] );
+			}
+
+			if ( isset( $php->end_block ) ) {
+				$php_content .= self::replace( $php->end_block );
+			}
+		}
+
+		return $php_content;
 	}
 
 	/**
