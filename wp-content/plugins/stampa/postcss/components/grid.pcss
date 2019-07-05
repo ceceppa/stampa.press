@@ -1,11 +1,16 @@
 .stampa-grid {
   display: flex;
   background: #f1f1f1;
-  padding: 30px;
+  transition: box-shadow 0.15s ease;
 
   &.main-grid {
     position: sticky;
     top: 90px;
+  }
+
+
+  &.glowing {
+    box-shadow: 0 0 15px var(--stampa-active);
   }
 
   &.is-container {

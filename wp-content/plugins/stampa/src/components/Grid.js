@@ -93,9 +93,10 @@ const Grid = function({
   const gridHeight = gridRowHeight > 0 ? gridRowHeight * gridRows : 100;
   const heightUnit = gridRowHeight > 0 ? 'px' : '%';
 
+  const glowingClass = drag.over ? 'glowing' : '';
   return (
     <div
-      className={`stampa-grid ${useClassName || ''}`}
+      className={`stampa-grid ${useClassName || ''} ${glowingClass}`}
       data-accepted-groups={acceptedGroups.join(',')}
       onClick={() => store.set('activeFieldKey')(null)}
     >

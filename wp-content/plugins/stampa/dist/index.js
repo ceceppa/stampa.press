@@ -37890,6 +37890,11 @@ function updateField(parentField, draggedFieldId, dragData, store) {
 
   if (parentField) {
     checkAndUpdateFieldParent(field, fields, parentField);
+  } else {
+    if (!isOnTheMainGrid(field, fields)) {
+      removeFieldFromCurrentParent(field, fields);
+      fields.push(field);
+    }
   }
 
   resetResizeData(store);
@@ -37989,6 +37994,37 @@ function removeFieldFromCurrentParent(fieldToRemove, fields) {
   }
 }
 
+function isOnTheMainGrid(field, fields) {
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var child = _step2.value;
+
+      if (child.key == field.key) {
+        return true;
+      }
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  return false;
+}
+
 function resetResizeData() {
   _stampa.default.setResizeDirection(null);
 
@@ -38046,13 +38082,13 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
 
 
 function generateUniqueName(fieldName, fields) {
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
 
   try {
-    for (var _iterator2 = fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var field = _step2.value;
+    for (var _iterator3 = fields[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var field = _step3.value;
 
       if (field.name == fieldName) {
         var re = new RegExp('\\d+$');
@@ -38069,16 +38105,16 @@ function generateUniqueName(fieldName, fields) {
       }
     }
   } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-        _iterator2.return();
+      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+        _iterator3.return();
       }
     } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
+      if (_didIteratorError3) {
+        throw _iteratorError3;
       }
     }
   }
@@ -38116,13 +38152,13 @@ function setupFieldValuesData(newField, sourceField) {
    * to the default "value"
    */
 
-  var _iteratorNormalCompletion3 = true;
-  var _didIteratorError3 = false;
-  var _iteratorError3 = undefined;
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
 
   try {
-    for (var _iterator3 = sourceField.options[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-      var option = _step3.value;
+    for (var _iterator4 = sourceField.options[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var option = _step4.value;
 
       if (option.type == 'checkbox' && option.checked == false) {
         newField.values[option.name] = '';
@@ -38131,16 +38167,16 @@ function setupFieldValuesData(newField, sourceField) {
       }
     }
   } catch (err) {
-    _didIteratorError3 = true;
-    _iteratorError3 = err;
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-        _iterator3.return();
+      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+        _iterator4.return();
       }
     } finally {
-      if (_didIteratorError3) {
-        throw _iteratorError3;
+      if (_didIteratorError4) {
+        throw _iteratorError4;
       }
     }
   }
@@ -38280,8 +38316,9 @@ var Grid = function Grid(_ref) {
   var draggingClass = isDragging ? 'dragging' : '';
   var gridHeight = gridRowHeight > 0 ? gridRowHeight * gridRows : 100;
   var heightUnit = gridRowHeight > 0 ? 'px' : '%';
+  var glowingClass = drag.over ? 'glowing' : '';
   return _react.default.createElement("div", {
-    className: "stampa-grid ".concat(useClassName || ''),
+    className: "stampa-grid ".concat(useClassName || '', " ").concat(glowingClass),
     "data-accepted-groups": acceptedGroups.join(','),
     onClick: function onClick() {
       return store.set('activeFieldKey')(null);

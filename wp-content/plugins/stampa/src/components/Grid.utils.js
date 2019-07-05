@@ -125,6 +125,12 @@ function updateField(parentField, draggedFieldId, dragData, store) {
 
   if (parentField) {
     checkAndUpdateFieldParent(field, fields, parentField);
+  } else {
+    if (!isOnTheMainGrid(field, fields)) {
+      removeFieldFromCurrentParent(field, fields);
+
+      fields.push(field);
+    }
   }
 
   resetResizeData(store);
@@ -200,6 +206,16 @@ function removeFieldFromCurrentParent(fieldToRemove, fields) {
       removeFieldFromCurrentParent(fieldToRemove, child.fields);
     }
   }
+}
+
+function isOnTheMainGrid(field, fields) {
+  for (let child of fields) {
+    if (child.key == field.key) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function resetResizeData() {

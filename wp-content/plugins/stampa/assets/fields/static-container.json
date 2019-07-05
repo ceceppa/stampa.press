@@ -7,7 +7,7 @@
     "icon": "button.svg",
     "options": [],
     "container": 1,
-    "acceptedGroups": ["static", "stampa"],
+    "acceptedGroups": ["static", "fields"],
     "fieldClassName": "field-container",
     "defaultSize": {
       "rows": 3,
