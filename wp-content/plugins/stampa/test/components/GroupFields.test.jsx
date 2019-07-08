@@ -3,6 +3,7 @@ import TestRenderer from 'react-test-renderer';
 import GroupFields from '../../src/components/GroupFields';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import Store from '../../src/store/store';
 
 import fieldsList from './fields-list.test.json';
 
@@ -15,7 +16,11 @@ describe('GroupFields', () => {
 
   const groupItems = () => {
     if (!mountedComponent) {
-      mountedComponent = TestRenderer.create(<GroupFields {...props} />);
+      mountedComponent = TestRenderer.create(
+        <Store.Container>
+          <GroupFields {...props} />
+        </Store.Container>
+      );
     }
 
     return mountedComponent;
@@ -35,7 +40,12 @@ describe('GroupFields', () => {
       container = document.createElement('div');
       document.body.appendChild(container);
 
-      ReactDOM.render(<GroupFields {...props} />, container);
+      ReactDOM.render(
+        <Store.Container>
+          <GroupFields {...props} />
+        </Store.Container>,
+        container
+      );
     });
 
     it('Should render one <ul> list', () => {

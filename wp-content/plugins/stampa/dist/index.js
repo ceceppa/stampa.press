@@ -27398,12 +27398,12 @@ var _default = {
    * @param {string} id the field id
    */
   getFieldById: function getFieldById(id) {
-    var groups = this.getFields();
+    var fields = this.getFields();
 
-    for (var group in groups) {
-      for (var field in groups[group]) {
+    for (var group in fields) {
+      for (var field in fields[group]) {
         if (field === id) {
-          return Object.assign({}, groups[group][field]);
+          return Object.assign({}, fields[group][field]);
         }
       }
     }
@@ -27738,8 +27738,15 @@ function Save() {
       setSavingState = _useState2[1];
 
   var saveBlock = (0, _react.useCallback)(function (e, generate) {
-    setSavingState(true);
+    var blockTitle = store.get('stampaBlockTitle');
+
+    if (blockTitle.trim().length == 0) {
+      alert('Please specify the block title');
+      return;
+    }
+
     var fields = store.get('stampaFields');
+    setSavingState(true);
     jQuery.ajax({
       type: 'PUT',
       dataType: 'json',
@@ -36835,18 +36842,22 @@ function SelectField(_ref) {
   if (selectedValues == null) {
     selectedValues = {};
   }
+  /**
+   * react-select stores the data as object.
+   */
 
-  var areValuesAnArray = Array.isArray(option.values);
+
+  var useSimpleSelect = Array.isArray(option.values);
   return _react.default.createElement("div", {
     className: "stampa-select"
   }, _react.default.createElement("label", {
     htmlFor: "field-".concat(option.name),
     className: "stampa-select__name"
-  }, option.label, ":"), areValuesAnArray && _react.default.createElement(_SimpleSelect.default, {
-    optin: option,
+  }, option.label, ":"), useSimpleSelect && _react.default.createElement(_SimpleSelect.default, {
+    option: option,
     selectedValues: selectedValues,
     updateOptionValue: updateOptionValue
-  }), !areValuesAnArray && _react.default.createElement(_MultiSelect.default, {
+  }), !useSimpleSelect && _react.default.createElement(_MultiSelect.default, {
     option: option,
     selectedValues: selectedValues,
     updateOptionValue: updateOptionValue
@@ -63885,7 +63896,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35045" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33609" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

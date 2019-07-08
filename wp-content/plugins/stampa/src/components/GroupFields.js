@@ -10,6 +10,7 @@ export default function GroupFields({ group, fields }) {
   const groupLowercase = group.toLowerCase();
 
   const searchFilter = store.get('searchFilter').toLowerCase();
+
   return (
     <div className="stampa-fields__group__body">
       <ToggleGroup label={group}>

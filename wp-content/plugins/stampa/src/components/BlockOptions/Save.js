@@ -8,9 +8,15 @@ export default function Save() {
   const [isSaving, setSavingState] = useState(false);
 
   const saveBlock = useCallback((e, generate) => {
-    setSavingState(true);
+    const blockTitle = store.get('stampaBlockTitle');
+    if (blockTitle.trim().length == 0) {
+      alert('Please specify the block title');
+
+      return;
+    }
 
     const fields = store.get('stampaFields');
+    setSavingState(true);
 
     jQuery.ajax({
       type: 'PUT',

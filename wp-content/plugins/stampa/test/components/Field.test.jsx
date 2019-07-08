@@ -7,16 +7,20 @@ import Store from '../../src/store/store';
 
 import fieldsList from './fields-list.test.json';
 
+window.stampa = {
+  fields: fieldsList,
+};
+
 const field = Object.assign(fieldsList.Gutenberg.text, {
-  _stampa: {
-    id: 'text',
-    key: '_123',
+  id: 'text',
+  key: '_123',
+  position: {
     startRow: 2,
     startColumn: 3,
     endRow: 2,
     endColumn: 6,
   },
-  _values: {},
+  values: {},
   options: [
     {
       name: 'test',

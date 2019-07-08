@@ -1,5 +1,7 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
+import Store from '../../src/store/store';
+
 import FieldsList from '../../src/components/FieldsList';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -16,7 +18,9 @@ describe('FieldsList', () => {
 
   const getComponent = () => {
     if (!mountedList) {
-      mountedList = TestRenderer.create(<FieldsList {...props} />);
+      mountedList = TestRenderer.create(
+        <Store.Container><FieldsList {...props} /></Store.Container>
+      );
     }
 
     return mountedList;
@@ -52,7 +56,10 @@ describe('FieldsList', () => {
       document.body.appendChild(container);
 
       act(() => {
-        ReactDOM.render(<FieldsList />, container);
+        ReactDOM.render(
+          <Store.Container><FieldsList {...props} /></Store.Container>,
+          container
+        );
       });
 
       const inputElement = container.querySelector('input[type="search"]');
@@ -64,8 +71,6 @@ describe('FieldsList', () => {
           })
         );
       });
-
-      // console.info(inputElement);
     });
 
     it('Should render one "group" of element', () => {

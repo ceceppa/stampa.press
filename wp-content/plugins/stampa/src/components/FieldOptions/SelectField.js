@@ -11,20 +11,23 @@ export default function SelectField({
     selectedValues = {};
   }
 
-  const areValuesAnArray = Array.isArray(option.values);
+  /**
+   * react-select stores the data as object.
+   */
+  const useSimpleSelect = Array.isArray(option.values);
 
   return (
     <div className="stampa-select">
       <label htmlFor={`field-${option.name}`} className="stampa-select__name">
         {option.label}:
       </label>
-      {areValuesAnArray &&
+      {useSimpleSelect &&
         <SimpleSelect
-          optin={option}
+          option={option}
           selectedValues={selectedValues}
           updateOptionValue={updateOptionValue}
         />}
-      {!areValuesAnArray &&
+      {!useSimpleSelect &&
         <MultiSelect
           option={option}
           selectedValues={selectedValues}

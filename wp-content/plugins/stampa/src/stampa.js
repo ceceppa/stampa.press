@@ -31,12 +31,12 @@ export default {
    * @param {string} id the field id
    */
   getFieldById: function(id) {
-    const groups = this.getFields();
+    const fields = this.getFields();
 
-    for (const group in groups) {
-      for (const field in groups[group]) {
+    for (const group in fields) {
+      for (const field in fields[group]) {
         if (field === id) {
-          return Object.assign({}, groups[group][field]);
+          return Object.assign({}, fields[group][field]);
         }
       }
     }

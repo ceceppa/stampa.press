@@ -1,6 +1,6 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import NumberSlider from '../../src/components/NumberSlider';
+import NumberSlider from '../../src/components/TextNumberField';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Store from '../../src/store/store';

@@ -471,7 +471,7 @@ class BlockGenerator extends Stampa {
 		$index_content = file_get_contents( $index_file );
 
 		if ( stripos( $index_content, $file_name ) == 0 ) {
-			$index_content .= "import './blocks/{$file_name}'" . PHP_EOL;
+			$index_content .= "import './blocks/{$file_name}';" . PHP_EOL;
 
 			file_put_contents( $index_file, $index_content );
 		}

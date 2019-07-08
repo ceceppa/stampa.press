@@ -58,41 +58,50 @@ describe('FieldOptions', () => {
 
       const C = createConnectedStore({
         activeFieldKey: '_key',
+        activeFieldId: 'text',
         stampaFields: [
           {
-            label: 'Text',
-            tooltip: 'Simple text input field',
-            _stampa: {
-              id: 'text',
-              key: '_key',
-            },
-            options: [
-              {
-                type: 'text',
-                name: 'placeholder',
-                label: 'Placeholder',
-                value: 'Write text...',
-              },
-              {
-                type: 'select',
-                name: 'select',
-                label: 'Select:',
-                values: ['Value 1', 'Value 2', 'Value 3'],
-                value: 'Value 2',
-              },
-              {
-                type: 'checkbox',
-                name: 'test-check',
-                label: 'Checkbox:',
-                value: 'test-value',
-              },
-            ],
-            _values: {
+            id: 'text',
+            key: '_key',
+            values: {
               placeholder: 'Test placeholder',
             },
           },
         ],
       });
+
+      window.stampa = {
+        fields: {
+          Fields: {
+            text: {
+              id: 'text',
+              label: 'Text',
+              tooltip: 'Simple text input field',
+              options: [
+                {
+                  type: 'text',
+                  name: 'placeholder',
+                  label: 'Placeholder',
+                  value: 'Write text...',
+                },
+                {
+                  type: 'select',
+                  name: 'select',
+                  label: 'Select:',
+                  values: ['Value 1', 'Value 2', 'Value 3'],
+                  value: 'Value 2',
+                },
+                {
+                  type: 'checkbox',
+                  name: 'test-check',
+                  label: 'Checkbox:',
+                  value: 'test-value',
+                },
+              ],
+            },
+          },
+        },
+      };
 
       const X = C.withStore(store => <FieldOptions store={store} />);
 
@@ -127,14 +136,6 @@ describe('FieldOptions', () => {
       const checkbox = container.querySelector('input[type="checkbox"]');
       expect(checkbox).not.toBeNull();
       expect(checkbox.value).toBe('test-value');
-    });
-
-    it('Should render the "Add custom option" button', () => {
-      const button = container.querySelector(
-        'button[name="add-custom-option"]'
-      );
-
-      expect(button).not.toBeNull();
     });
 
     it('Should render the "Delete field" button', () => {
