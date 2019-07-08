@@ -16,6 +16,7 @@ const MultiSelect = function({ option, selectedValues, updateOptionValue }) {
     <ReactSelect
       options={options}
       isMulti={true}
+      className="stampa-select__mselect"
       onChange={selectedOption => {
         /**
          * "Emulates" the event parameter to be able to use the updateOptionValue

@@ -12,7 +12,11 @@ export default function SelectField({
   }
 
   /**
-   * react-select stores the data as object.
+   * key-value object data format is used for react-select, example:
+   * {
+   *    post: 'Post',
+   *    page: 'Page,
+   * }
    */
   const useSimpleSelect = Array.isArray(option.values);
 

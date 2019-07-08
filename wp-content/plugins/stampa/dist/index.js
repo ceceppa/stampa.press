@@ -36799,6 +36799,7 @@ var MultiSelect = function MultiSelect(_ref) {
   return _react.default.createElement(_reactSelect.default, {
     options: options,
     isMulti: true,
+    className: "stampa-select__mselect",
     onChange: function onChange(selectedOption) {
       /**
        * "Emulates" the event parameter to be able to use the updateOptionValue
@@ -36843,7 +36844,11 @@ function SelectField(_ref) {
     selectedValues = {};
   }
   /**
-   * react-select stores the data as object.
+   * key-value object data format is used for react-select, example:
+   * {
+   *    post: 'Post',
+   *    page: 'Page,
+   * }
    */
 
 

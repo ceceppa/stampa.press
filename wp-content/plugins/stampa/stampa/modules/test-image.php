@@ -1,3 +1,5 @@
 <section class="test-image">
-	<img class='test-image__image' src='<?= $image->url ?>' alt='<?= $image->alt ?>/>
+	<?php if ( isset( $image->url ) ) : ?>
+	<img class='test-image__image' src='<?php echo $image->url; ?>' alt='<?php echo $image->alt; ?>'/>
+<?php endif; ?>
 </section>

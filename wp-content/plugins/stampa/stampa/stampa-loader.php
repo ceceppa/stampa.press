@@ -19,7 +19,7 @@ add_filter( 'block_categories', __NAMESPACE__ . '\register_stampa_blocks_categor
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_blocks' );
 
 // The PHP block rendered.
-add_action( 'init', __NAMESPACE__ . '\block_renderer' );
+// add_action( 'init', __NAMESPACE__ . '\block_renderer' );
 
 
 /**

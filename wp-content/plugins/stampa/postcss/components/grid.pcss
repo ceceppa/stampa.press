@@ -8,9 +8,8 @@
     top: 90px;
   }
 
-
   &.glowing {
-    box-shadow: 0 0 15px var(--stampa-active);
+    box-shadow: 0 0 5px var(--stampa-active);
   }
 
   &.is-container {
@@ -72,7 +71,7 @@
       overflow: visible;
       position: relative;
 
-      >.stampa-grid__field__type {
+      > .stampa-grid__field__type {
         left: 50%;
         top: -2px;
         transform: translate(-50%, -80%);
@@ -83,12 +82,12 @@
         pointer-events: none;
       }
 
-      >.stampa-grid__field__resizer--height {
+      > .stampa-grid__field__resizer--height {
         bottom: -3px;
       }
 
       &:hover {
-        >.stampa-grid__field__type {
+        > .stampa-grid__field__type {
           opacity: 1;
           transform: translate(-50%, -100%);
         }
@@ -146,7 +145,8 @@
     &.active {
       border-color: var(--stampa-active);
 
-      &:hover {}
+      &:hover {
+      }
     }
 
     &__content {

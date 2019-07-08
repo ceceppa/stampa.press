@@ -32,13 +32,40 @@
 .stampa-field--image {
     position: relative;
     overflow: hidden;
-    border: 1px solid rgb(141, 150, 160, 0.2);
+    border: 1px solid rgb(141, 150, 160, 0.2)
   }
 
-.stampa-field--image svg {
+.stampa-field--image.wireframe {
+      background:
+        -webkit-gradient(linear,
+          left bottom, right top,
+          color-stop(49.9%, transparent), color-stop(49.9%, gray),
+          color-stop(50.1%, gray), color-stop(50.1%, transparent)),
+        -webkit-gradient(linear,
+          left top, right bottom,
+          color-stop(49.9%, transparent), color-stop(49.9%, gray),
+          color-stop(50.1%, gray), color-stop(50.1%, transparent));
+      background:
+        -webkit-linear-gradient(bottom left,
+          transparent 49.9%, gray 49.9%,
+          gray 50.1%, transparent 50.1%),
+        -webkit-linear-gradient(top left,
+          transparent 49.9%, gray 49.9%,
+          gray 50.1%, transparent 50.1%);
+      background:
+        linear-gradient(to top right,
+          transparent 49.9%, gray 49.9%,
+          gray 50.1%, transparent 50.1%),
+        linear-gradient(to bottom right,
+          transparent 49.9%, gray 49.9%,
+          gray 50.1%, transparent 50.1%);
+    }
+
+.stampa-field--image .image-wireframe {
       box-sizing: border-box;
       width: 80px;
       height: 80px;
+      opacity: 0.6;
 
       position: absolute;
       left: 50%;
@@ -72,20 +99,78 @@
       position: absolute;
     }
 
-.stampa-field--image button {
-      position: absolute;
-      left: 0;
-      top: 0%;
-      opacity: 0;
-      height: 100% !important;
-      width: 100%;
-      -webkit-transition: all 0.15s ease;
-      transition: all 0.15s ease;
-    }
+.stampa-field--image button.add {
+        display: -webkit-box;
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0%;
+        opacity: 0;
+        height: 100%;
+        width: 100%;
+        -webkit-transition: all 0.15s ease;
+        transition: all 0.15s ease;
+        align-content: center;
 
-.stampa-field--image:hover button {
-        opacity: 0.5;
       }
+
+.stampa-field--image button.add svg {
+          position: static;
+          width: 24px;
+          height: 24px;
+        }
+
+.stampa-field--image button.add:hover {
+          opacity: 0.9;
+          box-shadow: 0 0 5px var(--stampa-active);
+        }
+
+.stampa-field--image button.remove {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        z-index: 1;
+        overflow: visible;
+      }
+
+.stampa-field--image button.remove svg {
+          width: 24px;
+          height: 24px;
+          margin: 0;
+          padding: 0;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          -webkit-transform: translate(-50%, -50%);
+                  transform: translate(-50%, -50%);
+        }
+
+.stampa-field--image button.remove span {
+          position: absolute;
+          display: block;
+          left: 0;
+          top: 50%;
+          -webkit-transform: translate(calc(-100% - 0px), -50%);
+                  transform: translate(calc(-100% - 0px), -50%);
+          background: var(--stampa-border);
+          box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+          padding: 0 5px;
+          opacity: 0;
+          pointer-events: none;
+          -webkit-transition: all 0.15s ease;
+          transition: all 0.15s ease;
+          white-space: nowrap;
+          width: auto;
+        }
+
+.stampa-field--image button.remove:hover span {
+            -webkit-transform: translate(calc(-100% - 10px), -50%);
+                    transform: translate(calc(-100% - 10px), -50%);
+            opacity: 1;
+          }
 
 .stampa-field--heading textarea {
       font-size: inherit;

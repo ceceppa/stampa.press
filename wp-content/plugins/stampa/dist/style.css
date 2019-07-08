@@ -126,7 +126,7 @@
   }
 
 .stampa-grid.glowing {
-    box-shadow: 0 0 15px var(--stampa-active);
+    box-shadow: 0 0 5px var(--stampa-active);
   }
 
 .stampa-grid.is-container {
@@ -195,7 +195,7 @@
       position: relative;
     }
 
-.stampa-grid__field.field-container >.stampa-grid__field__type {
+.stampa-grid__field.field-container > .stampa-grid__field__type {
         left: 50%;
         top: -2px;
         -webkit-transform: translate(-50%, -80%);
@@ -207,11 +207,11 @@
         pointer-events: none;
       }
 
-.stampa-grid__field.field-container >.stampa-grid__field__resizer--height {
+.stampa-grid__field.field-container > .stampa-grid__field__resizer--height {
         bottom: -3px;
       }
 
-.stampa-grid__field.field-container:hover >.stampa-grid__field__type {
+.stampa-grid__field.field-container:hover > .stampa-grid__field__type {
           opacity: 1;
           -webkit-transform: translate(-50%, -100%);
                   transform: translate(-50%, -100%);
@@ -273,7 +273,8 @@
       border-color: var(--stampa-active)
     }
 
-.stampa-grid__field.active:hover {}
+.stampa-grid__field.active:hover {
+      }
 
 .stampa-grid__field__content {
       padding: 0;
@@ -328,6 +329,7 @@
   -webkit-transition: all 0.15s ease;
   transition: all 0.15s ease;
 }
+
 .grid-options {
   position: fixed;
   left: 0;
@@ -483,7 +485,6 @@
     padding: 10px
   }
   .stampa-fields__item:hover {
-      background: #f8f9f9;
       background: var(--stampa-hover);
     }
   .stampa-fields__image {
@@ -501,7 +502,6 @@
       width: 10px;
       height: 10px;
     }
-
 .stampa-select,
 .stampa-text,
 .stampa-number {
