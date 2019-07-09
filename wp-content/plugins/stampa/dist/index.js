@@ -27961,6 +27961,19 @@ function BlockOptions() {
     id: "block-background",
     checked: stampaBlockOptions.hasBackgroundOption,
     onChange: updateBackgroundOption
+  })), _react.default.createElement("label", {
+    htmlFor: "full-bleed",
+    className: "stampa-number"
+  }, _react.default.createElement("span", {
+    className: "stampa-number__label tooltip",
+    "data-tooltip": "If checked allows the user to set up a background-image for the block."
+  }, "Full bleed:"), _react.default.createElement("input", {
+    className: "stampa-number__input",
+    type: "checkbox",
+    name: "full-bleed",
+    id: "full-bleed",
+    checked: stampaBlockOptions.fullBleed,
+    onChange: updateBackgroundOption
   })));
 }
 },{"react":"../node_modules/react/index.js","../store/store":"store/store.js","./ToggleGroup":"components/ToggleGroup.js"}],"components/FieldOptions/ButtonDeleteField.js":[function(require,module,exports) {

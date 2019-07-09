@@ -60,6 +60,23 @@ export default function BlockOptions() {
           onChange={updateBackgroundOption}
         />
       </label>
+      {/* full bleed */}
+      <label htmlFor="full-bleed" className="stampa-number">
+        <span
+          className="stampa-number__label tooltip"
+          data-tooltip="If checked allows the user to set up a background-image for the block."
+        >
+          Full bleed:
+        </span>
+        <input
+          className="stampa-number__input"
+          type="checkbox"
+          name="full-bleed"
+          id="full-bleed"
+          checked={stampaBlockOptions.fullBleed}
+          onChange={updateBackgroundOption}
+        />
+      </label>
     </ToggleGroup>
   );
 }

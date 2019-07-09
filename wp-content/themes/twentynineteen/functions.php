@@ -9,6 +9,11 @@
  * @since 1.0.0
  */
 
+$stampa_loader = __DIR__ . '/stampa/stampa-loader.php';
+if ( file_exists( $stampa_loader ) ) {
+	require_once $stampa_loader;
+}
+
 /**
  * Twenty Nineteen only works in WordPress 4.7 or later.
  */

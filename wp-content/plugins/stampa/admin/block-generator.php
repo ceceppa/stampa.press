@@ -8,7 +8,11 @@ namespace Stampa\BlockGenerator;
 
 use Stampa\Stampa;
 
-define( 'STAMPA_OUTPUT_FOLDER', \realpath( __DIR__ . '/../' ) . '/' );
+define( 'STAMPA_STAMPA_FOLDER', trailingslashit( \realpath( __DIR__ . '/../assets/stampa/' ) ) );
+define( 'STAMPA_REACT_BOILERPLATES_FOLDER', STAMPA_STAMPA_FOLDER . 'gutenberg/' );
+define( 'STAMPA_MODULE_OUTPUT_FOLDER', get_template_directory() . '/modules/' );
+
+define( 'STAMPA_CSS_EXTENSION', 'pcss' );
 
 /**
  * The class
@@ -151,7 +155,9 @@ class BlockGenerator extends Stampa {
 	 * @param array  $params the block parameters & fields.
 	 */
 	private static function generate_react_block() {
-		$output_folder = trailingslashit( STAMPA_OUTPUT_FOLDER . 'stampa/blocks/' );
+		self::setup_dest_folder();
+
+		$output_folder = trailingslashit( STAMPA_OUTPUT_FOLDER . 'blocks/' );
 		$file_name     = sanitize_title( self::$block_title ) . '.js';
 
 		self::$output_file = $output_folder . $file_name;
@@ -170,6 +176,71 @@ class BlockGenerator extends Stampa {
 		self::setup_grid_style();
 		self::save_js_file();
 		self::generate_basic_php_render_file();
+	}
+
+	private static function setup_dest_folder() {
+		$output_folder = trailingslashit( get_template_directory() ) . 'stampa/';
+		define( 'STAMPA_OUTPUT_FOLDER', $output_folder );
+
+		$folder_exists = file_exists( $output_folder );
+		if ( $folder_exists ) {
+			return;
+		}
+
+		mkdir( $output_folder );
+		mkdir( $output_folder . 'blocks' );
+		mkdir( $output_folder . 'components' );
+		mkdir( $output_folder . STAMPA_CSS_EXTENSION );
+
+		if ( ! file_exists( STAMPA_MODULE_OUTPUT_FOLDER ) ) {
+			mkdir( STAMPA_MODULE_OUTPUT_FOLDER );
+		}
+
+		self::copy_package_json();
+		self::copy_stampa_editor_css();
+		self::copy_stampa_loader();
+		self::copy_stampa_components();
+	}
+
+	private static function copy_package_json() {
+		$success = copy(
+			STAMPA_STAMPA_FOLDER . 'package.json',
+			STAMPA_OUTPUT_FOLDER . 'package.json'
+		);
+
+		if ( ! $success ) {
+			throw new \Error( 'Cannot copy package.json file' );
+		}
+
+		$folder = STAMPA_OUTPUT_FOLDER;
+		exec( "cd {$folder} && npm install" );
+	}
+
+	private static function copy_stampa_editor_css() {
+		copy(
+			STAMPA_FOLDER . 'dist/stampa-editor.css',
+			STAMPA_OUTPUT_FOLDER . STAMPA_CSS_EXTENSION . '/stampa-editor.css'
+		);
+	}
+
+	private static function copy_stampa_loader() {
+		$success = copy(
+			STAMPA_STAMPA_FOLDER . 'php/stampa-loader.php',
+			STAMPA_OUTPUT_FOLDER . 'stampa-loader.php'
+		);
+
+		if ( ! $success ) {
+			throw new \Error( 'Cannot copy stampa-loader.php' );
+		}
+	}
+
+	private static function copy_stampa_components() {
+		$components_folder = STAMPA_OUTPUT_FOLDER . 'components/';
+		$components = glob( STAMPA_STAMPA_FOLDER . 'components/*.*' );
+
+		foreach ( $components as $file ) {
+			copy( $file, $components_folder . basename( $file ) );
+		}
 	}
 
 	/**
@@ -253,7 +324,7 @@ class BlockGenerator extends Stampa {
 	private static function save_js_file() {
 		self::$temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
 
-		$boilerplate  = file_get_contents( STAMPA_OUTPUT_FOLDER . 'assets/gutenberg/block-boilerplate.js' );
+		$boilerplate  = file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'block-boilerplate.js' );
 		$file_content = self::replace( $boilerplate );
 
 		file_put_contents( self::$temp_file, $file_content );
@@ -352,8 +423,8 @@ class BlockGenerator extends Stampa {
 		$react_code = self::generate_block_body_from_fields( self::$fields_params );
 		self::add_replace(
 			'render_content',
-			[ 
-				self::replace( $react_code ),
+			[
+				$react_code,
 			]
 		);
 	}
@@ -365,15 +436,15 @@ class BlockGenerator extends Stampa {
 			$default        = self::get_field_by_id( $field['id'] );
 			$field_position = $field['position'];
 
-			$gutenberg  = $default['gutenberg'];
-			$react_code .= '{/* ' . $field['name'] . ' */}';
+			$gutenberg   = $default['gutenberg'];
+			$field_code = '{/* ' . $field['name'] . ' */}';
 
 			if ( isset( $gutenberg->react ) ) {
-				$react_code .= join( PHP_EOL, $gutenberg->react );
+				$field_code .= join( PHP_EOL, $gutenberg->react );
 			}
 
 			if ( isset( $gutenberg->react_start_block ) ) {
-				$react_code .= join( PHP_EOL, $gutenberg->react_start_block );
+				$field_code .= join( PHP_EOL, $gutenberg->react_start_block );
 			}
 
 			self::add_replace( 'grid_row_start', $field_position['startRow'] );
@@ -403,17 +474,22 @@ class BlockGenerator extends Stampa {
 				);
 			}
 
+			$closing_code = '';
+			if ( isset( $gutenberg->react_end_block ) ) {
+				$closing_code = $gutenberg->react_end_block;
+			}
+
 			$has_sub_fields = isset( $field['fields'] ) &&
 												is_array( $field['fields'] ) &&
 												! empty( $field['fields'] );
 
 			if ( $has_sub_fields ) {
-				$react_code .= self::generate_block_body_from_fields( $field['fields'] );
+				$field_code .= self::generate_block_body_from_fields( $field['fields'] );
 			}
 
-			if ( isset( $gutenberg->react_end_block ) ) {
-				$react_code .= join( PHP_EOL, $gutenberg->react_end_block );
-			}
+			$field_code .= $closing_code;
+
+			$react_code .= self::replace( $field_code );
 		}
 
 		return $react_code;
@@ -439,7 +515,7 @@ class BlockGenerator extends Stampa {
 		}
 
 		// The options boilerplate.
-		$options_boilerplate = file_get_contents( STAMPA_OUTPUT_FOLDER . 'assets/gutenberg/inspector-controls.boilerplace.js' );
+		$options_boilerplate = file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'inspector-controls.boilerplace.js' );
 
 		self::add_replace( 'wp.components', [ 'PanelBody', 'IconButton' ] );
 		self::add_replace( 'default_attributes', [ 'backgroundImage: {}' ], null, true );
@@ -466,14 +542,22 @@ class BlockGenerator extends Stampa {
 	 * Add the block to the index.js file, if is not there yet
 	 */
 	private static function add_block_to_indexjs() {
-		$file_name     = preg_replace( '/.js$/', '', basename( self::$output_file ) );
-		$index_file    = STAMPA_OUTPUT_FOLDER . 'stampa/index.js';
-		$index_content = file_get_contents( $index_file );
+		$file_name  = preg_replace( '/.js$/', '', basename( self::$output_file ) );
+		$index_file = STAMPA_OUTPUT_FOLDER . 'index.js';
+
+		$index_content = '';
+		if ( file_exists( $index_file ) ) {
+			$index_content = file_get_contents( $index_file );
+		}
 
 		if ( stripos( $index_content, $file_name ) == 0 ) {
 			$index_content .= "import './blocks/{$file_name}';" . PHP_EOL;
 
-			file_put_contents( $index_file, $index_content );
+			$success = file_put_contents( $index_file, $index_content );
+
+			if ( ! $success ) {
+				throw new \Error( 'Cannot write the index.js file in stampa/blocks folder' );
+			}
 		}
 
 		self::generate_post_css_file();
@@ -481,18 +565,22 @@ class BlockGenerator extends Stampa {
 
 	private static function generate_post_css_file() {
 		$basename          = basename( self::$output_file );
-		$post_css_filename = str_replace( '.js', '.pcss', $basename );
+		$post_css_filename = str_replace( '.js', '.' . STAMPA_CSS_EXTENSION, $basename );
 
-		$output_css_file = STAMPA_OUTPUT_FOLDER . 'stampa/pcss/' . $post_css_filename;
+		$output_css_file = STAMPA_OUTPUT_FOLDER . STAMPA_CSS_EXTENSION . '/' . $post_css_filename;
 		$file_exists     = file_exists( $output_css_file );
 
 		if ( ! $file_exists || true ) {
 			$post_css_content = self::generate_post_css_file_content();
 
-			file_put_contents( $output_css_file, $post_css_content );
+			$success = file_put_contents( $output_css_file, $post_css_content );
+
+			if ( ! $success ) {
+				throw new \Error( 'Cannot write the ' . $output_css_file . ' file' );
+			}
 		}
 
-		self::add_css_file_to_index_pcss( $post_css_filename );
+		self::add_css_file_to_index_css( $post_css_filename );
 	}
 
 	/**
@@ -510,12 +598,17 @@ class BlockGenerator extends Stampa {
 		return $css_content;
 	}
 
-	private static function add_css_file_to_index_pcss( string $post_css_filename ) {
-		$index_file    = STAMPA_OUTPUT_FOLDER . 'stampa/index.pcss';
-		$index_content = file_get_contents( $index_file );
+	private static function add_css_file_to_index_css( string $post_css_filename ) {
+		$index_file    = STAMPA_OUTPUT_FOLDER . 'index.' . STAMPA_CSS_EXTENSION;
+		$css_ext = STAMPA_CSS_EXTENSION;
+
+		$index_content = "@import './{$css_ext}/stampa-editor.css';" . PHP_EOL;
+		if ( file_exists( $index_file ) ) {
+			$index_content = file_get_contents( $index_file );
+		}
 
 		if ( stripos( $index_content, $post_css_filename ) == 0 ) {
-			$index_content .= "@import './pcss/{$post_css_filename}';" . PHP_EOL;
+			$index_content .= "@import './{$css_ext}/{$post_css_filename}';" . PHP_EOL;
 
 			file_put_contents( $index_file, $index_content );
 		}
@@ -523,7 +616,7 @@ class BlockGenerator extends Stampa {
 
 	private static function generate_basic_php_render_file() {
 		$file_name             = sanitize_title( self::$block_title );
-		self::$php_output_file = \STAMPA_OUTPUT_FOLDER . 'stampa/modules/' . $file_name . '.php';
+		self::$php_output_file = STAMPA_MODULE_OUTPUT_FOLDER . $file_name . '.php';
 
 		if ( self::check_if_php_has_changed() ) {
 			return;
@@ -555,7 +648,7 @@ class BlockGenerator extends Stampa {
 
 	private static function generate_php_code_from_fields_data( array $fields, $indent = 1 ) : string {
 		$php_content = '';
-		$tabs_index = str_repeat( "\t", $indent );
+		$tabs_index  = str_repeat( "\t", $indent );
 
 		foreach ( $fields as $field ) {
 			self::add_replace( 'field_name', $field['name'] );
@@ -593,10 +686,11 @@ class BlockGenerator extends Stampa {
 	 * Run the parcel build command
 	 */
 	private static function parcel_build() {
-		$stampa_path = STAMPA_OUTPUT_FOLDER . 'stampa';
+		$stampa_path = STAMPA_OUTPUT_FOLDER;
+		$css_ext = STAMPA_CSS_EXTENSION;
 
-		exec( "parcel build {$stampa_path}/index.pcss -d {$stampa_path}/dist" );
-		exec( "parcel build {$stampa_path}/index.js -d {$stampa_path}/dist" );
+		exec( "parcel build {$stampa_path}index.{$css_ext} -d {$stampa_path}dist" );
+		exec( "parcel build {$stampa_path}index.js -d {$stampa_path}dist" );
 	}
 
 	/**

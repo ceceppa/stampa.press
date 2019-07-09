@@ -8,8 +8,8 @@
 namespace Stampa;
 
 define( 'STAMPA_VERSION', '0.1' );
+define( 'STAMPA_FOLDER', __DIR__ . '/' );
 
-require __DIR__ . '/stampa/stampa-loader.php';
 require __DIR__ . '/admin/block-generator.php';
 require __DIR__ . '/admin/stampa-filters.php';
 

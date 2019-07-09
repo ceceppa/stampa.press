@@ -1,4 +1,4 @@
-import React, { Component, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import Store from '../store/store';
 
