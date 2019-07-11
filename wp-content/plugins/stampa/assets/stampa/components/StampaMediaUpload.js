@@ -5,22 +5,24 @@ const { IconButton } = wp.components;
 export default function StampaMediaUpload({
   fieldName,
   image,
-  gridPosition,
+  attributes,
   updateAttribute,
 }) {
-  const customClass = image && image.url ? 'has-image' : 'wireframe';
+  const object_fit = attributes[`${fieldName}__fit`];
+  const object_position = attributes[`${fieldName}__position`].replace(
+    ' ',
+    '-'
+  );
+
+  let customClass = image && image.url ? 'has-image' : 'wireframe';
+  customClass += ` object-fit--${object_fit} object-position--${object_position}`;
 
   return (
-    <div
-      className={`stampa-field stampa-field--image field--image ${customClass}`}
-      style={{
-        gridRowStart: gridPosition.gridRowStart,
-        gridColumnStart: gridPosition.gridColumnStart,
-        gridRowEnd: gridPosition.gridRowEnd,
-        gridColumnEnd: gridPosition.gridColumnEnd,
-      }}
-    >
-      <img src={image && image.url} className="stampa-field__image" />
+    <div class="stampa-media-upload">
+      <img
+        className={`stampa-field__image ${customClass}`}
+        src={image && image.url}
+      />
       {image == null &&
         <svg
           className="image-wireframe"
@@ -38,10 +40,11 @@ export default function StampaMediaUpload({
         className="media-upload"
         value={image}
         placeholder="{{stampa.value.placeholder}}"
-        onSelect={image => updateAttribute(fieldName, image)}
+        onSelect={image =>
+          updateAttribute(fieldName, { url: image.url, id: image.id })}
         render={({ open }) => (
           <IconButton
-            className="button add"
+            className={`button add ${image && image.url ? 'round' : ''}`}
             label={__('Media')}
             icon="format-image"
             onClick={open}

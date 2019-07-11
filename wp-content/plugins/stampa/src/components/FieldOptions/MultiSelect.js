@@ -5,6 +5,10 @@ const MultiSelect = function({ option, selectedValues, updateOptionValue }) {
   /** 
    * Convert to the format needed by ReactSelect
   */
+  if (option.values == null) {
+    option.values = {};
+  }
+
   const options = Object.keys(option.values).map(key => {
     return {
       value: key,

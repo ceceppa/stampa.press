@@ -1,0 +1,78 @@
+stampa:
+  id: image
+  group: Fields
+  label: Image
+  tooltip: Image
+  icon: image.svg
+  fieldClassName: '{round} wireframe'
+  html: <div class="image">
+    <svg class="image-wireframe"
+    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+    role="img" aria-hidden="true" focusable="false">
+    <path d="M0,0h24v24H0V0z" fill="none"></path>
+    <path
+    d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9
+    2-2v-14c0-1.1-0.9-2-2-2z"></path>
+    <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
+    </svg>
+    </div>
+  defaultSize:
+    rows: 2
+    columns: 2
+options:
+  - name: round
+    type: checkbox
+    label: Round
+    checked: false
+    value: round
+    inspector: false
+  - name: size
+    type: select
+    label: Image size
+    tooltip: The image size to use.
+    value: full
+  - name: fit
+    type: select
+    label: Default value for "object-fit"
+    tooltip: The default value to use for the object-fit property. This will also be editable for each single image.
+    values:
+      - fill
+      - contain
+      - cover
+      - none
+      - scale-down
+    value: fill
+  - name: position
+    type: select
+    label: Default value for "object-position"
+    tooltip: The default value to use for the object-position property. This will also be editable for each single image.
+    values:
+      - initial
+      - left top
+      - left center
+      - left bottom
+      - center center
+      - right top
+      - right center
+      - right bottom
+    value: initial
+gutenberg:
+  attribute_type: object
+  wp_components: IconButton
+  react:
+    <StampaMediaUpload
+      fieldName="{{stampa.field_name}}"
+      image={attributes.{{stampa.field_name}}}
+      customClass="{{stampa.value.round}}"
+      attributes={attributes}
+      updateAttribute={updateAttribute}
+    />
+php: 
+  <?php if ( isset( ${{stampa.field_name}}->id) ) {
+    $object_fit = $__{{stampa.field_name}}->fit;
+    $object_position = $__{{stampa.field_name}}->position;
+
+    wp_get_attachment_image( ${{stampa.field_name}}->id, '{{stampa.value.size}}', '', [
+      'class' => "{$object_fit} {$object_position}"
+    ] );
+  } ?>

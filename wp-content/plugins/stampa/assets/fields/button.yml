@@ -1,0 +1,34 @@
+data:
+  group: Fields
+  id: button
+  label: Button
+  tooltip: Button field
+  icon: button.svg
+  contentClassName: wp-block-button
+  html: <div class='wp-block-button__link'>{placeholder}</div>
+  defaultSize:
+    rows: 1
+    columns: 2
+options:
+  - name: placeholder
+    type: text
+    label: Placeholder
+    value: Add text...
+    inspector: false
+gutenberg:
+  wp_components: Button
+  attribute_type: string
+  react:
+    <Button
+     className="stampa-field"
+     value={attributes.{{stampa.field_name}}}
+     placeholder="{{stampa.value.placeholder}}"
+     onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
+    />
+php: 
+  <a
+    href="<?php echo $block_data['{{stampa.field_name}}']['url'] ?>"
+    class="button {{stampa.block_css_class_name}}__{{stampa.field_name}}"
+  >
+    <?php echo $block_data['{{stampa.field_name}}']['label'] ?>
+  </a>"

@@ -1,0 +1,45 @@
+stampa:
+  group: Fields
+  id: heading
+  label: Heading
+  tooltip: Heading
+  icon: heading.svg
+  html: <{level}>{placeholder}</{level}>
+  contentClassName: wp-block-heading
+  defaultSize:
+    rows: 1
+    columns: 3
+options:
+  - name: level
+    type: select
+    label: Level
+    values:
+      - h1
+      - h2
+      - h3
+      - h4
+      - h5
+      - h6
+    value: h2
+  - name: placeholder
+    type: text
+    label: Placeholder
+    value: Heading
+gutenberg:
+  attribute_type: string
+  react: <{{stampa.value.level}}>
+    <textarea
+      type="text"
+      value={attributes.{{stampa.field_name}}}
+      placeholder="{{stampa.value.placeholder}}"
+      rows="1"
+      onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
+    />
+    </{{stampa.value.level}}>
+php:
+  <?php if ( ! empty( ${{stampa.field_name }} ) ) \= ?>
+  <{{stampa.value.level}}
+    class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
+    <?php echo ${{stampa.field_name}} ?>
+  </{{stampa.value.level}}>
+  <?php endif; ?>

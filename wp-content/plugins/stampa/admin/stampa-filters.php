@@ -7,9 +7,10 @@
 
 namespace Stampa\Filters;
 
-add_filter( 'stampa_add_field/post-selector', __NAMESPACE__ . '\update_values_with_available_post_types' );
+add_filter( 'stampa_add_field/post-selector', __NAMESPACE__ . '\available_post_types' );
+add_filter( 'stampa_field_option/image/size', __NAMESPACE__ . '\available_image_sizes' );
 
-function update_values_with_available_post_types( array $field_data ) : array {
+function available_post_types( array $field_data ) : array {
 	foreach ( $field_data['options'] as & $option ) {
 		if ( $option->name == 'post_types' ) {
 			$option->values = get_available_post_types();
@@ -32,4 +33,13 @@ function get_available_post_types() : array {
 
 function get_available_taxonomies() : array {
 	return get_taxonomies( [ 'public' => true ] );
+}
+
+function available_image_sizes( array $option ) : array {
+	$values = get_intermediate_image_sizes();
+
+	array_unshift( $values, 'full' );
+	$option['values'] = array_values( $values );
+
+	return $option;
 }

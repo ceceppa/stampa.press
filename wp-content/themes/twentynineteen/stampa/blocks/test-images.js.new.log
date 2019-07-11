@@ -1,0 +1,8 @@
+[error] ../../../tmp/stampa4GlJLH.js: SyntaxError: Unexpected token, expected "(" (50:32)
+[error]   48 |       const { className, attributes = defaultAttributes, setAttributes} = props;
+[error]   49 | 
+[error] > 50 |       function updateAttribute = useCallback((field, value) => {
+[error]      |                                ^
+[error]   51 |         const attribute = {};
+[error]   52 |         attribute[field] = value;
+[error]   53 | 

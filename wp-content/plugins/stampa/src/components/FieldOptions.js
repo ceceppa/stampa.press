@@ -67,11 +67,17 @@ const FieldOptions = function(props) {
     stampa.deleteactiveField(store);
   });
 
+  let options = [];
+  const hasOptions = stampaField && Array.isArray(stampaField.options);
+  if (hasOptions) {
+    options = stampaField.options;
+  }
+
   return (
     <ToggleGroup
       label="Field Options"
       display="block"
-      groupClass="block-options"
+      groupClass="field-options"
     >
       {/* The field "name" */}
       {activeField && [
@@ -93,16 +99,17 @@ const FieldOptions = function(props) {
         </label>,
         <hr key="hr-1" className="stampa-hr" />,
         <h3 key="h3-tag">Options:</h3>,
-        stampaField.options.map(option => {
+        options.map(option => {
           const Component = components[option.type];
 
           return (
-            <Component
-              option={option}
-              updateOptionValue={updateOptionValue}
-              selectedValues={activeField.values}
-              key={option.name}
-            />
+            <div className="field-option" key={option.name}>
+              <Component
+                option={option}
+                updateOptionValue={updateOptionValue}
+                selectedValues={activeField.values}
+              />
+            </div>
           );
         }),
         <hr key="hr-2" className="stampa-hr" />,

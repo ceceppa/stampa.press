@@ -27493,10 +27493,10 @@ var _default = {
 
     if (confirm) {
       var activeFieldKey = store.get('activeFieldKey');
-      var blocks = store.get('stampaFields').filter(function (block) {
-        return block._stampa.key !== activeFieldKey;
+      var fields = store.get('stampaFields').filter(function (field) {
+        return field.key !== activeFieldKey;
       });
-      store.set('stampaFields')(blocks);
+      store.set('stampaFields')(fields);
       store.set('activeFieldKey')(null);
     }
   },
@@ -28107,6 +28107,7 @@ var SimpleSelect = function SimpleSelect(_ref) {
   var option = _ref.option,
       updateOptionValue = _ref.updateOptionValue,
       selectedValues = _ref.selectedValues;
+  var defaultValue = selectedValues[option.name] || option.value;
   return _react.default.createElement("select", {
     className: "stampa-select__select",
     name: "field-".concat(option.name),
@@ -28114,7 +28115,7 @@ var SimpleSelect = function SimpleSelect(_ref) {
     onChange: function onChange(e) {
       return updateOptionValue(e, option.name);
     },
-    defaultValue: selectedValues[option.name] || option.value
+    value: defaultValue
   }, option.values.map(function (value) {
     return _react.default.createElement("option", {
       key: value,
@@ -36803,6 +36804,10 @@ var MultiSelect = function MultiSelect(_ref) {
   /** 
    * Convert to the format needed by ReactSelect
   */
+  if (option.values == null) {
+    option.values = {};
+  }
+
   var options = Object.keys(option.values).map(function (key) {
     return {
       value: key,
@@ -36870,8 +36875,12 @@ function SelectField(_ref) {
     className: "stampa-select"
   }, _react.default.createElement("label", {
     htmlFor: "field-".concat(option.name),
-    className: "stampa-select__name"
-  }, option.label, ":"), useSimpleSelect && _react.default.createElement(_SimpleSelect.default, {
+    className: "stampa-select__name ".concat(option.tooltip ? 'tooltip' : ''),
+    "data-tooltip": option.tooltip,
+    dangerouslySetInnerHTML: {
+      __html: "".concat(option.label, ":")
+    }
+  }), useSimpleSelect && _react.default.createElement(_SimpleSelect.default, {
     option: option,
     selectedValues: selectedValues,
     updateOptionValue: updateOptionValue
@@ -37004,10 +37013,17 @@ var FieldOptions = function FieldOptions(props) {
   var deleteactiveField = (0, _react.useCallback)(function () {
     _stampa.default.deleteactiveField(store);
   });
+  var options = [];
+  var hasOptions = stampaField && Array.isArray(stampaField.options);
+
+  if (hasOptions) {
+    options = stampaField.options;
+  }
+
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Field Options",
     display: "block",
-    groupClass: "block-options"
+    groupClass: "field-options"
   }, activeField && [_react.default.createElement("label", {
     htmlFor: "field-name",
     className: "stampa-text",
@@ -37027,14 +37043,16 @@ var FieldOptions = function FieldOptions(props) {
     className: "stampa-hr"
   }), _react.default.createElement("h3", {
     key: "h3-tag"
-  }, "Options:"), stampaField.options.map(function (option) {
+  }, "Options:"), options.map(function (option) {
     var Component = components[option.type];
-    return _react.default.createElement(Component, {
+    return _react.default.createElement("div", {
+      className: "field-option",
+      key: option.name
+    }, _react.default.createElement(Component, {
       option: option,
       updateOptionValue: updateOptionValue,
-      selectedValues: activeField.values,
-      key: option.name
-    });
+      selectedValues: activeField.values
+    }));
   }), _react.default.createElement("hr", {
     key: "hr-2",
     className: "stampa-hr"
@@ -63914,7 +63932,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33609" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44809" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

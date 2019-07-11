@@ -7,8 +7,12 @@
 
 namespace Stampa;
 
+use Symfony\Component\Yaml\Yaml;
+
 define( 'STAMPA_VERSION', '0.1' );
 define( 'STAMPA_FOLDER', __DIR__ . '/' );
+
+require __DIR__ . '/vendor/autoload.php';
 
 require __DIR__ . '/admin/block-generator.php';
 require __DIR__ . '/admin/stampa-filters.php';
@@ -156,44 +160,46 @@ class Stampa {
 	}
 
 	/**
-	 * Load the default block from a JSON file
+	 * Load the YAML files
 	 *
 	 * @return void
 	 */
 	protected static function load_fields() {
-		$fields = glob( __DIR__ . '/assets/fields/*.json' );
+		$fields = glob( __DIR__ . '/assets/fields/*.yml' );
 
 		foreach ( $fields as $file ) {
-			$field = json_decode( file_get_contents( $file ) );
+			$field = Yaml::parseFile( $file );
 
-			// "Adjust" the path for the images
-			$svg_path           = plugins_url( 'assets/svg/', __FILE__ );
-			$field->data->group = $field->group;
-			$field->data->icon  = $svg_path . $field->data->icon;
+			// "Adjust" the path for the images by prepending the plugin URL.
+			$svg_path                = plugins_url( 'assets/svg/', __FILE__ );
+			$field['stampa']['icon'] = $svg_path . $field['stampa']['icon'];
 
-			self::add_field( $field->group, $field->id, (array) $field->data, $field->gutenberg ?? [], $field->php );
+			self::add_field(
+				$field['stampa'],
+				$field['options'],
+				$field['gutenberg'] ?? [],
+				$field['php'] ?? []
+			);
 		}
 	}
 
-	/**
-	 * Register a new Stampa field
-	 *
-	 * @param string $group the group where to register the field.
-	 * @param string $field_id the unique field ID.
-	 * @param array  $field_data the field data.
-	 * @return void
-	 */
-	public static function add_field( string $group, string $field_id, array $field_data, $gutenberg_data, $php_data ) {
-		$group = ucfirst( $group );
+	public static function add_field( array $field, array $options = [], array $gutenberg_data = [], string $php_data ) {
+		$field_id = $field['id'];
+		$group    = ucfirst( $field['group'] );
 
 		// Allow 3rdy part to have alter the field data.
-		$field_data = apply_filters( "stampa_add_field/{$field_id}", $field_data );
+		$field = apply_filters( "stampa_add_field/{$field_id}", $field );
 
-		self::$fields[ $group ][ $field_id ] = $field_data;
+		foreach ( $options as & $option ) {
+			$option = apply_filters( "stampa_field_option/{$field_id}/{$option['name']}", $option );
+		}
+		$field['options'] = $options;
+
+		self::$fields[ $group ][ $field_id ] = $field;
 
 		// Gutenberg data is needed only for the back-end.
 		self::$fields_by_id[ $field_id ] = [
-			'data'      => $field_data,
+			'data'      => $field,
 			'gutenberg' => $gutenberg_data,
 			'php'       => $php_data,
 		];

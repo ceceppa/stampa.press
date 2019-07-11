@@ -119,11 +119,11 @@ export default {
 
     if (confirm) {
       const activeFieldKey = store.get('activeFieldKey');
-      const blocks = store
+      const fields = store
         .get('stampaFields')
-        .filter(block => block._stampa.key !== activeFieldKey);
+        .filter(field => field.key !== activeFieldKey);
 
-      store.set('stampaFields')(blocks);
+      store.set('stampaFields')(fields);
       store.set('activeFieldKey')(null);
     }
   },

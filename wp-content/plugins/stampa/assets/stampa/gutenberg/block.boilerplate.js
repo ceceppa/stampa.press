@@ -5,19 +5,25 @@
 // Stampa Components
 import { StampaMediaUpload } from '../components/stampa-components';
 
+const useCallback = window.React.useCallback;
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { {{stampa.wp.editor}} } = wp.editor;
 const {
+  PanelBody,
+  PanelRow,
+  SelectControl,
+  ToggleControl,
   {{stampa.wp.components}}
 } = wp.components;
 const { Fragment, Component } = wp.element;
 
-// Default attributes are set to avoid React throwing an error
-// when start typeing something in the brew new added module
-const defaultAttributes = {
-{{stampa.default_attributes}}
+const allFieldsOptions = {{stampa.all_fields_options}};
+const fieldOptionsComponents = {
+  select: SelectControl,
+  checkbox: ToggleControl,
 };
+let focusedField;
 
 registerBlockType('stampa/{{stampa.sanitized_title}}', {
   title: __('{{stampa.block_title}}'),
@@ -41,23 +47,31 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
    * @return {JSX} JSX block.
    */
   edit: function(props) {
-      const { className, attributes = defaultAttributes, setAttributes} = props;
+      const { className, attributes = {}, setAttributes} = props;
+      const fieldOptions = allFieldsOptions[focusedField];
 
-      function updateAttribute(field, value) {
+      const updateAttribute = useCallback((field, value) => {
         const attribute = {};
         attribute[field] = value;
 
         setAttributes(attribute);
-      }
+      });
+
+      const updateFocusedField = useCallback(fieldName => {
+        focusedField = fieldName;
+      })
 
       return (
-        {{stampa.render_container_start}}
+        <Fragment>
+          <InspectorControls>
+            {{stampa.inspector_controls}}
+          </InspectorControls>
 		    <div className={`${className} stampa-block {{stampa.block_css_class_name}}`}>
           <div className="{{stampa.sanitized_title}}" style={{{{stampa.block_style}}}}>
         {{stampa.render_content}}
           </div>
         </div>
-        {{stampa.render_container_end}}
+        </Fragment>
       );
   },
 

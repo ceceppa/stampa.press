@@ -25,6 +25,7 @@ class BlockGenerator extends Stampa {
 	private static $grid_params          = null;
 	private static $fields_params        = null;
 	private static $options_params       = null;
+	private static $inspector_controls   = '';
 
 	private static $temp_file       = null;
 	private static $output_file     = null;
@@ -162,15 +163,12 @@ class BlockGenerator extends Stampa {
 
 		self::$output_file = $output_folder . $file_name;
 
-		if ( self::check_if_origin_been_modified() ) {
-			return [
-				'generation-skipped' => "md5 file don't match with the record",
-			];
-		}
+		self::copy_files();
 
 		self::setup_block_information();
+		self::add_inspector_control_data();
 		self::setup_boilerplate_wp_variables();
-		self::generate_options();
+		self::generate_block_options();
 
 		self::generate_block_body();
 		self::setup_grid_style();
@@ -195,11 +193,16 @@ class BlockGenerator extends Stampa {
 		if ( ! file_exists( STAMPA_MODULE_OUTPUT_FOLDER ) ) {
 			mkdir( STAMPA_MODULE_OUTPUT_FOLDER );
 		}
+	}
 
+	private static function copy_files() {
 		self::copy_package_json();
+
+		self::check_if_origin_been_modified();
 		self::copy_stampa_editor_css();
 		self::copy_stampa_loader();
 		self::copy_stampa_components();
+
 	}
 
 	private static function copy_package_json() {
@@ -219,7 +222,7 @@ class BlockGenerator extends Stampa {
 	private static function copy_stampa_editor_css() {
 		copy(
 			STAMPA_FOLDER . 'dist/stampa-editor.css',
-			STAMPA_OUTPUT_FOLDER . STAMPA_CSS_EXTENSION . '/stampa-editor.css'
+			STAMPA_OUTPUT_FOLDER . 'dist/stampa-editor.css'
 		);
 	}
 
@@ -236,7 +239,7 @@ class BlockGenerator extends Stampa {
 
 	private static function copy_stampa_components() {
 		$components_folder = STAMPA_OUTPUT_FOLDER . 'components/';
-		$components = glob( STAMPA_STAMPA_FOLDER . 'components/*.*' );
+		$components        = glob( STAMPA_STAMPA_FOLDER . 'components/*.*' );
 
 		foreach ( $components as $file ) {
 			copy( $file, $components_folder . basename( $file ) );
@@ -255,13 +258,19 @@ class BlockGenerator extends Stampa {
 			$old_md5 = get_post_meta( self::$post_ID, '_md5_sum', true );
 
 			if ( ! empty( $old_md5 ) && $md5 !== $old_md5 ) {
-				error_log( 'Original JS checksum:' . $md5 );
+				$new_name = self::$output_file . '.old';
 
-				return true;
+				/**
+				 * Assume that the .old is the one modified by 3rd party
+				 * so we don't want lose it.
+				 */
+				if ( ! file_exists( $new_name ) ) {
+					rename( self::$output_file, $new_name );
+				}
+
+				error_log( 'Original JS checksum:' . $md5 );
 			}
 		}
-
-		return false;
 	}
 
 	private static function setup_block_information() {
@@ -272,6 +281,10 @@ class BlockGenerator extends Stampa {
 		self::$block_css_class_name = empty( $block_css_class ) ? self::$block_title : $block_css_class;
 		self::$block_css_class_name = sanitize_title( self::$block_css_class_name );
 		self::add_replace( 'block_css_class_name', self::$block_css_class_name );
+	}
+
+	private static function add_inspector_control_data() : void {
+		self::$inspector_controls .= file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'options.boilerplate.js' );
 	}
 
 	private static function setup_boilerplate_wp_variables() {
@@ -288,12 +301,12 @@ class BlockGenerator extends Stampa {
 			}
 
 			$gutenberg = $field['gutenberg'];
-			if ( isset( $gutenberg->wp_components ) ) {
-				$wp_components[] = $gutenberg->wp_components;
+			if ( isset( $gutenberg['wp_components'] ) ) {
+				$wp_components[] = $gutenberg['wp_components'];
 			}
 
-			if ( isset( $gutenberg->wp_editor ) ) {
-				$wp_editor[] = $gutenberg->wp_editor;
+			if ( isset( $gutenberg['wp_editor'] ) ) {
+				$wp_editor[] = $gutenberg['wp_editor'];
 			}
 		}
 
@@ -324,7 +337,7 @@ class BlockGenerator extends Stampa {
 	private static function save_js_file() {
 		self::$temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
 
-		$boilerplate  = file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'block-boilerplate.js' );
+		$boilerplate  = file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'block.boilerplate.js' );
 		$file_content = self::replace( $boilerplate );
 
 		file_put_contents( self::$temp_file, $file_content );
@@ -334,10 +347,18 @@ class BlockGenerator extends Stampa {
 	}
 
 	private static function beautify_js_file_or_fail() {
-		exec( 'prettier ' . self::$temp_file . ' > ' . self::$output_file, $ignore, $return_val );
+		$command = sprintf(
+			'prettier %s > %s 2>%s.log',
+			self::$temp_file,
+			self::$output_file,
+			self::$output_file
+		);
+
+		system( $command, $return_val );
 
 		if ( $return_val > 0 ) {
 			error_log( print_r( self::$temp_file, true ) );
+			error_log( file_get_contents( self::$output_file . '.log' ) );
 
 			delete_post_meta( self::$post_ID, '_md5_sum' );
 			throw new \Error( 'Prettier failed' );
@@ -411,16 +432,27 @@ class BlockGenerator extends Stampa {
 				}
 			}
 
+			/**
+			 * Inside the YAML file I didn't find any built-in escaping solution for the :,
+			 * unless wrapping the element in quotes. But doing this will make the quotes
+			 * be part of the output, so the output is going to be invalid.
+			 * For this reason I'm using the "custom" symbol "\=" instead of the :
+			 */
+			$to      = str_replace( '\=', ':', $to );
+			$to      = str_replace( '\{', '{', $to );
 			$subject = str_replace( "{{stampa.{$what}}}", $to, $subject );
 		}
 
-		return $subject;
+		return str_replace( '\=', ':', $subject );
 	}
 
 	private static function generate_block_body() {
 		self::add_replace( 'render_content', [], '' );
 
 		$react_code = self::generate_block_body_from_fields( self::$fields_params );
+
+		self::add_replace( 'inspector_controls', self::$inspector_controls );
+
 		self::add_replace(
 			'render_content',
 			[
@@ -433,76 +465,189 @@ class BlockGenerator extends Stampa {
 		$react_code = '';
 
 		foreach ( $fields as $field ) {
-			$default        = self::get_field_by_id( $field['id'] );
-			$field_position = $field['position'];
+			$stampa_field = self::get_field_by_id( $field['id'] );
 
-			$gutenberg   = $default['gutenberg'];
+			$gutenberg  = $stampa_field['gutenberg'];
 			$field_code = '{/* ' . $field['name'] . ' */}';
 
-			if ( isset( $gutenberg->react ) ) {
-				$field_code .= join( PHP_EOL, $gutenberg->react );
-			}
-
-			if ( isset( $gutenberg->react_start_block ) ) {
-				$field_code .= join( PHP_EOL, $gutenberg->react_start_block );
-			}
-
-			self::add_replace( 'grid_row_start', $field_position['startRow'] );
-			self::add_replace( 'grid_row_end', intval( $field_position['startRow'] ) + intval( $field_position['endRow'] ) );
-			self::add_replace( 'grid_column_start', $field_position['startColumn'] );
-			self::add_replace( 'grid_column_end', intval( $field_position['startColumn'] ) + intval( $field_position['endColumn'] ) );
 			self::add_replace( 'field_name', $field['name'] );
 
-			// The values.
-			if ( ! isset( $field['values'] ) ) {
-				$field['values'] = [];
-			}
+			$field_code .= self::get_react_and_start_block_code( $field, $gutenberg );
+			self::set_field_grid_position( $field['position'] );
+			self::set_field_values( $stampa_field, $field );
+			self::set_default_attributes_data( $stampa_field, $field );
 
-			foreach ( $field['values'] as $key => $value ) {
-				self::add_replace( 'value.' . $key, $value );
-			}
+			$react_code .= self::loop_subfields( $field, $gutenberg, $field_code );
 
-			$attribute_name = $field['name'];
-			if ( isset( $default['gutenberg']->attribute_type ) ) {
-				self::add_replace(
-					'attributes',
-					[
-						$attribute_name => [
-							'type' => $default['gutenberg']->attribute_type,
-						],
-					]
-				);
-			}
-
-			$closing_code = '';
-			if ( isset( $gutenberg->react_end_block ) ) {
-				$closing_code = $gutenberg->react_end_block;
-			}
-
-			$has_sub_fields = isset( $field['fields'] ) &&
-												is_array( $field['fields'] ) &&
-												! empty( $field['fields'] );
-
-			if ( $has_sub_fields ) {
-				$field_code .= self::generate_block_body_from_fields( $field['fields'] );
-			}
-
-			$field_code .= $closing_code;
-
-			$react_code .= self::replace( $field_code );
+			self::unset_field_values( $field );
 		}
 
 		return $react_code;
 	}
 
+	private static function get_react_and_start_block_code( array $field, array $gutenberg ) : string {
+		$field_id   = $field['id'];
+		$field_name = $field['name'];
+
+		$code = "
+		<div
+			className=\"stampa-field stampa-field--{$field_id} field--{$field_name}\"
+			style={{
+				gridRowStart: {{stampa.grid_row_start}},
+				gridColumnStart: {{stampa.grid_column_start}},
+				gridRowEnd: {{stampa.grid_row_end}},
+				gridColumnEnd: {{stampa.grid_column_end}}
+			}}
+			onClick={() => updateFocusedField('$field_name')}
+		>
+		";
+
+		if ( isset( $gutenberg['react'] ) ) {
+			$code .= $gutenberg['react'];
+		}
+
+		if ( isset( $gutenberg['react_start_block'] ) ) {
+			$code .= $gutenberg['react_start_block'];
+		}
+
+		$code .= '</div>';
+
+		return $code;
+	}
+
+	private static function set_field_grid_position( array $field_position ) : void {
+
+			self::add_replace( 'grid_row_start', $field_position['startRow'] );
+			self::add_replace( 'grid_row_end', intval( $field_position['startRow'] ) + intval( $field_position['endRow'] ) );
+			self::add_replace( 'grid_column_start', $field_position['startColumn'] );
+			self::add_replace( 'grid_column_end', intval( $field_position['startColumn'] ) + intval( $field_position['endColumn'] ) );
+	}
+
+	private static function set_field_values( array $default_field, array $field ) : void {
+		if ( ! isset( $field['values'] ) ) {
+			$field['values'] = [];
+		}
+
+		self::set_field_default_values( $default_field );
+
+		$selected_values = $field['values'];
+		foreach ( $selected_values as $key => $value ) {
+			self::add_replace( 'value.' . $key, $value );
+			self::add_replace( 'value.' . $key . ':sanitized', sanitize_title( $value ) );
+		}
+	}
+
+	private static function set_field_default_values( array $default_field ) : void {
+		$default_options = $default_field['data']['options'] ?? [];
+
+		foreach ( $default_options as $option ) {
+			if ( isset( $option['value'] ) ) {
+				$name           = $option['name'];
+				$name_sanitized = $option['name'] . ':sanitized';
+
+				self::add_replace( 'value.' . $name, $option['value'] );
+				self::add_replace( 'value.' . $name_sanitized, sanitize_title( $option['value'] ) );
+			}
+		}
+	}
+
+	private static function set_default_attributes_data( array $stampa_field, array $field ) : void {
+		$attribute_name = $field['name'];
+		$attribute_type = $stampa_field['gutenberg']['attribute_type'] ?? null;
+
+		if ( $attribute_type != null ) {
+			self::add_replace(
+				'attributes',
+				[
+					$attribute_name => [
+						'type' => $attribute_type,
+					],
+				]
+			);
+		}
+
+		self::set_attributes_for_options( $stampa_field, $field );
+	}
+
+	private static function set_attributes_for_options( array $stampa_field, array $field ) : void {
+		$field_name   = $field['name'];
+		$field_values = $field['values'];
+
+		$options       = $stampa_field['data']['options'];
+		$field_options = [];
+
+		foreach ( $options as $option ) {
+			$inspector         = $option['inspector'] ?? true;
+			$show_in_inspector = $inspector != false;
+
+			if ( ! $show_in_inspector ) {
+				continue;
+			}
+
+			$option_name    = $option['name'];
+			$attribute_name = $field_name . '__' . $option_name;
+
+			$type = $option['attribute_type'] ?? 'string';
+
+			$option_value = $field_values[ $option_name ] ?? $option['value'];
+			self::add_replace(
+				'attributes',
+				[
+					$attribute_name => [
+						'type'    => $type,
+						'default' => $option_value,
+					],
+				]
+			);
+
+			// This option is not needed for the Gutenberg Block code.
+			unset( $option['tooltip'] );
+			$field_options[] = $option;
+		}
+
+		self::add_replace( 'all_fields_options', [ $field_name => $field_options ] );
+	}
+
+	private static function loop_subfields( array $field, array $gutenberg, string $field_code ) : string {
+		$closing_code = self::get_closing_block_code( $gutenberg );
+
+		$has_sub_fields = isset( $field['fields'] ) &&
+											is_array( $field['fields'] ) &&
+											! empty( $field['fields'] );
+
+		if ( $has_sub_fields ) {
+			$field_code .= self::generate_block_body_from_fields( $field['fields'] );
+		}
+
+		$field_code .= $closing_code;
+
+		return self::replace( $field_code );
+	}
+
+
+	private static function get_closing_block_code( array $gutenberg ) : string {
+		$closing_code = '';
+		if ( isset( $gutenberg['react_end_block'] ) ) {
+			$closing_code = $gutenberg['react_end_block'];
+		}
+
+		return $closing_code;
+	}
+
+	private static function unset_field_values( array $field ) : void {
+		foreach ( $field['values'] as $key => $value ) {
+			unset( self::$replace[ 'value.' . $key ] );
+		}
+	}
 
 	/**
 	 * Generate the Block options
 	 *
 	 * @return void
 	 */
-	private static function generate_options() : void {
+	private static function generate_block_options() : void {
 		self::add_replace( 'default_attributes', [] );
+		self::add_replace( 'all_fields_options', [], ',', true );
 		self::add_replace( 'options_content', '' );
 		self::add_replace( 'render_container_start', '' );
 		self::add_replace( 'render_container_end', '' );
@@ -515,12 +660,13 @@ class BlockGenerator extends Stampa {
 		}
 
 		// The options boilerplate.
-		$options_boilerplate = file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'inspector-controls.boilerplace.js' );
+		$options_boilerplate = file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'inspector-controls.boilerplate.js' );
 
 		self::add_replace( 'wp.components', [ 'PanelBody', 'IconButton' ] );
 		self::add_replace( 'default_attributes', [ 'backgroundImage: {}' ], null, true );
-		self::add_replace( 'render_container_start', '<Fragment>' . $options_boilerplate );
-		self::add_replace( 'render_container_end', '</Fragment>' );
+
+		self::$inspector_controls = $options_boilerplate;
+
 		self::add_replace(
 			'block_style',
 			[
@@ -599,10 +745,10 @@ class BlockGenerator extends Stampa {
 	}
 
 	private static function add_css_file_to_index_css( string $post_css_filename ) {
-		$index_file    = STAMPA_OUTPUT_FOLDER . 'index.' . STAMPA_CSS_EXTENSION;
-		$css_ext = STAMPA_CSS_EXTENSION;
+		$index_file = STAMPA_OUTPUT_FOLDER . 'index.' . STAMPA_CSS_EXTENSION;
+		$css_ext    = STAMPA_CSS_EXTENSION;
 
-		$index_content = "@import './{$css_ext}/stampa-editor.css';" . PHP_EOL;
+		$index_content = '';
 		if ( file_exists( $index_file ) ) {
 			$index_content = file_get_contents( $index_file );
 		}
@@ -618,22 +764,26 @@ class BlockGenerator extends Stampa {
 		$file_name             = sanitize_title( self::$block_title );
 		self::$php_output_file = STAMPA_MODULE_OUTPUT_FOLDER . $file_name . '.php';
 
-		if ( self::check_if_php_has_changed() ) {
-			return;
-		}
-
+		self::check_if_php_has_changed();
 		self::generate_the_basic_php_code();
 	}
 
 	private static function check_if_php_has_changed() {
-		if ( ! file_exists( self::$php_output_file ) ) {
-			return false;
+		$file_exists = file_exists( self::$php_output_file );
+		if ( ! $file_exists ) {
+			return;
 		}
 
 		$md5_file = \md5_file( self::$php_output_file );
 		$old_md5  = get_post_meta( self::$post_ID, '_md5_php', \true );
 
-		return ! empty( $old_md5 ) && $md5_file != $old_md5;
+		if ( $md5_file != $old_md5 ) {
+			$new_file = self::$php_output_file . '.old';
+
+			if ( ! file_exists( $new_file ) ) {
+				rename( self::$php_output_file, $new_file );
+			}
+		}
 	}
 
 	private static function generate_the_basic_php_code() {
@@ -687,7 +837,7 @@ class BlockGenerator extends Stampa {
 	 */
 	private static function parcel_build() {
 		$stampa_path = STAMPA_OUTPUT_FOLDER;
-		$css_ext = STAMPA_CSS_EXTENSION;
+		$css_ext     = STAMPA_CSS_EXTENSION;
 
 		exec( "parcel build {$stampa_path}index.{$css_ext} -d {$stampa_path}dist" );
 		exec( "parcel build {$stampa_path}index.js -d {$stampa_path}dist" );
