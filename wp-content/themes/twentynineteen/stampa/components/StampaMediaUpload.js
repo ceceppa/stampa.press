@@ -18,7 +18,7 @@ export default function StampaMediaUpload({
   customClass += ` object-fit--${object_fit} object-position--${object_position}`;
 
   return (
-    <div class="stampa-media-upload">
+    <div className="stampa-media-upload">
       <img
         className={`stampa-field__image ${customClass}`}
         src={image && image.url}

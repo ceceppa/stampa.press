@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 add_action( 'wp_head', __NAMESPACE__ . '\register_blocks_render_callback' );
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\load_style_editor' );
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\load_style_editor', 999 );
 add_filter( 'block_categories', __NAMESPACE__ . '\register_stampa_blocks_category', 10, 2 );
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_blocks' );
 

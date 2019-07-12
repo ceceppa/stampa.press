@@ -1,1 +1,2 @@
-import './blocks/test-images';
+import './blocks/m01-hero';
+import './blocks/all-blocks';

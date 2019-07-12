@@ -1,0 +1,18 @@
+stampa:
+  group: Static
+  id: container
+  label: Container
+  tooltip: Static <div /> element
+  icon: button.svg
+  options: []
+  container: 1
+  acceptedGroups:
+  - static
+  - fields
+  fieldClassName: field-container
+  defaultSize:
+    rows: 3
+    columns: 3
+php:
+  - start_block: <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
+  - end_block: "</div><!-- container: {{stampa.field_name}} -->"

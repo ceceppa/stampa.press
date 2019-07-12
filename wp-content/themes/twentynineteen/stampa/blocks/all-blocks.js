@@ -1,5 +1,5 @@
 /**
- * BLOCK: Test images
+ * BLOCK: All blocks
  *
  */
 // Stampa Components
@@ -14,26 +14,13 @@ const {
   PanelRow,
   SelectControl,
   ToggleControl,
+  TextControl,
   IconButton
 } = wp.components;
 const { Fragment, Component } = wp.element;
 
 const allFieldsOptions = {
-  image1: [
-    {
-      name: "size",
-      type: "select",
-      label: "Image size",
-      value: "full",
-      values: [
-        "full",
-        "thumbnail",
-        "medium",
-        "medium_large",
-        "large",
-        "post-thumbnail"
-      ]
-    },
+  image: [
     {
       name: "fit",
       type: "select",
@@ -58,21 +45,8 @@ const allFieldsOptions = {
       value: "initial"
     }
   ],
-  image: [
-    {
-      name: "size",
-      type: "select",
-      label: "Image size",
-      value: "full",
-      values: [
-        "full",
-        "thumbnail",
-        "medium",
-        "medium_large",
-        "large",
-        "post-thumbnail"
-      ]
-    },
+  container: [],
+  image1: [
     {
       name: "fit",
       type: "select",
@@ -100,27 +74,27 @@ const allFieldsOptions = {
 };
 const fieldOptionsComponents = {
   select: SelectControl,
-  checkbox: ToggleControl
+  checkbox: ToggleControl,
+  text: TextControl
 };
 let focusedField;
 
-registerBlockType("stampa/test-images", {
-  title: __("Test images"),
-  icon: "welcome-write-blog",
+registerBlockType("stampa/all-blocks", {
+  title: __("All blocks"),
+  icon: "lightbulb",
   category: "stampa-blocks",
   keywords: [],
 
   multiple: true,
 
   attributes: {
-    image1: { type: "object" },
-    image1__size: { type: "string", default: "full" },
-    image1__fit: { type: "string", default: "fill" },
-    image1__position: { type: "string", default: "initial" },
+    backgroundImage: { type: "string" },
     image: { type: "object" },
-    image__size: { type: "string", default: "full" },
-    image__fit: { type: "string", default: "scale-down" },
-    image__position: { type: "string", default: "center center" }
+    image__fit: { type: "string", default: "fill" },
+    image__position: { type: "string", default: "initial" },
+    image1: { type: "object" },
+    image1__fit: { type: "string", default: "cover" },
+    image1__position: { type: "string", default: "center center" }
   },
 
   /**
@@ -147,11 +121,32 @@ registerBlockType("stampa/test-images", {
 
     const updateFocusedField = useCallback(fieldName => {
       focusedField = fieldName;
+
+      // We don't need this data to be saved by Gutenberg
+      // but we want to trigger a re-render when focusedField changes.
+      setAttributes({ __focused: fieldName });
     });
 
     return (
       <Fragment>
         <InspectorControls>
+          <PanelBody title={__("Options")}>
+            <MediaUpload
+              onSelect={image => updateAttribute("backgroundImage", image.url)}
+              type="image"
+              value={attributes.backgroundImage}
+              render={({ open }) => (
+                <IconButton
+                  className="button"
+                  label={__("Set background Image")}
+                  icon="edit"
+                  onClick={open}
+                >
+                  Set background Image
+                </IconButton>
+              )}
+            />
+          </PanelBody>
           {fieldOptions && (
             <PanelBody title={__("Options")} className="typed-panel-body">
               {fieldOptions.map(option => {
@@ -181,10 +176,11 @@ registerBlockType("stampa/test-images", {
             </PanelBody>
           )}
         </InspectorControls>
-        <div className={`${className} stampa-block test-images`}>
+        <div className={`${className} stampa-block all-blocks full-width`}>
           <div
-            className="test-images"
+            className="all-blocks"
             style={{
+              backgroundImage: `url(${attributes.backgroundImage})`,
               display: "grid",
               gridTemplateColumns:
                 "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
@@ -193,39 +189,56 @@ registerBlockType("stampa/test-images", {
               height: "230px"
             }}
           >
-            {/* image1 */}
-            <div
-              className="stampa-field stampa-field--image field--image1"
-              style={{
-                gridRowStart: 1,
-                gridColumnStart: 7,
-                gridRowEnd: 6,
-                gridColumnEnd: 13
-              }}
-              onClick={() => updateFocusedField("image1")}
-            >
-              <StampaMediaUpload
-                fieldName="image1"
-                image={attributes.image1}
-                customClass=""
-                attributes={attributes}
-                updateAttribute={updateAttribute}
-              />
-            </div>
             {/* image */}
             <div
-              className="stampa-field stampa-field--image field--image"
+              className={`stampa-field stampa-field--image field--image ${
+                focusedField == "image" ? "focused" : ""
+              }`}
               style={{
                 gridRowStart: 1,
                 gridColumnStart: 1,
                 gridRowEnd: 6,
-                gridColumnEnd: 7
+                gridColumnEnd: 6
               }}
               onClick={() => updateFocusedField("image")}
             >
               <StampaMediaUpload
                 fieldName="image"
                 image={attributes.image}
+                customClass=""
+                attributes={attributes}
+                updateAttribute={updateAttribute}
+              />
+            </div>
+            {/* container */}
+            <div
+              className={`stampa-field stampa-field--container field--container ${
+                focusedField == "container" ? "focused" : ""
+              }`}
+              style={{
+                gridRowStart: 1,
+                gridColumnStart: 1,
+                gridRowEnd: 4,
+                gridColumnEnd: 4
+              }}
+              onClick={() => updateFocusedField("container")}
+            ></div>
+            {/* image1 */}
+            <div
+              className={`stampa-field stampa-field--image field--image1 ${
+                focusedField == "image1" ? "focused" : ""
+              }`}
+              style={{
+                gridRowStart: 1,
+                gridColumnStart: 1,
+                gridRowEnd: 4,
+                gridColumnEnd: 4
+              }}
+              onClick={() => updateFocusedField("image1")}
+            >
+              <StampaMediaUpload
+                fieldName="image1"
+                image={attributes.image1}
                 customClass=""
                 attributes={attributes}
                 updateAttribute={updateAttribute}

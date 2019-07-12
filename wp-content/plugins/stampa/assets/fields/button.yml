@@ -1,11 +1,13 @@
-data:
+# The Gutenberg block is not using TextareaControl because we
+# don't want specify the "rows" property ("required" by the block)
+stampa:
   group: Fields
   id: button
   label: Button
   tooltip: Button field
   icon: button.svg
   contentClassName: wp-block-button
-  html: <div class='wp-block-button__link'>{placeholder}</div>
+  html: <div class="wp-block-button__link">{placeholder}</div>
   defaultSize:
     rows: 1
     columns: 2
@@ -15,20 +17,23 @@ options:
     label: Placeholder
     value: Add text...
     inspector: false
+  - name: link
+    type: text
+    label: URL
+    stampa: false 
 gutenberg:
-  wp_components: Button
   attribute_type: string
   react:
-    <Button
-     className="stampa-field"
-     value={attributes.{{stampa.field_name}}}
-     placeholder="{{stampa.value.placeholder}}"
-     onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
+    <textarea
+      className="button {{stampa.block_css_class_name}}__{{stampa.field_name}}"
+      value={attributes.{{stampa.field_name}}}
+      placeholder="{{stampa.value.placeholder}}"
+      onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
     />
 php: 
-  <a
-    href="<?php echo $block_data['{{stampa.field_name}}']['url'] ?>"
-    class="button {{stampa.block_css_class_name}}__{{stampa.field_name}}"
-  >
-    <?php echo $block_data['{{stampa.field_name}}']['label'] ?>
-  </a>"
+  - code: <a
+            href="<?php echo ${{stampa.field_name}}__url ?>"
+            class="{{stampa.block_css_class_name}}__{{stampa.field_name}}"
+          >\n
+            <?php echo ${{stampa.field_name}} ?>\n
+          </a>

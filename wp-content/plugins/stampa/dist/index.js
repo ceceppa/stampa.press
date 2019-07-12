@@ -27252,7 +27252,9 @@ var initialState = {
   stampaFields: [],
   stampaBlockOptions: {
     hasBackgroundOption: false,
-    cssClassName: null
+    cssClassName: null,
+    fullWidth: true,
+    icon: 'welcome-write-blog'
   },
   draggedFieldId: null,
   gridColumns: 12,
@@ -27931,6 +27933,14 @@ function BlockOptions() {
     stampaBlockOptions.cssClassName = e.target.value;
     store.set('stampaBlockOptions')(stampaBlockOptions);
   });
+  var updateFullWidth = (0, _react.useCallback)(function (e) {
+    stampaBlockOptions.fullWidth = e.target.checked;
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  });
+  var updateIcon = (0, _react.useCallback)(function (e) {
+    stampaBlockOptions.icon = e.target.value;
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  });
   return _react.default.createElement(_ToggleGroup.default, {
     label: "Stampa block Options",
     display: "block",
@@ -27949,6 +27959,24 @@ function BlockOptions() {
     value: stampaBlockOptions.cssClassName || '',
     onChange: updateBlockCssClassName
   })), _react.default.createElement("label", {
+    htmlFor: "block-name",
+    className: "stampa-number"
+  }, _react.default.createElement("span", {
+    className: "stampa-number__label tooltip",
+    "data-tooltip": "The dash icon to use. NOTE: the icon name must not include the 'dashicons-' prefix!"
+  }, _react.default.createElement("a", {
+    href: "https://developer.wordpress.org/resource/dashicons/",
+    target: "_blank"
+  }, "Dash icon:"), ' ', "(", _react.default.createElement("span", {
+    className: "dashicons-before dashicons-".concat(stampaBlockOptions.icon)
+  }), ")"), _react.default.createElement("input", {
+    className: "stampa-number__input",
+    type: "text",
+    name: "block-name",
+    id: "block-name",
+    value: stampaBlockOptions.icon || '',
+    onChange: updateIcon
+  })), _react.default.createElement("label", {
     htmlFor: "block-background",
     className: "stampa-number"
   }, _react.default.createElement("span", {
@@ -27960,19 +27988,6 @@ function BlockOptions() {
     name: "block-background",
     id: "block-background",
     checked: stampaBlockOptions.hasBackgroundOption,
-    onChange: updateBackgroundOption
-  })), _react.default.createElement("label", {
-    htmlFor: "full-bleed",
-    className: "stampa-number"
-  }, _react.default.createElement("span", {
-    className: "stampa-number__label tooltip",
-    "data-tooltip": "If checked allows the user to set up a background-image for the block."
-  }, "Full bleed:"), _react.default.createElement("input", {
-    className: "stampa-number__input",
-    type: "checkbox",
-    name: "full-bleed",
-    id: "full-bleed",
-    checked: stampaBlockOptions.fullBleed,
     onChange: updateBackgroundOption
   })));
 }
@@ -63932,7 +63947,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44809" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36347" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

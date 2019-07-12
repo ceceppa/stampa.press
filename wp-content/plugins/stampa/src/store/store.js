@@ -7,6 +7,8 @@ const initialState = {
   stampaBlockOptions: {
     hasBackgroundOption: false,
     cssClassName: null,
+    fullWidth: true,
+    icon: 'welcome-write-blog',
   },
   draggedFieldId: null,
   gridColumns: 12,

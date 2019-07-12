@@ -20,13 +20,25 @@ export default function BlockOptions() {
     store.set('stampaBlockOptions')(stampaBlockOptions);
   });
 
+  const updateFullWidth = useCallback(e => {
+    stampaBlockOptions.fullWidth = e.target.checked;
+
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  });
+
+  const updateIcon = useCallback(e => {
+    stampaBlockOptions.icon = e.target.value;
+
+    store.set('stampaBlockOptions')(stampaBlockOptions);
+  });
+
   return (
     <ToggleGroup
       label="Stampa block Options"
       display="block"
       groupClass="block-options stampa__border--bottom"
     >
-      {/*  */}
+      {/* BEM root CSS class */}
       <label htmlFor="block-name" className="stampa-number">
         <span
           className="stampa-number__label tooltip"
@@ -41,6 +53,34 @@ export default function BlockOptions() {
           id="block-name"
           value={stampaBlockOptions.cssClassName || ''}
           onChange={updateBlockCssClassName}
+        />
+      </label>
+      {/* Block icon */}
+      <label htmlFor="block-name" className="stampa-number">
+        <span
+          className="stampa-number__label tooltip"
+          data-tooltip="The dash icon to use. NOTE: the icon name must not include the 'dashicons-' prefix!"
+        >
+          <a
+            href="https://developer.wordpress.org/resource/dashicons/"
+            target="_blank"
+          >
+            Dash icon:
+          </a>
+          {' '}
+          (
+          <span
+            className={`dashicons-before dashicons-${stampaBlockOptions.icon}`}
+          />
+          )
+        </span>
+        <input
+          className="stampa-number__input"
+          type="text"
+          name="block-name"
+          id="block-name"
+          value={stampaBlockOptions.icon || ''}
+          onChange={updateIcon}
         />
       </label>
       {/* Background */}
@@ -60,23 +100,23 @@ export default function BlockOptions() {
           onChange={updateBackgroundOption}
         />
       </label>
-      {/* full bleed */}
-      <label htmlFor="full-bleed" className="stampa-number">
+      {/* full width */}
+      {/* <label htmlFor="full-width" className="stampa-number">
         <span
           className="stampa-number__label tooltip"
           data-tooltip="If checked allows the user to set up a background-image for the block."
         >
-          Full bleed:
+          Full width:
         </span>
         <input
           className="stampa-number__input"
           type="checkbox"
-          name="full-bleed"
-          id="full-bleed"
-          checked={stampaBlockOptions.fullBleed}
-          onChange={updateBackgroundOption}
+          name="full-width"
+          id="full-width"
+          checked={stampaBlockOptions.fullWidth}
+          onChange={updateFullWidth}
         />
-      </label>
+      </label> */}
     </ToggleGroup>
   );
 }

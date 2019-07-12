@@ -1,6 +1,6 @@
 <PanelBody title={__('Options')}>
   <MediaUpload
-    onSelect={image => updateAttribute('backgroundImage', image)}
+    onSelect={image => updateAttribute('backgroundImage', image.url)}
     type="image"
     value={attributes.backgroundImage}
     render={({ open }) => (
@@ -14,4 +14,4 @@
       </IconButton>
     )}
   />
-</PanelBody>;
+</PanelBody>

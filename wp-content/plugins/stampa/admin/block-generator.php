@@ -26,6 +26,7 @@ class BlockGenerator extends Stampa {
 	private static $fields_params        = null;
 	private static $options_params       = null;
 	private static $inspector_controls   = '';
+	private static $background_style     = '';
 
 	private static $temp_file       = null;
 	private static $output_file     = null;
@@ -166,9 +167,9 @@ class BlockGenerator extends Stampa {
 		self::copy_files();
 
 		self::setup_block_information();
+		self::generate_block_options();
 		self::add_inspector_control_data();
 		self::setup_boilerplate_wp_variables();
-		self::generate_block_options();
 
 		self::generate_block_body();
 		self::setup_grid_style();
@@ -438,10 +439,14 @@ class BlockGenerator extends Stampa {
 			 * be part of the output, so the output is going to be invalid.
 			 * For this reason I'm using the "custom" symbol "\=" instead of the :
 			 */
-			$to      = str_replace( '\=', ':', $to );
-			$to      = str_replace( '\{', '{', $to );
+			$to = str_replace( '\=', ':', $to );
+			$to = str_replace( '\{', '{', $to );
+			$to = str_replace( '\n', PHP_EOL, $to );
+
 			$subject = str_replace( "{{stampa.{$what}}}", $to, $subject );
 		}
+
+		$subject = str_replace( '\n', PHP_EOL, $subject );
 
 		return str_replace( '\=', ':', $subject );
 	}
@@ -491,7 +496,7 @@ class BlockGenerator extends Stampa {
 
 		$code = "
 		<div
-			className=\"stampa-field stampa-field--{$field_id} field--{$field_name}\"
+			className={`stampa-field stampa-field--{$field_id} field--{$field_name} \${focusedField == '{$field_name}' ? 'focused' : ''}`}
 			style={{
 				gridRowStart: {{stampa.grid_row_start}},
 				gridColumnStart: {{stampa.grid_column_start}},
@@ -521,6 +526,7 @@ class BlockGenerator extends Stampa {
 			self::add_replace( 'grid_row_end', intval( $field_position['startRow'] ) + intval( $field_position['endRow'] ) );
 			self::add_replace( 'grid_column_start', $field_position['startColumn'] );
 			self::add_replace( 'grid_column_end', intval( $field_position['startColumn'] ) + intval( $field_position['endColumn'] ) );
+			self::add_replace( 'grid_rows', $field_position['endRow'] );
 	}
 
 	private static function set_field_values( array $default_field, array $field ) : void {
@@ -538,7 +544,7 @@ class BlockGenerator extends Stampa {
 	}
 
 	private static function set_field_default_values( array $default_field ) : void {
-		$default_options = $default_field['data']['options'] ?? [];
+		$default_options = $default_field['options'] ?? [];
 
 		foreach ( $default_options as $option ) {
 			if ( isset( $option['value'] ) ) {
@@ -571,9 +577,9 @@ class BlockGenerator extends Stampa {
 
 	private static function set_attributes_for_options( array $stampa_field, array $field ) : void {
 		$field_name   = $field['name'];
-		$field_values = $field['values'];
+		$field_values = $field['values'] ?? [];
 
-		$options       = $stampa_field['data']['options'];
+		$options       = $stampa_field['options'];
 		$field_options = [];
 
 		foreach ( $options as $option ) {
@@ -589,7 +595,7 @@ class BlockGenerator extends Stampa {
 
 			$type = $option['attribute_type'] ?? 'string';
 
-			$option_value = $field_values[ $option_name ] ?? $option['value'];
+			$option_value = $field_values[ $option_name ] ?? $option['value'] ?? '';
 			self::add_replace(
 				'attributes',
 				[
@@ -635,7 +641,9 @@ class BlockGenerator extends Stampa {
 	}
 
 	private static function unset_field_values( array $field ) : void {
-		foreach ( $field['values'] as $key => $value ) {
+		$values = $field['values'] ?? [];
+
+		foreach ( $values as $key => $value ) {
 			unset( self::$replace[ 'value.' . $key ] );
 		}
 	}
@@ -652,25 +660,35 @@ class BlockGenerator extends Stampa {
 		self::add_replace( 'render_container_start', '' );
 		self::add_replace( 'render_container_end', '' );
 		self::add_replace( 'attributes', [], null, true );
+		self::add_replace( 'blockOptions.fullWidthClass', '' );
+		self::add_replace( 'blockOptions.icon', self::$options_params['icon'] );
 
 		$hasBackground = self::$options_params['hasBackgroundOption'];
 
-		if ( $hasBackground === false || $hasBackground === 'false' ) {
-			return;
+		if ( $hasBackground === true || $hasBackground === 'true' ) {
+			self::add_backgroud_option();
 		}
 
-		// The options boilerplate.
-		$options_boilerplate = file_get_contents( STAMPA_REACT_BOILERPLATES_FOLDER . 'inspector-controls.boilerplate.js' );
+		$has_full_width = self::$options_params['fullWidth'] == true;
+		if ( $has_full_width ) {
+			self::add_replace( 'blockOptions.fullWidthClass', 'full-width' );
+		}
+	}
 
-		self::add_replace( 'wp.components', [ 'PanelBody', 'IconButton' ] );
+	private static function add_backgroud_option() {
+		$options_boilerplate = file_get_contents(
+			STAMPA_REACT_BOILERPLATES_FOLDER . 'inspector-controls.boilerplate.js'
+		);
+
+		self::add_replace( 'wp.components', [ 'IconButton' ] );
 		self::add_replace( 'default_attributes', [ 'backgroundImage: {}' ], null, true );
 
-		self::$inspector_controls = $options_boilerplate;
+		self::$inspector_controls .= $options_boilerplate;
 
 		self::add_replace(
 			'block_style',
 			[
-				'backgroundImage: `url(${attributes.backgroundImage && attributes.backgroundImage.url})`',
+				'backgroundImage: `url(${attributes.backgroundImage})`',
 			]
 		);
 
@@ -678,10 +696,12 @@ class BlockGenerator extends Stampa {
 			'attributes',
 			[
 				'backgroundImage' => [
-					'type' => 'object',
+					'type' => 'string',
 				],
 			]
 		);
+
+		self::$background_style = ' style="background: url(\'<?php echo $backgroundImage ?>\') no-repeat center / cover "';
 	}
 
 	/**
@@ -787,7 +807,12 @@ class BlockGenerator extends Stampa {
 	}
 
 	private static function generate_the_basic_php_code() {
-		$php_content = sprintf( '<section class="%s">%s', self::$block_css_class_name, \PHP_EOL );
+		$php_content = sprintf(
+			'<section class="%s"%s>%s',
+			self::$block_css_class_name,
+			self::$background_style,
+			PHP_EOL
+		);
 
 		$php_content .= self::generate_php_code_from_fields_data( self::$fields_params );
 
@@ -801,18 +826,13 @@ class BlockGenerator extends Stampa {
 		$tabs_index  = str_repeat( "\t", $indent );
 
 		foreach ( $fields as $field ) {
+			$stampa_field = self::get_field_by_id( $field['id'] );
 			self::add_replace( 'field_name', $field['name'] );
 
-			$default = self::get_field_by_id( $field['id'] );
-
-			$php = $default['php'] ?? null;
-			if ( is_string( $php ) ) {
-				$php_content .= $tabs_index . self::replace( $default['php'] ) . PHP_EOL;
-			}
-
-			if ( isset( $php->start_block ) ) {
-				$php_content .= $tabs_index . self::replace( $php->start_block ) . PHP_EOL;
-			}
+			self::add_field_options_to_replace( $field );
+			$php_content  .= self::get_php_code_for_field( $stampa_field, $tabs_index );
+			$php_content  .= self::get_php_start_block_code( $stampa_field );
+			$php_end_block = self::get_php_start_block_code( $stampa_field );
 
 			$has_sub_fields = isset( $field['fields'] ) &&
 												is_array( $field['fields'] ) &&
@@ -822,14 +842,43 @@ class BlockGenerator extends Stampa {
 				$php_content .= self::generate_php_code_from_fields_data( $field['fields'], $indent + 1 ) . PHP_EOL;
 			}
 
-			if ( isset( $php->end_block ) ) {
-				self::add_replace( 'field_name', $field['name'] );
-
-				$php_content .= $tabs_index . self::replace( $php->end_block ) . PHP_EOL;
-			}
+			$php_content .= $php_end_block;
 		}
 
 		return $php_content;
+	}
+
+	private static function add_field_options_to_replace( array $field ) {
+		$values = $field['values'] ?? [];
+
+		foreach ( $values as $key => $value ) {
+			self::add_replace( 'value.' . $key, $value );
+		}
+	}
+
+	private static function get_php_code_for_field( array $stampa_field, string $tabs_index ) : string {
+		$php_code = $stampa_field['php']['code'] ?? '';
+		if ( empty( $php_code ) ) {
+			return '';
+		}
+
+		return $tabs_index . self::replace( $php_code ) . PHP_EOL;
+	}
+
+	private static function get_php_start_block_code() : string {
+		if ( ! isset( $php['start_block'] ) ) {
+			return '';
+		}
+
+		return $tabs_index . self::replace( $php['start_block'] ) . PHP_EOL;
+	}
+
+	private static function get_php_end_block_code() : string {
+		if ( ! isset( $php['end_block'] ) ) {
+			return '';
+		}
+
+		return $tabs_index . self::replace( $php['end_block'] ) . PHP_EOL;
 	}
 
 	/**

@@ -14,6 +14,7 @@ const {
   PanelRow,
   SelectControl,
   ToggleControl,
+  TextControl,
   {{stampa.wp.components}}
 } = wp.components;
 const { Fragment, Component } = wp.element;
@@ -22,12 +23,13 @@ const allFieldsOptions = {{stampa.all_fields_options}};
 const fieldOptionsComponents = {
   select: SelectControl,
   checkbox: ToggleControl,
+  text: TextControl,
 };
 let focusedField;
 
 registerBlockType('stampa/{{stampa.sanitized_title}}', {
   title: __('{{stampa.block_title}}'),
-  icon: 'welcome-write-blog',
+  icon: '{{stampa.blockOptions.icon}}',
   category: 'stampa-blocks',
   keywords: [],
 
@@ -59,6 +61,10 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
 
       const updateFocusedField = useCallback(fieldName => {
         focusedField = fieldName;
+        
+        // We don't need this data to be saved by Gutenberg
+        // but we want to trigger a re-render when focusedField changes.
+        setAttributes({__focused: fieldName});
       })
 
       return (
@@ -66,7 +72,7 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
           <InspectorControls>
             {{stampa.inspector_controls}}
           </InspectorControls>
-		    <div className={`${className} stampa-block {{stampa.block_css_class_name}}`}>
+		    <div className={`${className} stampa-block {{stampa.block_css_class_name}} {{stampa.blockOptions.fullWidthClass}}`}>
           <div className="{{stampa.sanitized_title}}" style={{{{stampa.block_style}}}}>
         {{stampa.render_content}}
           </div>

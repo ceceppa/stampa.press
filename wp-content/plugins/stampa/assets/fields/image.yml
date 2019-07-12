@@ -31,6 +31,7 @@ options:
     label: Image size
     tooltip: The image size to use.
     value: full
+    inspector: false
   - name: fit
     type: select
     label: Default value for "object-fit"
@@ -68,11 +69,11 @@ gutenberg:
       updateAttribute={updateAttribute}
     />
 php: 
-  <?php if ( isset( ${{stampa.field_name}}->id) ) {
-    $object_fit = $__{{stampa.field_name}}->fit;
-    $object_position = $__{{stampa.field_name}}->position;
+  - code: <?php if ( isset( ${{stampa.field_name}}->id) ) {
+          $object_fit = $__{{stampa.field_name}}->fit;
+          $object_position = $__{{stampa.field_name}}->position;
 
-    wp_get_attachment_image( ${{stampa.field_name}}->id, '{{stampa.value.size}}', '', [
-      'class' => "{$object_fit} {$object_position}"
-    ] );
-  } ?>
+          wp_get_attachment_image( ${{stampa.field_name}}->id, '{{stampa.value.size}}', '', [
+            'class' => "{$object_fit} {$object_position}"
+          ] );
+        } ?>

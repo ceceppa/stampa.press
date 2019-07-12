@@ -176,30 +176,35 @@ class Stampa {
 
 			self::add_field(
 				$field['stampa'],
-				$field['options'],
+				$field['options'] ?? [],
 				$field['gutenberg'] ?? [],
 				$field['php'] ?? []
 			);
 		}
 	}
 
-	public static function add_field( array $field, array $options = [], array $gutenberg_data = [], string $php_data ) {
+	public static function add_field( array $field, array $options = [], array $gutenberg_data = [], $php_data ) {
 		$field_id = $field['id'];
 		$group    = ucfirst( $field['group'] );
 
 		// Allow 3rdy part to have alter the field data.
-		$field = apply_filters( "stampa_add_field/{$field_id}", $field );
+		$field['options'] = $options;
+		$field            = apply_filters( "stampa_add_field/{$field_id}", $field );
 
-		foreach ( $options as & $option ) {
+		foreach ( $field['options'] as & $option ) {
+			if ( @$option['stampa'] === false ) {
+				continue;
+			}
+
 			$option = apply_filters( "stampa_field_option/{$field_id}/{$option['name']}", $option );
 		}
-		$field['options'] = $options;
 
 		self::$fields[ $group ][ $field_id ] = $field;
 
 		// Gutenberg data is needed only for the back-end.
 		self::$fields_by_id[ $field_id ] = [
-			'data'      => $field,
+			'stampa'    => $field,
+			'options'   => $options,
 			'gutenberg' => $gutenberg_data,
 			'php'       => $php_data,
 		];

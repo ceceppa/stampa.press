@@ -1,0 +1,28 @@
+stampa:
+  group: Fields
+  id: text
+  label: Text
+  tooltip: Simple text input field. (<PlainText />)
+  help: https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/plain-text
+  icon: input.svg
+  html: "{placeholder}"
+  defaultSize:
+    rows: 3
+    columns: 5
+options:
+  - name: placeholder
+    type: text
+    label: Placeholder
+    value: Write text...
+gutenberg:
+  attribute_type: string
+  react:
+    <textarea
+      value={attributes.{{stampa.field_name}}}
+      placeholder="{{stampa.value.placeholder}}"
+      onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
+    />
+php: 
+  <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
+    <?php echo ${{stampa.field_name}} ?>
+  </div>
