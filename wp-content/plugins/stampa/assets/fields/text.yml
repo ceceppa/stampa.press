@@ -14,6 +14,7 @@ options:
     type: text
     label: Placeholder
     value: Write text...
+    inspector: false
 gutenberg:
   attribute_type: string
   react:

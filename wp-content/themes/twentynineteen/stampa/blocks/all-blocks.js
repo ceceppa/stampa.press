@@ -216,33 +216,38 @@ registerBlockType("stampa/all-blocks", {
                 focusedField == "container" ? "focused" : ""
               }`}
               style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr ",
+                gridTemplateRows: "1fr 1fr 1fr 1fr 1fr ",
+                gridGap: "5px",
                 gridRowStart: 1,
-                gridColumnStart: 1,
-                gridRowEnd: 4,
-                gridColumnEnd: 4
+                gridColumnStart: 6,
+                gridRowEnd: 5,
+                gridColumnEnd: 11
               }}
               onClick={() => updateFocusedField("container")}
-            ></div>
-            {/* image1 */}
-            <div
-              className={`stampa-field stampa-field--image field--image1 ${
-                focusedField == "image1" ? "focused" : ""
-              }`}
-              style={{
-                gridRowStart: 1,
-                gridColumnStart: 1,
-                gridRowEnd: 4,
-                gridColumnEnd: 4
-              }}
-              onClick={() => updateFocusedField("image1")}
             >
-              <StampaMediaUpload
-                fieldName="image1"
-                image={attributes.image1}
-                customClass=""
-                attributes={attributes}
-                updateAttribute={updateAttribute}
-              />
+              {/* image1 */}
+              <div
+                className={`stampa-field stampa-field--image field--image1 ${
+                  focusedField == "image1" ? "focused" : ""
+                }`}
+                style={{
+                  gridRowStart: 1,
+                  gridColumnStart: 1,
+                  gridRowEnd: 4,
+                  gridColumnEnd: 4
+                }}
+                onClick={() => updateFocusedField("image1")}
+              >
+                <StampaMediaUpload
+                  fieldName="image1"
+                  image={attributes.image1}
+                  customClass=""
+                  attributes={attributes}
+                  updateAttribute={updateAttribute}
+                />
+              </div>
             </div>
           </div>
         </div>

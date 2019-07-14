@@ -69,10 +69,10 @@ gutenberg:
       updateAttribute={updateAttribute}
     />
 php: 
-  - code: <?php if ( isset( ${{stampa.field_name}}->id) ) {
+  code: <?php if ( isset( ${{stampa.field_name}}->id) ) {
           $object_fit = $__{{stampa.field_name}}->fit;
           $object_position = $__{{stampa.field_name}}->position;
-
+          ""
           wp_get_attachment_image( ${{stampa.field_name}}->id, '{{stampa.value.size}}', '', [
             'class' => "{$object_fit} {$object_position}"
           ] );

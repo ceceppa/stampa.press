@@ -8,6 +8,6 @@ stampa:
     columns: 3
     rows: 1
 php: 
-  <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
-    <?php echo $block_data['{{stampa.field_name}}'] ?>
-  </div>
+  code: <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
+          <?php echo $block_data['{{stampa.field_name}}'] ?>
+        </div>

@@ -473,15 +473,19 @@ class BlockGenerator extends Stampa {
 			$stampa_field = self::get_field_by_id( $field['id'] );
 
 			$gutenberg  = $stampa_field['gutenberg'];
-			$field_code = '{/* ' . $field['name'] . ' */}';
+			$field_name = $field['name'];
 
-			self::add_replace( 'field_name', $field['name'] );
+			$field_code = '{/* ' . $field_name . ' */}';
+
+			self::add_replace( 'field_name', $field_name );
 
 			$field_code .= self::get_react_and_start_block_code( $field, $gutenberg );
+
 			self::set_field_grid_position( $field['position'] );
 			self::set_field_values( $stampa_field, $field );
 			self::set_default_attributes_data( $stampa_field, $field );
 
+			$field_code = self::replace( $field_code );
 			$react_code .= self::loop_subfields( $field, $gutenberg, $field_code );
 
 			self::unset_field_values( $field );
@@ -494,18 +498,46 @@ class BlockGenerator extends Stampa {
 		$field_id   = $field['id'];
 		$field_name = $field['name'];
 
-		$code = "
-		<div
+		$stampa_field = self::get_field_by_id( $field_id );
+		$is_container = $stampa_field['stampa']['container'] ?? null;
+
+		error_log( print_r( $is_container, true ) );
+		if ( $is_container == null ) {
+			$code = "
+			<div
 			className={`stampa-field stampa-field--{$field_id} field--{$field_name} \${focusedField == '{$field_name}' ? 'focused' : ''}`}
-			style={{
-				gridRowStart: {{stampa.grid_row_start}},
-				gridColumnStart: {{stampa.grid_column_start}},
-				gridRowEnd: {{stampa.grid_row_end}},
-				gridColumnEnd: {{stampa.grid_column_end}}
-			}}
-			onClick={() => updateFocusedField('$field_name')}
-		>
-		";
+				style={{
+					gridRowStart: {{stampa.grid_row_start}},
+					gridColumnStart: {{stampa.grid_column_start}},
+					gridRowEnd: {{stampa.grid_row_end}},
+					gridColumnEnd: {{stampa.grid_column_end}}
+				}}
+				onClick={() => updateFocusedField('$field_name')}
+				>
+				";
+		} else {
+			$values = $field['values'] ?? [];
+
+			$template_columns = trim( str_repeat( '1fr ', $values['columns'] ) );
+			$template_rows    = trim( str_repeat( '1fr ', $values['rows'] ) );
+
+			$code = "
+			<div
+				className={`stampa-field stampa-field--{$field_id} field--{$field_name} \${focusedField == '{$field_name}' ? 'focused' : ''}`}
+				style={{
+					display: 'grid',
+					gridTemplateColumns: '$template_columns',
+					gridTemplateRows: '$template_rows',
+					gridGap: '{$values['gap']}px',
+					gridRowStart: {{stampa.grid_row_start}},
+					gridColumnStart: {{stampa.grid_column_start}},
+					gridRowEnd: {{stampa.grid_row_end}},
+					gridColumnEnd: {{stampa.grid_column_end}}
+				}}
+				onClick={() => updateFocusedField('$field_name')}
+			>
+			";
+		}
 
 		if ( isset( $gutenberg['react'] ) ) {
 			$code .= $gutenberg['react'];
@@ -515,13 +547,10 @@ class BlockGenerator extends Stampa {
 			$code .= $gutenberg['react_start_block'];
 		}
 
-		$code .= '</div>';
-
 		return $code;
 	}
 
 	private static function set_field_grid_position( array $field_position ) : void {
-
 			self::add_replace( 'grid_row_start', $field_position['startRow'] );
 			self::add_replace( 'grid_row_end', intval( $field_position['startRow'] ) + intval( $field_position['endRow'] ) );
 			self::add_replace( 'grid_column_start', $field_position['startColumn'] );
@@ -637,7 +666,7 @@ class BlockGenerator extends Stampa {
 			$closing_code = $gutenberg['react_end_block'];
 		}
 
-		return $closing_code;
+		return $closing_code . '</div>';
 	}
 
 	private static function unset_field_values( array $field ) : void {

@@ -13,6 +13,22 @@ stampa:
   defaultSize:
     rows: 3
     columns: 3
+options:
+- name: columns
+  type: number
+  label: Columns
+  value: '6'
+  inspector: false
+- name: rows
+  type: number
+  label: Rows
+  value: '5'
+  inspector: false
+- name: gap
+  type: number
+  label: Gap
+  value: '5'
+  inspector: false
 php:
   - start_block: <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
   - end_block: "</div><!-- container: {{stampa.field_name}} -->"

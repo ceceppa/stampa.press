@@ -31,9 +31,9 @@ gutenberg:
       onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
     />
 php: 
-  - code: <a
-            href="<?php echo ${{stampa.field_name}}__url ?>"
-            class="{{stampa.block_css_class_name}}__{{stampa.field_name}}"
-          >\n
-            <?php echo ${{stampa.field_name}} ?>\n
-          </a>
+  code: <a
+          href="<?php echo ${{stampa.field_name}}__url ?>"
+          class="{{stampa.block_css_class_name}}__{{stampa.field_name}}"
+        >\n
+          <?php echo ${{stampa.field_name}} ?>\n
+        </a>
