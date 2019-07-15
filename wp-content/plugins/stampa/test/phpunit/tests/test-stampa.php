@@ -1,61 +1,71 @@
 <?php
+namespace Stampa\Test;
+
+require __DIR__ . '/helpers.php';
+
+use function Stampa\Test\Helpers\assertEndpointsExist;
+use function Stampa\Test\Helpers\assertEndpointCallbackIsCallable;
+use function Stampa\Test\Helpers\submitPutRequest;
+use function Stampa\Test\Helpers\create_test_post;
+use function Stampa\Test\Helpers\assertReponseHasEditLink;
+use function Stampa\Test\Helpers\assertPostDataMatch;
+use function Stampa\Test\Helpers\assertHasMetaData;
+
+define( 'STAMPA_PHPUNIT', true );
 
 do_action( 'init' );
 do_action( 'rest_api_init' );
 do_action( 'admin_enqueue_scripts' );
 
+define( 'STAMPA_TEST_POST_ID', $test_post_id );
+
 class Test_Stampa extends \WP_UnitTestCase {
-	/**
-	 * Test the save endpoint
-	 *
-	 * POST /stampa/v1/bloc/{id}
-	 */
 	function test_should_register_the_endpoints() {
-		$this->assertEndpointsExist(
-			'/stampa/v1',
-			'/stampa/v1/block/(?P<id>[\\d]+)'
+		assertEndpointsExist(
+			$this,
+			[
+				'/stampa/v1',
+				'/stampa/v1/block/(?P<id>[\\d]+)',
+			]
 		);
-		// $callback = $routes[ $endpoint ][0];
-		// PUT callback?
-		// $this->assertArrayHasKey( 'PUT', $callback['methods'] );
-		// Is callable?
-		// $method = $callback['callback'];
-		// $this->assertTrue( is_callable( $method ) );
 	}
 
-	function assertEndpointsExist() {
-		$endpoints = func_get_args();
-
-		$routes = $this->getRestServerRoutes();
-
-		foreach ( $endpoints as $endpoint ) {
-			$this->assertArrayHasKey( $endpoint, $routes );
-		}
+	function test_the_endpoint_callback_should_be_callable() {
+		assertEndpointCallbackIsCallable(
+			$this,
+			'/stampa/v1/block/(?P<id>[\d]+)',
+			'PUT'
+		);
 	}
 
-	function getRestServerRoutes() {
-		$wp_rest_server = $this->getRestServer();
+	function test_put_request_with_no_title_and_grid_should_fail() {
+		$response = submitPutRequest( '/stampa/v1/block/1' );
 
-		return $wp_rest_server->get_routes();
+		$this->assertEquals( 400, $response['data']['status'] );
+		$this->assertEquals( 'Missing parameter(s): title, grid', $response['message'] );
 	}
 
-	function getRestServer() {
-		static $wp_rest_server = null;
+	function test_should_return_the_edit_link() {
+		$test_post_id = create_test_post();
 
-		if ( is_null( $wp_rest_server ) ) {
-			$wp_rest_server = new \WP_REST_Server();
-		}
+		$response = submitPutRequest(
+			'/stampa/v1/block/' . $test_post_id,
+			[
+				'title' => 'block title',
+				'grid'  => [],
+			]
+		);
 
-		return $wp_rest_server;
+		assertReponseHasEditLink( $this, $response );
+		assertPostDataMatch(
+			$this,
+			$test_post_id,
+			[
+				'post_title'  => 'block title',
+				'post_status' => 'publish',
+			]
+		);
+
+		assertHasMetaData( $this, $test_post_id, [ 'grid', 'options', 'fields' ] );
 	}
-
-	// /**
-	// * Test add field
-	// */
-	// function test_add_field() {
-	// Stampa::add_field( 'my-group', 'my-id', [] );
-	// $fields = Stampa::get_fields();
-	// $this->assertCount( 2, $fields ); // 1 group is loaded by load_fields automatically.
-	// $this->assertArrayHasKey( 'My-group', $fields );
-	// }
 }

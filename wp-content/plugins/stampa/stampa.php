@@ -95,22 +95,25 @@ class Stampa {
 		$post_id     = (int) $params['id'];
 		$block_title = $params['title'];
 
-		update_block_title_and_status();
-		update_block_metadata( $params );
+		$this->update_block_title_and_status( $post_id, $block_title );
+		$this->update_block_metadata( $post_id, $params );
 
 		$generate_code = isset( $params['generate'] );
 		if ( $generate_code ) {
 			self::generate_react_block();
 		}
 
-		return [ 'ID' => get_permalink( $post_id ) ];
+		return [
+			'ID'   => $post_id,
+			'link' => admin_url( 'post.php?post=' . $post_id ),
+		];
 	}
 
-	private function update_block_title_and_status() {
+	private function update_block_title_and_status( int $post_id, string $block_title ) : void {
 		$post_args = [
-			'ID'          => (int) self::$post_ID,
-			'post_title'  => self::$block_title,
-			'post_name'   => sanitize_title( self::$block_title ),
+			'ID'          => $post_id,
+			'post_title'  => $block_title,
+			'post_name'   => sanitize_title( $block_title ),
 			'post_status' => 'publish',
 			'post_type'   => 'stampa-block',
 		];
@@ -118,18 +121,24 @@ class Stampa {
 		wp_update_post( $post_args );
 	}
 
-	private function update_block_metadata( array $params ) {
-		if ( ! isset( $params['fields'] ) || ! is_array( $params['fields'] ) ) {
+	private function update_block_metadata( int $post_id, array $params ) {
+		$has_fields_key = isset( $params['fields'] ) && is_array( $params['fields'] );
+
+		if ( ! $has_fields_key ) {
 			$params['fields'] = [];
 		}
 
-		self::$grid_params    = apply_filters( 'stampa/save-block/grid', $params['grid'] );
-		self::$fields_params  = apply_filters( 'stampa/save-block/fields', $params['fields'] );
-		self::$options_params = apply_filters( 'stampa/save-block/options', $params['options'] );
+		$this->apply_filter_and_update_data( $post_id, $params, 'grid' );
+		$this->apply_filter_and_update_data( $post_id, $params, 'fields' );
+		$this->apply_filter_and_update_data( $post_id, $params, 'options' );
+	}
 
-		update_post_meta( self::$post_ID, '_stampa_grid', json_encode( self::$grid_params ) );
-		update_post_meta( self::$post_ID, '_stampa_fields', json_encode( self::$fields_params ) );
-		update_post_meta( self::$post_ID, '_stampa_options', json_encode( self::$options_params ) );
+	private function apply_filter_and_update_data( int $post_id, array $params, string $key ) {
+		$values     = $params[ $key ] ?? [];
+		$meta_value = apply_filters( 'stampa/save-block/' . $key, $values );
+
+		$encoded_data = json_encode( $meta_value );
+		update_post_meta( $post_id, '_stampa_' . $key, $encoded_data );
 	}
 }
 
