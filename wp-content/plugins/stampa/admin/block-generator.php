@@ -46,9 +46,6 @@ class BlockGenerator extends Stampa {
 	 * @return void
 	 */
 	public static function init() {
-			// Custom endpoint.
-		add_action( 'rest_api_init', __CLASS__ . '::register_stampa_endpoint' );
-
 		add_filter( 'post_row_actions', __CLASS__ . '::add_quick_generate_block_link', 10, 2 );
 
 		$stampa_action = $_GET['stampa-action'] ?? null;
@@ -58,96 +55,6 @@ class BlockGenerator extends Stampa {
 	}
 
 
-	/**
-	 * Register the custom /stampa/v1/ endpoint(s)
-	 *
-	 * @return void
-	 */
-	public static function register_stampa_endpoint() {
-		register_rest_route(
-			'stampa/v1',
-			'/block/(?P<id>[\\d]+)',
-			array(
-				'methods'             => 'PUT',
-				'callback'            => __CLASS__ . '::save_and_generate_block',
-				'args'                => [
-					'title'   => [
-						'required'    => true,
-						'type'        => 'string',
-						'description' => 'the block title',
-					],
-					'fields'  => [
-						'required'    => false,
-						'type'        => 'object',
-						'description' => 'the block fields',
-					],
-					'options' => [
-						'required'    => false,
-						'type'        => 'object',
-						'description' => 'the block options',
-					],
-					'grid'    => [
-						'required'    => true,
-						'type'        => 'object',
-						'description' => 'the grid options',
-					],
-				],
-				'permission_callback' => function ( $request ) {
-					$params = $request->get_headers();
-					$nonce  = isset( $params['x_wp_nonce'] ) ? join( '', $params['x_wp_nonce'] ) : null;
-
-					return wp_verify_nonce( $nonce, 'wp_rest' );
-				},
-			)
-		);
-	}
-
-	/**
-	 * Save the block and generate the React code
-	 *
-	 * @return array
-	 */
-	public static function save_and_generate_block( $request ) {
-		$params            = $request->get_params();
-		self::$post_ID     = (int) $params['id'];
-		self::$block_title = $params['title'];
-
-		self::update_block_title_and_status();
-		self::update_block_metadata( $params );
-
-		$generate_code = isset( $params['generate'] );
-		if ( $generate_code ) {
-			self::generate_react_block();
-		}
-
-		return [ 'ID' => self::$post_ID ];
-	}
-
-	private static function update_block_title_and_status() {
-		$post_args = [
-			'ID'          => (int) self::$post_ID,
-			'post_title'  => self::$block_title,
-			'post_name'   => sanitize_title( self::$block_title ),
-			'post_status' => 'publish',
-			'post_type'   => 'stampa-block',
-		];
-
-		wp_update_post( $post_args );
-	}
-
-	private static function update_block_metadata( array $params ) {
-		if ( ! isset( $params['fields'] ) || ! is_array( $params['fields'] ) ) {
-			$params['fields'] = [];
-		}
-
-		self::$grid_params    = apply_filters( 'stampa/save-block/grid', $params['grid'] );
-		self::$fields_params  = apply_filters( 'stampa/save-block/fields', $params['fields'] );
-		self::$options_params = apply_filters( 'stampa/save-block/options', $params['options'] );
-
-		update_post_meta( self::$post_ID, '_stampa_grid', json_encode( self::$grid_params ) );
-		update_post_meta( self::$post_ID, '_stampa_fields', json_encode( self::$fields_params ) );
-		update_post_meta( self::$post_ID, '_stampa_options', json_encode( self::$options_params ) );
-	}
 
 	/**
 	 * Generate the REACT block.

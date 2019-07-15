@@ -7,13 +7,15 @@
 
 namespace Stampa;
 
-use Symfony\Component\Yaml\Yaml;
+use Stampa\Init;
 
 define( 'STAMPA_VERSION', '0.1' );
 define( 'STAMPA_FOLDER', __DIR__ . '/' );
 
 require __DIR__ . '/vendor/autoload.php';
 
+require __DIR__ . '/admin/init.php';
+require __DIR__ . '/admin/fields-loader.php';
 require __DIR__ . '/admin/block-generator.php';
 require __DIR__ . '/admin/stampa-filters.php';
 
@@ -40,196 +42,95 @@ class Stampa {
 	 *
 	 * @return void
 	 */
-	public static function init() {
-		add_action( 'init', __CLASS__ . '::register_stampa_blocks_cpt' );
-		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_script', 99 );
+	public function __construct() {
+		new Init();
 
-		add_filter( 'replace_editor', __CLASS__ . '::replace_wp_editor', 10, 2 );
+		add_action( 'rest_api_init', [ & $this, 'register_stampa_endpoints' ] );
 	}
 
 	/**
-	 * Add the "stampa-block" private CPT
-	 *
-	 * The CPT is used internally to take advantage of the WordPress list
-	 *
-	 * @return void
+	 * PUT /stampa/v1/<block-id>
 	 */
-	public static function register_stampa_blocks_cpt() {
-		$args = [
-			'public'            => false,
-			'label'             => 'Stampa',
-			'show_in_nav_menus' => true,
-			'show_ui'           => true,
-			'menu_position'     => 90,
-			'supports'          => [ 'title' ],
-			'labels'            => [
-				'add_new'      => __( 'Add New Block', 'stampa' ),
-				'add_new_item' => __( 'Add New Block', 'stampa' ),
-				'edit_item'    => __( 'Edit Block', 'stampa' ),
-			],
-		];
+	public function register_stampa_endpoints() : void {
+		register_rest_route(
+			'stampa/v1',
+			'/block/(?P<id>[\\d]+)',
+			array(
+				'methods'             => 'PUT',
+				'callback'            => [ & $this, 'save_and_generate_block' ],
+				'args'                => [
+					'title'   => [
+						'required'    => true,
+						'type'        => 'string',
+						'description' => 'the block title',
+					],
+					'fields'  => [
+						'required'    => false,
+						'type'        => 'object',
+						'description' => 'the block fields',
+					],
+					'options' => [
+						'required'    => false,
+						'type'        => 'object',
+						'description' => 'the block options',
+					],
+					'grid'    => [
+						'required'    => true,
+						'type'        => 'object',
+						'description' => 'the grid options',
+					],
+				],
+				'permission_callback' => function ( $request ) {
+					$params = $request->get_headers();
+					$nonce  = isset( $params['x_wp_nonce'] ) ? join( '', $params['x_wp_nonce'] ) : null;
 
-		register_post_type( 'stampa-block', $args );
-	}
-
-	/**
-	 * Localize the Stampa app script
-	 *
-	 * @return void
-	 */
-	public static function register_script() {
-		// The style.
-		wp_enqueue_style( 'stampa-style', plugins_url( 'dist/style.css', __FILE__ ), [ 'wp-block-library' ], STAMPA_VERSION );
-
-		// Style needed for Gutenberg only.
-		wp_enqueue_style( 'stampa-editor', plugins_url( 'dist/stampa-editor.css', __FILE__ ), [], STAMPA_VERSION );
-
-		// Style for custom blocks
-		wp_enqueue_style( 'stampa-blocks-style', plugins_url( 'stampa/dist/index.css', __FILE__ ), [], STAMPA_VERSION );
-
-		// Load the default stampa blocks.
-		self::load_fields();
-
-		$post_id = $_GET['post'] ?? get_the_ID();
-		$data    = array(
-			'home_url' => home_url(),
-			'nonce'    => wp_create_nonce( 'wp_rest' ),
-			'fields'   => self::$fields,
-			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
-			'post_ID'  => intval( $post_id ),
-			'svg_path' => plugins_url( 'assets/svg/', __FILE__ ),
+					return wp_verify_nonce( $nonce, 'wp_rest' );
+				},
+			)
 		);
-
-		global $pagenow;
-		$post_id = $_GET['post'] ?? null;
-		if ( $pagenow == 'post.php' && $post_id && get_post_type( $post_id ) == 'stampa-block' ) {
-
-			$data['block'] = [
-				'blockTitle' => get_post_field( 'post_title', $post_id ),
-				'grid'       => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
-				'options'    => json_decode( get_post_meta( $post_id, '_stampa_options', true ), true ),
-				'fields'     => json_decode( get_post_meta( $post_id, '_stampa_fields', true ) ),
-			];
-		}
-
-		wp_register_script( 'stampa-script', plugins_url( 'dist/index.js', __FILE__ ), [], STAMPA_VERSION, true );
-		wp_localize_script( 'stampa-script', 'stampa', $data );
-		wp_enqueue_script( 'stampa-script' );
 	}
 
-	/**
-	 * Replace the default editor with Stampa App.
-	 *
-	 * Don't know why this event is more than once when editing... 3 times...
-	 *
-	 * @param boolean $replace    Whether to replace the editor. Default false.
-	 * @param object  $post Post object.
-	 *
-	 * @return boolean
-	 */
-	public static function replace_wp_editor( $replace, $post ) : bool {
-		global $pagenow;
+	public function save_and_generate_block( $request ) {
+		$params      = $request->get_params();
+		$post_id     = (int) $params['id'];
+		$block_title = $params['title'];
 
-		if ( $post->post_type === 'stampa-block' ) {
-			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+		update_block_title_and_status();
+		update_block_metadata( $params );
 
-			wp_enqueue_script( 'heartbeat' );
-
-			require_once ABSPATH . 'wp-admin/admin-header.php';
-
-			self::render_stampa_div();
-
-			return true;
+		$generate_code = isset( $params['generate'] );
+		if ( $generate_code ) {
+			self::generate_react_block();
 		}
 
-		return $replace;
+		return [ 'ID' => get_permalink( $post_id ) ];
 	}
 
-	/**
-	 * Render the stampa div for the React app.
-	 *
-	 * Because the replace_editor event, when opening the edit link, is fired multiple times
-	 * we can't use an ID.
-	 *
-	 * @param [type] $post
-	 * @return void
-	 */
-	public static function render_stampa_div() {
-		echo '<link rel="stylesheet" href="/wp-includes/css/dist/block-library/editor.css" />';
-		echo '<div class="stampa-app"></div>';
-	}
-
-	/**
-	 * Load the YAML files
-	 *
-	 * @return void
-	 */
-	protected static function load_fields() {
-		$fields = glob( __DIR__ . '/assets/fields/*.yml' );
-
-		foreach ( $fields as $file ) {
-			$field = Yaml::parseFile( $file );
-
-			// "Adjust" the path for the images by prepending the plugin URL.
-			$svg_path                = plugins_url( 'assets/svg/', __FILE__ );
-			$field['stampa']['icon'] = $svg_path . $field['stampa']['icon'];
-
-			self::add_field(
-				$field['stampa'],
-				$field['options'] ?? [],
-				$field['gutenberg'] ?? [],
-				$field['php'] ?? []
-			);
-		}
-	}
-
-	public static function add_field( array $field, array $options = [], array $gutenberg_data = [], $php_data ) {
-		$field_id = $field['id'];
-		$group    = ucfirst( $field['group'] );
-
-		// Allow 3rdy part to have alter the field data.
-		$field['options'] = $options;
-		$field            = apply_filters( "stampa_add_field/{$field_id}", $field );
-
-		foreach ( $field['options'] as & $option ) {
-			if ( @$option['stampa'] === false ) {
-				continue;
-			}
-
-			$option = apply_filters( "stampa_field_option/{$field_id}/{$option['name']}", $option );
-		}
-
-		self::$fields[ $group ][ $field_id ] = $field;
-
-		// Gutenberg data is needed only for the back-end.
-		self::$fields_by_id[ $field_id ] = [
-			'stampa'    => $field,
-			'options'   => $options,
-			'gutenberg' => $gutenberg_data,
-			'php'       => $php_data,
+	private function update_block_title_and_status() {
+		$post_args = [
+			'ID'          => (int) self::$post_ID,
+			'post_title'  => self::$block_title,
+			'post_name'   => sanitize_title( self::$block_title ),
+			'post_status' => 'publish',
+			'post_type'   => 'stampa-block',
 		];
+
+		wp_update_post( $post_args );
 	}
 
-	/**
-	 * Return all the registered fields
-	 *
-	 * @return array
-	 */
-	public static function get_fields() : array {
-		return self::$fields;
-	}
+	private function update_block_metadata( array $params ) {
+		if ( ! isset( $params['fields'] ) || ! is_array( $params['fields'] ) ) {
+			$params['fields'] = [];
+		}
 
-	/**
-	 * Get the field by id
-	 *
-	 * @param string $field_id the field unique ID.
-	 * @return mixed
-	 */
-	protected static function get_field_by_id( string $field_id ) {
-		$block = self::$fields_by_id[ $field_id ] ?? null;
+		self::$grid_params    = apply_filters( 'stampa/save-block/grid', $params['grid'] );
+		self::$fields_params  = apply_filters( 'stampa/save-block/fields', $params['fields'] );
+		self::$options_params = apply_filters( 'stampa/save-block/options', $params['options'] );
 
-		return apply_filters( 'stampa/block/' . $field_id, $block );
+		update_post_meta( self::$post_ID, '_stampa_grid', json_encode( self::$grid_params ) );
+		update_post_meta( self::$post_ID, '_stampa_fields', json_encode( self::$fields_params ) );
+		update_post_meta( self::$post_ID, '_stampa_options', json_encode( self::$options_params ) );
 	}
 }
 
-Stampa::init();
+new Stampa();

@@ -1,0 +1,106 @@
+Installing...
+Running as single site... To run multisite, use -c tests/phpunit/multisite.xml
+Not running ajax tests. To execute these, use --group ajax.
+Not running ms-files tests. To execute these, use --group ms-files.
+Not running external-http tests. To execute these, use --group external-http.
+PHPUnit 7.5.12 by Sebastian Bergmann and contributors.
+
+
+Test_Stampa_Fields_Loader
+  ✓ should return list of fields [0.004s]
+  ✓ should allow customise the field data [0.008s]
+  ✓ should allow filtering each option [0.002s]
+  ✓ should allow to get the field by id [0.001s]
+
+Test_Stampa_Init
+  ✓ should register app script [0.001s]
+  ✓ should register the styles [0.001s]
+Array
+(
+    [/] => Array
+        (
+            [0] => Array
+                (
+                    [methods] => Array
+                        (
+                            [GET] => 1
+                        )
+
+                    [accept_json] => 
+                    [accept_raw] => 
+                    [show_in_index] => 1
+                    [args] => Array
+                        (
+                            [context] => Array
+                                (
+                                    [default] => view
+                                )
+
+                        )
+
+                    [callback] => Array
+                        (
+                            [0] => WP_REST_Server Object
+                                (
+                                    [namespaces:protected] => Array
+                                        (
+                                        )
+
+                                    [endpoints:protected] => Array
+                                        (
+                                            [/] => Array
+                                                (
+                                                    [callback] => Array
+ *RECURSION*
+                                                    [methods] => GET
+                                                    [args] => Array
+                                                        (
+                                                            [context] => Array
+                                                                (
+                                                                    [default] => view
+                                                                )
+
+                                                        )
+
+                                                )
+
+                                        )
+
+                                    [route_options:protected] => Array
+                                        (
+                                            [/] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                )
+
+                            [1] => get_index
+                        )
+
+                )
+
+        )
+
+)
+
+
+Test_Stampa
+  x should register the endpoints [0.011s]
+
+
+Time: 2.09 seconds, Memory: 28.00 MB
+
+There was 1 failure:
+
+1) Test_Stampa::test_should_register_the_endpoints
+Failed asserting that an array has the key '/stampa/v1'.
+
+/home/ceceppa/Progetti/www/stampa/wp-content/plugins/stampa/test/phpunit/tests/test-stampa.php:34
+/home/ceceppa/Progetti/www/stampa/wp-content/plugins/stampa/test/phpunit/tests/test-stampa.php:18
+/usr/share/php/PHPUnit/TextUI/Command.php:203
+/usr/share/php/PHPUnit/TextUI/Command.php:159
+
+FAILURES!
+Tests: 7, Assertions: 9, Failures: 1.
