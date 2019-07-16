@@ -9,6 +9,8 @@ namespace Stampa;
 use Stampa\Stampa;
 
 require __DIR__ . '/assets-copier.php';
+require __DIR__ . '/js-code-generator.php';
+require __DIR__ . '/stampa-replacer.php';
 
 class Block_Generator {
 	private $post_id = null;
@@ -36,8 +38,8 @@ class Block_Generator {
 		return (array) json_decode( $meta_value );
 	}
 
-	public static function get_grid_data() : array {
-		return self::$block_data['grid'];
+	public static function get_grid_data() : object {
+		return (object) self::$block_data['grid'];
 	}
 }
 
@@ -77,8 +79,6 @@ class BlockGeneratore extends Stampa {
 			self::load_and_generate_react_block();
 		}
 	}
-
-
 
 	/**
 	 * Generate the REACT block.

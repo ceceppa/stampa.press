@@ -1,7 +1,6 @@
 <?php
 namespace Stampa\Test;
 
-use Stampa\BlockGenerator;
 use function Stampa\Test\Helpers\create_test_post_with_data;
 use Stampa\Block_Generator;
 
@@ -30,10 +29,11 @@ class Test_Block_Generator extends \WP_UnitTestCase {
 		$this->assertEquals( $field_data, $this->test_data );
 	}
 
-	function test_get_grid_data_should_return_an_array() {
+	function test_get_grid_data_should_return_an_object() {
 		$grid_data = Block_Generator::get_grid_data();
 
-		$this->assertTrue( is_array( $grid_data ) );
-		$this->assertEquals( $grid_data, $this->test_data['grid'] );
+		$this->assertTrue( is_object( $grid_data ) );
+		$this->assertEquals( (array) $grid_data, $this->test_data['grid'] );
 	}
+
 }

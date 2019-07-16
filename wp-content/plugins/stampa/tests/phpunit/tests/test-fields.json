@@ -1,0 +1,62 @@
+{
+  "grid": { "columns": "12", "rows": "5", "gap": "5", "rowHeight": "46" },
+  "fields": [
+    {
+      "id": "image",
+      "key": "_yNGDF7W_C",
+      "name": "image",
+      "group": "fields",
+      "position": {
+        "startColumn": "1",
+        "startRow": "1",
+        "endColumn": "5",
+        "endRow": "5"
+      },
+      "values": {
+        "round": "",
+        "size": "full",
+        "fit": "fill",
+        "position": "initial"
+      }
+    },
+    {
+      "id": "container",
+      "key": "_WcKACc-Qq",
+      "name": "container",
+      "group": "static",
+      "position": {
+        "startColumn": "6",
+        "startRow": "1",
+        "endColumn": "5",
+        "endRow": "4"
+      },
+      "fields": [
+        {
+          "id": "image",
+          "key": "_l9KLQbKKe",
+          "name": "image1",
+          "group": "fields",
+          "position": {
+            "startColumn": "1",
+            "startRow": "1",
+            "endColumn": "3",
+            "endRow": "3"
+          },
+          "values": {
+            "round": "",
+            "size": "medium",
+            "fit": "cover",
+            "position": "center center"
+          }
+        }
+      ],
+      "values": { "columns": "6", "rows": "5", "gap": "5" }
+    }
+  ],
+  "block_options": {
+    "hasBackgroundOption": "true",
+    "cssClassName": "",
+    "fullWidth": "true",
+    "icon": "lightbulb"
+  }
+}
