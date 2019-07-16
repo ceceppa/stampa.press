@@ -11,8 +11,6 @@ use function Stampa\Test\Helpers\assertReponseHasEditLink;
 use function Stampa\Test\Helpers\assertPostDataMatch;
 use function Stampa\Test\Helpers\assertHasMetaData;
 
-define( 'STAMPA_PHPUNIT', true );
-
 do_action( 'init' );
 do_action( 'rest_api_init' );
 do_action( 'admin_enqueue_scripts' );
@@ -66,6 +64,6 @@ class Test_Stampa extends \WP_UnitTestCase {
 			]
 		);
 
-		assertHasMetaData( $this, $test_post_id, [ 'grid', 'options', 'fields' ] );
+		assertHasMetaData( $this, $test_post_id, [ 'grid', 'block_options', 'fields' ] );
 	}
 }

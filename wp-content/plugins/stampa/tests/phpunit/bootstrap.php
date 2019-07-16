@@ -4,6 +4,8 @@
  *
  * @package Farina
  */
+define( 'STAMPA_PHPUNIT', true );
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );

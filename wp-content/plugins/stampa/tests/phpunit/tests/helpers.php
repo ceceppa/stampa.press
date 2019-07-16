@@ -86,3 +86,12 @@ function assertHasMetaData( $php_unit_class, int $post_id, array $meta_keys ) {
 		$php_unit_class->assertTrue( is_array( $meta_value ), $meta_key );
 	}
 }
+
+function create_test_post_with_data() {
+	$test_post_id = create_test_post();
+
+	$response = submitPutRequest(
+		'/stampa/v1/block/' . $test_post_id,
+		$data
+	);
+}

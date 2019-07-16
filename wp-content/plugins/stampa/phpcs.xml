@@ -23,6 +23,7 @@
 
     <!-- Disable "forcing writing" comments (https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29#comments-rules) -->
     <exclude name="Squiz.Commenting.FunctionComment.Missing" />
+    <exclude name="Squiz.Commenting.VariableComment.Missing" />
 
     <rule ref="WordPress.PHP.DiscouragedFunctions.Discouraged">
        <severity>0</severity>

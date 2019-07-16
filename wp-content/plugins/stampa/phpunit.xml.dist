@@ -1,5 +1,5 @@
 <phpunit
-	bootstrap="test/phpunit/bootstrap.php"
+	bootstrap="tests/phpunit/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 	convertErrorsToExceptions="true"
@@ -9,7 +9,7 @@
 >
 	<testsuites>
 		<testsuite name="lento">
-			<directory prefix="test-" suffix=".php">./test/phpunit/tests/</directory>
+			<directory prefix="test-" suffix=".php">./tests/phpunit/tests/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

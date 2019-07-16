@@ -11,6 +11,7 @@ use Stampa\Init;
 
 define( 'STAMPA_VERSION', '0.1' );
 define( 'STAMPA_FOLDER', __DIR__ . '/' );
+define( 'STAMPA_ASSETS_FOLDER', __DIR__ . '/assets/stampa/' );
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -46,6 +47,7 @@ class Stampa {
 		new Init();
 
 		add_action( 'rest_api_init', [ & $this, 'register_stampa_endpoints' ] );
+		// add_filter( 'post_row_actions', [ & $this, 'add_quick_generate_block_link' ], 10, 2 );
 	}
 
 	/**
@@ -90,6 +92,28 @@ class Stampa {
 		);
 	}
 
+	/**
+	 * Add the "Generate block" item to the quick-edit menu.
+	 */
+	public static function add_quick_generate_block_link( array $actions, $post ) : array {
+		$is_stampa_cpt = $post->post_type === 'stampa-block';
+
+		if ( ! $is_stampa_cpt ) {
+			return $actions;
+		}
+
+		$link = add_query_arg(
+			[
+				'stampa-action'   => 'generate-block',
+				'stampa-block-id' => $post->ID,
+			]
+		);
+
+		$actions['stampa-generate'] = sprintf( '<a href="%s">Generate block</a>', $link );
+
+		return $actions;
+	}
+
 	public function save_and_generate_block( $request ) {
 		$params      = $request->get_params();
 		$post_id     = (int) $params['id'];
@@ -100,7 +124,7 @@ class Stampa {
 
 		$generate_code = isset( $params['generate'] );
 		if ( $generate_code ) {
-			self::generate_react_block();
+			new BlockGenerator( $post_id );
 		}
 
 		return [
@@ -130,7 +154,7 @@ class Stampa {
 
 		$this->apply_filter_and_update_data( $post_id, $params, 'grid' );
 		$this->apply_filter_and_update_data( $post_id, $params, 'fields' );
-		$this->apply_filter_and_update_data( $post_id, $params, 'options' );
+		$this->apply_filter_and_update_data( $post_id, $params, 'block_options' );
 	}
 
 	private function apply_filter_and_update_data( int $post_id, array $params, string $key ) {

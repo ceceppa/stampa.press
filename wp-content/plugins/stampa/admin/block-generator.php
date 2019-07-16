@@ -4,20 +4,25 @@
  *
  * @package stampa
  */
-namespace Stampa\BlockGenerator;
+namespace Stampa;
 
 use Stampa\Stampa;
 
-define( 'STAMPA_STAMPA_FOLDER', trailingslashit( \realpath( __DIR__ . '/../assets/stampa/' ) ) );
-define( 'STAMPA_REACT_BOILERPLATES_FOLDER', STAMPA_STAMPA_FOLDER . 'gutenberg/' );
-define( 'STAMPA_MODULE_OUTPUT_FOLDER', get_template_directory() . '/modules/' );
+require __DIR__ . '/assets-copier.php';
 
-define( 'STAMPA_CSS_EXTENSION', 'pcss' );
+class BlockGenerator {
+	private $post_id = null;
 
-/**
- * The class
- */
-class BlockGenerator extends Stampa {
+	public function __construct( int $post_id ) {
+		$this->get_block_data();
+	}
+
+	private function get_block_data() {
+
+	}
+}
+
+class BlockGeneratore extends Stampa {
 	private static $post_ID = null;
 
 	private static $block_title          = null;
@@ -902,4 +907,3 @@ class BlockGenerator extends Stampa {
 	}
 }
 
-BlockGenerator::init();
