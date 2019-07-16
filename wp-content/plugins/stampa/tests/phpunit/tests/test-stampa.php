@@ -15,8 +15,6 @@ do_action( 'init' );
 do_action( 'rest_api_init' );
 do_action( 'admin_enqueue_scripts' );
 
-define( 'STAMPA_TEST_POST_ID', $test_post_id );
-
 class Test_Stampa extends \WP_UnitTestCase {
 	function test_should_register_the_endpoints() {
 		assertEndpointsExist(

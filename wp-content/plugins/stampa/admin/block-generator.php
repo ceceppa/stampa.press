@@ -10,15 +10,34 @@ use Stampa\Stampa;
 
 require __DIR__ . '/assets-copier.php';
 
-class BlockGenerator {
+class Block_Generator {
 	private $post_id = null;
+	private static $block_data = null;
 
 	public function __construct( int $post_id ) {
-		$this->get_block_data();
+		$this->post_id = $post_id;
+		self::$block_data = $this->get_block_data( $post_id );
+
+		new Assets_Copier( get_template_directory() );
 	}
 
-	private function get_block_data() {
+	// it's public for testing purpose only.
+	public function get_block_data() : array {
+		return [
+			'grid' => $this->get_json_meta_data( 'grid' ),
+			'fields' => $this->get_json_meta_data( 'fields' ),
+			'block_options' => $this->get_json_meta_data( 'block_options' ),
+		];
+	}
 
+	private function get_json_meta_data( string $key ) : array {
+		$meta_value = get_post_meta($this->post_id, '_stampa_' . $key, true);
+
+		return (array) json_decode( $meta_value );
+	}
+
+	public static function get_grid_data() : array {
+		return self::$block_data['grid'];
 	}
 }
 

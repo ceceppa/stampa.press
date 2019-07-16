@@ -124,7 +124,7 @@ class Stampa {
 
 		$generate_code = isset( $params['generate'] );
 		if ( $generate_code ) {
-			new BlockGenerator( $post_id );
+			new Block_Generator( $post_id );
 		}
 
 		return [

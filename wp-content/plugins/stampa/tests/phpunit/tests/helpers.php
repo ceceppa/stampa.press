@@ -87,11 +87,13 @@ function assertHasMetaData( $php_unit_class, int $post_id, array $meta_keys ) {
 	}
 }
 
-function create_test_post_with_data() {
+function create_test_post_with_data( array $data ) {
 	$test_post_id = create_test_post();
 
-	$response = submitPutRequest(
+	submitPutRequest(
 		'/stampa/v1/block/' . $test_post_id,
 		$data
 	);
+
+	return $test_post_id;
 }
