@@ -25,7 +25,7 @@ class Test_Stampa_Fields_Loader extends \WP_UnitTestCase {
 			->method( 'test_filter' )
 		->with( $this->equalTo( $expected ) );
 
-		add_filter( 'stampa_add_field/test-field', [ $observer, 'test_filter' ] );
+		add_filter( 'stampa/add-field/test-field', [ $observer, 'test_filter' ] );
 
 		Fields_Loader::add_field( $field );
 	}

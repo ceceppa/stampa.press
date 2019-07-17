@@ -54,7 +54,7 @@ class Fields_Loader {
 		$group    = ucfirst( $field['group'] );
 
 		$field = self::setup_field_options( $field, $options );
-		$field = apply_filters( "stampa_add_field/{$field_id}", $field );
+		$field = apply_filters( "stampa/add-field/{$field_id}", $field );
 
 		self::$fields[ $group ][ $field_id ] = $field;
 

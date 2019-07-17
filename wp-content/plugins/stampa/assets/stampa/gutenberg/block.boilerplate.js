@@ -29,13 +29,13 @@ let focusedField;
 
 registerBlockType('stampa/{{stampa.sanitized_title}}', {
   title: __('{{stampa.block_title}}'),
-  icon: '{{stampa.blockOptions.icon}}',
+  icon: '{{stampa.block.options.icon}}',
   category: 'stampa-blocks',
   keywords: [],
 
   multiple: true,
 
-  attributes: {{stampa.attributes}},
+  attributes: {{stampa.gutenberg.attributes}},
 
   /**
    * The edit function describes the structure of your block in the context of the editor.
@@ -72,11 +72,11 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
           <InspectorControls>
             {{stampa.inspector_controls}}
           </InspectorControls>
-		    <div className={`${className} stampa-block {{stampa.block_css_class_name}} {{stampa.blockOptions.fullWidthClass}}`}>
-          <div className="{{stampa.sanitized_title}}" style={{{{stampa.block_style}}}}>
-        {{stampa.render_content}}
+          <div className={`${className} stampa-block {{stampa.block.className}}`}>
+            <div className="{{stampa.title|sanitize}}" style={{{stampa.block.style}}}>
+          {{stampa.render_content}}
+            </div>
           </div>
-        </div>
         </Fragment>
       );
   },

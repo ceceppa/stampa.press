@@ -1,7 +1,7 @@
 <?php
 namespace Stampa\Test;
 
-require __DIR__ . '/helpers.php';
+require_once __DIR__ . '/helpers.php';
 
 use function Stampa\Test\Helpers\assertEndpointsExist;
 use function Stampa\Test\Helpers\assertEndpointCallbackIsCallable;

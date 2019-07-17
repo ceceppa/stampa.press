@@ -7,7 +7,7 @@
 
 namespace Stampa\Filters;
 
-add_filter( 'stampa_add_field/post-selector', __NAMESPACE__ . '\available_post_types' );
+add_filter( 'stampa/add-field/post-selector', __NAMESPACE__ . '\available_post_types' );
 add_filter( 'stampa_field_option/image/size', __NAMESPACE__ . '\available_image_sizes' );
 
 function available_post_types( array $field_data ) : array {

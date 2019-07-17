@@ -12,6 +12,7 @@ use Stampa\Init;
 define( 'STAMPA_VERSION', '0.1' );
 define( 'STAMPA_FOLDER', __DIR__ . '/' );
 define( 'STAMPA_ASSETS_FOLDER', __DIR__ . '/assets/stampa/' );
+define( 'STAMPA_REACT_BOILERPLATES_FOLDER', __DIR__ . '/assets/stampa/gutenberg/' );
 
 require __DIR__ . '/vendor/autoload.php';
 
