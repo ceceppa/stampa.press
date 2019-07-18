@@ -67,7 +67,7 @@ class JS_Inspector_Control {
 	}
 
 	private function load_inspector_background_image_boilerplate() : void {
-		$boilerplate_file = STAMPA_REACT_BOILERPLATES_FOLDER . 'inspector.backgroundImage.js';
+		$boilerplate_file = STAMPA_REACT_BOILERPLATES_FOLDER . 'inspector.boilerplate.js';
 		$boilerplate_file = apply_filters( 'stampa/inspector-control/file', $boilerplate_file );
 
 		$code = file_get_contents( $boilerplate_file );

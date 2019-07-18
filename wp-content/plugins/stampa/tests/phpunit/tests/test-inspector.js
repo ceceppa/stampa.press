@@ -1,0 +1,1 @@
+test inspector background image
