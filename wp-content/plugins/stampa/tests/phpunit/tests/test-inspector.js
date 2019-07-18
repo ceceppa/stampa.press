@@ -1,1 +1,1 @@
-test inspector background image
+test inspector background image for {{stampa.block.title}}

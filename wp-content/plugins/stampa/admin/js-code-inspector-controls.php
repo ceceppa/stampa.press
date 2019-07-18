@@ -73,7 +73,7 @@ class JS_Inspector_Control {
 		$code = file_get_contents( $boilerplate_file );
 		$code = apply_filters( 'stampa/inspector-control/code', $code );
 
-		$this->boilerplate_code = $code . $this->boilerplate_code;
+		$this->boilerplate_code = $code . PHP_EOL . $this->boilerplate_code;
 	}
 
 	public function get_code() : string {

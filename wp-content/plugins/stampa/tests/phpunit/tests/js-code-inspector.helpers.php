@@ -11,7 +11,7 @@ function inspector_control_options_file_filter( string $filename ) :string {
 		define( 'STAMPA_TEST_INSPECTOR_OPTIONS_FILTER_FILE', true );
 	}
 
-	return $filename;
+	return __DIR__ . '/test-inspector.options.js';
 }
 
 function inspector_control_options_code( string $code ) :string {
@@ -27,7 +27,7 @@ function inspector_control_file( string $filename ) : string {
 		define( 'STAMPA_TEST_INSPECTOR_FILTER_FILE', true );
 	}
 
-	return $filename;
+	return __DIR__ . '/test-inspector.js';
 }
 
 function inspector_control_code( string $code ) : string {
