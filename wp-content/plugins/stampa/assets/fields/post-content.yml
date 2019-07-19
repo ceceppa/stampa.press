@@ -1,0 +1,21 @@
+stampa:
+  group: Post
+  id: post-content
+  label: Content
+  tooltip: The post content
+  icon: post-selector.svg
+  defaultSize:
+    columns: 3
+    rows: 1
+  html: 
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mattis tincidunt est. Cras sed maximus nibh, non fringilla odio. Integer congue interdum mi.
+      </p>
+      <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mattis tincidunt est. Cras sed maximus nibh, non fringilla odio. Integer congue interdum mi. Suspendisse mauris quam, molestie nec enim ac, vehicula tristique nisl. Cras aliquet quam sit amet augue porta, eget feugiat est efficitur.
+    </p>
+php: 
+  code: 
+    <p>
+      <?php the_excerpt(); ?>
+    </p>

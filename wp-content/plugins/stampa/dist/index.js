@@ -27755,7 +27755,7 @@ function Save() {
       url: "".concat(_stampa.default.getRestURL(), "/").concat(_stampa.default.getPostID()),
       data: {
         title: store.get('stampaBlockTitle'),
-        options: store.get('stampaBlockOptions'),
+        block_options: store.get('stampaBlockOptions'),
         fields: fields,
         grid: {
           columns: store.get('gridColumns'),
@@ -27769,6 +27769,10 @@ function Save() {
         xhr.setRequestHeader('X-WP-Nonce', window.stampa.nonce);
       },
       success: function success(data) {
+        if (data && data.link) {
+          window.history.replaceState('edit', document.title, data.link);
+        }
+
         setSavingState(false);
       },
       error: function error(data) {
@@ -37222,6 +37226,7 @@ var Field = _react.default.memo(function (_ref) {
   var contentClassName = stampaField.contentClassName || '';
   var fieldHTML = stampaField.html || '';
   var fieldClassName = stampaField.fieldClassName || '';
+  var values = field.values || [];
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -37231,7 +37236,7 @@ var Field = _react.default.memo(function (_ref) {
       var option = _step.value;
 
       if (option && option.name) {
-        var value = field.values[option.name];
+        var value = values[option.name] || null;
 
         if (value == null) {
           value = option.value;
@@ -63692,6 +63697,10 @@ function (_Component) {
       store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
       store.set('stampaBlockTitle')(blockData.blockTitle); // PHP returns true/false as string, not as boolean.
 
+      if (blockData.options == null) {
+        blockData.options = {};
+      }
+
       blockData.options.hasBackgroundOption = blockData.options.hasBackgroundOption == 'true';
       store.set('stampaBlockOptions')(blockData.options);
       var fields = blockData.fields.map(function (field) {
@@ -63947,7 +63956,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36347" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36499" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

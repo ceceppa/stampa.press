@@ -24,7 +24,7 @@ export default function Save() {
       url: `${stampa.getRestURL()}/${stampa.getPostID()}`,
       data: {
         title: store.get('stampaBlockTitle'),
-        options: store.get('stampaBlockOptions'),
+        block_options: store.get('stampaBlockOptions'),
         fields,
         grid: {
           columns: store.get('gridColumns'),
@@ -38,6 +38,9 @@ export default function Save() {
         xhr.setRequestHeader('X-WP-Nonce', window.stampa.nonce);
       },
       success: data => {
+        if (data && data.link) {
+          window.history.replaceState('edit', document.title, data.link);
+        }
         setSavingState(false);
       },
       error: data => {

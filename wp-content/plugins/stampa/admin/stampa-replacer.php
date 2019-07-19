@@ -87,6 +87,11 @@ class Stampa_Replacer {
 				$value = self::get_glued_array( $value );
 			}
 
+			$value = str_replace( '\=', ':', $value );
+			$value = str_replace( "'`", '`', $value );
+			$value = str_replace( '"`', '`', $value );
+			$value = str_replace( '`"', '`', $value );
+
 			$return = str_replace( $special_key, $value, $return );
 			$return = str_replace( $sanitized_special_key, sanitize_title( $value ), $return );
 		}

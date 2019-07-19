@@ -28,6 +28,10 @@ class App extends Component {
       store.set('stampaBlockTitle')(blockData.blockTitle);
 
       // PHP returns true/false as string, not as boolean.
+      if (blockData.options == null) {
+        blockData.options = {};
+      }
+
       blockData.options.hasBackgroundOption =
         blockData.options.hasBackgroundOption == 'true';
       store.set('stampaBlockOptions')(blockData.options);

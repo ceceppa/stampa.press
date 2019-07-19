@@ -3,7 +3,7 @@ namespace Stampa\Test;
 
 require_once __DIR__ . '/js-code-inspector.helpers.php';
 
-use Stampa\JS_Generator\JS_Inspector_Control;
+use Stampa\JS_Inspector_Control;
 use function Stampa\Test\JS_Inspector\create_inspector_test_post;
 
 class Test_JS_Code_Inspector_Controls extends \WP_UnitTestCase {

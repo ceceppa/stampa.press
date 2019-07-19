@@ -36,7 +36,7 @@ class Test_Stampa_Init extends \WP_UnitTestCase {
 
 	function test_should_register_app_script() {
 
-		$this->assertTrue( wp_script_is( 'stampa-app-script', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'stampa-app-script', 'enqueued' ) );
 	}
 
 	function test_should_register_the_styles() {

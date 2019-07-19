@@ -1,6 +1,5 @@
 <?php
-
-namespace Stampa\JS_Generator;
+namespace Stampa;
 
 require __DIR__ . '/js-code-inspector-controls.php';
 require __DIR__ . '/js-fields-code-generator.php';
@@ -81,11 +80,11 @@ class JS_Code_Generator {
 		$template_columns = str_repeat( '1fr ', $columns );
 		$template_rows    = str_repeat( '1fr ', $rows );
 		$grid_style       = [
-			"display: 'grid'",
-			"gridTemplateColumns: '$template_columns'",
-			"gridTemplateRows: '$template_rows'",
-			"gridGap: '{$gap}px'",
-			"height: '{$height}px'",
+			'display'             => 'grid',
+			'gridTemplateColumns' => $template_columns,
+			'gridTemplateRows'    => $template_rows,
+			'gridGap'             => "{$gap}px",
+			'height'              => "{$height}px",
 		];
 
 		Stampa_Replacer::add_json_mapping( 'block.style', $grid_style );
@@ -177,7 +176,7 @@ class JS_Code_Generator {
 	private function parcel_build() {
 		$stampa_path = Assets_Copier::get_folder( '__root' );
 		// $css_ext     = STAMPA_CSS_EXTENSION;
-		// exec( "parcel build {$stampa_path}index.{$css_ext} -d {$stampa_path}dist" );
-		exec( "parcel build {$stampa_path}index.js -d {$stampa_path}dist" );
+		// exec( "parcel build {$stampa_path}index . {$css_ext} - d {$stampa_path}dist' );
+		exec( "parcel build {$stampa_path}index . js - d {$stampa_path}dist" );
 	}
 }

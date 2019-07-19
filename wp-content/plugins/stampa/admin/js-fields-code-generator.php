@@ -1,5 +1,5 @@
 <?php
-namespace Stampa\JS_Generator;
+namespace Stampa;
 
 use Stampa\Fields_Loader;
 use Stampa\Block_Data;
@@ -27,9 +27,13 @@ class JS_Fields_Code_Generator {
 		foreach ( $fields as $field ) {
 			$stampa_field = Fields_Loader::get_field_by_id( $field->id );
 
+			if ( empty( $stampa_field ) ) {
+				throw new \Exception( 'Stampa field not found: ' . $field->id );
+			}
+
 			$field_code = $this->set_field_name_mapping( $field );
 
-			$gutenberg   = $stampa_field['gutenberg'];
+			$gutenberg   = $stampa_field['gutenberg'] ?? [];
 			$field_code .= $this->get_opening_div( $field, $gutenberg );
 			$this->map_field_grid_position( $field->position );
 			$this->map_field_values( $stampa_field, $field );
@@ -126,16 +130,16 @@ class JS_Fields_Code_Generator {
 		}
 	}
 
-	private function map_field_values( array $default_field, object $field ) : void {
-		$this->map_field_default_values( $default_field );
+	private function map_field_values( array $stampa_field, object $field ) : void {
+		$this->map_field_default_values( $stampa_field );
 
 		$selected_values = $field->values ?? [];
 		foreach ( $selected_values as $key => $value ) {
 			Stampa_Replacer::add_single_mapping( 'value.' . $key, $value );
 		}
 	}
-	private function map_field_default_values( array $default_field ) : void {
-		$default_options = $default_field['options'] ?? [];
+	private function map_field_default_values( array $stampa_field ) : void {
+		$default_options = $stampa_field['options'] ?? [];
 
 		foreach ( $default_options as $option ) {
 			if ( isset( $option['value'] ) ) {
@@ -167,7 +171,7 @@ class JS_Fields_Code_Generator {
 		$field_name   = $field->name;
 		$field_values = $field->values ?? [];
 
-		$options       = $stampa_field['options'];
+		$options       = $stampa_field['options'] ?? [];
 		$field_options = [];
 		foreach ( $options as $option ) {
 			$show_in_inspector = ( $option['inspector'] ?? true ) == true;
@@ -193,8 +197,8 @@ class JS_Fields_Code_Generator {
 
 			// This key is not needed for the Gutenberg code.
 			unset( $option['tooltip'] );
+			$field_options[] = $option;
 		}
-		$field_options[] = $option;
 
 		Stampa_Replacer::add_json_mapping( 'all_fields_options', [ $field_name => $field_options ] );
 	}

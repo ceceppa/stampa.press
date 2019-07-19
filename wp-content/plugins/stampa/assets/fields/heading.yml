@@ -38,7 +38,7 @@ gutenberg:
 php:
   code: <?php if ( ! empty( ${{stampa.field.name}} ) ) \= ?>
           <{{stampa.value.level}}
-            class="{{stampa.block_css_class_name}}__{{stampa.field.name}}"
+            class="{{stampa.block.className}}__{{stampa.field.name}}"
           >
             <?php echo ${{stampa.field.name}} ?>
           </{{stampa.value.level}}>

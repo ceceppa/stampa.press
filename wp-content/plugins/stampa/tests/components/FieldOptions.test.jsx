@@ -28,25 +28,25 @@ describe('FieldOptions', () => {
     mountedComponent = undefined;
   });
 
-  describe('Test rendering', () => {
-    let container;
+  // describe('Test rendering', () => {
+  //   let container;
 
-    beforeAll(() => {
-      container = document.createElement('div');
-      document.body.appendChild(container);
-      ReactDOM.render(
-        <Store.Container>
-          <FieldOptions />
-        </Store.Container>,
-        container
-      );
-    });
+  //   beforeAll(() => {
+  //     container = document.createElement('div');
+  //     document.body.appendChild(container);
+  //     ReactDOM.render(
+  //       <Store.Container>
+  //         <FieldOptions />
+  //       </Store.Container>,
+  //       container
+  //     );
+  //   });
 
-    it('Should render a message if no block is selected', () => {
-      const FieldOptions = container.querySelector('.block-options p');
-      expect(FieldOptions).not.toBeNull();
-    });
-  });
+  //   it('Should render a message if no block is selected', () => {
+  //     const FieldOptions = container.querySelector('.block-options p');
+  //     expect(FieldOptions).not.toBeNull();
+  //   });
+  // });
 
   describe('should render the block options', () => {
     let container;

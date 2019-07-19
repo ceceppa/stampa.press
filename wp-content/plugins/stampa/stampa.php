@@ -7,16 +7,15 @@
 
 namespace Stampa;
 
-use Stampa\Init;
-
 define( 'STAMPA_VERSION', '0.1' );
 define( 'STAMPA_FOLDER', __DIR__ . '/' );
+define( 'STAMPA_PLUGIN_PATH', STAMPA_FOLDER . 'stampa.php' );
 define( 'STAMPA_ASSETS_FOLDER', __DIR__ . '/assets/stampa/' );
 define( 'STAMPA_REACT_BOILERPLATES_FOLDER', __DIR__ . '/assets/stampa/gutenberg/' );
 
 require __DIR__ . '/vendor/autoload.php';
 
-require __DIR__ . '/admin/init.php';
+require __DIR__ . '/admin/styles-script.php';
 require __DIR__ . '/admin/fields-loader.php';
 require __DIR__ . '/admin/block-code-generator.php';
 require __DIR__ . '/admin/stampa-filters.php';
@@ -25,27 +24,8 @@ require __DIR__ . '/admin/stampa-filters.php';
  * The Stampa class
  */
 class Stampa {
-	/**
-	 * Registered blocks
-	 *
-	 * @var array
-	 */
-	private static $fields = [];
-
-	/**
-	 * Registered blocks by id
-	 *
-	 * @var array
-	 */
-	private static $fields_by_id = [];
-
-	/**
-	 * Register the filter/actions needed by stampa
-	 *
-	 * @return void
-	 */
 	public function __construct() {
-		new Init();
+		new Styles_Script();
 
 		add_action( 'rest_api_init', [ & $this, 'register_stampa_endpoints' ] );
 		// add_filter( 'post_row_actions', [ & $this, 'add_quick_generate_block_link' ], 10, 2 );
@@ -62,22 +42,22 @@ class Stampa {
 				'methods'             => 'PUT',
 				'callback'            => [ & $this, 'save_and_generate_block' ],
 				'args'                => [
-					'title'   => [
+					'title'         => [
 						'required'    => true,
 						'type'        => 'string',
 						'description' => 'the block title',
 					],
-					'fields'  => [
+					'fields'        => [
 						'required'    => false,
 						'type'        => 'object',
 						'description' => 'the block fields',
 					],
-					'options' => [
+					'block_options' => [
 						'required'    => false,
 						'type'        => 'object',
 						'description' => 'the block options',
 					],
-					'grid'    => [
+					'grid'          => [
 						'required'    => true,
 						'type'        => 'object',
 						'description' => 'the grid options',
@@ -130,7 +110,7 @@ class Stampa {
 
 		return [
 			'ID'   => $post_id,
-			'link' => admin_url( 'post.php?post=' . $post_id ),
+			'link' => admin_url( 'post.php?post=' . $post_id . '&action=edit' ),
 		];
 	}
 

@@ -3,7 +3,7 @@ namespace Stampa\Test;
 
 use function Stampa\Test\JS_Inspector\create_fieds_test_post_with_empty_fields;
 use function Stampa\Test\JS_Inspector\create_fieds_test_post_with_fields;
-use Stampa\JS_Generator\JS_Fields_Code_Generator;
+use Stampa\JS_Fields_Code_Generator;
 use Stampa\Stampa_Replacer;
 
 require_once __DIR__ . '/js-code-inspector.helpers.php';

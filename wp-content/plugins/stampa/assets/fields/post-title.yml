@@ -7,7 +7,21 @@ stampa:
   defaultSize:
     columns: 3
     rows: 1
+  html: Post title
+options:
+  - name: level
+    type: select
+    label: Level
+    values:
+      - h1
+      - h2
+      - h3
+      - h4
+      - h5
+      - h6
+    value: h3
 php: 
-  code: <div class="{{stampa.block_css_class_name}}__{{stampa.field.name}}">
-          <?php echo $block_data['{{stampa.field.name}}'] ?>
-        </div>
+  code: 
+    <{{stampa.value.level}} class="{{stampa.block.className}}__{{stampa.field.name}}">
+      <?php the_title(); ?>
+    </{{stampa.value.le}}>

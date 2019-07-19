@@ -24,6 +24,6 @@ gutenberg:
       onChange={e => updateAttribute('{{stampa.field.name}}', e.target.value)}
     />
 php: 
-  <div class="{{stampa.block_css_class_name}}__{{stampa.field.name}}">
+  <div class="{{stampa.block.className}}__{{stampa.field.name}}">
     <?php echo ${{stampa.field.name}} ?>
   </div>

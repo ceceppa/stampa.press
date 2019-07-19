@@ -19,20 +19,20 @@
 14 silly mapToRegistry uri https://registry.npmjs.org/@babel%2fpreset-env
 15 verbose request uri https://registry.npmjs.org/@babel%2fpreset-env
 16 verbose request no auth needed
-17 info attempt registry request try #1 at 4:13:59 PM
-18 verbose request id 0ba167365c17b7fa
+17 info attempt registry request try #1 at 2:59:10 PM
+18 verbose request id 7f73b53ae5a5b0f0
 19 verbose etag W/"b65898555151ca1863f0fd001c4443d5"
 20 verbose lastModified Wed, 17 Jul 2019 21:22:06 GMT
 21 http request GET https://registry.npmjs.org/@babel%2fpreset-env
 22 http 304 https://registry.npmjs.org/@babel%2fpreset-env
-23 verbose headers { date: 'Fri, 19 Jul 2019 15:13:59 GMT',
+23 verbose headers { date: 'Fri, 19 Jul 2019 13:59:10 GMT',
 23 verbose headers   connection: 'keep-alive',
 23 verbose headers   'set-cookie':
-23 verbose headers    [ '__cfduid=df66c8680566052b9748a4ebfaf9fa9a51563549239; expires=Sat, 18-Jul-20 15:13:59 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+23 verbose headers    [ '__cfduid=d4428fcc6669d7aa71a3154d7aa71140f1563544750; expires=Sat, 18-Jul-20 13:59:10 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
 23 verbose headers   'cf-cache-status': 'HIT',
 23 verbose headers   'cache-control': 'public, max-age=300',
-23 verbose headers   'cf-ray': '4f8da47daa26dc07-LHR',
-23 verbose headers   age: '4672',
+23 verbose headers   'cf-ray': '4f8d36e43e75ce7f-LHR',
+23 verbose headers   age: '183',
 23 verbose headers   etag: '"b65898555151ca1863f0fd001c4443d5"',
 23 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
 23 verbose headers   'last-modified': 'Wed, 17 Jul 2019 21:22:06 GMT',
@@ -40,14 +40,14 @@
 23 verbose headers   'x-amz-meta-rev': '84-219af298ab0035b03932451c8a62d66c',
 23 verbose headers   server: 'cloudflare' }
 24 silly get cb [ 304,
-24 silly get   { date: 'Fri, 19 Jul 2019 15:13:59 GMT',
+24 silly get   { date: 'Fri, 19 Jul 2019 13:59:10 GMT',
 24 silly get     connection: 'keep-alive',
 24 silly get     'set-cookie':
-24 silly get      [ '__cfduid=df66c8680566052b9748a4ebfaf9fa9a51563549239; expires=Sat, 18-Jul-20 15:13:59 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+24 silly get      [ '__cfduid=d4428fcc6669d7aa71a3154d7aa71140f1563544750; expires=Sat, 18-Jul-20 13:59:10 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
 24 silly get     'cf-cache-status': 'HIT',
 24 silly get     'cache-control': 'public, max-age=300',
-24 silly get     'cf-ray': '4f8da47daa26dc07-LHR',
-24 silly get     age: '4672',
+24 silly get     'cf-ray': '4f8d36e43e75ce7f-LHR',
+24 silly get     age: '183',
 24 silly get     etag: '"b65898555151ca1863f0fd001c4443d5"',
 24 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
 24 silly get     'last-modified': 'Wed, 17 Jul 2019 21:22:06 GMT',
@@ -160,19 +160,19 @@
 65 silly mapToRegistry uri https://registry.npmjs.org/core-js-compat
 66 verbose request uri https://registry.npmjs.org/core-js-compat
 67 verbose request no auth needed
-68 info attempt registry request try #1 at 4:14:00 PM
+68 info attempt registry request try #1 at 2:59:11 PM
 69 verbose etag W/"eed5274f6cdde39e7c13894fb9f9791e"
 70 verbose lastModified Sat, 15 Jun 2019 11:57:32 GMT
 71 http request GET https://registry.npmjs.org/core-js-compat
 72 http 304 https://registry.npmjs.org/core-js-compat
-73 verbose headers { date: 'Fri, 19 Jul 2019 15:14:00 GMT',
+73 verbose headers { date: 'Fri, 19 Jul 2019 13:59:11 GMT',
 73 verbose headers   connection: 'keep-alive',
 73 verbose headers   'set-cookie':
-73 verbose headers    [ '__cfduid=d7f5d42c80b0f715cac3397d7d3f56e601563549240; expires=Sat, 18-Jul-20 15:14:00 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+73 verbose headers    [ '__cfduid=d8906f47aa491e4eef2ebc52908e614e61563544751; expires=Sat, 18-Jul-20 13:59:11 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
 73 verbose headers   'cf-cache-status': 'HIT',
 73 verbose headers   'cache-control': 'max-age=300',
-73 verbose headers   'cf-ray': '4f8da4807a5ddc07-LHR',
-73 verbose headers   age: '5160',
+73 verbose headers   'cf-ray': '4f8d36e91dd1ce7f-LHR',
+73 verbose headers   age: '671',
 73 verbose headers   etag: '"eed5274f6cdde39e7c13894fb9f9791e"',
 73 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
 73 verbose headers   'last-modified': 'Sat, 15 Jun 2019 11:57:32 GMT',
@@ -180,14 +180,14 @@
 73 verbose headers   'x-amz-meta-rev': '22-538fbd611f49993344aba8d41e902d9f',
 73 verbose headers   server: 'cloudflare' }
 74 silly get cb [ 304,
-74 silly get   { date: 'Fri, 19 Jul 2019 15:14:00 GMT',
+74 silly get   { date: 'Fri, 19 Jul 2019 13:59:11 GMT',
 74 silly get     connection: 'keep-alive',
 74 silly get     'set-cookie':
-74 silly get      [ '__cfduid=d7f5d42c80b0f715cac3397d7d3f56e601563549240; expires=Sat, 18-Jul-20 15:14:00 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+74 silly get      [ '__cfduid=d8906f47aa491e4eef2ebc52908e614e61563544751; expires=Sat, 18-Jul-20 13:59:11 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
 74 silly get     'cf-cache-status': 'HIT',
 74 silly get     'cache-control': 'max-age=300',
-74 silly get     'cf-ray': '4f8da4807a5ddc07-LHR',
-74 silly get     age: '5160',
+74 silly get     'cf-ray': '4f8d36e91dd1ce7f-LHR',
+74 silly get     age: '671',
 74 silly get     etag: '"eed5274f6cdde39e7c13894fb9f9791e"',
 74 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
 74 silly get     'last-modified': 'Sat, 15 Jun 2019 11:57:32 GMT',
@@ -260,210 +260,213 @@
 106 silly mapToRegistry uri https://registry.npmjs.org/semver
 107 verbose request uri https://registry.npmjs.org/core-js-pure
 108 verbose request no auth needed
-109 info attempt registry request try #1 at 4:14:00 PM
+109 info attempt registry request try #1 at 2:59:11 PM
 110 verbose etag W/"ec17db9c31a8743582fea0c45c791918"
 111 verbose lastModified Sat, 15 Jun 2019 11:57:00 GMT
 112 http request GET https://registry.npmjs.org/core-js-pure
 113 verbose request uri https://registry.npmjs.org/semver
 114 verbose request no auth needed
-115 info attempt registry request try #1 at 4:14:00 PM
+115 info attempt registry request try #1 at 2:59:11 PM
 116 verbose etag W/"a18f9f646b1142e805f761be9a1e9d2b"
 117 verbose lastModified Mon, 01 Jul 2019 23:03:31 GMT
 118 http request GET https://registry.npmjs.org/semver
-119 http 304 https://registry.npmjs.org/semver
-120 verbose headers { date: 'Fri, 19 Jul 2019 15:14:00 GMT',
+119 http 304 https://registry.npmjs.org/core-js-pure
+120 verbose headers { date: 'Fri, 19 Jul 2019 13:59:11 GMT',
 120 verbose headers   connection: 'keep-alive',
 120 verbose headers   'set-cookie':
-120 verbose headers    [ '__cfduid=d19387ad787b7f917fdff57a341313aff1563549240; expires=Sat, 18-Jul-20 15:14:00 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+120 verbose headers    [ '__cfduid=d8906f47aa491e4eef2ebc52908e614e61563544751; expires=Sat, 18-Jul-20 13:59:11 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
 120 verbose headers   'cf-cache-status': 'HIT',
 120 verbose headers   'cache-control': 'max-age=300',
-120 verbose headers   'cf-ray': '4f8da4834f476b4d-LHR',
-120 verbose headers   age: '6822',
-120 verbose headers   etag: '"a18f9f646b1142e805f761be9a1e9d2b"',
+120 verbose headers   'cf-ray': '4f8d36eb0bfdce7f-LHR',
+120 verbose headers   age: '4114',
+120 verbose headers   etag: '"ec17db9c31a8743582fea0c45c791918"',
 120 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-120 verbose headers   'last-modified': 'Mon, 01 Jul 2019 23:03:31 GMT',
+120 verbose headers   'last-modified': 'Sat, 15 Jun 2019 11:57:00 GMT',
 120 verbose headers   vary: 'accept-encoding, accept',
-120 verbose headers   'x-amz-meta-rev': '361-05f4a4e0a7d74ece18232b2ba2c7f90d',
+120 verbose headers   'x-amz-meta-rev': '33-b313c12365aa34f83481fb671faf716a',
 120 verbose headers   server: 'cloudflare' }
 121 silly get cb [ 304,
-121 silly get   { date: 'Fri, 19 Jul 2019 15:14:00 GMT',
+121 silly get   { date: 'Fri, 19 Jul 2019 13:59:11 GMT',
 121 silly get     connection: 'keep-alive',
 121 silly get     'set-cookie':
-121 silly get      [ '__cfduid=d19387ad787b7f917fdff57a341313aff1563549240; expires=Sat, 18-Jul-20 15:14:00 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+121 silly get      [ '__cfduid=d8906f47aa491e4eef2ebc52908e614e61563544751; expires=Sat, 18-Jul-20 13:59:11 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
 121 silly get     'cf-cache-status': 'HIT',
 121 silly get     'cache-control': 'max-age=300',
-121 silly get     'cf-ray': '4f8da4834f476b4d-LHR',
-121 silly get     age: '6822',
-121 silly get     etag: '"a18f9f646b1142e805f761be9a1e9d2b"',
+121 silly get     'cf-ray': '4f8d36eb0bfdce7f-LHR',
+121 silly get     age: '4114',
+121 silly get     etag: '"ec17db9c31a8743582fea0c45c791918"',
 121 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-121 silly get     'last-modified': 'Mon, 01 Jul 2019 23:03:31 GMT',
+121 silly get     'last-modified': 'Sat, 15 Jun 2019 11:57:00 GMT',
 121 silly get     vary: 'accept-encoding, accept',
-121 silly get     'x-amz-meta-rev': '361-05f4a4e0a7d74ece18232b2ba2c7f90d',
+121 silly get     'x-amz-meta-rev': '33-b313c12365aa34f83481fb671faf716a',
 121 silly get     server: 'cloudflare' } ]
-122 verbose etag https://registry.npmjs.org/semver from cache
-123 verbose get saving semver to /var/www/.npm/registry.npmjs.org/semver/.cache.json
-124 silly resolveWithNewModule semver@6.2.0 checking installable status
-125 silly cache add args [ 'semver@^6.1.1', null ]
-126 verbose cache add spec semver@^6.1.1
+122 verbose etag https://registry.npmjs.org/core-js-pure from cache
+123 verbose get saving core-js-pure to /var/www/.npm/registry.npmjs.org/core-js-pure/.cache.json
+124 silly resolveWithNewModule core-js-pure@3.1.4 checking installable status
+125 silly cache add args [ 'core-js-pure@3.1.4', null ]
+126 verbose cache add spec core-js-pure@3.1.4
 127 silly cache add parsed spec Result {
-127 silly cache add   raw: 'semver@^6.1.1',
+127 silly cache add   raw: 'core-js-pure@3.1.4',
 127 silly cache add   scope: null,
-127 silly cache add   name: 'semver',
-127 silly cache add   rawSpec: '^6.1.1',
-127 silly cache add   spec: '>=6.1.1 <7.0.0',
-127 silly cache add   type: 'range' }
-128 silly addNamed semver@>=6.1.1 <7.0.0
-129 verbose addNamed ">=6.1.1 <7.0.0" is a valid semver range for semver
-130 silly addNameRange { name: 'semver', range: '>=6.1.1 <7.0.0', hasData: false }
-131 silly mapToRegistry name semver
-132 silly mapToRegistry using default registry
-133 silly mapToRegistry registry https://registry.npmjs.org/
-134 silly mapToRegistry uri https://registry.npmjs.org/semver
-135 verbose addNameRange registry:https://registry.npmjs.org/semver not in flight; fetching
-136 verbose get https://registry.npmjs.org/semver not expired, no request
-137 silly addNameRange number 2 { name: 'semver', range: '>=6.1.1 <7.0.0', hasData: true }
-138 silly addNameRange versions [ 'semver',
-138 silly addNameRange   [ '1.0.0',
-138 silly addNameRange     '1.0.1',
-138 silly addNameRange     '1.0.2',
-138 silly addNameRange     '1.0.3',
-138 silly addNameRange     '1.0.4',
-138 silly addNameRange     '1.0.5',
-138 silly addNameRange     '1.0.6',
-138 silly addNameRange     '1.0.7',
-138 silly addNameRange     '1.0.8',
-138 silly addNameRange     '1.0.9',
-138 silly addNameRange     '1.0.10',
-138 silly addNameRange     '1.0.11',
-138 silly addNameRange     '1.0.12',
-138 silly addNameRange     '1.0.13',
-138 silly addNameRange     '1.0.14',
-138 silly addNameRange     '1.1.0',
-138 silly addNameRange     '1.1.1',
-138 silly addNameRange     '1.1.2',
-138 silly addNameRange     '1.1.3',
-138 silly addNameRange     '1.1.4',
-138 silly addNameRange     '2.0.0-alpha',
-138 silly addNameRange     '2.0.0-beta',
-138 silly addNameRange     '2.0.1',
-138 silly addNameRange     '2.0.2',
-138 silly addNameRange     '2.0.3',
-138 silly addNameRange     '2.0.4',
-138 silly addNameRange     '2.0.5',
-138 silly addNameRange     '2.0.6',
-138 silly addNameRange     '2.0.7',
-138 silly addNameRange     '2.0.8',
-138 silly addNameRange     '2.0.9',
-138 silly addNameRange     '2.0.10',
-138 silly addNameRange     '2.0.11',
-138 silly addNameRange     '2.1.0',
-138 silly addNameRange     '2.2.0',
-138 silly addNameRange     '2.2.1',
-138 silly addNameRange     '2.3.0',
-138 silly addNameRange     '2.3.1',
-138 silly addNameRange     '2.3.2',
-138 silly addNameRange     '3.0.0',
-138 silly addNameRange     '3.0.1',
-138 silly addNameRange     '4.0.0',
-138 silly addNameRange     '4.0.2',
-138 silly addNameRange     '4.0.3',
-138 silly addNameRange     '4.1.0',
-138 silly addNameRange     '4.1.1',
-138 silly addNameRange     '4.2.0',
-138 silly addNameRange     '4.2.1',
-138 silly addNameRange     '4.2.2',
-138 silly addNameRange     '4.3.0',
-138 silly addNameRange     '4.3.1',
-138 silly addNameRange     '4.3.2',
-138 silly addNameRange     '4.3.3',
-138 silly addNameRange     '4.3.4',
-138 silly addNameRange     '4.3.5',
-138 silly addNameRange     '4.3.6',
-138 silly addNameRange     '5.0.0',
-138 silly addNameRange     '5.0.1',
-138 silly addNameRange     '5.0.2',
-138 silly addNameRange     '5.0.3',
-138 silly addNameRange     '5.1.0',
-138 silly addNameRange     '5.1.1',
-138 silly addNameRange     '5.2.0',
-138 silly addNameRange     '5.3.0',
-138 silly addNameRange     '5.4.0',
-138 silly addNameRange     '5.4.1',
-138 silly addNameRange     '5.5.0',
-138 silly addNameRange     '5.5.1',
-138 silly addNameRange     '5.6.0',
-138 silly addNameRange     '5.7.0',
-138 silly addNameRange     '6.0.0',
-138 silly addNameRange     '6.1.0',
-138 silly addNameRange     '6.1.1',
-138 silly addNameRange     '6.1.2',
-138 silly addNameRange     '6.1.3',
-138 silly addNameRange     '6.2.0' ] ]
-139 silly addNamed semver@6.2.0
-140 verbose addNamed "6.2.0" is a plain semver version for semver
-141 silly cache afterAdd semver@6.2.0
-142 verbose afterAdd /var/www/.npm/semver/6.2.0/package/package.json not in flight; writing
-143 verbose afterAdd /var/www/.npm/semver/6.2.0/package/package.json written
-144 http 304 https://registry.npmjs.org/core-js-pure
-145 verbose headers { date: 'Fri, 19 Jul 2019 15:14:00 GMT',
-145 verbose headers   connection: 'keep-alive',
-145 verbose headers   'set-cookie':
-145 verbose headers    [ '__cfduid=d7f5d42c80b0f715cac3397d7d3f56e601563549240; expires=Sat, 18-Jul-20 15:14:00 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
-145 verbose headers   'cf-cache-status': 'HIT',
-145 verbose headers   'cache-control': 'max-age=300',
-145 verbose headers   'cf-ray': '4f8da4832a4cdc07-LHR',
-145 verbose headers   age: '1376',
-145 verbose headers   etag: '"ec17db9c31a8743582fea0c45c791918"',
-145 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-145 verbose headers   'last-modified': 'Sat, 15 Jun 2019 11:57:00 GMT',
-145 verbose headers   vary: 'accept-encoding, accept',
-145 verbose headers   'x-amz-meta-rev': '33-b313c12365aa34f83481fb671faf716a',
-145 verbose headers   server: 'cloudflare' }
-146 silly get cb [ 304,
-146 silly get   { date: 'Fri, 19 Jul 2019 15:14:00 GMT',
-146 silly get     connection: 'keep-alive',
-146 silly get     'set-cookie':
-146 silly get      [ '__cfduid=d7f5d42c80b0f715cac3397d7d3f56e601563549240; expires=Sat, 18-Jul-20 15:14:00 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
-146 silly get     'cf-cache-status': 'HIT',
-146 silly get     'cache-control': 'max-age=300',
-146 silly get     'cf-ray': '4f8da4832a4cdc07-LHR',
-146 silly get     age: '1376',
-146 silly get     etag: '"ec17db9c31a8743582fea0c45c791918"',
-146 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-146 silly get     'last-modified': 'Sat, 15 Jun 2019 11:57:00 GMT',
-146 silly get     vary: 'accept-encoding, accept',
-146 silly get     'x-amz-meta-rev': '33-b313c12365aa34f83481fb671faf716a',
-146 silly get     server: 'cloudflare' } ]
-147 verbose etag https://registry.npmjs.org/core-js-pure from cache
-148 verbose get saving core-js-pure to /var/www/.npm/registry.npmjs.org/core-js-pure/.cache.json
-149 silly resolveWithNewModule core-js-pure@3.1.4 checking installable status
-150 silly cache add args [ 'core-js-pure@3.1.4', null ]
-151 verbose cache add spec core-js-pure@3.1.4
-152 silly cache add parsed spec Result {
-152 silly cache add   raw: 'core-js-pure@3.1.4',
-152 silly cache add   scope: null,
-152 silly cache add   name: 'core-js-pure',
-152 silly cache add   rawSpec: '3.1.4',
-152 silly cache add   spec: '3.1.4',
-152 silly cache add   type: 'version' }
-153 silly addNamed core-js-pure@3.1.4
-154 verbose addNamed "3.1.4" is a plain semver version for core-js-pure
-155 silly mapToRegistry name core-js-pure
-156 silly mapToRegistry using default registry
-157 silly mapToRegistry registry https://registry.npmjs.org/
-158 silly mapToRegistry uri https://registry.npmjs.org/core-js-pure
-159 verbose addNameVersion registry:https://registry.npmjs.org/core-js-pure not in flight; fetching
-160 verbose get https://registry.npmjs.org/core-js-pure not expired, no request
-161 silly cache afterAdd core-js-pure@3.1.4
-162 verbose afterAdd /var/www/.npm/core-js-pure/3.1.4/package/package.json not in flight; writing
-163 verbose afterAdd /var/www/.npm/core-js-pure/3.1.4/package/package.json written
+127 silly cache add   name: 'core-js-pure',
+127 silly cache add   rawSpec: '3.1.4',
+127 silly cache add   spec: '3.1.4',
+127 silly cache add   type: 'version' }
+128 silly addNamed core-js-pure@3.1.4
+129 verbose addNamed "3.1.4" is a plain semver version for core-js-pure
+130 silly mapToRegistry name core-js-pure
+131 silly mapToRegistry using default registry
+132 silly mapToRegistry registry https://registry.npmjs.org/
+133 silly mapToRegistry uri https://registry.npmjs.org/core-js-pure
+134 verbose addNameVersion registry:https://registry.npmjs.org/core-js-pure not in flight; fetching
+135 verbose get https://registry.npmjs.org/core-js-pure not expired, no request
+136 silly cache afterAdd core-js-pure@3.1.4
+137 verbose afterAdd /var/www/.npm/core-js-pure/3.1.4/package/package.json not in flight; writing
+138 verbose afterAdd /var/www/.npm/core-js-pure/3.1.4/package/package.json written
+139 http 304 https://registry.npmjs.org/semver
+140 verbose headers { date: 'Fri, 19 Jul 2019 13:59:11 GMT',
+140 verbose headers   connection: 'keep-alive',
+140 verbose headers   'set-cookie':
+140 verbose headers    [ '__cfduid=d1c4219c4c5b82c6e499e11c6f38bd7021563544751; expires=Sat, 18-Jul-20 13:59:11 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+140 verbose headers   'cf-cache-status': 'HIT',
+140 verbose headers   'cache-control': 'max-age=300',
+140 verbose headers   'cf-ray': '4f8d36eb3cf869ff-LHR',
+140 verbose headers   age: '2333',
+140 verbose headers   etag: '"a18f9f646b1142e805f761be9a1e9d2b"',
+140 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+140 verbose headers   'last-modified': 'Mon, 01 Jul 2019 23:03:31 GMT',
+140 verbose headers   vary: 'accept-encoding, accept',
+140 verbose headers   'x-amz-meta-rev': '361-05f4a4e0a7d74ece18232b2ba2c7f90d',
+140 verbose headers   server: 'cloudflare' }
+141 silly get cb [ 304,
+141 silly get   { date: 'Fri, 19 Jul 2019 13:59:11 GMT',
+141 silly get     connection: 'keep-alive',
+141 silly get     'set-cookie':
+141 silly get      [ '__cfduid=d1c4219c4c5b82c6e499e11c6f38bd7021563544751; expires=Sat, 18-Jul-20 13:59:11 GMT; path=/; domain=.npmjs.org; HttpOnly' ],
+141 silly get     'cf-cache-status': 'HIT',
+141 silly get     'cache-control': 'max-age=300',
+141 silly get     'cf-ray': '4f8d36eb3cf869ff-LHR',
+141 silly get     age: '2333',
+141 silly get     etag: '"a18f9f646b1142e805f761be9a1e9d2b"',
+141 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+141 silly get     'last-modified': 'Mon, 01 Jul 2019 23:03:31 GMT',
+141 silly get     vary: 'accept-encoding, accept',
+141 silly get     'x-amz-meta-rev': '361-05f4a4e0a7d74ece18232b2ba2c7f90d',
+141 silly get     server: 'cloudflare' } ]
+142 verbose etag https://registry.npmjs.org/semver from cache
+143 verbose get saving semver to /var/www/.npm/registry.npmjs.org/semver/.cache.json
+144 silly resolveWithNewModule semver@6.2.0 checking installable status
+145 silly cache add args [ 'semver@^6.1.1', null ]
+146 verbose cache add spec semver@^6.1.1
+147 silly cache add parsed spec Result {
+147 silly cache add   raw: 'semver@^6.1.1',
+147 silly cache add   scope: null,
+147 silly cache add   name: 'semver',
+147 silly cache add   rawSpec: '^6.1.1',
+147 silly cache add   spec: '>=6.1.1 <7.0.0',
+147 silly cache add   type: 'range' }
+148 silly addNamed semver@>=6.1.1 <7.0.0
+149 verbose addNamed ">=6.1.1 <7.0.0" is a valid semver range for semver
+150 silly addNameRange { name: 'semver', range: '>=6.1.1 <7.0.0', hasData: false }
+151 silly mapToRegistry name semver
+152 silly mapToRegistry using default registry
+153 silly mapToRegistry registry https://registry.npmjs.org/
+154 silly mapToRegistry uri https://registry.npmjs.org/semver
+155 verbose addNameRange registry:https://registry.npmjs.org/semver not in flight; fetching
+156 verbose get https://registry.npmjs.org/semver not expired, no request
+157 silly addNameRange number 2 { name: 'semver', range: '>=6.1.1 <7.0.0', hasData: true }
+158 silly addNameRange versions [ 'semver',
+158 silly addNameRange   [ '1.0.0',
+158 silly addNameRange     '1.0.1',
+158 silly addNameRange     '1.0.2',
+158 silly addNameRange     '1.0.3',
+158 silly addNameRange     '1.0.4',
+158 silly addNameRange     '1.0.5',
+158 silly addNameRange     '1.0.6',
+158 silly addNameRange     '1.0.7',
+158 silly addNameRange     '1.0.8',
+158 silly addNameRange     '1.0.9',
+158 silly addNameRange     '1.0.10',
+158 silly addNameRange     '1.0.11',
+158 silly addNameRange     '1.0.12',
+158 silly addNameRange     '1.0.13',
+158 silly addNameRange     '1.0.14',
+158 silly addNameRange     '1.1.0',
+158 silly addNameRange     '1.1.1',
+158 silly addNameRange     '1.1.2',
+158 silly addNameRange     '1.1.3',
+158 silly addNameRange     '1.1.4',
+158 silly addNameRange     '2.0.0-alpha',
+158 silly addNameRange     '2.0.0-beta',
+158 silly addNameRange     '2.0.1',
+158 silly addNameRange     '2.0.2',
+158 silly addNameRange     '2.0.3',
+158 silly addNameRange     '2.0.4',
+158 silly addNameRange     '2.0.5',
+158 silly addNameRange     '2.0.6',
+158 silly addNameRange     '2.0.7',
+158 silly addNameRange     '2.0.8',
+158 silly addNameRange     '2.0.9',
+158 silly addNameRange     '2.0.10',
+158 silly addNameRange     '2.0.11',
+158 silly addNameRange     '2.1.0',
+158 silly addNameRange     '2.2.0',
+158 silly addNameRange     '2.2.1',
+158 silly addNameRange     '2.3.0',
+158 silly addNameRange     '2.3.1',
+158 silly addNameRange     '2.3.2',
+158 silly addNameRange     '3.0.0',
+158 silly addNameRange     '3.0.1',
+158 silly addNameRange     '4.0.0',
+158 silly addNameRange     '4.0.2',
+158 silly addNameRange     '4.0.3',
+158 silly addNameRange     '4.1.0',
+158 silly addNameRange     '4.1.1',
+158 silly addNameRange     '4.2.0',
+158 silly addNameRange     '4.2.1',
+158 silly addNameRange     '4.2.2',
+158 silly addNameRange     '4.3.0',
+158 silly addNameRange     '4.3.1',
+158 silly addNameRange     '4.3.2',
+158 silly addNameRange     '4.3.3',
+158 silly addNameRange     '4.3.4',
+158 silly addNameRange     '4.3.5',
+158 silly addNameRange     '4.3.6',
+158 silly addNameRange     '5.0.0',
+158 silly addNameRange     '5.0.1',
+158 silly addNameRange     '5.0.2',
+158 silly addNameRange     '5.0.3',
+158 silly addNameRange     '5.1.0',
+158 silly addNameRange     '5.1.1',
+158 silly addNameRange     '5.2.0',
+158 silly addNameRange     '5.3.0',
+158 silly addNameRange     '5.4.0',
+158 silly addNameRange     '5.4.1',
+158 silly addNameRange     '5.5.0',
+158 silly addNameRange     '5.5.1',
+158 silly addNameRange     '5.6.0',
+158 silly addNameRange     '5.7.0',
+158 silly addNameRange     '6.0.0',
+158 silly addNameRange     '6.1.0',
+158 silly addNameRange     '6.1.1',
+158 silly addNameRange     '6.1.2',
+158 silly addNameRange     '6.1.3',
+158 silly addNameRange     '6.2.0' ] ]
+159 silly addNamed semver@6.2.0
+160 verbose addNamed "6.2.0" is a plain semver version for semver
+161 silly cache afterAdd semver@6.2.0
+162 verbose afterAdd /var/www/.npm/semver/6.2.0/package/package.json not in flight; writing
+163 verbose afterAdd /var/www/.npm/semver/6.2.0/package/package.json written
 164 silly loadAllDepsIntoIdealTree Finishing
 165 silly idealTree:prePrune stampa-blocks@1.0.0
 165 silly idealTree:prePrune +-- @babel/code-frame@7.5.5
 165 silly idealTree:prePrune +-- @babel/core@7.5.5
+165 silly idealTree:prePrune | `-- source-map@0.5.7
 165 silly idealTree:prePrune +-- @babel/generator@7.5.5
+165 silly idealTree:prePrune | `-- source-map@0.5.7
 165 silly idealTree:prePrune +-- @babel/helper-annotate-as-pure@7.0.0
 165 silly idealTree:prePrune +-- @babel/helper-builder-binary-assignment-operator-visitor@7.1.0
+165 silly idealTree:prePrune +-- @babel/helper-builder-react-jsx@7.3.0
 165 silly idealTree:prePrune +-- @babel/helper-call-delegate@7.4.4
 165 silly idealTree:prePrune +-- @babel/helper-define-map@7.5.5
 165 silly idealTree:prePrune +-- @babel/helper-explode-assignable-expression@7.1.0
@@ -493,6 +496,7 @@
 165 silly idealTree:prePrune +-- @babel/plugin-syntax-async-generators@7.2.0
 165 silly idealTree:prePrune +-- @babel/plugin-syntax-dynamic-import@7.2.0
 165 silly idealTree:prePrune +-- @babel/plugin-syntax-json-strings@7.2.0
+165 silly idealTree:prePrune +-- @babel/plugin-syntax-jsx@7.2.0
 165 silly idealTree:prePrune +-- @babel/plugin-syntax-object-rest-spread@7.2.0
 165 silly idealTree:prePrune +-- @babel/plugin-syntax-optional-catch-binding@7.2.0
 165 silly idealTree:prePrune +-- @babel/plugin-transform-arrow-functions@7.2.0
@@ -518,6 +522,10 @@
 165 silly idealTree:prePrune +-- @babel/plugin-transform-object-super@7.5.5
 165 silly idealTree:prePrune +-- @babel/plugin-transform-parameters@7.4.4
 165 silly idealTree:prePrune +-- @babel/plugin-transform-property-literals@7.2.0
+165 silly idealTree:prePrune +-- @babel/plugin-transform-react-display-name@7.2.0
+165 silly idealTree:prePrune +-- @babel/plugin-transform-react-jsx-self@7.2.0
+165 silly idealTree:prePrune +-- @babel/plugin-transform-react-jsx-source@7.5.0
+165 silly idealTree:prePrune +-- @babel/plugin-transform-react-jsx@7.3.0
 165 silly idealTree:prePrune +-- @babel/plugin-transform-regenerator@7.4.5
 165 silly idealTree:prePrune +-- @babel/plugin-transform-reserved-words@7.2.0
 165 silly idealTree:prePrune +-- @babel/plugin-transform-shorthand-properties@7.2.0
@@ -527,43 +535,148 @@
 165 silly idealTree:prePrune +-- @babel/plugin-transform-typeof-symbol@7.2.0
 165 silly idealTree:prePrune +-- @babel/plugin-transform-unicode-regex@7.4.4
 165 silly idealTree:prePrune +-- @babel/preset-env@7.5.5
+165 silly idealTree:prePrune +-- @babel/preset-react@7.0.0
 165 silly idealTree:prePrune +-- @babel/template@7.4.4
 165 silly idealTree:prePrune +-- @babel/traverse@7.5.5
 165 silly idealTree:prePrune +-- @babel/types@7.5.5
+165 silly idealTree:prePrune +-- @types/q@1.5.2
+165 silly idealTree:prePrune +-- alphanum-sort@1.0.2
 165 silly idealTree:prePrune +-- ansi-styles@3.2.1
+165 silly idealTree:prePrune +-- argparse@1.0.10
 165 silly idealTree:prePrune +-- babel-plugin-dynamic-import-node@2.3.0
-165 silly idealTree:prePrune +-- browserslist@4.6.6
-165 silly idealTree:prePrune +-- caniuse-lite@1.0.30000984
+165 silly idealTree:prePrune +-- boolbase@1.0.0
+165 silly idealTree:prePrune +-- browserslist@4.6.4
+165 silly idealTree:prePrune +-- caller-callsite@2.0.0
+165 silly idealTree:prePrune +-- caller-path@2.0.0
+165 silly idealTree:prePrune +-- callsites@2.0.0
+165 silly idealTree:prePrune +-- caniuse-api@3.0.0
+165 silly idealTree:prePrune +-- caniuse-lite@1.0.30000981
 165 silly idealTree:prePrune +-- chalk@2.4.2
+165 silly idealTree:prePrune | `-- supports-color@5.5.0
+165 silly idealTree:prePrune +-- coa@2.0.2
 165 silly idealTree:prePrune +-- color-convert@1.9.3
 165 silly idealTree:prePrune +-- color-name@1.1.3
+165 silly idealTree:prePrune +-- color-string@1.5.3
+165 silly idealTree:prePrune +-- color@3.1.2
 165 silly idealTree:prePrune +-- convert-source-map@1.6.0
 165 silly idealTree:prePrune +-- core-js-compat@3.1.4
 165 silly idealTree:prePrune | `-- semver@6.2.0
 165 silly idealTree:prePrune +-- core-js-pure@3.1.4
+165 silly idealTree:prePrune +-- cosmiconfig@5.2.1
+165 silly idealTree:prePrune +-- css-color-names@0.0.4
+165 silly idealTree:prePrune +-- css-declaration-sorter@4.0.1
+165 silly idealTree:prePrune +-- css-select-base-adapter@0.1.1
+165 silly idealTree:prePrune +-- css-select@2.0.2
+165 silly idealTree:prePrune +-- css-tree@1.0.0-alpha.28
+165 silly idealTree:prePrune | `-- source-map@0.5.7
+165 silly idealTree:prePrune +-- css-unit-converter@1.1.1
+165 silly idealTree:prePrune +-- css-url-regex@1.1.0
+165 silly idealTree:prePrune +-- css-what@2.1.3
+165 silly idealTree:prePrune +-- cssesc@2.0.0
+165 silly idealTree:prePrune +-- cssnano-preset-default@4.0.7
+165 silly idealTree:prePrune +-- cssnano-util-get-arguments@4.0.0
+165 silly idealTree:prePrune +-- cssnano-util-get-match@4.0.0
+165 silly idealTree:prePrune +-- cssnano-util-raw-cache@4.0.1
+165 silly idealTree:prePrune +-- cssnano-util-same-parent@4.0.1
+165 silly idealTree:prePrune +-- cssnano@4.1.10
+165 silly idealTree:prePrune +-- csso@3.5.1
+165 silly idealTree:prePrune | +-- css-tree@1.0.0-alpha.29
+165 silly idealTree:prePrune | `-- source-map@0.5.7
 165 silly idealTree:prePrune +-- debug@4.1.1
 165 silly idealTree:prePrune +-- define-properties@1.1.3
-165 silly idealTree:prePrune +-- electron-to-chromium@1.3.194
+165 silly idealTree:prePrune +-- dom-serializer@0.1.1
+165 silly idealTree:prePrune +-- domelementtype@1.3.1
+165 silly idealTree:prePrune +-- domutils@1.7.0
+165 silly idealTree:prePrune +-- dot-prop@4.2.0
+165 silly idealTree:prePrune +-- electron-to-chromium@1.3.188
+165 silly idealTree:prePrune +-- entities@1.1.2
+165 silly idealTree:prePrune +-- error-ex@1.3.2
+165 silly idealTree:prePrune +-- es-abstract@1.13.0
+165 silly idealTree:prePrune +-- es-to-primitive@1.2.0
 165 silly idealTree:prePrune +-- escape-string-regexp@1.0.5
+165 silly idealTree:prePrune +-- esprima@4.0.1
 165 silly idealTree:prePrune +-- esutils@2.0.2
 165 silly idealTree:prePrune +-- function-bind@1.1.1
 165 silly idealTree:prePrune +-- globals@11.12.0
 165 silly idealTree:prePrune +-- has-flag@3.0.0
 165 silly idealTree:prePrune +-- has-symbols@1.0.0
+165 silly idealTree:prePrune +-- has@1.0.3
+165 silly idealTree:prePrune +-- hex-color-regex@1.1.0
+165 silly idealTree:prePrune +-- hsl-regex@1.0.0
+165 silly idealTree:prePrune +-- hsla-regex@1.0.0
+165 silly idealTree:prePrune +-- html-comment-regex@1.1.2
+165 silly idealTree:prePrune +-- import-fresh@2.0.0
+165 silly idealTree:prePrune +-- indexes-of@1.0.1
 165 silly idealTree:prePrune +-- invariant@2.2.4
+165 silly idealTree:prePrune +-- is-absolute-url@2.1.0
+165 silly idealTree:prePrune +-- is-arrayish@0.2.1
+165 silly idealTree:prePrune +-- is-callable@1.1.4
+165 silly idealTree:prePrune +-- is-color-stop@1.1.0
+165 silly idealTree:prePrune +-- is-date-object@1.0.1
+165 silly idealTree:prePrune +-- is-directory@0.3.1
+165 silly idealTree:prePrune +-- is-obj@1.0.1
+165 silly idealTree:prePrune +-- is-regex@1.0.4
+165 silly idealTree:prePrune +-- is-resolvable@1.1.0
+165 silly idealTree:prePrune +-- is-svg@3.0.0
+165 silly idealTree:prePrune +-- is-symbol@1.0.2
 165 silly idealTree:prePrune +-- js-levenshtein@1.1.6
 165 silly idealTree:prePrune +-- js-tokens@4.0.0
+165 silly idealTree:prePrune +-- js-yaml@3.13.1
 165 silly idealTree:prePrune +-- jsesc@2.5.2
+165 silly idealTree:prePrune +-- json-parse-better-errors@1.0.2
 165 silly idealTree:prePrune +-- json5@2.1.0
+165 silly idealTree:prePrune | `-- minimist@1.2.0
+165 silly idealTree:prePrune +-- lodash.memoize@4.1.2
+165 silly idealTree:prePrune +-- lodash.uniq@4.5.0
 165 silly idealTree:prePrune +-- lodash@4.17.15
 165 silly idealTree:prePrune +-- loose-envify@1.4.0
-165 silly idealTree:prePrune +-- minimist@1.2.0
+165 silly idealTree:prePrune +-- mdn-data@1.1.4
+165 silly idealTree:prePrune +-- minimist@0.0.8
+165 silly idealTree:prePrune +-- mkdirp@0.5.1
 165 silly idealTree:prePrune +-- ms@2.1.2
 165 silly idealTree:prePrune +-- node-releases@1.1.25
+165 silly idealTree:prePrune +-- normalize-url@3.3.0
+165 silly idealTree:prePrune +-- nth-check@1.0.2
 165 silly idealTree:prePrune +-- object-keys@1.1.1
 165 silly idealTree:prePrune +-- object.assign@4.1.0
+165 silly idealTree:prePrune +-- object.getownpropertydescriptors@2.0.3
+165 silly idealTree:prePrune +-- object.values@1.1.0
+165 silly idealTree:prePrune +-- parse-json@4.0.0
 165 silly idealTree:prePrune +-- path-parse@1.0.6
+165 silly idealTree:prePrune +-- postcss-calc@7.0.1
+165 silly idealTree:prePrune +-- postcss-colormin@4.0.3
+165 silly idealTree:prePrune +-- postcss-convert-values@4.0.1
+165 silly idealTree:prePrune +-- postcss-discard-comments@4.0.2
+165 silly idealTree:prePrune +-- postcss-discard-duplicates@4.0.2
+165 silly idealTree:prePrune +-- postcss-discard-empty@4.0.1
+165 silly idealTree:prePrune +-- postcss-discard-overridden@4.0.1
+165 silly idealTree:prePrune +-- postcss-merge-longhand@4.0.11
+165 silly idealTree:prePrune +-- postcss-merge-rules@4.0.3
+165 silly idealTree:prePrune | `-- postcss-selector-parser@3.1.1
+165 silly idealTree:prePrune +-- postcss-minify-font-values@4.0.2
+165 silly idealTree:prePrune +-- postcss-minify-gradients@4.0.2
+165 silly idealTree:prePrune +-- postcss-minify-params@4.0.2
+165 silly idealTree:prePrune +-- postcss-minify-selectors@4.0.2
+165 silly idealTree:prePrune | `-- postcss-selector-parser@3.1.1
+165 silly idealTree:prePrune +-- postcss-normalize-charset@4.0.1
+165 silly idealTree:prePrune +-- postcss-normalize-display-values@4.0.2
+165 silly idealTree:prePrune +-- postcss-normalize-positions@4.0.2
+165 silly idealTree:prePrune +-- postcss-normalize-repeat-style@4.0.2
+165 silly idealTree:prePrune +-- postcss-normalize-string@4.0.2
+165 silly idealTree:prePrune +-- postcss-normalize-timing-functions@4.0.2
+165 silly idealTree:prePrune +-- postcss-normalize-unicode@4.0.1
+165 silly idealTree:prePrune +-- postcss-normalize-url@4.0.1
+165 silly idealTree:prePrune +-- postcss-normalize-whitespace@4.0.2
+165 silly idealTree:prePrune +-- postcss-ordered-values@4.1.2
+165 silly idealTree:prePrune +-- postcss-reduce-initial@4.0.3
+165 silly idealTree:prePrune +-- postcss-reduce-transforms@4.0.2
+165 silly idealTree:prePrune +-- postcss-selector-parser@5.0.0
+165 silly idealTree:prePrune +-- postcss-svgo@4.0.2
+165 silly idealTree:prePrune +-- postcss-unique-selectors@4.0.1
+165 silly idealTree:prePrune +-- postcss-value-parser@3.3.1
+165 silly idealTree:prePrune +-- postcss@7.0.17
 165 silly idealTree:prePrune +-- private@0.1.8
+165 silly idealTree:prePrune +-- q@1.5.1
 165 silly idealTree:prePrune +-- regenerate-unicode-properties@8.1.0
 165 silly idealTree:prePrune +-- regenerate@1.4.0
 165 silly idealTree:prePrune +-- regenerator-transform@0.14.0
@@ -572,24 +685,44 @@
 165 silly idealTree:prePrune +-- regjsgen@0.5.0
 165 silly idealTree:prePrune +-- regjsparser@0.6.0
 165 silly idealTree:prePrune | `-- jsesc@0.5.0
+165 silly idealTree:prePrune +-- resolve-from@3.0.0
 165 silly idealTree:prePrune +-- resolve@1.11.1
+165 silly idealTree:prePrune +-- rgb-regex@1.0.1
+165 silly idealTree:prePrune +-- rgba-regex@1.0.0
 165 silly idealTree:prePrune +-- safe-buffer@5.1.2
+165 silly idealTree:prePrune +-- sax@1.2.4
 165 silly idealTree:prePrune +-- semver@5.7.0
-165 silly idealTree:prePrune +-- source-map@0.5.7
-165 silly idealTree:prePrune +-- supports-color@5.5.0
+165 silly idealTree:prePrune +-- simple-swizzle@0.2.2
+165 silly idealTree:prePrune | `-- is-arrayish@0.3.2
+165 silly idealTree:prePrune +-- source-map@0.6.1
+165 silly idealTree:prePrune +-- sprintf-js@1.0.3
+165 silly idealTree:prePrune +-- stable@0.1.8
+165 silly idealTree:prePrune +-- stylehacks@4.0.3
+165 silly idealTree:prePrune | `-- postcss-selector-parser@3.1.1
+165 silly idealTree:prePrune +-- supports-color@6.1.0
+165 silly idealTree:prePrune +-- svgo@1.2.2
+165 silly idealTree:prePrune +-- timsort@0.3.0
 165 silly idealTree:prePrune +-- to-fast-properties@2.0.0
 165 silly idealTree:prePrune +-- trim-right@1.0.1
 165 silly idealTree:prePrune +-- unicode-canonical-property-names-ecmascript@1.0.4
 165 silly idealTree:prePrune +-- unicode-match-property-ecmascript@1.0.4
 165 silly idealTree:prePrune +-- unicode-match-property-value-ecmascript@1.1.0
-165 silly idealTree:prePrune `-- unicode-property-aliases-ecmascript@1.0.5
+165 silly idealTree:prePrune +-- unicode-property-aliases-ecmascript@1.0.5
+165 silly idealTree:prePrune +-- uniq@1.0.1
+165 silly idealTree:prePrune +-- uniqs@2.0.0
+165 silly idealTree:prePrune +-- unquote@1.1.1
+165 silly idealTree:prePrune +-- util.promisify@1.0.0
+165 silly idealTree:prePrune `-- vendors@1.0.3
 166 silly loadIdealTree Finishing
 167 silly currentTree stampa-blocks@1.0.0
 167 silly currentTree +-- @babel/code-frame@7.5.5
 167 silly currentTree +-- @babel/core@7.5.5
+167 silly currentTree | `-- source-map@0.5.7
 167 silly currentTree +-- @babel/generator@7.5.5
+167 silly currentTree | `-- source-map@0.5.7
 167 silly currentTree +-- @babel/helper-annotate-as-pure@7.0.0
 167 silly currentTree +-- @babel/helper-builder-binary-assignment-operator-visitor@7.1.0
+167 silly currentTree +-- @babel/helper-builder-react-jsx@7.3.0
 167 silly currentTree +-- @babel/helper-call-delegate@7.4.4
 167 silly currentTree +-- @babel/helper-define-map@7.5.5
 167 silly currentTree +-- @babel/helper-explode-assignable-expression@7.1.0
@@ -619,6 +752,7 @@
 167 silly currentTree +-- @babel/plugin-syntax-async-generators@7.2.0
 167 silly currentTree +-- @babel/plugin-syntax-dynamic-import@7.2.0
 167 silly currentTree +-- @babel/plugin-syntax-json-strings@7.2.0
+167 silly currentTree +-- @babel/plugin-syntax-jsx@7.2.0
 167 silly currentTree +-- @babel/plugin-syntax-object-rest-spread@7.2.0
 167 silly currentTree +-- @babel/plugin-syntax-optional-catch-binding@7.2.0
 167 silly currentTree +-- @babel/plugin-transform-arrow-functions@7.2.0
@@ -644,6 +778,10 @@
 167 silly currentTree +-- @babel/plugin-transform-object-super@7.5.5
 167 silly currentTree +-- @babel/plugin-transform-parameters@7.4.4
 167 silly currentTree +-- @babel/plugin-transform-property-literals@7.2.0
+167 silly currentTree +-- @babel/plugin-transform-react-display-name@7.2.0
+167 silly currentTree +-- @babel/plugin-transform-react-jsx-self@7.2.0
+167 silly currentTree +-- @babel/plugin-transform-react-jsx-source@7.5.0
+167 silly currentTree +-- @babel/plugin-transform-react-jsx@7.3.0
 167 silly currentTree +-- @babel/plugin-transform-regenerator@7.4.5
 167 silly currentTree +-- @babel/plugin-transform-reserved-words@7.2.0
 167 silly currentTree +-- @babel/plugin-transform-shorthand-properties@7.2.0
@@ -652,40 +790,145 @@
 167 silly currentTree +-- @babel/plugin-transform-template-literals@7.4.4
 167 silly currentTree +-- @babel/plugin-transform-typeof-symbol@7.2.0
 167 silly currentTree +-- @babel/plugin-transform-unicode-regex@7.4.4
+167 silly currentTree +-- @babel/preset-react@7.0.0
 167 silly currentTree +-- @babel/template@7.4.4
 167 silly currentTree +-- @babel/traverse@7.5.5
 167 silly currentTree +-- @babel/types@7.5.5
+167 silly currentTree +-- @types/q@1.5.2
+167 silly currentTree +-- alphanum-sort@1.0.2
 167 silly currentTree +-- ansi-styles@3.2.1
+167 silly currentTree +-- argparse@1.0.10
 167 silly currentTree +-- babel-plugin-dynamic-import-node@2.3.0
-167 silly currentTree +-- browserslist@4.6.6
-167 silly currentTree +-- caniuse-lite@1.0.30000984
+167 silly currentTree +-- boolbase@1.0.0
+167 silly currentTree +-- browserslist@4.6.4
+167 silly currentTree +-- caller-callsite@2.0.0
+167 silly currentTree +-- caller-path@2.0.0
+167 silly currentTree +-- callsites@2.0.0
+167 silly currentTree +-- caniuse-api@3.0.0
+167 silly currentTree +-- caniuse-lite@1.0.30000981
 167 silly currentTree +-- chalk@2.4.2
+167 silly currentTree | `-- supports-color@5.5.0
+167 silly currentTree +-- coa@2.0.2
 167 silly currentTree +-- color-convert@1.9.3
 167 silly currentTree +-- color-name@1.1.3
+167 silly currentTree +-- color-string@1.5.3
+167 silly currentTree +-- color@3.1.2
 167 silly currentTree +-- convert-source-map@1.6.0
+167 silly currentTree +-- cosmiconfig@5.2.1
+167 silly currentTree +-- css-color-names@0.0.4
+167 silly currentTree +-- css-declaration-sorter@4.0.1
+167 silly currentTree +-- css-select-base-adapter@0.1.1
+167 silly currentTree +-- css-select@2.0.2
+167 silly currentTree +-- css-tree@1.0.0-alpha.28
+167 silly currentTree | `-- source-map@0.5.7
+167 silly currentTree +-- css-unit-converter@1.1.1
+167 silly currentTree +-- css-url-regex@1.1.0
+167 silly currentTree +-- css-what@2.1.3
+167 silly currentTree +-- cssesc@2.0.0
+167 silly currentTree +-- cssnano-preset-default@4.0.7
+167 silly currentTree +-- cssnano-util-get-arguments@4.0.0
+167 silly currentTree +-- cssnano-util-get-match@4.0.0
+167 silly currentTree +-- cssnano-util-raw-cache@4.0.1
+167 silly currentTree +-- cssnano-util-same-parent@4.0.1
+167 silly currentTree +-- cssnano@4.1.10
+167 silly currentTree +-- csso@3.5.1
+167 silly currentTree | +-- css-tree@1.0.0-alpha.29
+167 silly currentTree | `-- source-map@0.5.7
 167 silly currentTree +-- debug@4.1.1
 167 silly currentTree +-- define-properties@1.1.3
-167 silly currentTree +-- electron-to-chromium@1.3.194
+167 silly currentTree +-- dom-serializer@0.1.1
+167 silly currentTree +-- domelementtype@1.3.1
+167 silly currentTree +-- domutils@1.7.0
+167 silly currentTree +-- dot-prop@4.2.0
+167 silly currentTree +-- electron-to-chromium@1.3.188
+167 silly currentTree +-- entities@1.1.2
+167 silly currentTree +-- error-ex@1.3.2
+167 silly currentTree +-- es-abstract@1.13.0
+167 silly currentTree +-- es-to-primitive@1.2.0
 167 silly currentTree +-- escape-string-regexp@1.0.5
+167 silly currentTree +-- esprima@4.0.1
 167 silly currentTree +-- esutils@2.0.2
 167 silly currentTree +-- function-bind@1.1.1
 167 silly currentTree +-- globals@11.12.0
 167 silly currentTree +-- has-flag@3.0.0
 167 silly currentTree +-- has-symbols@1.0.0
+167 silly currentTree +-- has@1.0.3
+167 silly currentTree +-- hex-color-regex@1.1.0
+167 silly currentTree +-- hsl-regex@1.0.0
+167 silly currentTree +-- hsla-regex@1.0.0
+167 silly currentTree +-- html-comment-regex@1.1.2
+167 silly currentTree +-- import-fresh@2.0.0
+167 silly currentTree +-- indexes-of@1.0.1
 167 silly currentTree +-- invariant@2.2.4
+167 silly currentTree +-- is-absolute-url@2.1.0
+167 silly currentTree +-- is-arrayish@0.2.1
+167 silly currentTree +-- is-callable@1.1.4
+167 silly currentTree +-- is-color-stop@1.1.0
+167 silly currentTree +-- is-date-object@1.0.1
+167 silly currentTree +-- is-directory@0.3.1
+167 silly currentTree +-- is-obj@1.0.1
+167 silly currentTree +-- is-regex@1.0.4
+167 silly currentTree +-- is-resolvable@1.1.0
+167 silly currentTree +-- is-svg@3.0.0
+167 silly currentTree +-- is-symbol@1.0.2
 167 silly currentTree +-- js-levenshtein@1.1.6
 167 silly currentTree +-- js-tokens@4.0.0
+167 silly currentTree +-- js-yaml@3.13.1
 167 silly currentTree +-- jsesc@2.5.2
+167 silly currentTree +-- json-parse-better-errors@1.0.2
 167 silly currentTree +-- json5@2.1.0
+167 silly currentTree | `-- minimist@1.2.0
+167 silly currentTree +-- lodash.memoize@4.1.2
+167 silly currentTree +-- lodash.uniq@4.5.0
 167 silly currentTree +-- lodash@4.17.15
 167 silly currentTree +-- loose-envify@1.4.0
-167 silly currentTree +-- minimist@1.2.0
+167 silly currentTree +-- mdn-data@1.1.4
+167 silly currentTree +-- minimist@0.0.8
+167 silly currentTree +-- mkdirp@0.5.1
 167 silly currentTree +-- ms@2.1.2
 167 silly currentTree +-- node-releases@1.1.25
+167 silly currentTree +-- normalize-url@3.3.0
+167 silly currentTree +-- nth-check@1.0.2
 167 silly currentTree +-- object-keys@1.1.1
 167 silly currentTree +-- object.assign@4.1.0
+167 silly currentTree +-- object.getownpropertydescriptors@2.0.3
+167 silly currentTree +-- object.values@1.1.0
+167 silly currentTree +-- parse-json@4.0.0
 167 silly currentTree +-- path-parse@1.0.6
+167 silly currentTree +-- postcss-calc@7.0.1
+167 silly currentTree +-- postcss-colormin@4.0.3
+167 silly currentTree +-- postcss-convert-values@4.0.1
+167 silly currentTree +-- postcss-discard-comments@4.0.2
+167 silly currentTree +-- postcss-discard-duplicates@4.0.2
+167 silly currentTree +-- postcss-discard-empty@4.0.1
+167 silly currentTree +-- postcss-discard-overridden@4.0.1
+167 silly currentTree +-- postcss-merge-longhand@4.0.11
+167 silly currentTree +-- postcss-merge-rules@4.0.3
+167 silly currentTree | `-- postcss-selector-parser@3.1.1
+167 silly currentTree +-- postcss-minify-font-values@4.0.2
+167 silly currentTree +-- postcss-minify-gradients@4.0.2
+167 silly currentTree +-- postcss-minify-params@4.0.2
+167 silly currentTree +-- postcss-minify-selectors@4.0.2
+167 silly currentTree | `-- postcss-selector-parser@3.1.1
+167 silly currentTree +-- postcss-normalize-charset@4.0.1
+167 silly currentTree +-- postcss-normalize-display-values@4.0.2
+167 silly currentTree +-- postcss-normalize-positions@4.0.2
+167 silly currentTree +-- postcss-normalize-repeat-style@4.0.2
+167 silly currentTree +-- postcss-normalize-string@4.0.2
+167 silly currentTree +-- postcss-normalize-timing-functions@4.0.2
+167 silly currentTree +-- postcss-normalize-unicode@4.0.1
+167 silly currentTree +-- postcss-normalize-url@4.0.1
+167 silly currentTree +-- postcss-normalize-whitespace@4.0.2
+167 silly currentTree +-- postcss-ordered-values@4.1.2
+167 silly currentTree +-- postcss-reduce-initial@4.0.3
+167 silly currentTree +-- postcss-reduce-transforms@4.0.2
+167 silly currentTree +-- postcss-selector-parser@5.0.0
+167 silly currentTree +-- postcss-svgo@4.0.2
+167 silly currentTree +-- postcss-unique-selectors@4.0.1
+167 silly currentTree +-- postcss-value-parser@3.3.1
+167 silly currentTree +-- postcss@7.0.17
 167 silly currentTree +-- private@0.1.8
+167 silly currentTree +-- q@1.5.1
 167 silly currentTree +-- regenerate-unicode-properties@8.1.0
 167 silly currentTree +-- regenerate@1.4.0
 167 silly currentTree +-- regenerator-transform@0.14.0
@@ -694,23 +937,43 @@
 167 silly currentTree +-- regjsgen@0.5.0
 167 silly currentTree +-- regjsparser@0.6.0
 167 silly currentTree | `-- jsesc@0.5.0
+167 silly currentTree +-- resolve-from@3.0.0
 167 silly currentTree +-- resolve@1.11.1
+167 silly currentTree +-- rgb-regex@1.0.1
+167 silly currentTree +-- rgba-regex@1.0.0
 167 silly currentTree +-- safe-buffer@5.1.2
+167 silly currentTree +-- sax@1.2.4
 167 silly currentTree +-- semver@5.7.0
-167 silly currentTree +-- source-map@0.5.7
-167 silly currentTree +-- supports-color@5.5.0
+167 silly currentTree +-- simple-swizzle@0.2.2
+167 silly currentTree | `-- is-arrayish@0.3.2
+167 silly currentTree +-- source-map@0.6.1
+167 silly currentTree +-- sprintf-js@1.0.3
+167 silly currentTree +-- stable@0.1.8
+167 silly currentTree +-- stylehacks@4.0.3
+167 silly currentTree | `-- postcss-selector-parser@3.1.1
+167 silly currentTree +-- supports-color@6.1.0
+167 silly currentTree +-- svgo@1.2.2
+167 silly currentTree +-- timsort@0.3.0
 167 silly currentTree +-- to-fast-properties@2.0.0
 167 silly currentTree +-- trim-right@1.0.1
 167 silly currentTree +-- unicode-canonical-property-names-ecmascript@1.0.4
 167 silly currentTree +-- unicode-match-property-ecmascript@1.0.4
 167 silly currentTree +-- unicode-match-property-value-ecmascript@1.1.0
-167 silly currentTree `-- unicode-property-aliases-ecmascript@1.0.5
+167 silly currentTree +-- unicode-property-aliases-ecmascript@1.0.5
+167 silly currentTree +-- uniq@1.0.1
+167 silly currentTree +-- uniqs@2.0.0
+167 silly currentTree +-- unquote@1.1.1
+167 silly currentTree +-- util.promisify@1.0.0
+167 silly currentTree `-- vendors@1.0.3
 168 silly idealTree stampa-blocks@1.0.0
 168 silly idealTree +-- @babel/code-frame@7.5.5
 168 silly idealTree +-- @babel/core@7.5.5
+168 silly idealTree | `-- source-map@0.5.7
 168 silly idealTree +-- @babel/generator@7.5.5
+168 silly idealTree | `-- source-map@0.5.7
 168 silly idealTree +-- @babel/helper-annotate-as-pure@7.0.0
 168 silly idealTree +-- @babel/helper-builder-binary-assignment-operator-visitor@7.1.0
+168 silly idealTree +-- @babel/helper-builder-react-jsx@7.3.0
 168 silly idealTree +-- @babel/helper-call-delegate@7.4.4
 168 silly idealTree +-- @babel/helper-define-map@7.5.5
 168 silly idealTree +-- @babel/helper-explode-assignable-expression@7.1.0
@@ -740,6 +1003,7 @@
 168 silly idealTree +-- @babel/plugin-syntax-async-generators@7.2.0
 168 silly idealTree +-- @babel/plugin-syntax-dynamic-import@7.2.0
 168 silly idealTree +-- @babel/plugin-syntax-json-strings@7.2.0
+168 silly idealTree +-- @babel/plugin-syntax-jsx@7.2.0
 168 silly idealTree +-- @babel/plugin-syntax-object-rest-spread@7.2.0
 168 silly idealTree +-- @babel/plugin-syntax-optional-catch-binding@7.2.0
 168 silly idealTree +-- @babel/plugin-transform-arrow-functions@7.2.0
@@ -765,6 +1029,10 @@
 168 silly idealTree +-- @babel/plugin-transform-object-super@7.5.5
 168 silly idealTree +-- @babel/plugin-transform-parameters@7.4.4
 168 silly idealTree +-- @babel/plugin-transform-property-literals@7.2.0
+168 silly idealTree +-- @babel/plugin-transform-react-display-name@7.2.0
+168 silly idealTree +-- @babel/plugin-transform-react-jsx-self@7.2.0
+168 silly idealTree +-- @babel/plugin-transform-react-jsx-source@7.5.0
+168 silly idealTree +-- @babel/plugin-transform-react-jsx@7.3.0
 168 silly idealTree +-- @babel/plugin-transform-regenerator@7.4.5
 168 silly idealTree +-- @babel/plugin-transform-reserved-words@7.2.0
 168 silly idealTree +-- @babel/plugin-transform-shorthand-properties@7.2.0
@@ -774,43 +1042,148 @@
 168 silly idealTree +-- @babel/plugin-transform-typeof-symbol@7.2.0
 168 silly idealTree +-- @babel/plugin-transform-unicode-regex@7.4.4
 168 silly idealTree +-- @babel/preset-env@7.5.5
+168 silly idealTree +-- @babel/preset-react@7.0.0
 168 silly idealTree +-- @babel/template@7.4.4
 168 silly idealTree +-- @babel/traverse@7.5.5
 168 silly idealTree +-- @babel/types@7.5.5
+168 silly idealTree +-- @types/q@1.5.2
+168 silly idealTree +-- alphanum-sort@1.0.2
 168 silly idealTree +-- ansi-styles@3.2.1
+168 silly idealTree +-- argparse@1.0.10
 168 silly idealTree +-- babel-plugin-dynamic-import-node@2.3.0
-168 silly idealTree +-- browserslist@4.6.6
-168 silly idealTree +-- caniuse-lite@1.0.30000984
+168 silly idealTree +-- boolbase@1.0.0
+168 silly idealTree +-- browserslist@4.6.4
+168 silly idealTree +-- caller-callsite@2.0.0
+168 silly idealTree +-- caller-path@2.0.0
+168 silly idealTree +-- callsites@2.0.0
+168 silly idealTree +-- caniuse-api@3.0.0
+168 silly idealTree +-- caniuse-lite@1.0.30000981
 168 silly idealTree +-- chalk@2.4.2
+168 silly idealTree | `-- supports-color@5.5.0
+168 silly idealTree +-- coa@2.0.2
 168 silly idealTree +-- color-convert@1.9.3
 168 silly idealTree +-- color-name@1.1.3
+168 silly idealTree +-- color-string@1.5.3
+168 silly idealTree +-- color@3.1.2
 168 silly idealTree +-- convert-source-map@1.6.0
 168 silly idealTree +-- core-js-compat@3.1.4
 168 silly idealTree | `-- semver@6.2.0
 168 silly idealTree +-- core-js-pure@3.1.4
+168 silly idealTree +-- cosmiconfig@5.2.1
+168 silly idealTree +-- css-color-names@0.0.4
+168 silly idealTree +-- css-declaration-sorter@4.0.1
+168 silly idealTree +-- css-select-base-adapter@0.1.1
+168 silly idealTree +-- css-select@2.0.2
+168 silly idealTree +-- css-tree@1.0.0-alpha.28
+168 silly idealTree | `-- source-map@0.5.7
+168 silly idealTree +-- css-unit-converter@1.1.1
+168 silly idealTree +-- css-url-regex@1.1.0
+168 silly idealTree +-- css-what@2.1.3
+168 silly idealTree +-- cssesc@2.0.0
+168 silly idealTree +-- cssnano-preset-default@4.0.7
+168 silly idealTree +-- cssnano-util-get-arguments@4.0.0
+168 silly idealTree +-- cssnano-util-get-match@4.0.0
+168 silly idealTree +-- cssnano-util-raw-cache@4.0.1
+168 silly idealTree +-- cssnano-util-same-parent@4.0.1
+168 silly idealTree +-- cssnano@4.1.10
+168 silly idealTree +-- csso@3.5.1
+168 silly idealTree | +-- css-tree@1.0.0-alpha.29
+168 silly idealTree | `-- source-map@0.5.7
 168 silly idealTree +-- debug@4.1.1
 168 silly idealTree +-- define-properties@1.1.3
-168 silly idealTree +-- electron-to-chromium@1.3.194
+168 silly idealTree +-- dom-serializer@0.1.1
+168 silly idealTree +-- domelementtype@1.3.1
+168 silly idealTree +-- domutils@1.7.0
+168 silly idealTree +-- dot-prop@4.2.0
+168 silly idealTree +-- electron-to-chromium@1.3.188
+168 silly idealTree +-- entities@1.1.2
+168 silly idealTree +-- error-ex@1.3.2
+168 silly idealTree +-- es-abstract@1.13.0
+168 silly idealTree +-- es-to-primitive@1.2.0
 168 silly idealTree +-- escape-string-regexp@1.0.5
+168 silly idealTree +-- esprima@4.0.1
 168 silly idealTree +-- esutils@2.0.2
 168 silly idealTree +-- function-bind@1.1.1
 168 silly idealTree +-- globals@11.12.0
 168 silly idealTree +-- has-flag@3.0.0
 168 silly idealTree +-- has-symbols@1.0.0
+168 silly idealTree +-- has@1.0.3
+168 silly idealTree +-- hex-color-regex@1.1.0
+168 silly idealTree +-- hsl-regex@1.0.0
+168 silly idealTree +-- hsla-regex@1.0.0
+168 silly idealTree +-- html-comment-regex@1.1.2
+168 silly idealTree +-- import-fresh@2.0.0
+168 silly idealTree +-- indexes-of@1.0.1
 168 silly idealTree +-- invariant@2.2.4
+168 silly idealTree +-- is-absolute-url@2.1.0
+168 silly idealTree +-- is-arrayish@0.2.1
+168 silly idealTree +-- is-callable@1.1.4
+168 silly idealTree +-- is-color-stop@1.1.0
+168 silly idealTree +-- is-date-object@1.0.1
+168 silly idealTree +-- is-directory@0.3.1
+168 silly idealTree +-- is-obj@1.0.1
+168 silly idealTree +-- is-regex@1.0.4
+168 silly idealTree +-- is-resolvable@1.1.0
+168 silly idealTree +-- is-svg@3.0.0
+168 silly idealTree +-- is-symbol@1.0.2
 168 silly idealTree +-- js-levenshtein@1.1.6
 168 silly idealTree +-- js-tokens@4.0.0
+168 silly idealTree +-- js-yaml@3.13.1
 168 silly idealTree +-- jsesc@2.5.2
+168 silly idealTree +-- json-parse-better-errors@1.0.2
 168 silly idealTree +-- json5@2.1.0
+168 silly idealTree | `-- minimist@1.2.0
+168 silly idealTree +-- lodash.memoize@4.1.2
+168 silly idealTree +-- lodash.uniq@4.5.0
 168 silly idealTree +-- lodash@4.17.15
 168 silly idealTree +-- loose-envify@1.4.0
-168 silly idealTree +-- minimist@1.2.0
+168 silly idealTree +-- mdn-data@1.1.4
+168 silly idealTree +-- minimist@0.0.8
+168 silly idealTree +-- mkdirp@0.5.1
 168 silly idealTree +-- ms@2.1.2
 168 silly idealTree +-- node-releases@1.1.25
+168 silly idealTree +-- normalize-url@3.3.0
+168 silly idealTree +-- nth-check@1.0.2
 168 silly idealTree +-- object-keys@1.1.1
 168 silly idealTree +-- object.assign@4.1.0
+168 silly idealTree +-- object.getownpropertydescriptors@2.0.3
+168 silly idealTree +-- object.values@1.1.0
+168 silly idealTree +-- parse-json@4.0.0
 168 silly idealTree +-- path-parse@1.0.6
+168 silly idealTree +-- postcss-calc@7.0.1
+168 silly idealTree +-- postcss-colormin@4.0.3
+168 silly idealTree +-- postcss-convert-values@4.0.1
+168 silly idealTree +-- postcss-discard-comments@4.0.2
+168 silly idealTree +-- postcss-discard-duplicates@4.0.2
+168 silly idealTree +-- postcss-discard-empty@4.0.1
+168 silly idealTree +-- postcss-discard-overridden@4.0.1
+168 silly idealTree +-- postcss-merge-longhand@4.0.11
+168 silly idealTree +-- postcss-merge-rules@4.0.3
+168 silly idealTree | `-- postcss-selector-parser@3.1.1
+168 silly idealTree +-- postcss-minify-font-values@4.0.2
+168 silly idealTree +-- postcss-minify-gradients@4.0.2
+168 silly idealTree +-- postcss-minify-params@4.0.2
+168 silly idealTree +-- postcss-minify-selectors@4.0.2
+168 silly idealTree | `-- postcss-selector-parser@3.1.1
+168 silly idealTree +-- postcss-normalize-charset@4.0.1
+168 silly idealTree +-- postcss-normalize-display-values@4.0.2
+168 silly idealTree +-- postcss-normalize-positions@4.0.2
+168 silly idealTree +-- postcss-normalize-repeat-style@4.0.2
+168 silly idealTree +-- postcss-normalize-string@4.0.2
+168 silly idealTree +-- postcss-normalize-timing-functions@4.0.2
+168 silly idealTree +-- postcss-normalize-unicode@4.0.1
+168 silly idealTree +-- postcss-normalize-url@4.0.1
+168 silly idealTree +-- postcss-normalize-whitespace@4.0.2
+168 silly idealTree +-- postcss-ordered-values@4.1.2
+168 silly idealTree +-- postcss-reduce-initial@4.0.3
+168 silly idealTree +-- postcss-reduce-transforms@4.0.2
+168 silly idealTree +-- postcss-selector-parser@5.0.0
+168 silly idealTree +-- postcss-svgo@4.0.2
+168 silly idealTree +-- postcss-unique-selectors@4.0.1
+168 silly idealTree +-- postcss-value-parser@3.3.1
+168 silly idealTree +-- postcss@7.0.17
 168 silly idealTree +-- private@0.1.8
+168 silly idealTree +-- q@1.5.1
 168 silly idealTree +-- regenerate-unicode-properties@8.1.0
 168 silly idealTree +-- regenerate@1.4.0
 168 silly idealTree +-- regenerator-transform@0.14.0
@@ -819,17 +1192,34 @@
 168 silly idealTree +-- regjsgen@0.5.0
 168 silly idealTree +-- regjsparser@0.6.0
 168 silly idealTree | `-- jsesc@0.5.0
+168 silly idealTree +-- resolve-from@3.0.0
 168 silly idealTree +-- resolve@1.11.1
+168 silly idealTree +-- rgb-regex@1.0.1
+168 silly idealTree +-- rgba-regex@1.0.0
 168 silly idealTree +-- safe-buffer@5.1.2
+168 silly idealTree +-- sax@1.2.4
 168 silly idealTree +-- semver@5.7.0
-168 silly idealTree +-- source-map@0.5.7
-168 silly idealTree +-- supports-color@5.5.0
+168 silly idealTree +-- simple-swizzle@0.2.2
+168 silly idealTree | `-- is-arrayish@0.3.2
+168 silly idealTree +-- source-map@0.6.1
+168 silly idealTree +-- sprintf-js@1.0.3
+168 silly idealTree +-- stable@0.1.8
+168 silly idealTree +-- stylehacks@4.0.3
+168 silly idealTree | `-- postcss-selector-parser@3.1.1
+168 silly idealTree +-- supports-color@6.1.0
+168 silly idealTree +-- svgo@1.2.2
+168 silly idealTree +-- timsort@0.3.0
 168 silly idealTree +-- to-fast-properties@2.0.0
 168 silly idealTree +-- trim-right@1.0.1
 168 silly idealTree +-- unicode-canonical-property-names-ecmascript@1.0.4
 168 silly idealTree +-- unicode-match-property-ecmascript@1.0.4
 168 silly idealTree +-- unicode-match-property-value-ecmascript@1.1.0
-168 silly idealTree `-- unicode-property-aliases-ecmascript@1.0.5
+168 silly idealTree +-- unicode-property-aliases-ecmascript@1.0.5
+168 silly idealTree +-- uniq@1.0.1
+168 silly idealTree +-- uniqs@2.0.0
+168 silly idealTree +-- unquote@1.1.1
+168 silly idealTree +-- util.promisify@1.0.0
+168 silly idealTree `-- vendors@1.0.3
 169 silly generateActionsToTake Starting
 170 silly install generateActionsToTake
 171 silly generateActionsToTake Finishing
@@ -875,40 +1265,40 @@
 211 silly install executeActions
 212 silly doSerial global-install 0
 213 silly doParallel fetch 4
-214 verbose lock using /var/www/.npm/_locks/staging-09b1b2a5fa9a5d91.lock for /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging
+214 verbose lock using /var/www/.npm/_locks/staging-3da89b86f5dec89d.lock for /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging
 215 silly doParallel extract 4
 216 silly extract semver@6.2.0
 217 silly extract core-js-pure@3.1.4
 218 silly extract core-js-compat@3.1.4
 219 silly extract @babel/preset-env@7.5.5
-220 verbose unbuild node_modules/.staging/core-js-compat-1bdb7cc1
-221 verbose unbuild node_modules/.staging/core-js-pure-70fac17f
-222 verbose unbuild node_modules/.staging/@babel/preset-env-13ba213b
-223 verbose unbuild node_modules/.staging/semver-c1de74bb
-224 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1 is being purged from base /var/www/html/wp-content/themes/twentynineteen/stampa
-225 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1
-226 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f is being purged from base /var/www/html/wp-content/themes/twentynineteen/stampa
-227 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f
-228 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b is being purged from base /var/www/html/wp-content/themes/twentynineteen/stampa
-229 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b
-230 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb is being purged from base /var/www/html/wp-content/themes/twentynineteen/stampa
-231 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb
-232 verbose tar unpack /var/www/.npm/core-js-compat/3.1.4/package.tgz
-233 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1
-234 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1 is being purged
-235 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1
-236 verbose tar unpack /var/www/.npm/core-js-pure/3.1.4/package.tgz
-237 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f
-238 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f is being purged
-239 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f
+220 verbose unbuild node_modules/.staging/core-js-pure-9312a04b
+221 verbose unbuild node_modules/.staging/core-js-compat-051fe9db
+222 verbose unbuild node_modules/.staging/@babel/preset-env-02493b0c
+223 verbose unbuild node_modules/.staging/semver-5c28f183
+224 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b is being purged from base /var/www/html/wp-content/themes/twentynineteen
+225 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b
+226 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db is being purged from base /var/www/html/wp-content/themes/twentynineteen
+227 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db
+228 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c is being purged from base /var/www/html/wp-content/themes/twentynineteen
+229 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c
+230 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183 is being purged from base /var/www/html/wp-content/themes/twentynineteen
+231 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183
+232 verbose tar unpack /var/www/.npm/core-js-pure/3.1.4/package.tgz
+233 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b
+234 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b is being purged
+235 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b
+236 verbose tar unpack /var/www/.npm/core-js-compat/3.1.4/package.tgz
+237 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db
+238 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db is being purged
+239 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db
 240 verbose tar unpack /var/www/.npm/@babel/preset-env/7.5.5/package.tgz
-241 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b
-242 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b is being purged
-243 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b
+241 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c
+242 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c is being purged
+243 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c
 244 verbose tar unpack /var/www/.npm/semver/6.2.0/package.tgz
-245 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb
-246 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb is being purged
-247 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb
+245 verbose tar unpacking to /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183
+246 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183 is being purged
+247 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183
 248 silly gunzTarPerm modes [ '755', '644' ]
 249 silly gunzTarPerm modes [ '755', '644' ]
 250 silly gunzTarPerm modes [ '755', '644' ]
@@ -920,13 +1310,13 @@
 256 silly gunzTarPerm extractEntry LICENSE
 257 silly gunzTarPerm extractEntry CHANGELOG.md
 258 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 436, 420 ]
-259 silly gunzTarPerm extractEntry data.json
-260 silly gunzTarPerm extractEntry entries.json
-261 silly gunzTarPerm extractEntry configurator.js
-262 silly gunzTarPerm extractEntry index.js
-263 silly gunzTarPerm extractEntry CONTRIBUTING.md
-264 silly gunzTarPerm extractEntry range.bnf
-265 silly gunzTarPerm extractEntry bin/semver.js
+259 silly gunzTarPerm extractEntry configurator.js
+260 silly gunzTarPerm extractEntry index.js
+261 silly gunzTarPerm extractEntry data.json
+262 silly gunzTarPerm extractEntry CONTRIBUTING.md
+263 silly gunzTarPerm extractEntry range.bnf
+264 silly gunzTarPerm extractEntry bin/semver.js
+265 silly gunzTarPerm extractEntry entries.json
 266 silly gunzTarPerm extractEntry get-modules-list-for-target-version.js
 267 silly gunzTarPerm extractEntry index.js
 268 silly gunzTarPerm extractEntry LICENSE
@@ -976,8 +1366,8 @@
 312 silly gunzTarPerm extractEntry lib/options.js
 313 silly gunzTarPerm extractEntry lib/polyfills/corejs2/built-in-definitions.js
 314 silly gunzTarPerm extractEntry lib/polyfills/corejs2/entry-plugin.js
-315 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb/node_modules is being purged
-316 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb/node_modules
+315 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183/node_modules is being purged
+316 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183/node_modules
 317 silly gunzTarPerm extractEntry es/array/from.js
 318 silly gunzTarPerm extractEntry es/array/includes.js
 319 silly gunzTarPerm extractEntry lib/polyfills/corejs2/get-platform-specific-default.js
@@ -988,8 +1378,8 @@
 324 silly gunzTarPerm extractEntry lib/polyfills/corejs3/entry-plugin.js
 325 silly gunzTarPerm extractEntry es/array/is-array.js
 326 silly gunzTarPerm extractEntry es/array/iterator.js
-327 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1/node_modules is being purged
-328 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1/node_modules
+327 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db/node_modules is being purged
+328 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db/node_modules
 329 silly gunzTarPerm extractEntry lib/polyfills/corejs3/shipped-proposals.js
 330 silly gunzTarPerm extractEntry lib/polyfills/corejs3/usage-plugin.js
 331 silly gunzTarPerm extractEntry es/array/join.js
@@ -1050,8 +1440,8 @@
 386 silly gunzTarPerm extractEntry es/function/virtual/bind.js
 387 silly gunzTarPerm extractEntry es/function/virtual/index.js
 388 silly gunzTarPerm extractEntry es/index.js
-389 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b/node_modules is being purged
-390 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b/node_modules
+389 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c/node_modules is being purged
+390 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c/node_modules
 391 silly gunzTarPerm extractEntry es/instance/bind.js
 392 silly gunzTarPerm extractEntry es/instance/code-point-at.js
 393 silly gunzTarPerm extractEntry es/instance/concat.js
@@ -2564,16 +2954,16 @@
 1900 silly gunzTarPerm extractEntry web/timers.js
 1901 silly gunzTarPerm extractEntry web/url-search-params.js
 1902 silly gunzTarPerm extractEntry web/url.js
-1903 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f/node_modules is being purged
-1904 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f/node_modules
+1903 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b/node_modules is being purged
+1904 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b/node_modules
 1905 silly doParallel preinstall 4
-1906 silly preinstall semver@6.2.0 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb
+1906 silly preinstall semver@6.2.0 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183
 1907 info lifecycle semver@6.2.0~preinstall: semver@6.2.0
-1908 silly preinstall core-js-pure@3.1.4 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f
+1908 silly preinstall core-js-pure@3.1.4 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b
 1909 info lifecycle core-js-pure@3.1.4~preinstall: core-js-pure@3.1.4
-1910 silly preinstall core-js-compat@3.1.4 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1
+1910 silly preinstall core-js-compat@3.1.4 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db
 1911 info lifecycle core-js-compat@3.1.4~preinstall: core-js-compat@3.1.4
-1912 silly preinstall @babel/preset-env@7.5.5 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b
+1912 silly preinstall @babel/preset-env@7.5.5 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c
 1913 info lifecycle @babel/preset-env@7.5.5~preinstall: @babel/preset-env@7.5.5
 1914 silly lifecycle semver@6.2.0~preinstall: no script for preinstall, continuing
 1915 silly lifecycle core-js-pure@3.1.4~preinstall: no script for preinstall, continuing
@@ -2582,102 +2972,101 @@
 1918 silly doReverseSerial remove 0
 1919 silly doSerial move 0
 1920 silly doSerial finalize 4
-1921 silly finalize /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-compat/node_modules/semver
-1922 silly finalize /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-pure
-1923 silly finalize /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-compat
-1924 silly finalize /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/@babel/preset-env
+1921 silly finalize /var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-compat/node_modules/semver
+1922 silly finalize /var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-pure
+1923 silly finalize /var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-compat
+1924 silly finalize /var/www/html/wp-content/themes/twentynineteen/node_modules/@babel/preset-env
 1925 silly doSerial build 4
 1926 silly build semver@6.2.0
 1927 info linkStuff semver@6.2.0
-1928 silly linkStuff semver@6.2.0 has /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-compat/node_modules as its parent node_modules
+1928 silly linkStuff semver@6.2.0 has /var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-compat/node_modules as its parent node_modules
 1929 verbose linkBins semver@6.2.0
 1930 verbose link bins [ { semver: './bin/semver.js' },
-1930 verbose link bins   '/var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-compat/node_modules/.bin',
+1930 verbose link bins   '/var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-compat/node_modules/.bin',
 1930 verbose link bins   false ]
 1931 verbose linkMans semver@6.2.0
-1932 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-compat/node_modules/.bin/semver is being purged
-1933 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-compat/node_modules/.bin/semver
+1932 silly gentlyRm /var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-compat/node_modules/.bin/semver is being purged
+1933 verbose gentlyRm don't care about contents; nuking /var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-compat/node_modules/.bin/semver
 1934 silly build core-js-pure@3.1.4
 1935 info linkStuff core-js-pure@3.1.4
-1936 silly linkStuff core-js-pure@3.1.4 has /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules as its parent node_modules
+1936 silly linkStuff core-js-pure@3.1.4 has /var/www/html/wp-content/themes/twentynineteen/node_modules as its parent node_modules
 1937 verbose linkBins core-js-pure@3.1.4
 1938 verbose linkMans core-js-pure@3.1.4
 1939 silly build core-js-compat@3.1.4
 1940 info linkStuff core-js-compat@3.1.4
-1941 silly linkStuff core-js-compat@3.1.4 has /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules as its parent node_modules
+1941 silly linkStuff core-js-compat@3.1.4 has /var/www/html/wp-content/themes/twentynineteen/node_modules as its parent node_modules
 1942 verbose linkBins core-js-compat@3.1.4
 1943 verbose linkMans core-js-compat@3.1.4
 1944 silly build @babel/preset-env@7.5.5
 1945 info linkStuff @babel/preset-env@7.5.5
-1946 silly linkStuff @babel/preset-env@7.5.5 has /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules as its parent node_modules
+1946 silly linkStuff @babel/preset-env@7.5.5 has /var/www/html/wp-content/themes/twentynineteen/node_modules as its parent node_modules
 1947 verbose linkBins @babel/preset-env@7.5.5
 1948 verbose linkMans @babel/preset-env@7.5.5
 1949 silly doSerial global-link 0
 1950 silly doParallel update-linked 0
 1951 silly doSerial install 4
-1952 silly install semver@6.2.0 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb
+1952 silly install semver@6.2.0 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183
 1953 info lifecycle semver@6.2.0~install: semver@6.2.0
 1954 silly lifecycle semver@6.2.0~install: no script for install, continuing
-1955 silly install core-js-pure@3.1.4 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f
+1955 silly install core-js-pure@3.1.4 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b
 1956 info lifecycle core-js-pure@3.1.4~install: core-js-pure@3.1.4
 1957 silly lifecycle core-js-pure@3.1.4~install: no script for install, continuing
-1958 silly install core-js-compat@3.1.4 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-compat-1bdb7cc1
+1958 silly install core-js-compat@3.1.4 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-compat-051fe9db
 1959 info lifecycle core-js-compat@3.1.4~install: core-js-compat@3.1.4
 1960 silly lifecycle core-js-compat@3.1.4~install: no script for install, continuing
-1961 silly install @babel/preset-env@7.5.5 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/@babel/preset-env-13ba213b
+1961 silly install @babel/preset-env@7.5.5 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/@babel/preset-env-02493b0c
 1962 info lifecycle @babel/preset-env@7.5.5~install: @babel/preset-env@7.5.5
 1963 silly lifecycle @babel/preset-env@7.5.5~install: no script for install, continuing
 1964 silly doSerial postinstall 4
-1965 silly postinstall semver@6.2.0 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/semver-c1de74bb
+1965 silly postinstall semver@6.2.0 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/semver-5c28f183
 1966 info lifecycle semver@6.2.0~postinstall: semver@6.2.0
 1967 silly lifecycle semver@6.2.0~postinstall: no script for postinstall, continuing
-1968 silly postinstall core-js-pure@3.1.4 /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging/core-js-pure-70fac17f
+1968 silly postinstall core-js-pure@3.1.4 /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging/core-js-pure-9312a04b
 1969 info lifecycle core-js-pure@3.1.4~postinstall: core-js-pure@3.1.4
 1970 verbose lifecycle core-js-pure@3.1.4~postinstall: unsafe-perm in lifecycle true
-1971 verbose lifecycle core-js-pure@3.1.4~postinstall: PATH: /usr/share/npm/bin/node-gyp-bin:/var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-pure/node_modules/.bin:/var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.bin
-1972 verbose lifecycle core-js-pure@3.1.4~postinstall: CWD: /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/core-js-pure
+1971 verbose lifecycle core-js-pure@3.1.4~postinstall: PATH: /usr/share/npm/bin/node-gyp-bin:/var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-pure/node_modules/.bin:/var/www/html/wp-content/themes/twentynineteen/node_modules/.bin
+1972 verbose lifecycle core-js-pure@3.1.4~postinstall: CWD: /var/www/html/wp-content/themes/twentynineteen/node_modules/core-js-pure
 1973 silly lifecycle core-js-pure@3.1.4~postinstall: Args: [ '-c', 'node scripts/postinstall || echo "ignore"' ]
 1974 info lifecycle core-js-pure@3.1.4~postinstall: Failed to exec postinstall script
 1975 silly lifecycle core-js-pure@3.1.4~postinstall: Returned: code: -2  signal: null
 1976 info lifecycle core-js-pure@3.1.4~postinstall: Failed to exec postinstall script
-1977 verbose unlock done using /var/www/.npm/_locks/staging-09b1b2a5fa9a5d91.lock for /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging
+1977 verbose unlock done using /var/www/.npm/_locks/staging-3da89b86f5dec89d.lock for /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging
 1978 silly rollbackFailedOptional Starting
-1979 verbose unlock done using /var/www/.npm/_locks/staging-09b1b2a5fa9a5d91.lock for /var/www/html/wp-content/themes/twentynineteen/stampa/node_modules/.staging
+1979 verbose unlock done using /var/www/.npm/_locks/staging-3da89b86f5dec89d.lock for /var/www/html/wp-content/themes/twentynineteen/node_modules/.staging
 1980 silly rollbackFailedOptional Starting
 1981 silly rollbackFailedOptional Finishing
 1982 silly runTopLevelLifecycles Starting
 1983 silly runTopLevelLifecycles Finishing
 1984 silly install printInstalled
 1985 verbose stack Error: core-js-pure@3.1.4 postinstall: `node scripts/postinstall || echo "ignore"`
-1985 verbose stack Exit status -2
-1985 verbose stack     at EventEmitter.<anonymous> (/usr/share/npm/lib/utils/lifecycle.js:232:16)
-1985 verbose stack     at emitTwo (events.js:126:13)
-1985 verbose stack     at EventEmitter.emit (events.js:214:7)
-1985 verbose stack     at ChildProcess.<anonymous> (/usr/share/npm/lib/utils/spawn.js:24:14)
-1985 verbose stack     at emitTwo (events.js:126:13)
-1985 verbose stack     at ChildProcess.emit (events.js:214:7)
-1985 verbose stack     at maybeClose (internal/child_process.js:925:16)
-1985 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
+1985 verbose stack spawn sh ENOENT
+1985 verbose stack     at _errnoException (util.js:1022:11)
+1985 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:190:19)
 1985 verbose stack     at onErrorNT (internal/child_process.js:372:16)
 1985 verbose stack     at _combinedTickCallback (internal/process/next_tick.js:138:11)
+1985 verbose stack     at process._tickCallback (internal/process/next_tick.js:180:9)
 1986 verbose pkgid core-js-pure@3.1.4
-1987 verbose cwd /var/www/html/wp-content/themes/twentynineteen/stampa
+1987 verbose cwd /var/www/html/wp-content/themes/twentynineteen
 1988 error Linux 4.18.0-25-lowlatency
 1989 error argv "/usr/bin/node" "/usr/bin/npm" "install" "@babel/preset-env" "-D"
 1990 error node v8.10.0
 1991 error npm  v3.5.2
-1992 error code ELIFECYCLE
-1993 error core-js-pure@3.1.4 postinstall: `node scripts/postinstall || echo "ignore"`
-1993 error Exit status -2
-1994 error Failed at the core-js-pure@3.1.4 postinstall script 'node scripts/postinstall || echo "ignore"'.
-1994 error Make sure you have the latest version of node.js and npm installed.
-1994 error If you do, this is most likely a problem with the core-js-pure package,
-1994 error not with npm itself.
-1994 error Tell the author that this fails on your system:
-1994 error     node scripts/postinstall || echo "ignore"
-1994 error You can get information on how to open an issue for this project with:
-1994 error     npm bugs core-js-pure
-1994 error Or if that isn't available, you can get their info via:
-1994 error     npm owner ls core-js-pure
-1994 error There is likely additional logging output above.
-1995 verbose exit [ 1, true ]
+1992 error file sh
+1993 error path sh
+1994 error code ELIFECYCLE
+1995 error errno ENOENT
+1996 error syscall spawn sh
+1997 error core-js-pure@3.1.4 postinstall: `node scripts/postinstall || echo "ignore"`
+1997 error spawn sh ENOENT
+1998 error Failed at the core-js-pure@3.1.4 postinstall script 'node scripts/postinstall || echo "ignore"'.
+1998 error Make sure you have the latest version of node.js and npm installed.
+1998 error If you do, this is most likely a problem with the core-js-pure package,
+1998 error not with npm itself.
+1998 error Tell the author that this fails on your system:
+1998 error     node scripts/postinstall || echo "ignore"
+1998 error You can get information on how to open an issue for this project with:
+1998 error     npm bugs core-js-pure
+1998 error Or if that isn't available, you can get their info via:
+1998 error     npm owner ls core-js-pure
+1998 error There is likely additional logging output above.
+1999 verbose exit [ 1, true ]

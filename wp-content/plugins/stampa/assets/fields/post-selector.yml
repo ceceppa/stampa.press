@@ -40,6 +40,13 @@ gutenberg:
   react_end_block: </StampaPostSelector>
 php:
   start_block: 
-    <div class="{{stampa.block_css_class_name}}__{{stampa.field.name}}">
-      <?php echo $block_data['{{stampa.field.name}}'] ?>
-  end_block: "</div>"
+    <?php 
+      $post = new WP_Query(['post_id' => {{stampa.value.postID}}]);
+
+      while ( $post->have_posts() ) \=
+        $post->the_post();
+      ?>
+      <div class="{{stampa.block.className}}__{{stampa.field.name}}">
+  end_block: </div>
+    <?php endwhile; ?>
+

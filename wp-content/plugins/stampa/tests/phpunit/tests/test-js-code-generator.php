@@ -2,7 +2,7 @@
 namespace Stampa\Test;
 
 use function Stampa\Test\JS_Inspector\create_inspector_test_post;
-use Stampa\JS_Generator\JS_Code_Generator;
+use Stampa\JS_Code_Generator;
 use Stampa\Stampa_Replacer;
 use Stampa\Assets_Copier;
 

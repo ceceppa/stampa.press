@@ -25,7 +25,7 @@ gutenberg:
   attribute_type: string
   react:
     <textarea
-      className="button {{stampa.block_css_class_name}}__{{stampa.field.name}}"
+      className="button {{stampa.block.className}}__{{stampa.field.name}}"
       value={attributes.{{stampa.field.name}}}
       placeholder="{{stampa.value.placeholder}}"
       onChange={e => updateAttribute('{{stampa.field.name}}', e.target.value)}
@@ -33,7 +33,7 @@ gutenberg:
 php: 
   code: <a
           href="<?php echo ${{stampa.field.name}}__url ?>"
-          class="{{stampa.block_css_class_name}}__{{stampa.field.name}}"
+          class="{{stampa.block.className}}__{{stampa.field.name}}"
         >\n
           <?php echo ${{stampa.field.name}} ?>\n
         </a>

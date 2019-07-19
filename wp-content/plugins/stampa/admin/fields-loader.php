@@ -16,6 +16,10 @@ class Fields_Loader {
 	}
 
 	public static function get_field_by_id( string $id ) : array {
+		if ( is_null( self::$fields ) ) {
+			self::load_fields();
+		}
+
 		return self::$fields_by_id[ $id ] ?? [];
 	}
 
@@ -26,7 +30,7 @@ class Fields_Loader {
 			$field = self::load_and_parse_yml_file( $file );
 
 			// "Adjust" the path for the images by prepending the plugin URL.
-			$svg_path                = plugins_url( 'assets/svg/', __FILE__ );
+			$svg_path                = plugins_url( 'assets/svg/', STAMPA_PLUGIN_PATH );
 			$field['stampa']['icon'] = $svg_path . $field['stampa']['icon'];
 
 			self::add_field(

@@ -15,9 +15,10 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   let fieldHTML = stampaField.html || '';
   let fieldClassName = stampaField.fieldClassName || '';
 
+  const values = field.values || [];
   for (let option of stampaField.options) {
     if (option && option.name) {
-      let value = field.values[option.name];
+      let value = values[option.name] || null;
 
       if (value == null) {
         value = option.value;

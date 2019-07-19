@@ -1,5 +1,5 @@
 <?php
-namespace Stampa\JS_Generator;
+namespace Stampa;
 
 use Stampa\Stampa_Replacer;
 use Stampa\Block_Data;
@@ -66,7 +66,7 @@ class JS_Inspector_Control {
 		Stampa_Replacer::add_json_mapping(
 			'block.style',
 			[
-				'backgroundImage' => '`url(${attributes . backgroundImage})`',
+				'backgroundImage' => '`url(${attributes.backgroundImage})`',
 			]
 		);
 	}

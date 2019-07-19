@@ -10,7 +10,7 @@ namespace Stampa;
 /**
  * The Stampa class
  */
-class Init {
+class Styles_Script {
 	/**
 	 * Register the filter/actions needed by stampa
 	 *
@@ -47,15 +47,15 @@ class Init {
 	}
 
 	public function enqueue_styles() {
-		wp_enqueue_style( 'stampa-app-style', plugins_url( 'dist/style.css', __FILE__ ), [ 'wp-block-library' ], STAMPA_VERSION );
+		wp_enqueue_style( 'stampa-app-style', plugins_url( 'dist/style.css', STAMPA_PLUGIN_PATH ), [ 'wp-block-library' ], STAMPA_VERSION );
 
-		wp_enqueue_style( 'stampa-gutenberg-styles', plugins_url( 'dist/stampa-editor.css', __FILE__ ), [], STAMPA_VERSION );
+		wp_enqueue_style( 'stampa-gutenberg-styles', plugins_url( 'dist/stampa-editor.css', STAMPA_PLUGIN_PATH ), [], STAMPA_VERSION );
 	}
 
 	public function register_app_script() : void {
 		$data = $this->get_stampa_localized_data();
 
-		wp_register_script( 'stampa-app-script', plugins_url( 'dist/index.js', __FILE__ ), [], STAMPA_VERSION, true );
+		wp_register_script( 'stampa-app-script', plugins_url( 'dist/index.js', STAMPA_PLUGIN_PATH ), [], STAMPA_VERSION, true );
 		wp_localize_script( 'stampa-app-script', 'stampa', $data );
 		wp_enqueue_script( 'stampa-app-script' );
 	}
@@ -63,15 +63,22 @@ class Init {
 	private function get_stampa_localized_data() : array {
 		$post_id = intval( $_GET['post'] ?? get_the_ID() );
 
-		return [
+		$return = [
 			'home_url' => home_url(),
 			'nonce'    => wp_create_nonce( 'wp_rest' ),
 			'fields'   => Fields_Loader::get_fields(),
 			'rest_url' => get_rest_url( null, '/stampa/v1/block' ),
 			'post_ID'  => $post_id,
-			'svg_path' => plugins_url( 'assets/svg/', __FILE__ ),
-			'block'    => $this->get_block_data( $post_id ),
+			'svg_path' => plugins_url( 'assets/svg/', STAMPA_PLUGIN_PATH ),
 		];
+
+		$block_data = $this->get_block_data( $post_id );
+
+		if ( ! empty( $block_data ) ) {
+			$return['block'] = $block_data;
+		}
+
+		return $return;
 	}
 
 	private function get_block_data( int $post_id ) : array {
@@ -87,7 +94,7 @@ class Init {
 			$block_data = [
 				'blockTitle' => get_post_field( 'post_title', $post_id ),
 				'grid'       => json_decode( get_post_meta( $post_id, '_stampa_grid', true ) ),
-				'options'    => json_decode( get_post_meta( $post_id, '_stampa_options', true ), true ),
+				'options'    => json_decode( get_post_meta( $post_id, '_stampa_block_options', true ), true ),
 				'fields'     => json_decode( get_post_meta( $post_id, '_stampa_fields', true ) ),
 			];
 		}
@@ -115,7 +122,7 @@ class Init {
 
 			require_once ABSPATH . 'wp-admin/admin-header.php';
 
-			self::render_stampa_div();
+			$this->render_stampa_div();
 
 			return true;
 		}

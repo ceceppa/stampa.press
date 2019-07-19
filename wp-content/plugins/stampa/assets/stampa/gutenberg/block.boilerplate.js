@@ -27,8 +27,8 @@ const fieldOptionsComponents = {
 };
 let focusedField;
 
-registerBlockType('stampa/{{stampa.sanitized_title}}', {
-  title: __('{{stampa.block_title}}'),
+registerBlockType('stampa/{{stampa.block.title|sanitize}}', {
+  title: __('{{stampa.block.title}}'),
   icon: '{{stampa.block.options.icon}}',
   category: 'stampa-blocks',
   keywords: [],
@@ -59,7 +59,7 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
             {{stampa.inspector_controls}}
           </InspectorControls>
           <div className={`${className} stampa-block {{stampa.block.className}}`}>
-            <div className="{{stampa.title|sanitize}}" style={{{stampa.block.style}}}>
+            <div className="{{stampa.block.title|sanitize}}" style={{{stampa.block.style}}}>
               {{stampa.render.content}}
             </div>
           </div>

@@ -36,7 +36,6 @@
 
 .stampa__left,
   .stampa__right {
-    background: #fff;
     background: var(--stampa-white);
     width: 300px;
     min-width: 300px;
@@ -45,12 +44,10 @@
   }
 
 .stampa__left {
-    border-right: 1px solid #e2e4e7;
     border-right: 1px solid var(--stampa-border);
   }
 
 .stampa__right {
-    border-left: 1px solid #e2e4e7;
     border-left: 1px solid var(--stampa-border);
   }
 
@@ -65,7 +62,6 @@
   }
 
 .stampa__border--bottom {
-    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--stampa-border);
   }
 

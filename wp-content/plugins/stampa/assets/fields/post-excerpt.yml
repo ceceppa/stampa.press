@@ -1,0 +1,15 @@
+stampa:
+  group: Post
+  id: post-excerpt
+  label: Excerpt
+  tooltip: The post excerpt
+  icon: post-selector.svg
+  defaultSize:
+    columns: 3
+    rows: 1
+  html: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mattis tincidunt est. Cras sed maximus nibh, non fringilla odio. Integer congue interdum mi.
+php: 
+  code: 
+    <p>
+      <?php the_excerpt(); ?>
+    </p>
