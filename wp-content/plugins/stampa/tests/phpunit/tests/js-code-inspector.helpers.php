@@ -38,19 +38,50 @@ function inspector_control_code( string $code ) : string {
 	return $code;
 }
 
-function create_inspector_test_post() {
+function create_inspector_test_post( string $title = 'test inspector' ) {
+	$test_data = file_get_contents( __DIR__ . '/test-block.json' );
+	$json      = (array) json_decode( $test_data );
+
 	$test_post_id = create_test_post_with_data(
-		[
-			'title'         => 'test inspector',
-			'grid'          => [
-				'rows' => 5,
+		array_merge(
+			[
+				'title' => $title,
 			],
-			'fields'        => [ 'fields' ],
-			'block_options' => [
-				'icon'                => 'flower',
-				'hasBackgroundOption' => true,
+			$json
+		)
+	);
+
+	new Block_Data( $test_post_id );
+}
+
+function create_fieds_test_post_with_empty_fields() {
+	$test_data = file_get_contents( __DIR__ . '/test-block.json' );
+	$json      = (array) json_decode( $test_data );
+
+	$json['fields'] = [];
+	$test_post_id   = create_test_post_with_data(
+		array_merge(
+			[
+				'title' => 'test fields generator with empty fields',
 			],
-		]
+			$json
+		)
+	);
+
+	new Block_Data( $test_post_id );
+}
+
+function create_fieds_test_post_with_fields() {
+	$test_data = file_get_contents( __DIR__ . '/test-block.json' );
+	$json      = (array) json_decode( $test_data );
+
+	$test_post_id = create_test_post_with_data(
+		array_merge(
+			[
+				'title' => 'test fields generator with fields',
+			],
+			$json
+		)
 	);
 
 	new Block_Data( $test_post_id );

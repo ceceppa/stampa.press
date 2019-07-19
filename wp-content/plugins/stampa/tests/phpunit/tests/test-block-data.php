@@ -57,18 +57,24 @@ class Test_Block_Data extends \WP_UnitTestCase {
 			remove_filter( 'stampa/block-data', [ $observer, 'test_filter' ] );
 	}
 
-	function test_get_grid_data_should_return_an_object() {
+	function test_get_grid_data_should_return_an_array() {
 		$grid_data = Block_Data::get_grid_data();
 
-		$this->assertTrue( is_object( $grid_data ) );
-		$this->assertEquals( (array) $grid_data, $this->test_data['grid'] );
+		$this->assertTrue( is_array( $grid_data ) );
+		$this->assertEquals( $grid_data, $this->test_data['grid'] );
 	}
 
-	function test_get_block_options_should_return_an_object() {
+	function test_get_grid_value_should_return_the_single_value() {
+		$rows = Block_Data::get_grid_value( 'rows' );
+
+		$this->assertEquals( $rows, 5 );
+	}
+
+	function test_get_block_options_should_return_an_array() {
 		$block_options = Block_Data::get_block_options();
 
-		$this->assertTrue( is_object( $block_options ) );
-		$this->assertEquals( (array) $block_options, $this->test_data['block_options'] );
+		$this->assertTrue( is_array( $block_options ) );
+		$this->assertEquals( $block_options, $this->test_data['block_options'] );
 	}
 
 	function test_get_block_option() {
@@ -77,11 +83,11 @@ class Test_Block_Data extends \WP_UnitTestCase {
 		$this->assertEquals( $icon, 'flower' );
 	}
 
-	function test_get_fields_should_return_an_object() {
+	function test_get_fields_should_return_an_array() {
 		$fields = Block_Data::get_fields();
 
-		$this->assertTrue( is_object( $fields ) );
-		$this->assertEquals( (array) $fields, $this->test_data['fields'] );
+		$this->assertTrue( is_array( $fields ) );
+		$this->assertEquals( $fields, $this->test_data['fields'] );
 	}
 
 	function test_get_block_title_should_return_the_post_title() {
@@ -112,7 +118,27 @@ class Test_Block_Data extends \WP_UnitTestCase {
 			)
 		);
 
-		$block_generator = new Block_Data( $test_id );
+		new Block_Data( $test_id );
 		$this->assertEquals( Stampa_Replacer::get_mapping( 'block.className' ), 'another-block-title' );
+	}
+
+	function test_should_clear_the_mapping() {
+		Stampa_Replacer::add_single_mapping( 'this should not exists', 'whatever' );
+
+		$mapping = Stampa_Replacer::get_mapping( 'this should not exists' );
+		$this->assertTrue( ! empty( $mapping ) );
+
+		$test_id = create_test_post_with_data(
+			array_merge(
+				[
+					'title' => 'another block title',
+				],
+				$this->test_data
+			)
+		);
+
+		new Block_Data( $test_id );
+		$mapping = Stampa_Replacer::get_mapping( 'this should not exists' );
+		$this->assertTrue( empty( $mapping ) );
 	}
 }

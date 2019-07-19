@@ -40,6 +40,6 @@ gutenberg:
   react_end_block: </StampaPostSelector>
 php:
   start_block: 
-    <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
-      <?php echo $block_data['{{stampa.field_name}}'] ?>
+    <div class="{{stampa.block_css_class_name}}__{{stampa.field.name}}">
+      <?php echo $block_data['{{stampa.field.name}}'] ?>
   end_block: "</div>"

@@ -1,5 +1,5 @@
 <?php
-namespace Stampa\JSGenerator;
+namespace Stampa\JS_Generator;
 
 use Stampa\Stampa_Replacer;
 use Stampa\Block_Data;
@@ -12,6 +12,11 @@ class JS_Inspector_Control {
 
 		$this->setup_block_option_blank_defaults();
 		$this->setup_block_options();
+
+		Stampa_Replacer::add_single_mapping(
+			'inspector_controls',
+			$this->get_code()
+		);
 	}
 
 	private function load_field_options_boilerplate() : void {

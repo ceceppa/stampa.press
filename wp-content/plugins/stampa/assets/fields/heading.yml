@@ -30,16 +30,16 @@ gutenberg:
   react: <{{stampa.value.level}}>
     <textarea
       type="text"
-      value={attributes.{{stampa.field_name}}}
+      value={attributes.{{stampa.field.name}}}
       placeholder="{{stampa.value.placeholder}}"
-      onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
+      onChange={e => updateAttribute('{{stampa.field.name}}', e.target.value)}
     />
     </{{stampa.value.level}}>
 php:
-  code: <?php if ( ! empty( ${{stampa.field_name}} ) ) \= ?>
+  code: <?php if ( ! empty( ${{stampa.field.name}} ) ) \= ?>
           <{{stampa.value.level}}
-            class="{{stampa.block_css_class_name}}__{{stampa.field_name}}"
+            class="{{stampa.block_css_class_name}}__{{stampa.field.name}}"
           >
-            <?php echo ${{stampa.field_name}} ?>
+            <?php echo ${{stampa.field.name}} ?>
           </{{stampa.value.level}}>
         <?php endif; ?>

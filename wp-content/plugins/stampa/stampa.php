@@ -18,7 +18,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 require __DIR__ . '/admin/init.php';
 require __DIR__ . '/admin/fields-loader.php';
-require __DIR__ . '/admin/block-generator.php';
+require __DIR__ . '/admin/block-code-generator.php';
 require __DIR__ . '/admin/stampa-filters.php';
 
 /**
@@ -125,7 +125,7 @@ class Stampa {
 
 		$generate_code = isset( $params['generate'] );
 		if ( $generate_code ) {
-			new Block_Generator( $post_id );
+			new Block_Code_Generator( $post_id );
 		}
 
 		return [

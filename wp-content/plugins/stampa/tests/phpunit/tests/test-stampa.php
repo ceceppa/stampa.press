@@ -10,6 +10,7 @@ use function Stampa\Test\Helpers\create_test_post;
 use function Stampa\Test\Helpers\assertReponseHasEditLink;
 use function Stampa\Test\Helpers\assertPostDataMatch;
 use function Stampa\Test\Helpers\assertHasMetaData;
+use Stampa\Stampa_Replacer;
 
 do_action( 'init' );
 do_action( 'rest_api_init' );
@@ -63,5 +64,14 @@ class Test_Stampa extends \WP_UnitTestCase {
 		);
 
 		assertHasMetaData( $this, $test_post_id, [ 'grid', 'block_options', 'fields' ] );
+	}
+
+	function test_remove_mapping_should_remove_the_item() {
+		Stampa_Replacer::add_single_mapping( 'remove-me', 'ciao' );
+
+		Stampa_Replacer::remove_mapping( 'remove-me' );
+		$mapped = Stampa_Replacer::get_mapping( 'remove-me' );
+
+		$this->assertTrue( empty( $mapped ) );
 	}
 }

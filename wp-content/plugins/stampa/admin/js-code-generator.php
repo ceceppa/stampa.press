@@ -1,44 +1,183 @@
 <?php
 
-namespace Stampa\JSGenerator;
-
-use JS_Inspector_Control;
+namespace Stampa\JS_Generator;
 
 require __DIR__ . '/js-code-inspector-controls.php';
+require __DIR__ . '/js-fields-code-generator.php';
+
+use Stampa\Fields_Loader;
+use Stampa\Block_Data;
+use Stampa\Stampa_Replacer;
+use Stampa\Assets_Copier;
 
 class JS_Code_Generator {
-	private $inspector_control_code = '';
+	private $temp_file   = '';
+	private $output_file = '';
 
 	public function __construct() {
+		$this->setup_wp_components_and_editor_variables();
+		$this->setup_block_grid_style();
+
 		new JS_Inspector_Control();
-	}
+		new JS_Fields_Code_Generator();
 
-	private function setup_boilerplate_wp_variables() {
-		self::load_fields();
+		$can_generate_file = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_GENERATE_JS_FILE' );
 
-		$wp_components = [];
-		$wp_editor     = [ 'InspectorControls', 'MediaUpload' ];
-
-		foreach ( self::$fields_params as $stampa_field ) {
-			$field = self::get_field_by_id( $stampa_field['id'] );
-
-			if ( empty( $field ) ) {
-				continue;
-			}
-
-			$gutenberg = $field['gutenberg'];
-			if ( isset( $gutenberg['wp_components'] ) ) {
-				$wp_components[] = $gutenberg['wp_components'];
-			}
-
-			if ( isset( $gutenberg['wp_editor'] ) ) {
-				$wp_editor[] = $gutenberg['wp_editor'];
-			}
+		if ( $can_generate_file ) {
+			$this->save_js_file();
+			$this->beautify_js_file_or_fail();
+			$this->append_to_index_js();
 		}
 
-		$wp_components = array_unique( $wp_components );
+		$can_run_parcel = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_RUN_PARCEL' );
 
-		self::add_replace( 'wp.editor', $wp_editor );
-		self::add_replace( 'wp.components', $wp_components );
+		if ( $can_run_parcel ) {
+			$this->parcel_build();
+		}
+	}
+
+	private function setup_wp_components_and_editor_variables() {
+		$block_fields = Block_Data::get_fields();
+
+		Stampa_Replacer::add_array_mapping( 'wp.components', [] );
+		Stampa_Replacer::add_array_mapping( 'wp.editor', [ 'InspectorControls', 'MediaUpload' ] );
+
+		foreach ( $block_fields as $field ) {
+			$field = Fields_Loader::get_field_by_id( $field->id );
+
+			$gutenberg = $field['gutenberg'] ?? [];
+			$this->setup_wp_components( $gutenberg );
+			$this->setup_wp_editor( $gutenberg );
+		}
+	}
+
+	private function setup_wp_components( $gutenberg ) : void {
+		$wp_component = $gutenberg['wp_components'] ?? null;
+
+		if ( is_null( $wp_component ) ) {
+			return;
+		}
+		Stampa_Replacer::add_array_mapping( 'wp.components', [ $wp_component ] );
+	}
+
+	private function setup_wp_editor( $gutenberg ) : void {
+		$wp_editor = $gutenberg['wp_editor'] ?? null;
+
+		if ( is_null( $wp_editor ) ) {
+			return;
+		}
+
+		Stampa_Replacer::add_array_mapping( 'wp.editor', [ $gutenberg['wp_editor'] ] );
+	}
+
+	private function setup_block_grid_style() {
+		$row_height = Block_Data::get_grid_value( 'rowHeight' );
+		$columns    = Block_Data::get_grid_value( 'columns' );
+		$rows       = Block_Data::get_grid_value( 'rows' );
+		$gap        = Block_Data::get_grid_value( 'gap' );
+		$height     = intval( $row_height ) * intval( $rows );
+
+		// Can't use "repeat" property -.-, why????
+		$template_columns = str_repeat( '1fr ', $columns );
+		$template_rows    = str_repeat( '1fr ', $rows );
+		$grid_style       = [
+			"display: 'grid'",
+			"gridTemplateColumns: '$template_columns'",
+			"gridTemplateRows: '$template_rows'",
+			"gridGap: '{$gap}px'",
+			"height: '{$height}px'",
+		];
+
+		Stampa_Replacer::add_json_mapping( 'block.style', $grid_style );
+	}
+
+	private function save_js_file() {
+		$this->temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
+
+		$boilerplate_file = STAMPA_REACT_BOILERPLATES_FOLDER . 'block.boilerplate.js';
+		$boilerplate_file = apply_filters( 'stampa/fields-code/boilerplate-file', $boilerplate_file );
+
+		$boilerplate  = file_get_contents( $boilerplate_file );
+		$file_content = Stampa_Replacer::apply_mapping( $boilerplate );
+
+		file_put_contents( $this->temp_file, $file_content );
+	}
+
+	private function beautify_js_file_or_fail() {
+		$output_file = $this->get_output_filename();
+		$this->rename_output_fiol_if_has_been_modified( $this->output_file );
+
+		$command = sprintf(
+			'prettier %s > %s 2>%s.log',
+			$this->temp_file,
+			$output_file,
+			$output_file
+		);
+
+		system( $command, $return_val );
+
+		if ( $return_val > 0 ) {
+			Block_Data::delete_js_md5();
+
+			throw new \Error( 'Prettier failed: ' . $this->temp_file );
+		}
+
+		Block_Data::update_js_md5( $output_file );
+	}
+
+	private function get_output_filename() {
+		$output_folder = Assets_Copier::get_folder( 'blocks' );
+		$file_name     = sanitize_title( Block_Data::get_block_title() ) . '.js';
+
+		$this->output_file = $output_folder . $file_name;
+
+		return $this->output_file;
+	}
+
+	private function rename_output_fiol_if_has_been_modified( string $output_file ) {
+		if ( \file_exists( $output_file ) ) {
+			$md5 = md5_file( $output_file );
+
+			$old_md5   = Block_Data::get_js_md5();
+			$md5_match = empty( $old_md5 ) && $md5 === $old_md5;
+			if ( ! $md5_match ) {
+				$new_name = $output_file . '.old';
+
+				/**
+				 * Assume that the .old is the one modified by 3rd party
+				 * and so we don't want to override it.
+				 */
+				if ( ! file_exists( $new_name ) ) {
+					rename( $output_file, $new_name );
+				}
+			}
+		}
+	}
+
+	private function append_to_index_js() {
+		$file_name  = preg_replace( '/.js$/', '', basename( $this->output_file ) );
+		$index_file = Assets_Copier::get_folder( '__root' ) . 'index.js';
+
+		$index_content = '';
+		if ( file_exists( $index_file ) ) {
+			$index_content = file_get_contents( $index_file );
+		}
+
+		if ( stripos( $index_content, $file_name ) == 0 ) {
+			$index_content .= "import './blocks/{$file_name}';" . PHP_EOL;
+
+			$success = file_put_contents( $index_file, $index_content );
+
+			if ( ! $success ) {
+				throw new \Error( 'Cannot write the index.js file in stampa/blocks folder' );
+			}
+		}
+	}
+
+	private function parcel_build() {
+		$stampa_path = Assets_Copier::get_folder( '__root' );
+		// $css_ext     = STAMPA_CSS_EXTENSION;
+		// exec( "parcel build {$stampa_path}index.{$css_ext} -d {$stampa_path}dist" );
+		exec( "parcel build {$stampa_path}index.js -d {$stampa_path}dist" );
 	}
 }

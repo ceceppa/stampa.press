@@ -67,6 +67,10 @@ class Stampa_Replacer {
 		self::$mapping_data = [];
 	}
 
+	public static function remove_mapping( string $special_key ) {
+		unset( self::$mapping_data[ $special_key ] );
+	}
+
 	public static function apply_mapping( string $to ) {
 		$return = $to;
 
@@ -97,8 +101,9 @@ class Stampa_Replacer {
 		/**
 		 * NOTE: The react MultiSelect components returns an array of objects,
 		 * instead of a simple array, but we only need the "value" part of it.
-	*/
-		if ( is_array( $values[0] ) ) {
+	   */
+		$is_multiselect_value = isset( $values[0] ) ? is_array( $values[0] ) : false;
+		if ( $is_multiselect_value ) {
 			$values = wp_list_pluck( $values, 'value' );
 		}
 

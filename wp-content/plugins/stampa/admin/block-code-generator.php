@@ -6,17 +6,17 @@
  */
 namespace Stampa;
 
-use Stampa\Stampa;
-use Stampa_Replacer;
+use Stampa\JSGenerator\JS_Code_Generator;
 
 require __DIR__ . '/assets-copier.php';
 require __DIR__ . '/block-data.php';
 require __DIR__ . '/js-code-generator.php';
 require __DIR__ . '/stampa-replacer.php';
 
-class Block_Generator {
+class Block_Code_Generator {
 	public function __construct( int $post_id ) {
 		new Assets_Copier( get_template_directory() );
 		new Block_Data( $post_id );
+		new JS_Code_Generator();
 	}
 }

@@ -30,5 +30,5 @@ options:
   value: '5'
   inspector: false
 php:
-  - start_block: <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
-  - end_block: "</div><!-- container: {{stampa.field_name}} -->"
+  - start_block: <div class="{{stampa.block_css_class_name}}__{{stampa.field.name}}">
+  - end_block: "</div><!-- container: {{stampa.field.name}} -->"

@@ -3,7 +3,7 @@ namespace Stampa\Test;
 
 require_once __DIR__ . '/js-code-inspector.helpers.php';
 
-use Stampa\JSGenerator\JS_Inspector_Control;
+use Stampa\JS_Generator\JS_Inspector_Control;
 use function Stampa\Test\JS_Inspector\create_inspector_test_post;
 
 class Test_JS_Code_Inspector_Controls extends \WP_UnitTestCase {
@@ -38,6 +38,14 @@ class Test_JS_Code_Inspector_Controls extends \WP_UnitTestCase {
 		list($tag, $function) = $this->filters[ $filter ];
 
 		add_filter( $tag, $function );
+	}
+
+	function remove_all_filters() {
+		foreach ( $this->filters as $filter ) {
+			list($tag, $function) = $filter;
+
+			remove_filter( $tag, $function );
+		}
 	}
 
 	function remove_filter( string $filter ) {
@@ -94,5 +102,7 @@ class Test_JS_Code_Inspector_Controls extends \WP_UnitTestCase {
 
 		$compare = "test inspector background image for test inspector\ntest options for test inspector";
 		$this->assertEquals( $code, $compare );
+
+		$this->remove_all_filters();
 	}
 }

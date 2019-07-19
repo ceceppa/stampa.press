@@ -1,5 +1,5 @@
 /**
- * BLOCK: {{stampa.block_title}}
+ * BLOCK: {{stampa.block.title}}
  *
  */
 // Stampa Components
@@ -37,19 +37,7 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
 
   attributes: {{stampa.gutenberg.attributes}},
 
-  /**
-   * The edit function describes the structure of your block in the context of the editor.
-   * This represents what the editor will render when the block is used.
-   *
-   * The "edit" property must be a valid function.
-   *
-   * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-   *
-   * @param {object} props Gutenberg props.
-   * @return {JSX} JSX block.
-   */
-  edit: function(props) {
-      const { className, attributes = {}, setAttributes} = props;
+  edit( { className, attributes = {}, setAttributes} ) {
       const fieldOptions = allFieldsOptions[focusedField];
 
       const updateAttribute = useCallback((field, value) => {
@@ -62,8 +50,6 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
       const updateFocusedField = useCallback(fieldName => {
         focusedField = fieldName;
         
-        // We don't need this data to be saved by Gutenberg
-        // but we want to trigger a re-render when focusedField changes.
         setAttributes({__focused: fieldName});
       })
 
@@ -74,7 +60,7 @@ registerBlockType('stampa/{{stampa.sanitized_title}}', {
           </InspectorControls>
           <div className={`${className} stampa-block {{stampa.block.className}}`}>
             <div className="{{stampa.title|sanitize}}" style={{{stampa.block.style}}}>
-          {{stampa.render_content}}
+              {{stampa.render.content}}
             </div>
           </div>
         </Fragment>

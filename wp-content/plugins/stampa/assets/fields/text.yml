@@ -19,11 +19,11 @@ gutenberg:
   attribute_type: string
   react:
     <textarea
-      value={attributes.{{stampa.field_name}}}
+      value={attributes.{{stampa.field.name}}}
       placeholder="{{stampa.value.placeholder}}"
-      onChange={e => updateAttribute('{{stampa.field_name}}', e.target.value)}
+      onChange={e => updateAttribute('{{stampa.field.name}}', e.target.value)}
     />
 php: 
-  <div class="{{stampa.block_css_class_name}}__{{stampa.field_name}}">
-    <?php echo ${{stampa.field_name}} ?>
+  <div class="{{stampa.block_css_class_name}}__{{stampa.field.name}}">
+    <?php echo ${{stampa.field.name}} ?>
   </div>

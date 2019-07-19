@@ -62,18 +62,18 @@ gutenberg:
   wp_components: IconButton
   react:
     <StampaMediaUpload
-      fieldName="{{stampa.field_name}}"
-      image={attributes.{{stampa.field_name}}}
+      fieldName="{{stampa.field.name}}"
+      image={attributes.{{stampa.field.name}}}
       customClass="{{stampa.value.round}}"
       attributes={attributes}
       updateAttribute={updateAttribute}
     />
 php: 
-  code: <?php if ( isset( ${{stampa.field_name}}->id) ) {
-          $object_fit = $__{{stampa.field_name}}->fit;
-          $object_position = $__{{stampa.field_name}}->position;
+  code: <?php if ( isset( ${{stampa.field.name}}->id) ) {
+          $object_fit = $__{{stampa.field.name}}->fit;
+          $object_position = $__{{stampa.field.name}}->position;
           ""
-          wp_get_attachment_image( ${{stampa.field_name}}->id, '{{stampa.value.size}}', '', [
+          wp_get_attachment_image( ${{stampa.field.name}}->id, '{{stampa.value.size}}', '', [
             'class' => "{$object_fit} {$object_position}"
           ] );
         } ?>

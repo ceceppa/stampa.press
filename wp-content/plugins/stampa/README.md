@@ -12,3 +12,9 @@ Stampa is a Stand alone and WP Plugin that aims to generate basic REACT code for
   - React/JSX code
 
 The interface will look like something like this:
+
+- [ ] Allow customising the output folders via filter
+- [ ] Repeater (implement type: hidden)
+- [ ] User Selector (with fields)
+- [ ] Google Maps
+
