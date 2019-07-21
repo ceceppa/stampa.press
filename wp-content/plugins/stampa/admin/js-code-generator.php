@@ -177,6 +177,12 @@ class JS_Code_Generator {
 		$stampa_path = Assets_Copier::get_folder( '__root' );
 		// $css_ext     = STAMPA_CSS_EXTENSION;
 		// exec( "parcel build {$stampa_path}index . {$css_ext} - d {$stampa_path}dist' );
-		exec( "parcel build {$stampa_path}index . js - d {$stampa_path}dist" );
+		exec( "cd $stampa_path && yarn install > /dev/null 2>&1" );
+		$command = "cd $stampa_path && parcel build {$stampa_path}index.js - d {$stampa_path}dist";
+		$output  = system( $command, $return_val );
+
+		if ( $return_val > 0 ) {
+			throw new \Error( sprintf( "parcel build failed : %s (%d)\n -> %s", $stampa_path, $return_val, $output ) );
+		}
 	}
 }
