@@ -19,7 +19,33 @@ const {
 } = wp.components;
 const { Fragment, Component } = wp.element;
 
-const allFieldsOptions = { image: [] };
+const allFieldsOptions = {
+  image: [
+    {
+      name: "fit",
+      type: "select",
+      label: 'Default value for "object-fit"',
+      values: ["fill", "contain", "cover", "none", "scale-down"],
+      value: "fill"
+    },
+    {
+      name: "position",
+      type: "select",
+      label: 'Default value for "object-position"',
+      values: [
+        "initial",
+        "left top",
+        "left center",
+        "left bottom",
+        "center center",
+        "right top",
+        "right center",
+        "right bottom"
+      ],
+      value: "initial"
+    }
+  ]
+};
 const fieldOptionsComponents = {
   select: SelectControl,
   checkbox: ToggleControl,
@@ -27,15 +53,20 @@ const fieldOptionsComponents = {
 };
 let focusedField;
 
-registerBlockType("stampa/{{stampa.sanitized_title}}", {
-  title: __("{{stampa.block_title}}"),
+registerBlockType("stampa/test-image-new", {
+  title: __("Test image new"),
   icon: "menu-alt3",
   category: "stampa-blocks",
   keywords: [],
 
   multiple: true,
 
-  attributes: { backgroundImage: { type: "object" } },
+  attributes: {
+    backgroundImage: { type: "object" },
+    image: { type: "object", default: null },
+    image__fit: { type: "string", default: "fill" },
+    image__position: { type: "string", default: "initial" }
+  },
 
   edit({ className, attributes = {}, setAttributes }) {
     const fieldOptions = allFieldsOptions[focusedField];
@@ -105,18 +136,17 @@ registerBlockType("stampa/{{stampa.sanitized_title}}", {
         </InspectorControls>
         <div className={`${className} stampa-block test-image-new`}>
           <div
-            className="{{stampa.title|sanitize}}"
+            className="test-image-new"
             style={{
-              "0": "display: 'grid'",
-              "1":
-                "gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr '",
-              "2": "gridTemplateRows: '1fr 1fr 1fr 1fr 1fr '",
-              "3": "gridGap: '5px'",
-              "4": "height: '230px'",
-              backgroundImage: "`url(${attributes . backgroundImage})`"
+              display: "grid",
+              gridTemplateColumns:
+                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+              gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
+              gridGap: "5px",
+              height: "322px",
+              backgroundImage: `url(${attributes.backgroundImage})`
             }}
           >
-            {/* image */}
             <div
               className={`stampa-field stampa-field--image field--image ${
                 focusedField == "image" ? "focused" : ""
@@ -124,11 +154,19 @@ registerBlockType("stampa/{{stampa.sanitized_title}}", {
               style={{
                 gridRowStart: 2,
                 gridColumnStart: 2,
-                gridRowEnd: 5,
-                gridColumnEnd: 7
+                gridRowEnd: 7,
+                gridColumnEnd: 6
               }}
               onClick={() => updateFocusedField("image")}
-            ></div>
+            >
+              <StampaMediaUpload
+                fieldName="image"
+                image={attributes.image}
+                customClass=""
+                attributes={attributes}
+                updateAttribute={updateAttribute}
+              />
+            </div>
           </div>
         </div>
       </Fragment>

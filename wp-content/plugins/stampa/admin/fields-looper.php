@@ -14,7 +14,7 @@ class Fields_Looper {
 	private $closing_block_code = null;
 	private $code               = '';
 
-	public function __construct( array $fields, $loop_field_start, $loop_field_end = null, $closing_block_code ) {
+	public function __construct( array $fields, $loop_field_start, $loop_field_end = null, $closing_block_code = null ) {
 		$this->loop_field_start   = $loop_field_start;
 		$this->loop_field_end     = $loop_field_end;
 		$this->closing_block_code = $closing_block_code;

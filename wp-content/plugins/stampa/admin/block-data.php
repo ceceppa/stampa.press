@@ -74,6 +74,10 @@ class Block_Data {
 		return self::$block_title;
 	}
 
+	public static function get_sanitized_block_title() : string {
+		return sanitize_title( self::get_block_title() );
+	}
+
 	public static function get_js_md5() {
 		return get_post_meta( self::$post_id, '_md5_sum', true );
 	}

@@ -10,7 +10,9 @@ require __DIR__ . '/assets-copier.php';
 require __DIR__ . '/block-data.php';
 require __DIR__ . '/fields-looper.php';
 require __DIR__ . '/js-code-generator.php';
+require __DIR__ . '/parcel-builder.php';
 require __DIR__ . '/stampa-replacer.php';
+require __DIR__ . '/css-generator.php';
 
 class Block_Code_Generator {
 	public function __construct( int $post_id ) {
@@ -19,7 +21,7 @@ class Block_Code_Generator {
 		new Assets_Copier( $default_output_folder );
 		new Block_Data( $post_id );
 		new JS_Code_Generator();
-		// new CSS_Generator();
+		new CSS_Generator();
 		// new PHP_Code_Generator();
 	}
 }

@@ -37237,8 +37237,13 @@ var Field = _react.default.memo(function (_ref) {
 
       if (option && option.name) {
         var value = values[option.name] || null;
+        var isCheckbox = option.type == 'checkbox';
+        var isChecked = option.checked;
+        var isValueNull = value == null;
 
-        if (value == null) {
+        if (isCheckbox && isChecked && isValueNull) {
+          value = option.value;
+        } else if (isValueNull && !isCheckbox) {
           value = option.value;
         }
 
@@ -63956,7 +63961,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36499" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34737" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

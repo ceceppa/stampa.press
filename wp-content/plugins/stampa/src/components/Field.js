@@ -19,8 +19,13 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   for (let option of stampaField.options) {
     if (option && option.name) {
       let value = values[option.name] || null;
+      const isCheckbox = option.type == 'checkbox';
+      const isChecked = option.checked;
+      const isValueNull = value == null;
 
-      if (value == null) {
+      if (isCheckbox && isChecked && isValueNull) {
+        value = option.value;
+      } else if (isValueNull && !isCheckbox) {
         value = option.value;
       }
 

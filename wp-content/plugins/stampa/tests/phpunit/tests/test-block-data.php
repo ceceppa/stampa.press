@@ -94,6 +94,10 @@ class Test_Block_Data extends \WP_UnitTestCase {
 		$this->assertEquals( Block_Data::get_block_title(), 'block title' );
 	}
 
+	function test_get_sanitized_block_title_should_return_the_post_title_sanitized() {
+		$this->assertEquals( Block_Data::get_sanitized_block_title(), 'block-title' );
+	}
+
 	function test_should_add_the_base_title_as_mapping() {
 		$test_id = create_test_post_with_data(
 			array_merge(

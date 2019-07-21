@@ -20,17 +20,31 @@ const {
 const { Fragment, Component } = wp.element;
 
 const allFieldsOptions = {
-  "post-selector": [],
-  "post-title": [
+  image: [
     {
-      name: "level",
+      name: "fit",
       type: "select",
-      label: "Level",
-      values: ["h1", "h2", "h3", "h4", "h5", "h6"],
-      value: "h3"
+      label: 'Default value for "object-fit"',
+      values: ["fill", "contain", "cover", "none", "scale-down"],
+      value: "fill"
+    },
+    {
+      name: "position",
+      type: "select",
+      label: 'Default value for "object-position"',
+      values: [
+        "initial",
+        "left top",
+        "left center",
+        "left bottom",
+        "center center",
+        "right top",
+        "right center",
+        "right bottom"
+      ],
+      value: "initial"
     }
-  ],
-  "post-excerpt": []
+  ]
 };
 const fieldOptionsComponents = {
   select: SelectControl,
@@ -49,7 +63,9 @@ registerBlockType("stampa/test-image-new", {
 
   attributes: {
     backgroundImage: { type: "object" },
-    "post-title__level": { type: "string", default: "h3" }
+    image: { type: "object", default: null },
+    image__fit: { type: "string", default: "fill" },
+    image__position: { type: "string", default: "initial" }
   },
 
   edit({ className, attributes = {}, setAttributes }) {
@@ -131,51 +147,25 @@ registerBlockType("stampa/test-image-new", {
               backgroundImage: `url(${attributes.backgroundImage})`
             }}
           >
-            {/* post-selector */}
             <div
-              className={`stampa-field stampa-field--post-selector field--post-selector ${
-                focusedField == "post-selector" ? "focused" : ""
+              className={`stampa-field stampa-field--image test-image-new__image ${
+                focusedField == "image" ? "focused" : ""
               }`}
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr",
-                gridTemplateRows: "1fr 1fr 1fr 1fr 1fr",
-                gridGap: "5px",
-                gridRowStart: 1,
+                gridRowStart: 2,
                 gridColumnStart: 2,
-                gridRowEnd: 6,
-                gridColumnEnd: 8
+                gridRowEnd: 7,
+                gridColumnEnd: 7
               }}
-              onClick={() => updateFocusedField("post-selector")}
+              onClick={() => updateFocusedField("image")}
             >
-              <StampaPostSelector>
-                {/* post-title */}
-                <div
-                  className={`stampa-field stampa-field--post-title field--post-title ${
-                    focusedField == "post-title" ? "focused" : ""
-                  }`}
-                  style={{
-                    gridRowStart: 1,
-                    gridColumnStart: 1,
-                    gridRowEnd: 2,
-                    gridColumnEnd: 7
-                  }}
-                  onClick={() => updateFocusedField("post-title")}
-                ></div>
-                {/* post-excerpt */}
-                <div
-                  className={`stampa-field stampa-field--post-excerpt field--post-excerpt ${
-                    focusedField == "post-excerpt" ? "focused" : ""
-                  }`}
-                  style={{
-                    gridRowStart: 2,
-                    gridColumnStart: 1,
-                    gridRowEnd: 4,
-                    gridColumnEnd: 7
-                  }}
-                  onClick={() => updateFocusedField("post-excerpt")}
-                ></div>
-              </StampaPostSelector>
+              <StampaMediaUpload
+                fieldName="image"
+                image={attributes.image}
+                customClass=""
+                attributes={attributes}
+                updateAttribute={updateAttribute}
+              />
             </div>
           </div>
         </div>

@@ -53,7 +53,7 @@ class JS_Fields_Code_Generator {
 
 		return "
 			<div
-			className={`stampa-field stampa-field--{$field_id} field--{$field_name} \${focusedField == '{$field_name}' ? 'focused' : ''}`}
+			className={`stampa-field stampa-field--{$field_id} {{stampa.block.className}}__{$field_name} \${focusedField == '{$field_name}' ? 'focused' : ''}`}
 			style={{
 				gridRowStart: {{stampa.grid_row_start}},
 				gridColumnStart: {{stampa.grid_column_start}},
@@ -76,7 +76,7 @@ class JS_Fields_Code_Generator {
 
 		return "
 		<div
-			className={`stampa-field stampa-field--{$field_id} field--{$field_name} \${focusedField == '{$field_name}' ? 'focused' : ''}`}
+			className={`stampa-field stampa-field--{$field_id} {{stampa.block.className}}__{$field_name} \${focusedField == '{$field_name}' ? 'focused' : ''}`}
 			style={{
 			display: 'grid',
 				gridTemplateColumns: '$template_columns',

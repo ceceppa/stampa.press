@@ -31,7 +31,7 @@ class JS_Code_Generator {
 		$can_run_parcel = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_RUN_PARCEL' );
 
 		if ( $can_run_parcel ) {
-			$this->parcel_build();
+			new Parcel_Builder( 'js' );
 		}
 	}
 
@@ -104,7 +104,7 @@ class JS_Code_Generator {
 
 	private function beautify_js_file_or_fail() {
 		$output_file = $this->get_output_filename();
-		$this->rename_output_fiol_if_has_been_modified( $this->output_file );
+		$this->rename_output_file_if_has_been_modified( $this->output_file );
 
 		$command = sprintf(
 			'prettier %s > %s 2>%s.log',
@@ -133,7 +133,7 @@ class JS_Code_Generator {
 		return $this->output_file;
 	}
 
-	private function rename_output_fiol_if_has_been_modified( string $output_file ) {
+	private function rename_output_file_if_has_been_modified( string $output_file ) {
 		if ( \file_exists( $output_file ) ) {
 			$md5 = md5_file( $output_file );
 
@@ -173,16 +173,4 @@ class JS_Code_Generator {
 		}
 	}
 
-	private function parcel_build() {
-		$stampa_path = Assets_Copier::get_folder( '__root' );
-		// $css_ext     = STAMPA_CSS_EXTENSION;
-		// exec( "parcel build {$stampa_path}index . {$css_ext} - d {$stampa_path}dist' );
-		exec( "cd $stampa_path && yarn install > /dev/null 2>&1" );
-		$command = "cd $stampa_path && parcel build {$stampa_path}index.js - d {$stampa_path}dist";
-		$output  = system( $command, $return_val );
-
-		if ( $return_val > 0 ) {
-			throw new \Error( sprintf( "parcel build failed : %s (%d)\n -> %s", $stampa_path, $return_val, $output ) );
-		}
-	}
 }

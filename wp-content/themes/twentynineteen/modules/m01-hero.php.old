@@ -1,5 +1,0 @@
-<section class="m01d">
-	<?php if ( ! empty( ${{stampa.field_name }} ) ) : ?> <{{stampa.value.level}} class="m01d__heading"> <?php echo $heading ?> </{{stampa.value.level}}> <?php endif; ?>
-	<div class="m01d__text"> <?php echo $block_data['text'] ?> </div>
-	<a href="<?php echo $block_data['button']['url'] ?>" class="m01d__button" > <?php echo $block_data['button']['label'] ?> </a>"
-</section>
