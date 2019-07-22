@@ -9,6 +9,7 @@ namespace Stampa;
 require __DIR__ . '/assets-copier.php';
 require __DIR__ . '/block-data.php';
 require __DIR__ . '/fields-looper.php';
+require __DIR__ . '/file-saver.php';
 require __DIR__ . '/js-code-generator.php';
 require __DIR__ . '/parcel-builder.php';
 require __DIR__ . '/stampa-replacer.php';

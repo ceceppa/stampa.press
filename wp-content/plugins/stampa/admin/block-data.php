@@ -78,16 +78,16 @@ class Block_Data {
 		return sanitize_title( self::get_block_title() );
 	}
 
-	public static function get_js_md5() {
-		return get_post_meta( self::$post_id, '_md5_sum', true );
+	public static function get_md5( string $extension ) {
+		return get_post_meta( self::$post_id, '__md5_sum' . $extension, true );
 	}
 
-	public static function delete_js_md5() {
-		delete_post_meta( self::$post_id, '_md5_sum' );
+	public static function delete_md5( string $extension ) {
+		delete_post_meta( self::$post_id, '__md5_sum' . $extension );
 	}
 
-	public static function update_js_md5( string $file ) {
-		update_post_meta( self::$post_id, '_md5_sum', md5_file( $file ) );
+	public static function update_md5( string $file, $extension ) {
+		update_post_meta( self::$post_id, '__md5_sum' . $extension, md5_file( $file ) );
 	}
 }
 

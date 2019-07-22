@@ -10,9 +10,6 @@ use Stampa\Stampa_Replacer;
 use Stampa\Assets_Copier;
 
 class JS_Code_Generator {
-	private $temp_file   = '';
-	private $output_file = '';
-
 	public function __construct() {
 		$this->setup_wp_components_and_editor_variables();
 		$this->setup_block_grid_style();
@@ -23,9 +20,9 @@ class JS_Code_Generator {
 		$can_generate_file = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_GENERATE_JS_FILE' );
 
 		if ( $can_generate_file ) {
-			$this->save_js_file();
-			$this->beautify_js_file_or_fail();
-			$this->append_to_index_js();
+			$temp_file   = $this->generate_js_temp_file();
+			$output_file = $this->save_file( $temp_file );
+			$this->append_to_index_js( $output_file );
 		}
 
 		$can_run_parcel = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_RUN_PARCEL' );
@@ -90,8 +87,8 @@ class JS_Code_Generator {
 		Stampa_Replacer::add_json_mapping( 'block.style', $grid_style );
 	}
 
-	private function save_js_file() {
-		$this->temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
+	private function generate_js_temp_file() {
+		$temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
 
 		$boilerplate_file = STAMPA_REACT_BOILERPLATES_FOLDER . 'block.boilerplate.js';
 		$boilerplate_file = apply_filters( 'stampa/fields-code/boilerplate-file', $boilerplate_file );
@@ -99,62 +96,29 @@ class JS_Code_Generator {
 		$boilerplate  = file_get_contents( $boilerplate_file );
 		$file_content = Stampa_Replacer::apply_mapping( $boilerplate );
 
-		file_put_contents( $this->temp_file, $file_content );
+		file_put_contents( $temp_file, $file_content );
+
+		return $temp_file;
 	}
 
-	private function beautify_js_file_or_fail() {
-		$output_file = $this->get_output_filename();
-		$this->rename_output_file_if_has_been_modified( $this->output_file );
+	private function save_file( string $temp_file ) : string {
+		$file_copier = new File_Saver( 'blocks', 'js' );
+
+		$output_file = $file_copier->get_output_file();
 
 		$command = sprintf(
-			'prettier %s > %s 2>%s.log',
-			$this->temp_file,
-			$output_file,
+			'prettier %s > %s',
+			$temp_file,
 			$output_file
 		);
 
-		system( $command, $return_val );
+		$file_copier->exec_command_and_update_md5( $command, $output_file );
 
-		if ( $return_val > 0 ) {
-			Block_Data::delete_js_md5();
-
-			throw new \Error( 'Prettier failed: ' . $this->temp_file );
-		}
-
-		Block_Data::update_js_md5( $output_file );
+		return $output_file;
 	}
 
-	private function get_output_filename() {
-		$output_folder = Assets_Copier::get_folder( 'blocks' );
-		$file_name     = sanitize_title( Block_Data::get_block_title() ) . '.js';
-
-		$this->output_file = $output_folder . $file_name;
-
-		return $this->output_file;
-	}
-
-	private function rename_output_file_if_has_been_modified( string $output_file ) {
-		if ( \file_exists( $output_file ) ) {
-			$md5 = md5_file( $output_file );
-
-			$old_md5   = Block_Data::get_js_md5();
-			$md5_match = empty( $old_md5 ) && $md5 === $old_md5;
-			if ( ! $md5_match ) {
-				$new_name = $output_file . '.old';
-
-				/**
-				 * Assume that the .old is the one modified by 3rd party
-				 * and so we don't want to override it.
-				 */
-				if ( ! file_exists( $new_name ) ) {
-					rename( $output_file, $new_name );
-				}
-			}
-		}
-	}
-
-	private function append_to_index_js() {
-		$file_name  = preg_replace( '/.js$/', '', basename( $this->output_file ) );
+	private function append_to_index_js( string $output_file ) {
+		$file_name  = preg_replace( '/.js$/', '', basename( $output_file ) );
 		$index_file = Assets_Copier::get_folder( '__root' ) . 'index.js';
 
 		$index_content = '';

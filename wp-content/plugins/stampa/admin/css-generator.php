@@ -15,8 +15,8 @@ class CSS_Generator {
 
 		new Fields_Looper( $fields, [ & $this, 'loop_field_start' ] );
 
-		$this->save_css_file();
-		$this->append_to_index_pcss();
+		$output_file = $this->save_css_file();
+		$this->append_to_index_pcss( $output_file );
 
 		new Parcel_Builder( 'pcss' );
 	}
@@ -25,20 +25,19 @@ class CSS_Generator {
 		$this->css_code[] = sprintf( "  &__%s {\n  }", $field->name );
 	}
 
-	private function save_css_file() {
-		$output_file = $this->get_output_filename();
-
-		if ( file_exists( $output_file ) ) {
-			return;
-		}
+	private function save_css_file() : string {
+		$file_saver  = new File_Saver( 'postcss', 'pcss' );
+		$output_file = $file_saver->get_output_file();
 
 		$css_content = join( PHP_EOL, $this->css_code ) . "\n}";
 
-		file_put_contents( $output_file, $css_content );
+		$file_saver->save_file( $output_file, $css_content );
+
+		return $output_file;
 	}
 
-	private function append_to_index_pcss() {
-		$file_name   = preg_replace( '/.pcss$/', '', basename( $this->output_file ) );
+	private function append_to_index_pcss( string $output_file ) {
+		$file_name   = preg_replace( '/.pcss$/', '', basename( $output_file ) );
 		$root_folder = Assets_Copier::get_folder( '__root' );
 		$index_file  = $root_folder . 'index.pcss';
 
@@ -56,14 +55,5 @@ class CSS_Generator {
 				throw new \Error( 'Cannot write the index.pcss file in: ' . $root_folder );
 			}
 		}
-	}
-
-	private function get_output_filename() {
-		$output_folder = Assets_Copier::get_folder( 'postcss' );
-		$file_name     = Block_Data::get_sanitized_block_title() . '.pcss';
-
-		$this->output_file = $output_folder . $file_name;
-
-		return $this->output_file;
 	}
 }
