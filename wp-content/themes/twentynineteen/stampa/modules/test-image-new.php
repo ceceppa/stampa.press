@@ -1,0 +1,3 @@
+<section class="test-image-new" style="background: url('<?php echo $backgroundImage ?>') no-repeat center / cover ">
+<div class="test-image-new__container"><?php if ( isset( $image->id) ) { $object_fit = $__image->fit; $object_position = $__image->position; wp_get_attachment_image( $image->id, 'full', '', [ 'class' => "{$object_fit} {$object_position}" ] ); } ?></div><!-- container: image -->
+</section>

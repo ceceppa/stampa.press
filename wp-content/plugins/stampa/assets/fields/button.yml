@@ -22,7 +22,8 @@ options:
     label: URL
     stampa: false 
 gutenberg:
-  attribute_type: string
+  attribute: 
+    type: string
   react:
     <textarea
       className="button {{stampa.block.className}}__{{stampa.field.name}}"

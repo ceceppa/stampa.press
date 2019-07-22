@@ -7,6 +7,7 @@ export default function StampaMediaUpload({
   image,
   attributes,
   updateAttribute,
+  updateFocusedField,
 }) {
   const object_fit = attributes[`${fieldName}__fit`];
   const object_position = attributes[`${fieldName}__position`].replace(
@@ -18,7 +19,10 @@ export default function StampaMediaUpload({
   customClass += ` object-fit--${object_fit} object-position--${object_position}`;
 
   return (
-    <div className="stampa-media-upload">
+    <div
+      className="stampa-media-upload"
+      onClick={e => updateFocusedField(e, fieldName)}
+    >
       <img
         className={`stampa-field__image ${customClass}`}
         src={image && image.url}

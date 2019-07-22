@@ -39,7 +39,7 @@ gutenberg:
   react_start_block: <StampaPostSelector>
   react_end_block: </StampaPostSelector>
 php:
-  start_block: 
+  code: 
     <?php 
       $post = new WP_Query(['post_id' => {{stampa.value.postID}}]);
 

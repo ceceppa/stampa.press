@@ -37,7 +37,7 @@ class File_Saver {
 	private function check_if_md5_matchs_record( string $output_file ) {
 		$output_file_exists = file_exists( $output_file );
 
-		if ( $output_file_exists ) {
+		if ( ! $output_file_exists ) {
 			return;
 		}
 
@@ -50,6 +50,7 @@ class File_Saver {
 
 	private function md5_matches( string $output_file ) {
 		$old_md5 = Block_Data::get_md5( $this->file_extension );
+		$md5     = md5_file( $output_file );
 
 		return empty( $old_md5 ) || $md5 === $old_md5;
 	}

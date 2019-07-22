@@ -47,7 +47,11 @@ registerBlockType('stampa/{{stampa.block.title|sanitize}}', {
         setAttributes(attribute);
       });
 
-      const updateFocusedField = useCallback(fieldName => {
+      const updateFocusedField = useCallback((e, fieldName) => {
+        if (fieldName.length) {
+          e.stopPropagation();
+        }
+
         focusedField = fieldName;
         
         setAttributes({__focused: fieldName});

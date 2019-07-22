@@ -9,14 +9,12 @@ namespace Stampa;
  */
 
 class Fields_Looper {
-	private $loop_field_start   = null;
-	private $loop_field_end     = null;
+	private $opening_block_code = null;
 	private $closing_block_code = null;
 	private $code               = '';
 
-	public function __construct( array $fields, $loop_field_start, $loop_field_end = null, $closing_block_code = null ) {
-		$this->loop_field_start   = $loop_field_start;
-		$this->loop_field_end     = $loop_field_end;
+	public function __construct( array $fields, $opening_block_code, $closing_block_code = null ) {
+		$this->opening_block_code = $opening_block_code;
 		$this->closing_block_code = $closing_block_code;
 
 		$this->code = $this->generate_block_body_from_fields( $fields );
@@ -37,17 +35,12 @@ class Fields_Looper {
 			}
 
 			Stampa_Replacer::add_single_mapping( 'field.name', $field->name );
-
-			$field_code .= call_user_func( $this->loop_field_start, $stampa_field, $field );
-
 			$this->map_field_values( $stampa_field, $field );
 
-			$field_code = Stampa_Replacer::apply_mapping( $field_code );
-			$field_code = $this->loop_subfields( $stampa_field, $field, $field_code );
+			$field_code .= call_user_func( $this->opening_block_code, $stampa_field, $field );
+			$field_code  = Stampa_Replacer::apply_mapping( $field_code );
 
-			if ( $this->loop_field_end ) {
-				$field_code .= call_user_func( $this->loop_field_end, $stampa_field, $field );
-			}
+			$field_code = $this->loop_subfields( $stampa_field, $field, $field_code );
 
 			$this->remove_field_values_mapping( $field );
 		}

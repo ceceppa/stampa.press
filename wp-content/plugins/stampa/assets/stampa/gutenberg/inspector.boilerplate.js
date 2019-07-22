@@ -1,4 +1,4 @@
-<PanelBody title={__('Options')}>
+<PanelBody title={__('Block options')}>
   <MediaUpload
     onSelect={image => updateAttribute('backgroundImage', image.url)}
     type="image"
@@ -14,4 +14,4 @@
       </IconButton>
     )}
   />
-</PanelBody>
+</PanelBody>;

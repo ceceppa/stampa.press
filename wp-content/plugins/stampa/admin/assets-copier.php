@@ -12,6 +12,7 @@
  * "themefolder"
  * ├── stampa (a unique name to avoid conflicts ;))
  * │   ├── blocks (contains the JSX code generated)
+ * │   ├── css (stampa-editor csss)
  * │   ├── components (Stampa components like: StampaMediaUpload, StampaPostSelector, etc)
  * │   ├── modules (The boilerplate PHP code generated for each stampa block)
  * │   ├── postcss (contains the PostCSS style generated)
@@ -27,13 +28,14 @@ namespace Stampa;
 
 class Assets_Copier {
 	private static $output_folders = [];
-	private static $sub_folders    = [ 'blocks', 'components', 'modules', 'postcss' ];
+	private static $sub_folders    = [ 'blocks', 'css', 'components', 'modules', 'postcss' ];
 
 	public function __construct( string $output_folder ) {
 		$this->setup_folders( $output_folder );
 
 		$this->create_folders();
 		$this->copy_assets();
+		// $this->
 	}
 
 	private function setup_folders( string $output_folder ) : void {
@@ -59,6 +61,7 @@ class Assets_Copier {
 
 	private function copy_assets() : void {
 		$this->copy_files( '__root' );
+		$this->copy_files( 'css' );
 		$this->copy_files( 'components' );
 	}
 
@@ -70,7 +73,9 @@ class Assets_Copier {
 			$filename    = basename( $source_file );
 			$destination = self::get_folder( $sub_folder_name ) . $filename;
 
-			copy( $source_file, $destination );
+			if ( ! file_exists( $destination ) ) {
+				copy( $source_file, $destination );
+			}
 		}
 	}
 

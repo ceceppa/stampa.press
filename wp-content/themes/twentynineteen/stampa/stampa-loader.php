@@ -78,13 +78,17 @@ function register_blocks_render_callback() {
 			'stampa/' . sanitize_title( $block ),
 			[
 				'render_callback' => function( $attributes ) use ( $block ) {
-					$module_file = get_template_directory() . "/modules/${block}.php";
+					$module_file = get_template_directory() . "/stampa/modules/${block}.php";
 
 					if ( file_exists( $module_file ) ) {
 						extract( $attributes, EXTR_SKIP );
 						unset( $attributes );
 
+						ob_start();
+
 						include $module_file;
+
+						return ob_get_clean();
 					}
 				},
 			]
@@ -93,5 +97,5 @@ function register_blocks_render_callback() {
 }
 
 function load_style_editor() {
-	wp_enqueue_style( 'stampa-editor', get_template_directory_uri() . '/stampa/dist/stampa-editor.css', [], '1.0' );
+	wp_enqueue_style( 'stampa-editor', get_template_directory_uri() . '/stampa/css/stampa-editor.css', [], '1.0' );
 }

@@ -1,0 +1,33 @@
+stampa:
+  group: Fields
+  id: wysiwyg
+  label: WYSIWYG
+  tooltip: WYSIWYG Editor (<RichText />)
+  help: https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/rich-text
+  icon: wysiwyg.svg
+  html: '{placeholder}'
+  defaultSize:
+    rows: 3
+    columns: 5
+options:
+  - name: placeholder
+    type: text
+    label: Placeholder
+    value: Write text...
+    inspector: false
+gutenberg:
+  wp_editor: RichText
+  attribute:
+    type: string
+    format: 'string'
+  react:
+    <RichText
+      multiline={true}
+      placeholder="{{stampa.value.placeholder}}"
+      value={attributes.{{stampa.field.name}}}
+      onChange={value => updateAttribute('{{stampa.field.name}}', value)}
+    />
+php:
+  <div class='{{stampa.block_css_class_name}}__{{stampa.field.name}}'>
+    <?php ${{stampa.field.name}} ?>
+  </div>

@@ -26,7 +26,8 @@ options:
     label: Placeholder
     value: Heading
 gutenberg:
-  attribute_type: string
+  attribute:
+    type: string
   react: <{{stampa.value.level}}>
     <textarea
       type="text"

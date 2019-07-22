@@ -58,7 +58,8 @@ options:
       - right bottom
     value: initial
 gutenberg:
-  attribute_type: object
+  attribute:
+    type: object
   wp_components: IconButton
   react:
     <StampaMediaUpload
@@ -67,12 +68,12 @@ gutenberg:
       customClass="{{stampa.value.round}}"
       attributes={attributes}
       updateAttribute={updateAttribute}
+      updateFocusedField={updateFocusedField}
     />
 php: 
   code: <?php if ( isset( ${{stampa.field.name}}->id) ) {
           $object_fit = $__{{stampa.field.name}}->fit;
           $object_position = $__{{stampa.field.name}}->position;
-          ""
           wp_get_attachment_image( ${{stampa.field.name}}->id, '{{stampa.value.size}}', '', [
             'class' => "{$object_fit} {$object_position}"
           ] );

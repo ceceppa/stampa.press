@@ -10,7 +10,7 @@ class JS_Inspector_Control {
 	public function __construct() {
 		$this->load_field_options_boilerplate();
 
-		$this->setup_block_option_blank_defaults();
+		$this->setup_block_option_empty_defaults();
 		$this->setup_block_options();
 
 		Stampa_Replacer::add_single_mapping(
@@ -29,7 +29,7 @@ class JS_Inspector_Control {
 		$this->boilerplate_code .= $code;
 	}
 
-	private function setup_block_option_blank_defaults() : void {
+	private function setup_block_option_empty_defaults() : void {
 		Stampa_Replacer::add_json_mapping( 'block.options.allFields', [] );
 		Stampa_Replacer::add_single_mapping( 'block.options.content', '' );
 		Stampa_Replacer::add_json_mapping( 'gutenberg.attributes', [] );
@@ -39,7 +39,9 @@ class JS_Inspector_Control {
 	private function setup_block_options() {
 		$this->setup_block_icon();
 
-		$has_background_option = Block_Data::get_block_option( 'hasBackgroundOption' );
+		$background_option     = Block_Data::get_block_option( 'hasBackgroundOption' );
+		$has_background_option = $background_option === true;
+
 		if ( $has_background_option ) {
 			$this->setup_background_option();
 		}

@@ -9,7 +9,6 @@ class JS_Fields_Code_Generator {
 		$react_code = new Fields_Looper(
 			$fields,
 			[ & $this, 'field_loop_start' ],
-			null,
 			[ & $this, 'get_closing_block_code' ]
 		);
 
@@ -35,10 +34,12 @@ class JS_Fields_Code_Generator {
 		$stampa_field = Fields_Loader::get_field_by_id( $field->id );
 		$is_container = ( $stampa_field['stampa']['container'] ?? null ) == null;
 
+		$code = '{/* ' . $field->name . ' */}';
+
 		if ( $is_container ) {
-			$code = $this->get_container_div_code( $field );
+			$code .= $this->get_container_div_code( $field );
 		} else {
-			$code = $this->get_field_div_code( $field );
+			$code .= $this->get_field_div_code( $field );
 		}
 
 		$code .= $gutenberg['react'] ?? '';
@@ -60,7 +61,7 @@ class JS_Fields_Code_Generator {
 				gridRowEnd: {{stampa.grid_row_end}},
 				gridColumnEnd: {{stampa.grid_column_end}}
 			}}
-			onClick={() => updateFocusedField('$field_name')}
+			onClick={e => updateFocusedField(e, '$field_name')}
 			>
 		";
 	}
@@ -87,7 +88,7 @@ class JS_Fields_Code_Generator {
 				gridRowEnd: {{stampa.grid_row_end}},
 				gridColumnEnd: {{stampa.grid_column_end}}
 			}}
-			onClick={() => updateFocusedField('$field_name')}
+			onClick={e => updateFocusedField(e, '$field_name')}
 		>
 		";
 	}
@@ -107,24 +108,20 @@ class JS_Fields_Code_Generator {
 
 	private function map_js_attributes_data( array $stampa_field, object $field ) : void {
 		$attribute_name = $field->name;
-		$attribute_type = $stampa_field['gutenberg']['attribute_type'] ?? null;
+		$attribute      = $stampa_field['gutenberg']['attribute'] ?? null;
 
-		if ( $attribute_type != null ) {
-			Stampa_Replacer::add_json_mapping(
-				'gutenberg.attributes',
-				[
-					$attribute_name => [
-						'type'    => $attribute_type,
-						'default' => Stampa_Replacer::get_mapping( 'value.' . $attribute_name ),
-					],
-				]
-			);
+		if ( is_array( $attribute ) ) {
+			if ( ! isset( $attribute['default'] ) ) {
+				$attribute['default'] = Stampa_Replacer::get_mapping( 'value.' . $attribute_name );
+			}
+
+			Stampa_Replacer::add_json_mapping( 'gutenberg.attributes', [ $attribute_name => $attribute ] );
 		}
 
-		$this->map_attributes_for_options( $stampa_field, $field );
+		$this->map_attributes_for_field_options( $stampa_field, $field );
 	}
 
-	private function map_attributes_for_options( array $stampa_field, object $field ) : void {
+	private function map_attributes_for_field_options( array $stampa_field, object $field ) : void {
 		$field_name   = $field->name;
 		$field_values = $field->values ?? [];
 

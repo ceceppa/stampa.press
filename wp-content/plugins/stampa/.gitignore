@@ -25,3 +25,5 @@ yarn-error.log*
 .vuepress/dist
 .cachevendor/
 vendor
+.cache
+node_modules

@@ -66,8 +66,7 @@ export default function BlockOptions() {
             target="_blank"
           >
             Dash icon:
-          </a>
-          {' '}
+          </a>{' '}
           (
           <span
             className={`dashicons-before dashicons-${stampaBlockOptions.icon}`}

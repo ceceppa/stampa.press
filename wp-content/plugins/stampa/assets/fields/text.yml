@@ -16,7 +16,8 @@ options:
     value: Write text...
     inspector: false
 gutenberg:
-  attribute_type: string
+  attribute:
+    type: string
   react:
     <textarea
       value={attributes.{{stampa.field.name}}}
