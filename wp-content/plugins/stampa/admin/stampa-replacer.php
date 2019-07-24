@@ -107,7 +107,7 @@ class Stampa_Replacer {
 		 * NOTE: The react MultiSelect components returns an array of objects,
 		 * instead of a simple array, but we only need the "value" part of it.
 	   */
-		$is_multiselect_value = isset( $values[0] ) ? is_array( $values[0] ) : false;
+		$is_multiselect_value = isset( $values[0] ) ? ( is_array( $values[0] ) || is_object( $values[0] ) ) : false;
 		if ( $is_multiselect_value ) {
 			$values = wp_list_pluck( $values, 'value' );
 		}

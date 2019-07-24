@@ -55,6 +55,7 @@ class Assets_Copier {
 
 			if ( ! $folder_exists ) {
 				mkdir( $folder );
+				chmod( $folder, 0777 );
 			}
 		}
 	}
@@ -75,6 +76,8 @@ class Assets_Copier {
 
 			if ( ! file_exists( $destination ) ) {
 				copy( $source_file, $destination );
+
+				chmod( $destination, 0777 );
 			}
 		}
 	}

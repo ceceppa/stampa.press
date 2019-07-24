@@ -17,8 +17,6 @@ class CSS_Code_Generator {
 
 		$output_file = $this->save_css_file();
 		$this->append_to_index_pcss( $output_file );
-
-		new Parcel_Builder( 'pcss' );
 	}
 
 	public function loop_field_start( array $stampa_field, object $field ) {

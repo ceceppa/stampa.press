@@ -1,3 +1,4 @@
 <section class="test-image-new" style="background: url('<?php echo $backgroundImage ?>') no-repeat center / cover ">
-<div class="test-image-new__container"><?php if ( isset( $image->id) ) { $object_fit = $__image->fit; $object_position = $__image->position; wp_get_attachment_image( $image->id, 'full', '', [ 'class' => "{$object_fit} {$object_position}" ] ); } ?></div><!-- container: image -->
+<?php $post = new WP_Query(['post_id' => {{stampa.value.postID}}]);
+while ( $post->have_posts() ) \= $post->the_post(); ?> <div class="test-image-new__post-selector"><h3 class="test-image-new__post-title"> <?php the_title(); ?> </{{stampa.value.le}}></div> <?php endwhile; ?>
 </section>

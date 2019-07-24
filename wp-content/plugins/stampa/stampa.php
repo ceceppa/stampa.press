@@ -27,8 +27,14 @@ class Stampa {
 	public function __construct() {
 		new Styles_Script();
 
+		// add_action( 'rest_api_init', [ & $this, 'init_wp_rest_multiple_posttype_endpoint' ] );
 		add_action( 'rest_api_init', [ & $this, 'register_stampa_endpoints' ] );
 		// add_filter( 'post_row_actions', [ & $this, 'add_quick_generate_block_link' ], 10, 2 );
+	}
+
+	public function init_wp_rest_multiple_posttype_endpoint() {
+		$controller = new \WP_REST_Multiple_PostType_Controller();
+		$controller->register_routes();
 	}
 
 	/**
@@ -41,28 +47,7 @@ class Stampa {
 			array(
 				'methods'             => 'PUT',
 				'callback'            => [ & $this, 'save_and_generate_block' ],
-				'args'                => [
-					'title'         => [
-						'required'    => true,
-						'type'        => 'string',
-						'description' => 'the block title',
-					],
-					'fields'        => [
-						'required'    => false,
-						'type'        => 'object',
-						'description' => 'the block fields',
-					],
-					'block_options' => [
-						'required'    => false,
-						'type'        => 'object',
-						'description' => 'the block options',
-					],
-					'grid'          => [
-						'required'    => true,
-						'type'        => 'object',
-						'description' => 'the grid options',
-					],
-				],
+				'args'                => $this->get_collection_params(),
 				'permission_callback' => function ( $request ) {
 					$params = $request->get_headers();
 					$nonce  = isset( $params['x_wp_nonce'] ) ? join( '', $params['x_wp_nonce'] ) : null;
@@ -71,6 +56,31 @@ class Stampa {
 				},
 			)
 		);
+	}
+
+	private function get_collection_params() {
+		return [
+			'title'         => [
+				'required'    => true,
+				'type'        => 'string',
+				'description' => 'the block title',
+			],
+			'fields'        => [
+				'required'    => false,
+				'type'        => 'object',
+				'description' => 'the block fields',
+			],
+			'block_options' => [
+				'required'    => false,
+				'type'        => 'object',
+				'description' => 'the block options',
+			],
+			'grid'          => [
+				'required'    => true,
+				'type'        => 'object',
+				'description' => 'the grid options',
+			],
+		];
 	}
 
 	/**

@@ -11,7 +11,7 @@ require __DIR__ . '/block-data.php';
 require __DIR__ . '/fields-looper.php';
 require __DIR__ . '/file-saver.php';
 require __DIR__ . '/js-code-generator.php';
-require __DIR__ . '/parcel-builder.php';
+require __DIR__ . '/npm-build.php';
 require __DIR__ . '/stampa-replacer.php';
 require __DIR__ . '/css-code-generator.php';
 require __DIR__ . '/php-code-generator.php';
@@ -25,5 +25,11 @@ class Block_Code_Generator {
 		new JS_Code_Generator();
 		new CSS_Code_Generator();
 		new PHP_Code_Generator();
+
+		$can_run_parcel = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_RUN_PARCEL' );
+
+		if ( $can_run_parcel ) {
+			new NPM_Build();
+		}
 	}
 }

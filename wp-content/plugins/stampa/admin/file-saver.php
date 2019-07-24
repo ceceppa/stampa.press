@@ -63,6 +63,7 @@ class File_Saver {
 
 	public function save_file( string $output_file, string $content ) {
 		file_put_contents( $output_file, $content );
+		chmod( $output_file, 0777 );
 
 		Block_Data::update_md5( $output_file, $this->file_extension );
 	}

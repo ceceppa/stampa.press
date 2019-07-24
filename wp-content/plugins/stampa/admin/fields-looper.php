@@ -53,7 +53,11 @@ class Fields_Looper {
 
 		$selected_values = $field->values ?? [];
 		foreach ( $selected_values as $key => $value ) {
-			Stampa_Replacer::add_single_mapping( 'value.' . $key, $value );
+			if ( is_array( $value ) ) {
+				Stampa_Replacer::add_array_mapping( 'value.' . $key, $value );
+			} else {
+				Stampa_Replacer::add_single_mapping( 'value.' . $key, $value );
+			}
 		}
 	}
 	private function map_field_default_values( array $stampa_field ) : void {

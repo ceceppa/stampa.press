@@ -20,15 +20,9 @@ class JS_Code_Generator {
 		$can_generate_file = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_GENERATE_JS_FILE' );
 
 		if ( $can_generate_file ) {
-			$temp_file   = $this->generate_js_temp_file();
-			$output_file = $this->save_file( $temp_file );
+			$js_code     = $this->generate_js_code();
+			$output_file = $this->save_file( $js_code );
 			$this->append_to_index_js( $output_file );
-		}
-
-		$can_run_parcel = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_RUN_PARCEL' );
-
-		if ( $can_run_parcel ) {
-			new Parcel_Builder( 'js' );
 		}
 	}
 
@@ -87,32 +81,21 @@ class JS_Code_Generator {
 		Stampa_Replacer::add_json_mapping( 'block.style', $grid_style );
 	}
 
-	private function generate_js_temp_file() {
+	private function generate_js_code() {
 		$temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
 
 		$boilerplate_file = STAMPA_REACT_BOILERPLATES_FOLDER . 'block.boilerplate.js';
 		$boilerplate_file = apply_filters( 'stampa/fields-code/boilerplate-file', $boilerplate_file );
 
-		$boilerplate  = file_get_contents( $boilerplate_file );
-		$file_content = Stampa_Replacer::apply_mapping( $boilerplate );
-
-		file_put_contents( $temp_file, $file_content );
-
-		return $temp_file;
+		$boilerplate = file_get_contents( $boilerplate_file );
+		return Stampa_Replacer::apply_mapping( $boilerplate );
 	}
 
-	private function save_file( string $temp_file ) : string {
-		$file_copier = new File_Saver( 'blocks', 'js' );
+	private function save_file( string $code ) : string {
+		$file_saver = new File_Saver( 'blocks', 'js' );
 
-		$output_file = $file_copier->get_output_file();
-
-		$command = sprintf(
-			'prettier %s > %s',
-			$temp_file,
-			$output_file
-		);
-
-		$file_copier->exec_command_and_update_md5( $command, $output_file );
+		$output_file = $file_saver->get_output_file();
+		$file_saver->save_file( $output_file, $code );
 
 		return $output_file;
 	}

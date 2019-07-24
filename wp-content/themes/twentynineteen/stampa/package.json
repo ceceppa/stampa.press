@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "parcel watch index.js & parcel watch index.pcss",
-    "build": "parcel build index.js && parcel build index.pcss"
+    "prettify": "prettier --write blocks/*.js",
+    "build": "parcel build index.js -d dist && parcel build index.pcss -d dist"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,0 +1,12 @@
+npm run --verbose prettify
+
+> stampa-blocks@1.0.0 prettify /var/www/html/wp-content/themes/twentynineteen/stampa
+> prettier --write blocks/*.js
+
+
+npm run --verbose build
+
+> stampa-blocks@1.0.0 build /var/www/html/wp-content/themes/twentynineteen/stampa
+> parcel build index.js -d dist && parcel build index.pcss -d dist
+
+

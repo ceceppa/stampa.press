@@ -36,7 +36,11 @@ options:
   label: Filter by Taxonomy
   inspector: false
 gutenberg:
-  react_start_block: <StampaPostSelector>
+  react_start_block: 
+    <StampaPostSelector
+      postTypes="{{stampa.value.post_types}}"
+      taxonomies="{{stampa.value.taxonomies}}"
+    >
   react_end_block: </StampaPostSelector>
 php:
   code: 

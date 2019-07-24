@@ -8,7 +8,7 @@ class JS_Fields_Code_Generator {
 		$fields     = Block_Data::get_fields();
 		$react_code = new Fields_Looper(
 			$fields,
-			[ & $this, 'field_loop_start' ],
+			[ & $this, 'get_opening_block_code' ],
 			[ & $this, 'get_closing_block_code' ]
 		);
 
@@ -21,7 +21,7 @@ class JS_Fields_Code_Generator {
 		);
 	}
 
-	public function field_loop_start( $stampa_field, $field ) {
+	public function get_opening_block_code( $stampa_field, $field ) {
 		$gutenberg = $stampa_field['gutenberg'] ?? [];
 
 		$this->map_field_grid_position( $field->position );
@@ -157,9 +157,10 @@ class JS_Fields_Code_Generator {
 		Stampa_Replacer::add_json_mapping( 'all_fields_options', [ $field_name => $field_options ] );
 	}
 
-	public function get_closing_block_code( array $gutenberg ) : string {
+	public function get_closing_block_code( array $stampa_field, object $field ) : string {
 		$closing_code = '';
 
+		$gutenberg = $stampa_field['gutenberg'] ?? [];
 		if ( isset( $gutenberg['react_end_block'] ) ) {
 			$closing_code = $gutenberg['react_end_block'];
 		}
