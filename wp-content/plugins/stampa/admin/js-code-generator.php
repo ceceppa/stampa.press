@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Stampa;
 
 require __DIR__ . '/js-code-inspector-controls.php';
@@ -82,8 +85,6 @@ class JS_Code_Generator {
 	}
 
 	private function generate_js_code() {
-		$temp_file = tempnam( sys_get_temp_dir(), 'stampa' ) . '.js';
-
 		$boilerplate_file = STAMPA_REACT_BOILERPLATES_FOLDER . 'block.boilerplate.js';
 		$boilerplate_file = apply_filters( 'stampa/fields-code/boilerplate-file', $boilerplate_file );
 
@@ -109,7 +110,7 @@ class JS_Code_Generator {
 			$index_content = file_get_contents( $index_file );
 		}
 
-		if ( stripos( $index_content, $file_name ) == 0 ) {
+		if ( stripos( $index_content, $file_name ) === false ) {
 			$index_content .= "import './blocks/{$file_name}';" . PHP_EOL;
 
 			$success = file_put_contents( $index_file, $index_content );

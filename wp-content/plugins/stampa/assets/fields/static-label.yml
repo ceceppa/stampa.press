@@ -1,0 +1,22 @@
+stampa:
+  group: Static
+  id: static-label
+  label: Label
+  tooltip: Static <span /> element
+  icon: button.svg
+  defaultSize:
+    rows: 1
+    columns: 3
+options:
+  - name: label
+    type: text
+    label: Label
+    value: Label
+    inspector: 'false'
+gutenberg:
+  focusable: false
+  react:
+    <span>{{stampa.value.label}}</span>
+
+php: "<div class='{{stampa.block_css_class_name}}__{{stampa.field_name}}'><?php echo
+  $block_data['{{stampa.field_name}}'] ?></div>"

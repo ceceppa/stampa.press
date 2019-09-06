@@ -16,11 +16,11 @@ options:
     type: text
     label: Placeholder
     value: Add text...
-    inspector: false
+    inspector: 'false'
   - name: link
     type: text
     label: URL
-    stampa: false 
+    stampa: 'false' 
 gutenberg:
   attribute: 
     type: string

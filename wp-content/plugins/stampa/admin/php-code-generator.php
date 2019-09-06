@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Generate the PHP code
  */
@@ -22,16 +25,12 @@ class PHP_Code_Generator {
 		$this->save_php_file();
 	}
 
-	public function opening_php_code( array $stampa_field, object $field ) {
-		$php_code = $stampa_field['php']['code'] ?? '';
-
-		return $php_code;
+	public function opening_php_code( array $stampa_field ) {
+		return $stampa_field['php']['code'] ?? '';
 	}
 
-	public function closing_php_code( array $stampa_field, object $field ) {
-		$php_code = $stampa_field['php']['end_block'] ?? '';
-
-		return $php_code;
+	public function closing_php_code( array $stampa_field ) {
+		return $stampa_field['php']['end_block'] ?? '';
 	}
 
 	private function save_php_file() : string {
@@ -46,12 +45,13 @@ class PHP_Code_Generator {
 	}
 
 	private function start_section() {
-		$has_background_image   = Block_Data::get_block_option( 'hasBackgroundOption' );
-		$background_image_style = ' style="background: url(\'<?php echo $backgroundImage ?>\') no-repeat center / cover "';
+		$has_background_image   = Block_Data::get_block_option( 'hasBackgroundOption' ) === 'true';
+		$background_image_style = 'style="background: url(\'<?php echo $backgroundImage; ?>\') no-repeat center / cover "';
 
+		$style   = $has_background_image ? $background_image_style : '';
 		$section = sprintf(
-			'<section class="{{stampa.block.className}}"%s>%s',
-			$has_background_image ? $background_image_style : '',
+			'<section class="{{stampa.block.className}}" %s>%s',
+			$style,
 			PHP_EOL
 		);
 

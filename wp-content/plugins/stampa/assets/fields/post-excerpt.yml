@@ -3,7 +3,7 @@ stampa:
   id: post-excerpt
   label: Excerpt
   tooltip: The post excerpt
-  icon: post-selector.svg
+  icon: post-excerpt.svg
   defaultSize:
     columns: 3
     rows: 1

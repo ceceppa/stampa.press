@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Code that handles the generation of the react code
  *
@@ -29,7 +32,7 @@ class Block_Code_Generator {
 		$can_run_parcel = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_RUN_PARCEL' );
 
 		if ( $can_run_parcel ) {
-			new NPM_Build();
+			new NPM_Build( Block_Data::get_sanitized_block_title() );
 		}
 	}
 }

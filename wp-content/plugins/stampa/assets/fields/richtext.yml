@@ -1,20 +1,14 @@
 stampa:
   group: Fields
-  id: wysiwyg
-  label: WYSIWYG
-  tooltip: WYSIWYG Editor (<RichText />)
+  id: richtext
+  label: RichText
+  tooltip: RichText
   help: https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/rich-text
-  icon: wysiwyg.svg
-  html: '{placeholder}'
+  icon: rich-text.svg
+  html: '{field.title}'
   defaultSize:
     rows: 3
     columns: 5
-options:
-  - name: placeholder
-    type: text
-    label: Placeholder
-    value: Write text...
-    inspector: false
 gutenberg:
   wp_editor: RichText
   attribute:
@@ -23,11 +17,11 @@ gutenberg:
   react:
     <RichText
       multiline={true}
-      placeholder="{{stampa.value.placeholder}}"
+      placeholder="{{stampa.field.title}}"
       value={attributes.{{stampa.field.name}}}
       onChange={value => updateAttribute('{{stampa.field.name}}', value)}
     />
 php:
-  <div class='{{stampa.block_css_class_name}}__{{stampa.field.name}}'>
-    <?php ${{stampa.field.name}} ?>
-  </div>
+  code: <div class='{{stampa.block.className}}__{{stampa.field.name}}'>
+      <?php echo ${{stampa.field.name}} ?>
+    </div>

@@ -78,7 +78,9 @@
   margin: 0;
 }
 
-  .toggle-group__label {
+  .toggle-group__button {
+    display: -webkit-box;
+    display: flex;
     background: transparent;
     font-weight: 600;
     color: #191e23;
@@ -89,15 +91,27 @@
     border-bottom: 1px solid var(--stampa-border);
     -moz-text-align-last: left;
          text-align-last: left;
+    -webkit-box-align: center;
+            align-items: center;
     cursor: pointer;
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease
   }
 
-  .toggle-group__label:hover {
+  .toggle-group__button:hover {
       background-color: #f8f9f9;
       background-color: var(--stampa-hover);
     }
+
+  .toggle-group__icon {
+    margin-right: 10px;
+    height: 24px;
+  }
+
+  .toggle-group__label {
+    -webkit-box-flex: 1;
+            flex-grow: 1;
+  }
 
   .toggle-group__arrow {
     float: right;
@@ -114,7 +128,6 @@
       -webkit-transform: rotate(-180deg);
               transform: rotate(-180deg);
     }
-
 .stampa-grid {
   display: -webkit-box;
   display: flex;
@@ -138,6 +151,7 @@
     padding: 0;
     width: 100%;
     background: #333;
+    overflow: visible;
   }
 
 .stampa-grid__content {
@@ -177,7 +191,7 @@
     -webkit-transition: all 0.15 ease;
     transition: all 0.15 ease;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
     -webkit-transition: 0.15s ease;
     transition: 0.15s ease;
     border-color: #e2e4e7;
@@ -186,16 +200,18 @@
     display: flex
   }
 
+.stampa-grid__field::after {
+      text-align: center;
+      max-width: 200px;
+    }
+
 .stampa-grid__field:hover {
-      border: 1px solid #0085ba;
-      border: 1px solid var(--stampa-blue);
+      border-color: #0085ba !important;
+      border-color: var(--stampa-blue) !important;
     }
 
 .stampa-grid__field:hover .stampa-grid__field__type {
         opacity: 1;
-        -webkit-transform: translateX(0);
-                transform: translateX(0);
-        right: 0;
       }
 
 .stampa-grid__field.field-container {
@@ -233,7 +249,7 @@
       position: absolute;
       display: -webkit-box;
       display: flex;
-      right: 35px;
+      right: 0px;
       top: 0;
       padding: 2px 5px;
       -webkit-box-align: center;
@@ -241,9 +257,7 @@
       color: #333;
       text-transform: uppercase;
       pointer-events: none;
-      opacity: 0.8;
-      -webkit-transform: translateX(100%);
-              transform: translateX(100%);
+      opacity: 0.6;
       -webkit-transition: all 0.15s ease;
       transition: all 0.15s ease;
       z-index: 1;
@@ -414,26 +428,32 @@
 .tooltip {
   position: relative
 }
+
 .tooltip::before,
   .tooltip::after {
     opacity: 0;
     pointer-events: none;
   }
+
 .tooltip:hover {
     z-index: 99
   }
+
 .tooltip:hover::before,
     .tooltip:hover::after {
       opacity: 1;
     }
+
 .tooltip:hover::before {
       -webkit-transform: scale(1);
               transform: scale(1);
     }
+
 .tooltip:hover::after {
       -webkit-transform: translate(-50%, 0);
               transform: translate(-50%, 0);
     }
+
 .tooltip::before {
     content: '';
     position: absolute;
@@ -451,6 +471,7 @@
     -webkit-transform: scale(0.7);
             transform: scale(0.7);
   }
+
 .tooltip::after {
     content: attr(data-tooltip);
     display: inline-block;
@@ -463,10 +484,104 @@
     left: 50%;
     -webkit-transform: translate(-50%, 20px);
             transform: translate(-50%, 20px);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    -webkit-filter: drop-shadow(0px 1px 8px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0px 1px 8px rgba(0, 0, 0, 0.5));
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
   }
+
+.tooltip--html {
+    display: grid;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+    position: absolute;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    -webkit-transform: translate(-50%, 20px);
+            transform: translate(-50%, 20px);
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    opacity: 0;
+    left: 50%;
+    top: 100%;
+    -webkit-filter: drop-shadow(0px 1px 8px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0px 1px 8px rgba(0, 0, 0, 0.5));
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 99
+  }
+
+.tooltip--html::before {
+      top: calc(-8px/2);
+    }
+
+.tooltip--html::after {
+      display: none;
+    }
+
+.tooltip--html.top {
+      top: -100%
+    }
+
+.tooltip--html.top::before {
+        top: calc(100% - 8px/2);
+      }
+
+.tooltip--html.grid {
+      padding: 0;
+      grid-gap: 10px;
+    }
+
+.tooltip__row {
+    grid-row: auto / auto;
+    padding: 0 15px
+  }
+
+.tooltip__row.padding-top {
+      padding-top: 10px;
+    }
+
+.tooltip__row.padding-bottom {
+      padding-bottom: 10px;
+    }
+
+.tooltip__right {
+    background: var(--stampa-editor-border-color);
+    color: #000;
+    padding: 5px;
+    -webkit-writing-mode: vertical-rl;
+            writing-mode: vertical-rl;
+    grid-row: 1 / 3;
+    grid-column: 2 / 3;
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+    text-align: center;
+    white-space: pre-wrap;
+    font-size: 12px;
+  }
+
+.has-html-tooltip {
+  position: relative
+}
+
+.has-html-tooltip:hover > .tooltip--html {
+      opacity: 1;
+      -webkit-transform: translate(-50%, 0);
+              transform: translate(-50%, 0)
+    }
+
+.has-html-tooltip:hover > .tooltip--html.top {
+        -webkit-transform: translate(-50%, 100%);
+                transform: translate(-50%, 100%);
+      }
+
+.has-html-tooltip:hover > .tooltip--html::before {
+        opacity: 1;
+        -webkit-transform: scale(1);
+                transform: scale(1);
+      }
 
 .block-options__save {
     text-align: right;
@@ -560,12 +675,11 @@
   .stampa-select__name {
     width: 38%;
     align-self: center;
-
   }
 
 /* for MultiSelect (react-select) */
 
-.stampa-text__label +div, .stampa-text__name +div, .stampa-select__label +div, .stampa-select__name +div {
+.stampa-text__label + div, .stampa-text__name + div, .stampa-select__label + div, .stampa-select__name + div {
       width: 60%;
     }
 
@@ -587,6 +701,7 @@
 .stampa-checkbox .stampa-checkbox__input:checked::before {
         margin: -4px 0 0 -5px;
       }
+
 .hierarchy__list {
   }
   .hierarchy__item {

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Stampa has been created to generate "stand" alone code
  * that runs without this plugins.
@@ -20,15 +23,13 @@
  * │   ├── index.pcss (imports all the styles generated)
  * │   ├── package.json
  * │   └── stampa-loader.php (enqueues the style and scripts generated, renders the blocks generate via PHP)
- *
- * @package stampa
  */
 
 namespace Stampa;
 
 class Assets_Copier {
 	private static $output_folders = [];
-	private static $sub_folders    = [ 'blocks', 'css', 'components', 'modules', 'postcss' ];
+	private static $sub_folders    = [ 'blocks', 'css', 'stampa-components', 'modules', 'postcss' ];
 
 	public function __construct( string $output_folder ) {
 		$this->setup_folders( $output_folder );
@@ -63,7 +64,7 @@ class Assets_Copier {
 	private function copy_assets() : void {
 		$this->copy_files( '__root' );
 		$this->copy_files( 'css' );
-		$this->copy_files( 'components' );
+		$this->copy_files( 'stampa-components' );
 	}
 
 	private function copy_files( string $sub_folder_name ) : void {

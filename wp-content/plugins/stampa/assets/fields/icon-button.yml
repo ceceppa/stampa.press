@@ -1,0 +1,76 @@
+# The Gutenberg block is not using TextareaControl because we
+# don't want specify the "rows" property ("required" by the block)
+stampa:
+  group: Fields
+  id: icon-button
+  label: Icon Button
+  tooltip: Icon Button field
+  icon: button.svg
+  html: 
+    <div class="flex flex--{flex-direction}">
+      <div class="image">
+        <svg class="image-wireframe" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img"
+          aria-hidden="true" focusable="false">
+          <path d="M0,0h24v24H0V0z" fill="none"></path>
+          <path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9
+          2-2v-14c0-1.1-0.9-2-2-2z"></path>
+          <path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z"></path>
+        </svg>
+      </div>
+      {label}
+    </div>
+  defaultSize:
+    rows: 1
+    columns: 2
+options:
+  - name: flex-direction
+    type: select
+    label: Flex Direction
+    value: row
+    values:
+      - column
+      - row
+    inspector: 'false'
+  - name: icon
+    type: image
+    label: Icon
+    attribute_type: object
+    attribute_default: '{}'
+    stampa: 'false'
+  - name: label
+    type: text
+    label: Label
+    value: Label
+  - name: link
+    type: text
+    label: URL
+    stampa: 'false'
+gutenberg:
+  react:
+    <div className="flex flex--{{stampa.value.flex-direction}}">
+      <img 
+        src={attributes.{{stampa.field.name}}__icon.url}
+        alt={attributes.{{stampa.field.name}}__label}
+      />
+      <input
+        type="text"
+        value={attributes.{{stampa.field.name}}__label}
+        placeholder="{{stampa.value.label}}"
+        onChange={e => updateAttribute('{{stampa.field.name}}__label', e.target.value)}
+      />
+    </div>
+php: 
+  code: <a
+          href="<?php echo ${{stampa.field.name}}__link; ?>"
+          class="{{stampa.block.className}}__{{stampa.field.name}}"
+          alt="{{stampa.value.label}}"
+        >
+          <img 
+            class="{{stampa.block.className}}__image"
+            src="<?php echo ${{stampa.field.name}}__icon['url']; ?>"
+            alt="<?php echo esc_attr( ${{stampa.field.name}}__label ); ?>"
+          />
+          <span class="{{stampa.block.className}}__label">
+            <?php echo ${{stampa.field.name}}__label; ?>
+          </span>
+        </a>

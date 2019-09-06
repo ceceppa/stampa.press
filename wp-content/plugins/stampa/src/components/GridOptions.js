@@ -8,6 +8,7 @@ import NumberField from './TextNumberField';
 export default function GridOptions() {
   const store = Store.useStore();
   const showGrid = store.get('gridShow');
+  const showFieldTypeHint = store.get('showFieldTypeHint');
 
   return (
     <div className="grid-options stampa__border--bottom">
@@ -38,6 +39,19 @@ export default function GridOptions() {
           onChange={() => store.set('gridShow')(!showGrid)}
         />
         <span className="stampa-checkbox__label">Show grid:</span>
+      </label>
+
+      {/* Toggle Field Type Hint */}
+      <label htmlFor="showFieldTypeHint" className="stampa-checkbox">
+        <input
+          className="stampa-checkbox__input"
+          type="checkbox"
+          name="showFieldTypeHint"
+          id="showFieldTypeHint"
+          checked={showFieldTypeHint}
+          onChange={() => store.set('showFieldTypeHint')(!showFieldTypeHint)}
+        />
+        <span className="stampa-checkbox__label">Show field type hint:</span>
       </label>
 
       {/* Save & Generate buttons */}

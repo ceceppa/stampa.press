@@ -1,0 +1,15 @@
+stampa:
+  group: Post
+  id: post-time
+  label: Time
+  tooltip: The post time
+  icon: post-time.svg
+  defaultSize:
+    columns: 3
+    rows: 1
+  html: 00:00:00
+php: 
+  code: 
+    <p>
+      <?php the_date(); ?>
+    </p>

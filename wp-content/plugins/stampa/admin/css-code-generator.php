@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Generate the CSS code
  */
@@ -44,7 +47,7 @@ class CSS_Code_Generator {
 			$index_content = file_get_contents( $index_file );
 		}
 
-		if ( stripos( $index_content, $file_name ) == 0 ) {
+		if ( stripos( $index_content, $file_name ) === false ) {
 			$index_content .= "@import './postcss/{$file_name}';" . PHP_EOL;
 
 			$success = file_put_contents( $index_file, $index_content );

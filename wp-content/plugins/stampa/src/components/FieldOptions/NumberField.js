@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function TextField({
+export default function NumberField({
   option,
   selectedValues,
   updateOptionValue,

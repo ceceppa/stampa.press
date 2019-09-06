@@ -31,6 +31,7 @@ export default function Save() {
           rows: store.get('gridRows'),
           gap: store.get('gridGap'),
           rowHeight: store.get('rowHeight'),
+          showFieldTypeHint: store.get('showFieldTypeHint'),
         },
         generate,
       },

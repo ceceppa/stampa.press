@@ -9,6 +9,7 @@ import CheckboxField from './FieldOptions/CheckboxField';
 import TextField from './FieldOptions/TextField';
 import SelectField from './FieldOptions/SelectField';
 import NumberField from './FieldOptions/NumberField';
+// import MediaField from './FieldOptions/MediaField';
 
 import stampa from '../stampa';
 
@@ -42,6 +43,15 @@ const FieldOptions = function(props) {
     activeField = stampa.findFieldByKey(fields, activeFieldKey);
   }
 
+  const updateFieldTitle = useCallback(e => {
+    const fields = store.get('stampaFields');
+    const field = stampa.findFieldByKey(fields, activeFieldKey);
+
+    field.title = e.target.value;
+
+    store.set('stampaFields')(fields);
+  });
+
   const updateFieldName = useCallback(e => {
     const fields = store.get('stampaFields');
     const field = stampa.findFieldByKey(fields, activeFieldKey);
@@ -73,17 +83,38 @@ const FieldOptions = function(props) {
     options = stampaField.options;
   }
 
+  const groupLabel = activeField ? stampaField.label : 'Field';
+
   return (
     <ToggleGroup
-      label="Field Options"
+      label={`${groupLabel} Options`}
       display="block"
       groupClass="field-options"
+      groupIcon={activeField && stampaField.icon}
     >
-      {/* The field "name" */}
+      {/*  Field "title" */}
+      {activeField && !stampaField.container && (
+        <label htmlFor="field-title" className="stampa-text" key="field-title">
+          <span
+            className="stampa-text__label tooltip"
+            data-tooltip="This fields is used for the title attribute"
+          >
+            Field title:
+          </span>
+          <input
+            className="stampa-text__input"
+            type="text"
+            name="field-title"
+            id="field-title"
+            value={activeField.title || ''}
+            onChange={updateFieldTitle}
+          />
+        </label>
+      )}
       {activeField && [
         <label htmlFor="field-name" className="stampa-text" key="field-name">
           <span
-            className="stampa-text__label"
+            className="stampa-text__label tooltip"
             data-tooltip="This fields is used to generate the variable name"
           >
             Field name:
@@ -98,18 +129,21 @@ const FieldOptions = function(props) {
           />
         </label>,
         <hr key="hr-1" className="stampa-hr" />,
+        // Field options
         <h3 key="h3-tag">Options:</h3>,
         options.map(option => {
           const Component = components[option.type];
 
           return (
-            <div className="field-option" key={option.name}>
-              <Component
-                option={option}
-                updateOptionValue={updateOptionValue}
-                selectedValues={activeField.values}
-              />
-            </div>
+            Component && (
+              <div className="field-option" key={option.name}>
+                <Component
+                  option={option}
+                  updateOptionValue={updateOptionValue}
+                  selectedValues={activeField.values}
+                />
+              </div>
+            )
           );
         }),
         <hr key="hr-2" className="stampa-hr" />,

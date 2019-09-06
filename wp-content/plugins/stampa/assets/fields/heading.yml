@@ -4,7 +4,7 @@ stampa:
   label: Heading
   tooltip: Heading
   icon: heading.svg
-  html: <{level}>{placeholder}</{level}>
+  html: <{level}>{field.title}</{level}>
   contentClassName: wp-block-heading
   defaultSize:
     rows: 1
@@ -21,10 +21,6 @@ options:
       - h5
       - h6
     value: h2
-  - name: placeholder
-    type: text
-    label: Placeholder
-    value: Heading
 gutenberg:
   attribute:
     type: string
@@ -32,15 +28,13 @@ gutenberg:
     <textarea
       type="text"
       value={attributes.{{stampa.field.name}}}
-      placeholder="{{stampa.value.placeholder}}"
+      placeholder="{{stampa.field.title}}"
       onChange={e => updateAttribute('{{stampa.field.name}}', e.target.value)}
     />
     </{{stampa.value.level}}>
 php:
-  code: <?php if ( ! empty( ${{stampa.field.name}} ) ) \= ?>
-          <{{stampa.value.level}}
+  code: <{{stampa.value.level}}
             class="{{stampa.block.className}}__{{stampa.field.name}}"
-          >
-            <?php echo ${{stampa.field.name}} ?>
-          </{{stampa.value.level}}>
-        <?php endif; ?>
+        >
+          <?php echo ${{stampa.field.name}}; ?>
+        </{{stampa.value.level}}>

@@ -1,11 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Run npm build
  */
 namespace Stampa;
 
 class NPM_Build {
-	public function __construct() {
+	public function __construct( string $block_name ) {
 		$stampa_path = Assets_Copier::get_folder( '__root' );
 
 		chdir( $stampa_path );
@@ -13,8 +16,12 @@ class NPM_Build {
 		$this->remove_npm_log();
 		$this->npm_install();
 
-		$this->npm_run( 'prettify' );
-		$this->npm_run( 'build' );
+		// exec: npm run prettify / build doesn't work from PHP return error 1?
+		$this->exec( 'prettier --write blocks/' . $block_name . '.js' );
+		$this->exec( 'prettier --write --html-whitespace-sensitivity ignore --parser html modules/' . $block_name . '.php' );
+		$this->exec( 'parcel build index.js -d dist && parcel build index.pcss -d dist' );
+
+		$this->update_md5( $block_name );
 
 		chmod( 'npm.log', 0777 );
 	}
@@ -35,25 +42,37 @@ class NPM_Build {
 		exec( 'npm install >> npm.log' );
 	}
 
-	private function npm_run( string $script ) {
-		$npm_path = $this->get_npm_path();
-
-		$verbose = defined( 'WP_DEBUG' ) && WP_DEBUG ? '--verbose' : '--verbose';
-
-		$command = sprintf( '%s run %s %s', $npm_path, $verbose, $script );
-		$output  = shell_exec( $command );
+	private function exec( string $command ) {
+		exec( $command, $output, $return_value );
 
 		$this->log( $command );
+		$this->log( $return_value );
 		$this->log( $output );
-	}
-
-	private function get_npm_path() {
-		$npm_path = apply_filters( 'stampa/npm-build/path', 'npm' );
-
-		return $npm_path;
 	}
 
 	private function log( $output ) {
 		file_put_contents( 'npm.log', print_r( $output, true ) . PHP_EOL, FILE_APPEND );
+	}
+
+	private function update_md5( string $block_name ) {
+		$folders = [ Assets_Copier::get_folder( 'blocks' ), Assets_Copier::get_folder( 'postcss' ), Assets_Copier::get_folder( 'modules' ) ];
+
+		foreach ( $folders as $folder ) {
+			$file = $this->find_file_in_folder( $folder, $block_name );
+			$this->save_md5( $file );
+		}
+	}
+
+	private function find_file_in_folder( string $folder, string $block_name ) : string {
+		$files = glob( $folder . $block_name . '.{pcss,php,js}', GLOB_BRACE );
+
+		return array_shift( $files );
+	}
+
+	private function save_md5( $file ) {
+		$path_parts = pathinfo( $file );
+		$extension  = $path_parts['extension'];
+
+		Block_Data::update_md5( $file, $extension );
 	}
 }

@@ -75,7 +75,7 @@ class BlockGeneratore extends Stampa {
 
 		mkdir( $output_folder );
 		mkdir( $output_folder . 'blocks' );
-		mkdir( $output_folder . 'components' );
+		mkdir( $output_folder . 'stampa-components' );
 		mkdir( $output_folder . STAMPA_CSS_EXTENSION );
 
 		if ( ! file_exists( STAMPA_MODULE_OUTPUT_FOLDER ) ) {

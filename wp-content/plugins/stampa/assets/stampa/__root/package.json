@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "parcel watch index.js & parcel watch index.pcss",
-    "prettify": "prettier --write blocks/*.js",
+    "prettify": "prettier --write blocks/*.js && prettier --write --html-whitespace-sensitivity ignore --parser html modules/*.php",
     "build": "parcel build index.js -d dist && parcel build index.pcss -d dist"
   },
   "eslintConfig": {
@@ -19,6 +19,7 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
+    "@wordpress/block-library": "^2.6.0",
     "babel-jest": "^24.1.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "parcel-bundler": "^1.12.3",

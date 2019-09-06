@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Stampa;
 
 use Stampa\Assets_Copier;
@@ -20,18 +23,6 @@ class File_Saver {
 		$this->check_if_md5_matchs_record( $output_file );
 
 		return $output_file;
-	}
-
-	public function exec_command_and_update_md5( string $command, string $output_file ) {
-		system( $command, $return_val );
-
-		if ( $return_val > 0 ) {
-			Block_Data::delete_md5( $this->file_extension );
-
-			throw new \Error( 'Command failed: ' . $command );
-		}
-
-		Block_Data::update_md5( $output_file, $this->file_extension );
 	}
 
 	private function check_if_md5_matchs_record( string $output_file ) {
@@ -56,15 +47,14 @@ class File_Saver {
 	}
 
 	private function rename_original_file( string $output_file ) {
-		$new_name = $output_file . date( 'Ymd-His' );
+		$new_name = $output_file . '.' . date( 'Ymd-His' );
 
 		rename( $output_file, $new_name );
 	}
 
 	public function save_file( string $output_file, string $content ) {
 		file_put_contents( $output_file, $content );
-		chmod( $output_file, 0777 );
 
-		Block_Data::update_md5( $output_file, $this->file_extension );
+		chmod( $output_file, 0777 );
 	}
 }

@@ -2,42 +2,54 @@
 
 .wp-block[data-type^='stampa/'] {
   width: 100% !important;
-}
+  max-width: none !important;
 
-.stampa-field {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  transition: box-shadow 0.15s ease, border 0.15s ease;
-
-  &::before,
-  &::after {
-    display: none !important;
-  }
-
-  &.focused {
-    border-color: var(--stampa-editor-stampa-active);
-  }
-
-  &:not(.stampa-field--container):hover {
-    box-shadow: 0 0 0 2px var(--stampa-editor-stampa-active-hover);
-  }
-
-  div {
-    width: 100%;
-    height: 100%;
-    font-size: inherit;
+  .stampa-field {
     margin: 0;
-  }
+    padding: 0;
+    overflow: hidden;
+    transition: box-shadow 0.15s ease, border 0.15s ease;
 
-  .components-base-control__field {
-    margin-bottom: 0;
+    &::before,
+    &::after {
+      display: none !important;
+    }
+
+    &.focused {
+      border-color: var(--stampa-editor-stampa-active);
+    }
+
+    &:not(.stampa-field--container):hover {
+      box-shadow: 0 0 0 2px var(--stampa-editor-stampa-active-hover);
+    }
+
+    .editor-block-list__layout {
+      margin: 0;
+      padding: 0;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100%;
+      font-size: inherit;
+      margin: 0;
+      padding: 0;
+      text-align: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    .components-base-control__field {
+      margin-bottom: 0;
+    }
   }
 }
 
 @import './stampa-editor/input-textarea';
 @import './stampa-editor/image';
 @import './stampa-editor/button';
+@import './stampa-editor/icon-button';
 @import './stampa-editor/wysiwyg';
+@import './stampa-editor/innerblocks';
 @import './stampa-editor/heading';
 @import './stampa-editor/helpers';

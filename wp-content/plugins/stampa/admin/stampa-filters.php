@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Filters
  *
@@ -12,9 +15,9 @@ add_filter( 'stampa_field_option/image/size', __NAMESPACE__ . '\available_image_
 
 function available_post_types( array $field_data ) : array {
 	foreach ( $field_data['options'] as & $option ) {
-		if ( $option['name'] == 'post_types' ) {
+		if ( $option['name'] === 'post_types' ) {
 			$option['values'] = get_available_post_types();
-		} elseif ( $option['name'] == 'taxonomies' ) {
+		} elseif ( $option['name'] === 'taxonomies' ) {
 			$option['values'] = get_available_taxonomies();
 		}
 	}

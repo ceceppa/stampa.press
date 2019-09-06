@@ -302,6 +302,7 @@ function setupFieldStampaData(
     id: draggedFieldId,
     key: `_${shortid.generate()}`,
     name: fieldName,
+    title: sourceField.label,
     group: sourceField.group.toLowerCase(),
     position: {
       startColumn: dragData.column,

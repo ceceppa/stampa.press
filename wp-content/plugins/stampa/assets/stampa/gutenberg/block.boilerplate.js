@@ -3,7 +3,7 @@
  *
  */
 // Stampa Components
-import { StampaMediaUpload } from '../components/stampa-components';
+import { ClassicEdit, StampaMediaUpload, StampaImageOption } from '../stampa-components';
 
 const useCallback = window.React.useCallback;
 const { __ } = wp.i18n;
@@ -17,13 +17,14 @@ const {
   TextControl,
   {{stampa.wp.components}}
 } = wp.components;
-const { Fragment, Component } = wp.element;
+const { Fragment } = wp.element;
 
 const allFieldsOptions = {{stampa.all_fields_options}};
 const fieldOptionsComponents = {
   select: SelectControl,
   checkbox: ToggleControl,
   text: TextControl,
+  image: StampaImageOption,
 };
 let focusedField;
 

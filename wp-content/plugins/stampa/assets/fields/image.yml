@@ -23,15 +23,15 @@ options:
   - name: round
     type: checkbox
     label: Round
-    checked: false
+    checked: 'false'
     value: round
-    inspector: false
+    inspector: 'false'
   - name: size
     type: select
     label: Image size
     tooltip: The image size to use.
     value: full
-    inspector: false
+    inspector: 'false'
   - name: fit
     type: select
     label: Default value for "object-fit"

@@ -23,6 +23,7 @@ const initialState = {
   activeFieldKey: null,
   activeFieldId: null,
   searchFilter: '',
+  showFieldTypeHint: false,
 };
 
 // Create & export a store with an initial value.

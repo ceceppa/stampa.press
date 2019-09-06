@@ -5,7 +5,7 @@ const SimpleSelect = function({ option, updateOptionValue, selectedValues }) {
 
   return (
     <select
-      className="stampa-select__select"
+      className="stampa-select__input"
       name={`field-${option.name}`}
       id={`field-${option.name}`}
       onChange={e => updateOptionValue(e, option.name)}

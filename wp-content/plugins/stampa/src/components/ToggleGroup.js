@@ -14,6 +14,7 @@ export default function toggleGroup({
   display,
   groupClass = null,
   isCollapsed = false,
+  groupIcon = null,
 }) {
   const [collapsed, setCollapsed] = useState(null);
 
@@ -28,11 +29,16 @@ export default function toggleGroup({
   return (
     <div className={`toggle-group ${groupClass || ''}`}>
       <button
-        className={`toggle-group__label stampa__content stampa__border--bottom ${collapsed ? ' collapsed' : ''}`}
+        className={`toggle-group__button stampa__content stampa__border--bottom ${
+          collapsed ? ' collapsed' : ''
+        }`}
         type="button"
         onClick={() => setCollapsed(!collapsed)}
       >
-        {label}
+        {groupIcon && (
+          <img src={groupIcon} alt="" className="toggle-group__icon" />
+        )}
+        <span className="toggle-group__label">{label}</span>
         <span aria-hidden="true" className="toggle-group__arrow">
           <svg
             className={collapsed ? 'collpsed' : undefined}

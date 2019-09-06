@@ -204,7 +204,17 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"stampa-editor/icon-button.pcss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
 },{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"stampa-editor/wysiwyg.pcss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"stampa-editor/innerblocks.pcss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -224,7 +234,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./stampa-editor/variables":"stampa-editor/variables.pcss","./stampa-editor/input-textarea":"stampa-editor/input-textarea.pcss","./stampa-editor/image":"stampa-editor/image.pcss","./stampa-editor/button":"stampa-editor/button.pcss","./stampa-editor/wysiwyg":"stampa-editor/wysiwyg.pcss","./stampa-editor/heading":"stampa-editor/heading.pcss","./stampa-editor/helpers":"stampa-editor/helpers.pcss","_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./stampa-editor/variables":"stampa-editor/variables.pcss","./stampa-editor/input-textarea":"stampa-editor/input-textarea.pcss","./stampa-editor/image":"stampa-editor/image.pcss","./stampa-editor/button":"stampa-editor/button.pcss","./stampa-editor/icon-button":"stampa-editor/icon-button.pcss","./stampa-editor/wysiwyg":"stampa-editor/wysiwyg.pcss","./stampa-editor/innerblocks":"stampa-editor/innerblocks.pcss","./stampa-editor/heading":"stampa-editor/heading.pcss","./stampa-editor/helpers":"stampa-editor/helpers.pcss","_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -252,7 +262,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39963" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34655" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

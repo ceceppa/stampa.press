@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Stampa has been built to be extented using simple yaml files.
  * This gives us max flexibility where we can create and add most
@@ -87,14 +90,18 @@ class Stampa_Replacer {
 				$value = self::get_glued_array( $value );
 			}
 
-			$value = str_replace( '\=', ':', $value );
-			$value = str_replace( "'`", '`', $value );
-			$value = str_replace( '"`', '`', $value );
-			$value = str_replace( '`"', '`', $value );
-
 			$return = str_replace( $special_key, $value, $return );
 			$return = str_replace( $sanitized_special_key, sanitize_title( $value ), $return );
 		}
+
+		return fix_encoding( $return );
+	}
+
+	public static function fix_encoding( string $return ) {
+		$return = str_replace( '\=', ':', $return );
+		$return = str_replace( "'`", '`', $return );
+		$return = str_replace( '"`', '`', $return );
+		$return = str_replace( '`"', '`', $return );
 
 		return $return;
 	}

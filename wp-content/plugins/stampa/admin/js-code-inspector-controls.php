@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Stampa;
 
 use Stampa\Stampa_Replacer;
@@ -40,7 +43,7 @@ class JS_Inspector_Control {
 		$this->setup_block_icon();
 
 		$background_option     = Block_Data::get_block_option( 'hasBackgroundOption' );
-		$has_background_option = $background_option === true;
+		$has_background_option = $background_option === 'true';
 
 		if ( $has_background_option ) {
 			$this->setup_background_option();

@@ -24,7 +24,7 @@ class Test_Assets_Copier extends \WP_UnitTestCase {
 	}
 
 	function test_should_create_the_components_folder() {
-		$components_folder = STAMPA_UNIT_TEST_TEMP_FOLDER . 'components';
+		$components_folder = STAMPA_UNIT_TEST_TEMP_FOLDER . 'stampa-components';
 
 		$this->assertTrue( is_dir( $components_folder ) );
 	}
@@ -72,7 +72,7 @@ class Test_Assets_Copier extends \WP_UnitTestCase {
 
 	function test_should_copy_the_custom_components() {
 		$components = glob( STAMPA_ASSETS_FOLDER . '/components/*.*' );
-		$copied     = glob( Assets_Copier::get_folder( 'components' ) . '*.*' );
+		$copied     = glob( Assets_Copier::get_folder( 'stampa-components' ) . '*.*' );
 
 		$this->assertEquals( count( $components ), count( $copied ) );
 	}

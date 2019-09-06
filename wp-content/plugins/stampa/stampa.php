@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Plugin Name: Stampa
  *
@@ -137,7 +140,8 @@ class Stampa {
 	}
 
 	private function update_block_metadata( int $post_id, array $params ) {
-		$has_fields_key = isset( $params['fields'] ) && is_array( $params['fields'] );
+		$has_fields_key = isset( $params['fields'] ) &&
+											is_array( $params['fields'] );
 
 		if ( ! $has_fields_key ) {
 			$params['fields'] = [];
@@ -148,7 +152,7 @@ class Stampa {
 		$this->apply_filter_and_update_data( $post_id, $params, 'block_options' );
 	}
 
-	private function apply_filter_and_update_data( int $post_id, array $params, string $key ) {
+	private function apply_filter_and_update_data( int $post_id, array $params, string $key ) : void {
 		$values     = $params[ $key ] ?? [];
 		$meta_value = apply_filters( 'stampa/save-block/' . $key, $values );
 

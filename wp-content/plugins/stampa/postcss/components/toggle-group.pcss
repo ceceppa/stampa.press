@@ -1,7 +1,8 @@
 .toggle-group {
   margin: 0;
 
-  &__label {
+  &__button {
+    display: flex;
     background: transparent;
     font-weight: 600;
     color: var(--stampa-dark);
@@ -9,12 +10,22 @@
     border: none;
     border-bottom: 1px solid var(--stampa-border);
     text-align-last: left;
+    align-items: center;
     cursor: pointer;
     transition: all 0.15s ease;
 
     &:hover {
       background-color: var(--stampa-hover);
     }
+  }
+
+  &__icon {
+    margin-right: 10px;
+    height: 24px;
+  }
+
+  &__label {
+    flex-grow: 1;
   }
 
   &__arrow {

@@ -1,0 +1,25 @@
+stampa:
+  group: Fields
+  id: innerblocks
+  label: InnerBlocks
+  tooltip: InnerBlocks
+  help: https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/rich-text
+  icon: wysiwyg.svg
+  html: '{placeholder}'
+  defaultSize:
+    rows: 3
+    columns: 5
+options:
+  - name: placeholder
+    type: text
+    label: Placeholder
+    value: Write text...
+    inspector: false
+gutenberg:
+  wp_editor: InnerBlocks
+  react:
+    <InnerBlocks />
+php:
+  code: <div class='{{stampa.block_css_class_name}}__{{stampa.field.name}}'>
+          <?php $content ?>
+        </div>

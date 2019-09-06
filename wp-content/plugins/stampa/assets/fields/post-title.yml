@@ -3,7 +3,7 @@ stampa:
   id: post-title
   label: Title
   tooltip: The post title
-  icon: post-selector.svg
+  icon: post-title.svg
   defaultSize:
     columns: 3
     rows: 1

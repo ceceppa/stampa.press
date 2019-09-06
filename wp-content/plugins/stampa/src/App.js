@@ -8,7 +8,7 @@ import Grid from './components/Grid';
 
 import Store from './store/store';
 import stampa from './stampa';
-import Hierarchy from './components/Hierarchy';
+// import Hierarchy from './components/Hierarchy';
 
 class App extends Component {
   /**
@@ -26,6 +26,11 @@ class App extends Component {
       store.set('gridGap')(parseInt(blockData.grid.gap));
       store.set('rowHeight')(parseInt(blockData.grid.rowHeight));
       store.set('stampaBlockTitle')(blockData.blockTitle);
+
+      // When saving the data in PHP it converts boolean to "strings"
+      const hint = blockData.grid.showFieldTypeHint;
+      const showFieldTypeHint = hint == null || hint === 'true';
+      store.set('showFieldTypeHint')(showFieldTypeHint);
 
       // PHP returns true/false as string, not as boolean.
       if (blockData.options == null) {

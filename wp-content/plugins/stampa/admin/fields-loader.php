@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Stampa;
 
 use Symfony\Component\Yaml\Yaml;
@@ -45,11 +48,12 @@ class Fields_Loader {
 	private static function load_and_parse_yml_file( string $file ) : array {
 		try {
 			return Yaml::parseFile( $file );
-		} catch ( \Exception $e ) {
+		} catch ( \Exception $exception ) {
 			error_log( 'Invalid YAML file!' );
 			error_log( print_r( $file, true ) );
-			error_log( print_r( $e, true ) );
-			die();
+			error_log( print_r( $exception, true ) );
+
+			die;
 		}
 	}
 
@@ -72,19 +76,20 @@ class Fields_Loader {
 	}
 
 	private static function setup_field_options( array $field, array $options ) {
-		$field_id = $field['id'];
-
-		foreach ( $options as & $option ) {
-			$hide_in_stampa = isset( $option['stampa'] ) && $option['stampa'] == false;
+		$field_id      = $field['id'];
+		$field_options = [];
+		foreach ( $options as $option ) {
+			$option_stampa  = $option['stampa'] ?? null;
+			$hide_in_stampa = $option_stampa === 'false';
 
 			if ( $hide_in_stampa ) {
 				continue;
 			}
 
-			$option = apply_filters( "stampa_field_option/{$field_id}/{$option['name']}", $option );
+			$field_options[] = apply_filters( "stampa_field_option/{$field_id}/{$option['name']}", $option );
 		}
 
-		$field['options'] = $options;
+		$field['options'] = $field_options;
 
 		return $field;
 	}

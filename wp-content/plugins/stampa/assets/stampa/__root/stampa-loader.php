@@ -25,9 +25,8 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_blocks' );
  * NOTE: The Group title can be update as you like, but not the slug.
  *
  * @param array $categories array of block categories.
- * @param mixed $post the current post.
  */
-function register_stampa_blocks_category( $categories, $post ) {
+function register_stampa_blocks_category( $categories ) {
 	return array_merge(
 		$categories,
 		[

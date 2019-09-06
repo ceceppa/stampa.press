@@ -1,0 +1,31 @@
+stampa:
+  group: Fields
+  id: classic_edit
+  label: Classic Edit
+  tooltip: Classic TinyMCE Editor
+  icon: wysiwyg.svg
+  html: '{placeholder}'
+  defaultSize:
+    rows: 3
+    columns: 5
+options:
+  - name: placeholder
+    type: text
+    label: Placeholder
+    value: Write text...
+    inspector: 'false'
+gutenberg:
+  attribute:
+    type: string
+    format: 'string'
+  react:
+    <ClassicEdit
+      fieldName="{{stampa.field.name}}"
+      content={attributes.{{stampa.field.name}}}
+      placeholder="{{stampa.value.placeholder}}"
+      updateAttribute={updateAttribute}
+    />
+php:
+  <div class='{{stampa.block_css_class_name}}__{{stampa.field.name}}'>
+    <?php ${{stampa.field.name}} ?>
+  </div>

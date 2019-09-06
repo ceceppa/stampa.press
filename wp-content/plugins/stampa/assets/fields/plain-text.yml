@@ -1,30 +1,24 @@
 stampa:
   group: Fields
-  id: text
-  label: Text
+  id: plain-text
+  label: Plain Text
   tooltip: Simple text input field. (<PlainText />)
   help: https://github.com/WordPress/gutenberg/tree/master/packages/block-editor/src/components/plain-text
   icon: input.svg
-  html: "{placeholder}"
+  html: "{field.title}"
   defaultSize:
     rows: 3
     columns: 5
-options:
-  - name: placeholder
-    type: text
-    label: Placeholder
-    value: Write text...
-    inspector: false
 gutenberg:
   attribute:
     type: string
   react:
     <textarea
       value={attributes.{{stampa.field.name}}}
-      placeholder="{{stampa.value.placeholder}}"
+      placeholder="{{stampa.field.title}}"
       onChange={e => updateAttribute('{{stampa.field.name}}', e.target.value)}
     />
 php: 
-  <div class="{{stampa.block.className}}__{{stampa.field.name}}">
-    <?php echo ${{stampa.field.name}} ?>
-  </div>
+  code: <p class="{{stampa.block.className}}__{{stampa.field.name}}">
+      <?php echo ${{stampa.field.name}} ?>
+    </p>

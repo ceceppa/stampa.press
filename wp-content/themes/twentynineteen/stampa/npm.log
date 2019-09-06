@@ -1,12 +1,23 @@
-npm run --verbose prettify
+prettier --write blocks/hero*.js
+0
+Array
+(
+    [0] => blocks/hero.js 273ms
+)
 
-> stampa-blocks@1.0.0 prettify /var/www/html/wp-content/themes/twentynineteen/stampa
-> prettier --write blocks/*.js
-
-
-npm run --verbose build
-
-> stampa-blocks@1.0.0 build /var/www/html/wp-content/themes/twentynineteen/stampa
-> parcel build index.js -d dist && parcel build index.pcss -d dist
-
+parcel build index.js -d dist && parcel build index.pcss -d dist
+1
+Array
+(
+    [0] => 🚨  /var/www/html/wp-content/themes/twentynineteen/stampa/stampa-components/ClassicEdit.js:5:23: Cannot resolve dependency '@wordpress/i18n'
+    [1] =>   3 |  */
+    [2] =>   4 | import { Component } from '@wordpress/element';
+    [3] => > 5 | import { __, _x } from '@wordpress/i18n';
+    [4] =>     |                       ^
+    [5] =>   6 | import { BACKSPACE, DELETE, F10 } from '@wordpress/keycodes';
+    [6] =>   7 |
+    [7] =>   8 | const { wp } = window;
+    [8] => 🚨  Error writing to cache: EACCES: permission denied, open '/var/www/html/wp-content/themes/twentynineteen/stampa/.cache/2d/5f4fdc97c1aec9593579143765885f.json'
+    [9] => 🚨  Error writing to cache: EACCES: permission denied, open '/var/www/html/wp-content/themes/twentynineteen/stampa/.cache/b7/4c8f6e0dea718343789c0429bcd4c5.json'
+)
 

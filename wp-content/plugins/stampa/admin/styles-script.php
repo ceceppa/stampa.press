@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Plugin Name: Stampa
  *
@@ -49,7 +52,7 @@ class Styles_Script {
 	public function enqueue_styles() {
 		wp_enqueue_style( 'stampa-app-style', plugins_url( 'dist/style.css', STAMPA_PLUGIN_PATH ), [ 'wp-block-library' ], STAMPA_VERSION );
 
-		wp_enqueue_style( 'stampa-gutenberg-styles', plugins_url( 'dist/stampa-editor.css', STAMPA_PLUGIN_PATH ), [], STAMPA_VERSION );
+		wp_enqueue_style( 'stampa-gutenberg-styles', plugins_url( 'assets/stampa/css/stampa-editor.css', STAMPA_PLUGIN_PATH ), [], STAMPA_VERSION );
 	}
 
 	public function register_app_script() : void {
@@ -82,11 +85,11 @@ class Styles_Script {
 	}
 
 	private function get_block_data( int $post_id ) : array {
-		global $pagenow;
+		$pagenow = GLOBALS['pagenow'];
 
-		$is_stampa_post_type = $pagenow == 'post.php' &&
+		$is_stampa_post_type = $pagenow === 'post.php' &&
 														$post_id &&
-														get_post_type( $post_id ) == 'stampa-block';
+														get_post_type( $post_id ) === 'stampa-block';
 
 		$block_data = [];
 		if ( $is_stampa_post_type ) {
@@ -103,17 +106,15 @@ class Styles_Script {
 	}
 
 	/**
-	 * Replace the default editor with Stampa App.
+	 * NOTE: Don't know why this event is more than once when editing... 3 times...
 	 *
-	 * Don't know why this event is more than once when editing... 3 times...
+	 * @param bool   $replace    Whether to replace the editor. Default false.
+	 * @param object $post Post object.
 	 *
-	 * @param boolean $replace    Whether to replace the editor. Default false.
-	 * @param object  $post Post object.
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function replace_wp_editor( $replace, $post ) : bool {
-		global $pagenow;
+		$pagenow = $GLOBALS['pagenow'];
 
 		if ( $post->post_type === 'stampa-block' ) {
 			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );

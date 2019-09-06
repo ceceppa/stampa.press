@@ -1,0 +1,15 @@
+stampa:
+  group: Post
+  id: post-comments
+  label: Comments
+  tooltip: The post comments
+  icon: post-comments.svg
+  defaultSize:
+    columns: 3
+    rows: 1
+  html: 00:00:00
+php: 
+  code: 
+    <p>
+      <?php the_date(); ?>
+    </p>

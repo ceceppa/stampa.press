@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Loop the given fields array and its children elements
  */
@@ -30,11 +33,12 @@ class Fields_Looper {
 		foreach ( $fields as $field ) {
 			$stampa_field = Fields_Loader::get_field_by_id( $field->id );
 
-			if ( empty( $stampa_field ) ) {
+			if ( count( $stampa_field ) === 0 ) {
 				throw new \Exception( 'Stampa field not found: ' . $field->id );
 			}
 
 			Stampa_Replacer::add_single_mapping( 'field.name', $field->name );
+			Stampa_Replacer::add_single_mapping( 'field.title', $field->title ?? '' );
 			$this->map_field_values( $stampa_field, $field );
 
 			$field_code .= call_user_func( $this->opening_block_code, $stampa_field, $field );
@@ -90,7 +94,9 @@ class Fields_Looper {
 
 	private function remove_field_values_mapping( object $field ) : void {
 		$values = $field->values ?? [];
-		foreach ( $values as $key => $value ) {
+		$keys   = array_keys( $values );
+
+		foreach ( $keys as $key ) {
 			Stampa_Replacer::remove_mapping( 'value.' . $key );
 		}
 	}

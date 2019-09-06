@@ -15,6 +15,8 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   let fieldHTML = stampaField.html || '';
   let fieldClassName = stampaField.fieldClassName || '';
 
+  fieldHTML = fieldHTML.replace('{field.title}', field.title);
+
   const values = field.values || [];
   for (let option of stampaField.options) {
     if (option && option.name) {
@@ -42,7 +44,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   /**
    * The 'no-drop' class is added externally via JS,
    * so the re-render cause the class to be lost
-  */
+   */
   useEffect(() => {
     const fieldGroup = stampa.getDraggedFieldGroup();
     const fieldId = stampa.getDraggedFieldId();
@@ -153,7 +155,10 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   /**
    * Data saved with PHP using json_encode gets converted to string, but we need numbers...
    */
-  const gridArea = `${+field.position.startRow} / ${+field.position.startColumn} / ${+field.position.endRow + +field.position.startRow} / ${+field.position.endColumn + +field.position.startColumn}`;
+  const gridArea = `${+field.position.startRow} / ${+field.position
+    .startColumn} / ${+field.position.endRow +
+    +field.position.startRow} / ${+field.position.endColumn +
+    +field.position.startColumn}`;
 
   const activeBlock = store.get('activeFieldKey');
   const activeClass = activeBlock == field.key ? 'active' : '';
@@ -161,7 +166,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   /**
    * Ignore the resizing & dragging class if I'm dragging anything in
    * my container
-  */
+   */
   if (field.container == 1 && (resizingClass.length || draggingClass.length)) {
     const draggedFieldGroup = stampa.getDraggedFieldGroup();
 
@@ -177,10 +182,15 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
     gap: (field.values && field.values.gap) || store.get('gridGap'),
   };
 
+  const tooltipPosition = stampaField.container ? 'top' : '';
+  const showFieldTypeHint = store.get('showFieldTypeHint');
+  const tooltipClass =
+    showFieldTypeHint || stampaField.container ? '' : 'has-html-tooltip';
+
   return (
     <div
       draggable="true"
-      className={`stampa-grid__field
+      className={`stampa-grid__field ${tooltipClass}
       stampa-field--${field.id} ${activeClass} ${resizingClass} ${fieldClassName} ${draggingClass} ${noDropClass}`}
       ref={ref}
       onDragStart={dragMe}
@@ -191,14 +201,31 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
       }}
       onClick={setAsActive}
     >
-      <div className="stampa-grid__field__type">
-        {stampaField.container && <span>{field.name}</span>}
-        {!stampaField.container &&
-          (<img src={field.icon} aria-hidden="true" draggable="false" />, (
-            <span>{field.id}</span>
-          ))}
+      <div
+        className={`tooltip tooltip--html grid ${tooltipPosition}`}
+        aria-hidden="true"
+      >
+        <span className="tooltip__row padding-top" aria-hidden="true">
+          {field.title}
+        </span>
+        <strong className="tooltip__row padding-bottom" aria-hidden="true">
+          <i>${field.name}</i>
+        </strong>
+        <span
+          className="tooltip__right"
+          aria-hidden="true"
+          dangerouslySetInnerHTML={{
+            __html: stampaField.label.replace(' ', '<br/>'),
+          }}
+        ></span>
       </div>
-      {stampaField.container &&
+      {showFieldTypeHint && (
+        <div className="stampa-grid__field__type">
+          <img src={stampaField.icon} aria-hidden="true" draggable="false" />
+          <span>{stampaField.label}</span>
+        </div>
+      )}
+      {stampaField.container && (
         <Grid
           gridColumns={+fieldGridPosition.columns}
           gridRows={+fieldGridPosition.rows}
@@ -209,13 +236,14 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
           parentField={field}
           draggable={true}
           useClassName="is-container"
-        />}
-      {stampaField.container == null &&
+        />
+      )}
+      {stampaField.container == null && (
         <div
           dangerouslySetInnerHTML={{ __html: fieldHTML }}
           className={`stampa-grid__field__content ${contentClassName}`}
-        />}
-
+        />
+      )}
       <div
         className="stampa-grid__field__resizer stampa-grid__field__resizer--width"
         draggable="true"
