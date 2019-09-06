@@ -1,0 +1,24 @@
+{
+  "plugins": {
+    "precss": {},
+    "postcss-preset-env": "",
+    "postcss-for": {},
+    "postcss-pxtorem": {
+      "rootValue": 16,
+      "unitPrecision": 5,
+      "propList": [
+        "font",
+        "font-size",
+        "line-height",
+        "letter-spacing",
+        "width",
+        "max-width"
+      ],
+      "selectorBlackList": [],
+      "replace": true,
+      "mediaQuery": false,
+      "minPixelValue": 0
+    },
+    "postcss-extend":{},
+  }
+}

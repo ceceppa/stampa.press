@@ -1,0 +1,68 @@
+/**
+ * Variables
+ *
+ * Usage: 
+ * var(--variable-name);
+ * var(--variable-name, 0.3s);
+ * var(--variable-name, var(--other-variable));
+ * transition: var(--transition);
+ */
+
+:root {
+  /* TEXT */
+  --font: sans-serif;
+  --heading-font: serif;
+  --font-size: 16px;
+  --line-height: 1.3;
+
+  /* COLOURS */
+  --white: #ffffff;
+  --black: #000000;
+  --overlay: #f8f8f8;
+
+  --facebook-blue:  #3b5998;
+  --twitter-blue:   #00aced;
+  --linkedin-blue:  #007bb6;
+  --google-red:     #dd4b39;
+  --pinterest-red:  #cb2027;
+  --youtube-red:    #ff0000;
+  --flickr-pink:    #ff0084;
+
+  /* CONTAINER */
+  --container-gutter: 20px;
+  --container-width: 1280;
+
+  /* MISC */
+  --transition: 0.2s;
+  --letter-spacing: 2px;
+  --border-radius: 2px;
+  --z-index-menu: 90;
+  --z-index-modal: 100;
+}
+
+/**
+ * Custom media query syntax
+ *
+ * - XS screen (> 576px)
+ * - SM screen (577px > 768px)
+ * - MD screen (769px > 1024px)
+ * - LG screen (1025px > 1280px)
+ * - XL screen (1281px >)
+ *
+ * These can be used in media queries, e.g.
+ * @media (--max-sm) {
+ * }
+ */
+ @custom-media --max-xs (max-width: 576px); /* <= 36em */
+ @custom-media --max-sm (max-width: 768px); /* <= 48em */
+ @custom-media --max-md (max-width: 1024px); /* <= 64em */
+ @custom-media --max-lg (max-width: 1280px); /* <= 80em */
+ 
+ @custom-media --min-xs (min-width: 577px); /* > 36em */
+ @custom-media --min-sm (min-width: 769px); /* > 48em */
+ @custom-media --min-md (min-width: 1025px); /* > 64em */
+ @custom-media --min-lg (min-width: 1281px); /* > 80em */
+  
+/* custom media breakpoint for touch screen devices. */
+@custom-media --touch (pointer: coarse);
+  

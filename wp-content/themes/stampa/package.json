@@ -1,0 +1,31 @@
+{
+  "name": "semplice",
+  "version": "1.0.0",
+  "description": "A Clean and Simple Starter Theme for WordPress",
+  "scripts": {
+    "dev": "npm run parcel:watch & npm run watch:svg & npm run watch:dist",
+    "build": "npm run svg:sprite & npm run parcel:build",
+    "watch:svg": "watch 'npm run svg:sprite' svg",
+    "watch:dist": "watch --interval=1 'npm run theme:version' dist",
+    "parcel:watch": "export PARCEL_NOTIFIER_LEVEL=error && parcel watch -d dist styles/*.pcss index.js",
+    "parcel:build": "parcel -d dist build *.pcss index.js",
+    "svg:sprite": "svg-sprite --symbol --svg-xmldecl=false --dest=dist svg/*.svg",
+    "theme:version": "NEW_VALUE=$(date +'%s') && sed -i -r \"s/(define.*'SEMPLICE_THEME_VERSION'),(.*)/\\1, '$NEW_VALUE' );/\" functions.php"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "parcel": "^1.12.3",
+    "parcel-plugin-notifier": "^1.0.0",
+    "postcss": "^7.0.17",
+    "postcss-extend": "^1.0.5",
+    "postcss-for": "^2.1.1",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-pxtorem": "^4.0.1",
+    "precss": "^4.0.0",
+    "sass": "^1.22.10",
+    "svg-sprite": "^1.5.0",
+    "watch": "^1.0.2"
+  },
+  "author": "Ceceppa",
+  "license": "MIT"
+}

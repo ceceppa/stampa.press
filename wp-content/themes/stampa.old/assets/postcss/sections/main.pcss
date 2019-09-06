@@ -1,0 +1,32 @@
+/**
+ * Main page content - bit between the header and footer.
+ * .main__section is intended for full width page sections.
+ */
+
+.main {
+  position: relative;
+  min-height: 100vh;
+
+  &__section {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+
+    @media (--max-sm) {
+      padding: 40px 0; 
+    }
+
+    &--no-padding {
+      padding: 0;
+    }
+
+    &--margin {
+      margin: 80px 0;
+
+      @media (--max-sm) {
+        margin: 40px 0; 
+      }
+    }
+  }
+}

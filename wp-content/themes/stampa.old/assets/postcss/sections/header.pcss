@@ -1,0 +1,17 @@
+/**
+ * Header
+ */
+
+.header {
+  position: relative;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: var(--z-index-menu);
+  transition: all var(--transition);
+  box-shadow: 0 -2rem 1.5rem 1.5rem var(--colour-black-opaque);
+  
+  &__burger {
+    @extend .burger;
+  }
+}

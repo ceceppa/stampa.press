@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset name="Ceceppa's Ruleset">
+  <description>A custom set of rules for a WordPress development</description>
+
+  <!-- Don't worry about files that don't contain any code -->
+  <rule ref="Internal.NoCodeFound">
+    <severity>0</severity>
+  </rule>
+
+  <!-- Internal exceptions (often occur on minified files) -->
+  <rule ref="Internal.Tokenizer.Exception">
+    <severity>0</severity>
+  </rule>
+
+  <rule ref="Squiz.PHP.CommentedOutCode"/>
+  <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+
+  <rule ref="WordPress">
+    <!-- Yoda conditions, people often forget. -->
+    <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+
+    <!-- Disable alignment https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties#genericformattingmultiplestatementalignment -->
+    <exclude name="Generic.Formatting.MultipleStatementAlignment" />
+    <exclude name="WordPress.Arrays.MultipleStatementAlignment" />
+
+    <!-- Redundant comments are useless/confusing -->
+    <exclude name="Squiz.Commenting.FunctionComment.Missing" />
+    <exclude name="Squiz.Commenting.FileComment.Missing" />
+    <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+
+    <rule ref="WordPress.PHP.DiscouragedFunctions.Discouraged">
+       <severity>0</severity>
+    </rule>
+
+  </rule>
+</ruleset>

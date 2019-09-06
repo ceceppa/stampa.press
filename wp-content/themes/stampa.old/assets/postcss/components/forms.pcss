@@ -1,0 +1,49 @@
+/**
+ * Custom Gravity Form styles
+ */
+
+// This option is used by GF, when setting field visibility to "Hidden"
+.gfield_visibility_hidden {
+  display: none !important;
+}
+
+.gform {
+  &_wrapper {
+    ul {
+      @extend .no-list;
+    }
+  }
+}
+
+.validation_message {
+  font-size: 14px;
+}
+
+.gfield {
+
+  &_error {
+
+    .validation_message {
+      color: red
+    }
+  }
+}
+
+select,
+textarea,
+input[type='url'],
+input[type='tel'],
+input[type='text'],
+input[type='email'],
+input[type='search'],
+input[type='number'],
+input[type='password'] {
+
+  .gfield_error & {
+    border-color: red
+  }
+}
+
+.gform_ajax_spinner {
+  @extend .spinner;
+}

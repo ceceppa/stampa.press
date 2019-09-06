@@ -1,0 +1,55 @@
+/*--------------------------------------------------------------
+# https://www.colourlovers.com/palette/92095/Giant_Goldfish
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+# Element resets
+--------------------------------------------------------------*/
+@import './reset/normalize';
+@import './reset/base';
+@import './reset/forms';
+@import './reset/links';
+@import './reset/media';
+@import './reset/outline';
+@import './reset/tables';
+@import './reset/text';
+@import './utility/a11y';
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+  display: flex;
+  background: var(--stampa-theme-blue);
+  color: var(--stampa-theme-hero-text);
+  align-items: center;
+
+  .admin-bar & {
+    top: 20px;
+  }
+
+  .menu-menu-container {
+    align-self: flex-end;
+  }
+
+  .menu {
+    list-style-type: none;
+    display: flex;
+  }
+
+  li {
+    margin: 0 10px;
+  }
+
+  &__logo {
+    flex-grow: 1;
+  }
+}
+
+@import '../../stampa/index';

@@ -1,0 +1,49 @@
+.hero {
+  background: #5bb2dc;
+  color: #fff;
+  padding-top: 40px;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__heading,
+  &__intro {
+    text-align: center;
+  }
+
+  &__heading {
+    font-weight: lighter;
+    font-size: 72px;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__intro {
+    font-size: 32px;
+    font-weight: normal;
+  }
+
+  &__container {
+    display: flex;
+  }
+
+  &__github {}
+
+  &__docs {}
+
+  &__tryme {}
+
+  &__twitter {}
+
+  &__intro {}
+
+  img {
+    height: 48px;
+    width: 48px;
+  }
+
+  input {
+    width: 90%;
+  }
+}

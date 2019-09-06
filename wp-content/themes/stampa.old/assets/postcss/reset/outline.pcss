@@ -1,0 +1,21 @@
+/**
+ * Focusable elements outline resets.
+ */
+
+a,
+input,
+button,
+select,
+textarea,
+[tabindex]:not([tabindex='-1']){
+    cursor: pointer;
+
+    &:focus {
+        outline: 1px dashed rgba(0,0,0,0.5);
+        outline-offset: 1px;
+
+        @media (--touch) {
+            outline: none !important;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="93Digital Ruleset">
+  <description>A custom set of rules to check for a 93Digital WordPress project</description>
+
+  <!-- Don't worry about files that don't contain any code -->
+  <rule ref="Internal.NoCodeFound">
+    <severity>0</severity>
+  </rule>
+
+  <!-- Internal exceptions (often occur on minified files) -->
+  <rule ref="Internal.Tokenizer.Exception">
+    <severity>0</severity>
+  </rule>
+
+  <rule ref="Squiz.PHP.CommentedOutCode"/>
+  <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+
+  <rule ref="WordPress">
+
+    <!-- Yoda conditions, people often forget. -->
+    <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+
+    <rule ref="WordPress.PHP.DiscouragedFunctions.Discouraged">
+       <severity>0</severity>
+    </rule>
+
+  </rule>
+</ruleset>

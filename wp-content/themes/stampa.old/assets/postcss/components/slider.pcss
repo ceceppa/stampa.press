@@ -1,0 +1,35 @@
+/**
+ * TinySlider styling.
+ */
+
+.slider {
+  position: relative;
+
+  & > * {
+    transition: opacity var(--transition);
+  }
+
+  &__reel {
+    display: flex;
+  }
+
+  &.loading {
+    height: 0;
+    padding-bottom: 50%;
+    @extend .spinner;
+
+    & > * {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+
+  .tns-liveregion {
+    display: none;
+  }
+  
+  .tns-outer {
+    position: relative;
+    overflow: hidden;
+  }
+}
