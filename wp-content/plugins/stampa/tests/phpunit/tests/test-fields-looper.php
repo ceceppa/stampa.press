@@ -72,7 +72,7 @@ class Test_Fields_Looper extends \WP_UnitTestCase {
 		->method( 'test_closing_block_code' )
 		->with( $this->equalTo( $stampa_field ), $field[0] );
 
-		new Fields_Looper( $field, function(){}, function() {}, [ & $observer, 'test_closing_block_code' ] );
+		new Fields_Looper( $field, function(){}, [ & $observer, 'test_closing_block_code' ] );
 	}
 
 	function test_nested_fields() {

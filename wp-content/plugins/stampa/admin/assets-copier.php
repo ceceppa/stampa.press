@@ -36,7 +36,6 @@ class Assets_Copier {
 
 		$this->create_folders();
 		$this->copy_assets();
-		// $this->
 	}
 
 	private function setup_folders( string $output_folder ) : void {
@@ -71,9 +70,10 @@ class Assets_Copier {
 		$source_folder = STAMPA_ASSETS_FOLDER . $sub_folder_name;
 		$source_files  = glob( $source_folder . '/{,.}[!.,!..]*', GLOB_MARK | GLOB_BRACE );
 
+		$destination_folder = self::get_folder( $sub_folder_name );
 		foreach ( $source_files as $source_file ) {
 			$filename    = basename( $source_file );
-			$destination = self::get_folder( $sub_folder_name ) . $filename;
+			$destination = $destination_folder . $filename;
 
 			if ( ! file_exists( $destination ) ) {
 				copy( $source_file, $destination );
@@ -88,8 +88,8 @@ class Assets_Copier {
 
 		if ( empty( $folder_name ) ) {
 			throw new \Exception( 'Invalid subfolder name' );
-
 		}
+
 		return $folder_name;
 	}
 }

@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stampa;
+namespace Stampa\Script;
 
-class Styles_Script {
+use Stampa\Fields_Loader;
+
+class Script {
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', [ & $this, 'enqueue_styles' ], 99 );
+		add_action( 'admin_enqueue_scripts', [ & $this, 'register_app_script' ], 99 );
 	}
 
 	public function register_app_script() : void {
@@ -39,7 +41,7 @@ class Styles_Script {
 	}
 
 	private function get_block_data( int $post_id ) : array {
-		$pagenow = GLOBALS['pagenow'];
+		$pagenow = $GLOBALS['pagenow'];
 
 		$is_stampa_post_type = $pagenow === 'post.php' &&
 														$post_id &&
@@ -60,4 +62,4 @@ class Styles_Script {
 	}
 }
 
-new Styles_Script();
+new Script();
