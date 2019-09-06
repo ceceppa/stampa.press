@@ -94,7 +94,7 @@ class Stampa_Replacer {
 			$return = str_replace( $sanitized_special_key, sanitize_title( $value ), $return );
 		}
 
-		return fix_encoding( $return );
+		return self::fix_encoding( $return );
 	}
 
 	public static function fix_encoding( string $return ) {

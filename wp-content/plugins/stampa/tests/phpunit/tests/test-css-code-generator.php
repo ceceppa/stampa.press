@@ -1,8 +1,8 @@
 <?php
 use Stampa\Block_Data;
 use function Stampa\Test\JS_Inspector\create_fieds_test_post_with_fields;
-use Stampa\CSS_Generator;
 use Stampa\Assets_Copier;
+use Stampa\CSS_Code_Generator;
 
 require_once __DIR__ . '/helpers.php';
 

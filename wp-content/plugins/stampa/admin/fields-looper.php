@@ -94,11 +94,12 @@ class Fields_Looper {
 
 	private function remove_field_values_mapping( object $field ) : void {
 		$values = $field->values ?? [];
-		$keys   = array_keys( $values );
+		var_dump( $values );
+		die;
+		$keys = array_keys( $values );
 
 		foreach ( $keys as $key ) {
 			Stampa_Replacer::remove_mapping( 'value.' . $key );
 		}
 	}
-
 }

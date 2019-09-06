@@ -1,12 +1,16 @@
 {
+  "name": "ceceppa/stampa",
+  "description": "Generate Gutenberg blocks in 60 seconds or less",
+  "type": "library",
+  "license": "MIT",
   "require": {
-    "sempro/phpunit-pretty-print": "^1.0",
     "symfony/yaml": "^4.3"
   },
   "require-dev": {
+    "sempro/phpunit-pretty-print": "^1.0",
     "phpunit/phpunit": "^7.1"
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit --colors=always"
   }
 }

@@ -18,7 +18,10 @@ define( 'STAMPA_REACT_BOILERPLATES_FOLDER', __DIR__ . '/assets/stampa/gutenberg/
 
 require __DIR__ . '/vendor/autoload.php';
 
-require __DIR__ . '/admin/styles-script.php';
+require __DIR__ . '/admin/styles.php';
+require __DIR__ . '/admin/scripts.php';
+require __DIR__ . '/admin/stampa-custom-post-type.php';
+require __DIR__ . '/admin/replace-wp-editor.php';
 require __DIR__ . '/admin/fields-loader.php';
 require __DIR__ . '/admin/block-code-generator.php';
 require __DIR__ . '/admin/stampa-filters.php';
@@ -28,8 +31,6 @@ require __DIR__ . '/admin/stampa-filters.php';
  */
 class Stampa {
 	public function __construct() {
-		new Styles_Script();
-
 		// add_action( 'rest_api_init', [ & $this, 'init_wp_rest_multiple_posttype_endpoint' ] );
 		add_action( 'rest_api_init', [ & $this, 'register_stampa_endpoints' ] );
 		// add_filter( 'post_row_actions', [ & $this, 'add_quick_generate_block_link' ], 10, 2 );
