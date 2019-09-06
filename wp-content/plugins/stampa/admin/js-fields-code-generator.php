@@ -56,8 +56,8 @@ class JS_Fields_Code_Generator {
 		$field_name = $field->name;
 
 		$values           = $field->values ?? [];
-		$template_columns = trim( str_repeat( '1fr ', $values->columns ) );
-		$template_rows    = trim( str_repeat( '1fr ', $values->rows ) );
+		$template_columns = trim( str_repeat( '1fr ', (int) $values->columns ) );
+		$template_rows    = trim( str_repeat( '1fr ', (int) $values->rows ) );
 		$gap              = $values->gap;
 
 		$on_click = $this->get_on_click_code( $field );
@@ -123,7 +123,7 @@ class JS_Fields_Code_Generator {
 		];
 
 		foreach ( $position_data as $key => $position ) {
-			Stampa_Replacer::add_single_mapping( $key, $position );
+			Stampa_Replacer::add_single_mapping( $key, (string) $position );
 		}
 	}
 

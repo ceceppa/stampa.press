@@ -71,8 +71,8 @@ class JS_Code_Generator {
 		$height     = intval( $row_height ) * intval( $rows );
 
 		// Can't use "repeat" property -.-, why????
-		$template_columns = str_repeat( '1fr ', $columns );
-		$template_rows    = str_repeat( '1fr ', $rows );
+		$template_columns = str_repeat( '1fr ', (int) $columns );
+		$template_rows    = str_repeat( '1fr ', (int) $rows );
 		$grid_style       = [
 			'display'             => 'grid',
 			'gridTemplateColumns' => $template_columns,
