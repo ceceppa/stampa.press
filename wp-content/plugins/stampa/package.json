@@ -16,8 +16,8 @@
   "scripts": {
     "test": "jest",
     "docs:build": "vuepress build",
-    "dev": "parcel watch src/index.js & parcel watch postcss/style.pcss & parcel watch postcss/stampa-editor.pcss -d assets/stampa/css",
-    "build": "parcel build src/index.js && parcel build postcss/style.pcss && parcel build postcss/stampa-editor.pcss -d assets/stampa/css"
+    "dev": "parcel watch react-app/index.js postcss/style.pcss & parcel watch postcss/stampa-editor.pcss -d assets-to-copy/css",
+    "build": "parcel build react-app/index.js && parcel build postcss/stampa-editor.pcss -d assets-to-copy/css"
   },
   "eslintConfig": {
     "extends": "react-app"

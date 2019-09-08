@@ -214,6 +214,7 @@
   }
 
 .stampa-field--wysiwyg {
+    border: 1px solid rgb(141, 150, 160, 0.2);
     border: 1px solid var(--stampa-editor-border-color);
   }
   .stampa-field .the-html >div {

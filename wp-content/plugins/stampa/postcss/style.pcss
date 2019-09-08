@@ -20,12 +20,17 @@ body.post-type-stampa-block.is-stampa-app {
     display: none;
   }
 
+  #wpbody-content,
   #wpcontent {
     padding: 0;
   }
 
-  #wpbody-content > *:not(.stampa-app) {
+  #wpbody-content>*:not(.stampa-app) {
     display: none !important;
+  }
+
+  #wpfooter {
+    display: none;
   }
 }
 
@@ -35,4 +40,13 @@ body.post-type-stampa-block.is-stampa-app {
 
 .stampa--gray {
   color: var(--stampa-border);
+}
+
+.menu-icon-stampa-block {
+  .wp-menu-image {
+    img {
+      width: 90%;
+      padding: 0 !important;
+    }
+  }
 }

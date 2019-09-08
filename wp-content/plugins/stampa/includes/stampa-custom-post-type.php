@@ -19,6 +19,7 @@ function register_stampa_blocks_cpt() : void {
 		'show_in_nav_menus' => true,
 		'show_ui'           => true,
 		'menu_position'     => 90,
+		'menu_icon'         => STAMPA_PLUGIN_URL . 'svg/stampa.svg',
 		'supports'          => [ 'title' ],
 		'labels'            => [
 			'add_new'      => __( 'Add New Block', 'stampa' ),

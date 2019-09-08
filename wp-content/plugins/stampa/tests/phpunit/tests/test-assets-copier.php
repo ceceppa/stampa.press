@@ -106,7 +106,7 @@ class Test_Assets_Copier extends \WP_UnitTestCase {
 		$temp_folder_name = $this->stampa_temp_folder . uniqid() . '/';
 		new Assets_Copier( $temp_folder_name );
 
-		$components_to_copy = glob( STAMPA_ASSETS_FOLDER . '/stampa-components/*.*' );
+		$components_to_copy = glob( STAMPA_ASSETS_TO_COPY_FOLDER . '/stampa-components/*.*' );
 		$components_copied  = glob( Assets_Copier::get_folder( 'stampa-components' ) . '*.*' );
 
 		$this->assertEquals( count( $components_to_copy ), count( $components_copied ) );

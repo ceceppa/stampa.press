@@ -75,25 +75,23 @@
       overflow: visible;
       position: relative;
 
-      > .stampa-grid__field__type {
+      >.stampa-grid__field__type {
         left: 50%;
         top: -2px;
-        transform: translate(-50%, -80%);
+        transform: translate(-50%, -100%);
         white-space: nowrap;
         width: auto;
-        opacity: 0;
         right: auto;
         pointer-events: none;
       }
 
-      > .stampa-grid__field__resizer--height {
+      >.stampa-grid__field__resizer--height {
         bottom: -3px;
       }
 
       &:hover {
-        > .stampa-grid__field__type {
+        >.stampa-grid__field__type {
           opacity: 1;
-          transform: translate(-50%, -100%);
         }
       }
     }
@@ -148,8 +146,7 @@
     &.active {
       border-color: var(--stampa-active);
 
-      &:hover {
-      }
+      &:hover {}
     }
 
     &__content {

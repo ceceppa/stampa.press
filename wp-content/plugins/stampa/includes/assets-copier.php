@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Stampa has been created to generate "stand" alone code
  * that runs without this plugins.
  * So, in order to give all this freedom we need to copy
- * some of the assets file stored in assets/stampa in the
+ * some of the assets file stored in assets-to-copy in the
  * theme folder.
  *
  * We're going to create the following folder structure inside
@@ -67,7 +67,7 @@ class Assets_Copier {
 	}
 
 	private function copy_files( string $sub_folder_name ) : void {
-		$source_folder = STAMPA_ASSETS_FOLDER . $sub_folder_name;
+		$source_folder = STAMPA_ASSETS_TO_COPY_FOLDER . $sub_folder_name;
 		$source_files  = glob( $source_folder . '/{,.}[!.,!..]*', GLOB_MARK | GLOB_BRACE );
 
 		$destination_folder = self::get_folder( $sub_folder_name );

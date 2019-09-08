@@ -27,13 +27,13 @@ class Fields_Loader {
 	}
 
 	private static function load_fields() {
-		$fields = glob( STAMPA_FOLDER . '/assets/fields/*.yml' );
+		$fields = glob( STAMPA_FOLDER . '/fields/*.yml' );
 
 		foreach ( $fields as $file ) {
 			$field = self::load_and_parse_yml_file( $file );
 
 			// "Adjust" the path for the images by prepending the plugin URL.
-			$svg_path                = plugins_url( 'assets/svg/', STAMPA_PLUGIN_PATH );
+			$svg_path                = plugins_url( 'svg/', STAMPA_PLUGIN_PATH );
 			$field['stampa']['icon'] = $svg_path . $field['stampa']['icon'];
 
 			self::add_field(

@@ -63,7 +63,7 @@ class Test_JS_Code_Generator extends \WP_UnitTestCase {
 	}
 
 	function test_should_compile_the_js_file() {
-		$post_id = create_inspector_test_post();
+		create_inspector_test_post();
 
 		define( 'STAMPA_RUN_PARCEL', true );
 		new JS_Code_Generator();
@@ -80,6 +80,7 @@ class Test_JS_Code_Generator extends \WP_UnitTestCase {
 		);
 
 		$output_folder = Assets_Copier::get_folder( '__root' );
+		var_dump( $output_folder );
 		$this->assertTrue( file_exists( $output_folder . 'dist/index.js' ) );
 	}
 }

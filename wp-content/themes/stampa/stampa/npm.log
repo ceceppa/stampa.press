@@ -1,0 +1,18 @@
+prettier --write blocks/hero.js
+127
+Array
+(
+)
+
+prettier --write --html-whitespace-sensitivity ignore --parser html modules/hero.php
+127
+Array
+(
+)
+
+parcel build index.js -d dist && parcel build index.pcss -d dist
+127
+Array
+(
+)
+

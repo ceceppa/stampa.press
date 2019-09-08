@@ -56,6 +56,9 @@ export default function GridOptions() {
 
       {/* Save & Generate buttons */}
       <SaveBlock />
+
+      {/* Toast Message */}
+      <div className="toast-message"></div>
     </div>
   );
 }
