@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 export default function ButtonDeleteField({ deleteActiveField }) {
+  console.info(deleteActiveField);
   return (
     <button
       name="delete-field"

@@ -32046,7 +32046,12 @@ var initialState = {
   activeFieldKey: null,
   activeFieldId: null,
   searchFilter: '',
-  showFieldTypeHint: false
+  showFieldTypeHint: false,
+  toast: {
+    message: 'null',
+    button1: null,
+    button2: null
+  }
 }; // Create & export a store with an initial value.
 
 var _default = (0, _undux.createConnectedStore)(initialState, null);
@@ -32277,6 +32282,7 @@ var _default = {
    * This function is used by both FieldOptions & App.js
    */
   deleteActiveField: function deleteActiveField(store) {
+    console.info(store);
     var confirm = window.confirm('Are you sure?');
 
     if (confirm) {
@@ -32638,6 +32644,43 @@ function NumberField(_ref) {
     onChange: updateValue
   }));
 }
+},{"react":"node_modules/react/index.js","../store/store":"react-app/store/store.js"}],"react-app/components/ToastMessage.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _store = _interopRequireDefault(require("../store/store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+var ToastMessage = function ToastMessage(props) {
+  var store = _store.default.useStore();
+
+  var toast = store.get('toast');
+  var visibleClass = toast.message ? 'visible' : '';
+  return _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", {
+    className: "toast-overlay ".concat(visibleClass)
+  }), _react.default.createElement("div", {
+    className: "toast-message ".concat(visibleClass)
+  }, _react.default.createElement("span", {
+    className: "toast-message__label"
+  }, "Message goes here"), _react.default.createElement("button", {
+    className: "button button-link-delete"
+  }, "Yes"), _react.default.createElement("button", {
+    className: "button"
+  }, "No")));
+};
+
+var _default = _react.default.memo(ToastMessage);
+
+exports.default = _default;
 },{"react":"node_modules/react/index.js","../store/store":"react-app/store/store.js"}],"react-app/components/GridOptions.js":[function(require,module,exports) {
 "use strict";
 
@@ -32653,6 +32696,8 @@ var _store = _interopRequireDefault(require("../store/store"));
 var _Save = _interopRequireDefault(require("./BlockOptions/Save"));
 
 var _TextNumberField = _interopRequireDefault(require("./TextNumberField"));
+
+var _ToastMessage = _interopRequireDefault(require("./ToastMessage"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32707,11 +32752,9 @@ function GridOptions() {
     }
   }), _react.default.createElement("span", {
     className: "stampa-checkbox__label"
-  }, "Show field type hint:")), _react.default.createElement(_Save.default, null), _react.default.createElement("div", {
-    className: "toast-message"
-  }));
+  }, "Show field type hint:")), _react.default.createElement(_Save.default, null), _react.default.createElement(_ToastMessage.default, null));
 }
-},{"react":"node_modules/react/index.js","../store/store":"react-app/store/store.js","./BlockOptions/Save":"react-app/components/BlockOptions/Save.js","./TextNumberField":"react-app/components/TextNumberField.js"}],"react-app/components/BlockOptions.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../store/store":"react-app/store/store.js","./BlockOptions/Save":"react-app/components/BlockOptions/Save.js","./TextNumberField":"react-app/components/TextNumberField.js","./ToastMessage":"react-app/components/ToastMessage.jsx"}],"react-app/components/BlockOptions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32813,6 +32856,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function ButtonDeleteField(_ref) {
   var deleteActiveField = _ref.deleteActiveField;
+  console.info(deleteActiveField);
   return _react.default.createElement("button", {
     name: "delete-field",
     type: "button",
@@ -41769,12 +41813,8 @@ var FieldOptions = function FieldOptions(props) {
     field.values[name] = e.target.value;
     store.set('stampaFields')(fields);
   });
-  /**
-   * Delete the active block
-   */
-
-  var deleteactiveField = (0, _react.useCallback)(function () {
-    _stampa.default.deleteactiveField(store);
+  var deleteActiveField = (0, _react.useCallback)(function () {
+    _stampa.default.deleteActiveField(store);
   });
   var options = [];
   var hasOptions = stampaField && Array.isArray(stampaField.options);
@@ -41840,7 +41880,7 @@ var FieldOptions = function FieldOptions(props) {
     key: "add-delete-buttons",
     className: "block-options__save"
   }, _react.default.createElement(_ButtonDeleteField.default, {
-    deleteactiveField: deleteactiveField
+    deleteActiveField: deleteActiveField
   }))], !activeField && _react.default.createElement("p", {
     className: "stampa--gray"
   }, "No block selected"));
@@ -43547,7 +43587,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35919" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46301" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -14,7 +14,7 @@ class Script {
 	public function register_app_script() : void {
 		$data = $this->get_stampa_localized_data();
 
-		wp_register_script( 'stampa-app-script', plugins_url( 'dist/index.js', STAMPA_PLUGIN_PATH ), [], STAMPA_VERSION, true );
+		wp_register_script( 'stampa-app-script', plugins_url( 'dist/react-app/index.js', STAMPA_PLUGIN_PATH ), [], STAMPA_VERSION, true );
 		wp_localize_script( 'stampa-app-script', 'stampa', $data );
 		wp_enqueue_script( 'stampa-app-script' );
 	}

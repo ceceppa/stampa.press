@@ -4,6 +4,7 @@ import Store from '../store/store';
 
 import SaveBlock from './BlockOptions/Save';
 import NumberField from './TextNumberField';
+import ToastMessage from './ToastMessage';
 
 export default function GridOptions() {
   const store = Store.useStore();
@@ -58,7 +59,7 @@ export default function GridOptions() {
       <SaveBlock />
 
       {/* Toast Message */}
-      <div className="toast-message"></div>
+      <ToastMessage />
     </div>
   );
 }

@@ -24,6 +24,11 @@ const initialState = {
   activeFieldId: null,
   searchFilter: '',
   showFieldTypeHint: false,
+  toast: {
+    message: 'null',
+    button1: null,
+    button2: null,
+  },
 };
 
 // Create & export a store with an initial value.

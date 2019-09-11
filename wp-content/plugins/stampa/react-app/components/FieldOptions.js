@@ -70,11 +70,8 @@ const FieldOptions = function(props) {
     store.set('stampaFields')(fields);
   });
 
-  /**
-   * Delete the active block
-   */
-  const deleteactiveField = useCallback(() => {
-    stampa.deleteactiveField(store);
+  const deleteActiveField = useCallback(() => {
+    stampa.deleteActiveField(store);
   });
 
   let options = [];
@@ -149,7 +146,7 @@ const FieldOptions = function(props) {
         <hr key="hr-2" className="stampa-hr" />,
         <div key="add-delete-buttons" className="block-options__save">
           {/* <ButtonAddCustomOption /> */}
-          <ButtonDeleteField deleteactiveField={deleteactiveField} />
+          <ButtonDeleteField deleteActiveField={deleteActiveField} />
         </div>,
       ]}
       {!activeField && <p className="stampa--gray">No block selected</p>}

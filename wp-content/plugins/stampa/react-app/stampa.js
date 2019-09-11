@@ -115,6 +115,7 @@ export default {
    * This function is used by both FieldOptions & App.js
    */
   deleteActiveField: store => {
+    console.info(store);
     const confirm = window.confirm('Are you sure?');
 
     if (confirm) {
@@ -137,7 +138,10 @@ export default {
       str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
 
-    return str.replace(/\W/g, '_').replace(/\s+/g, '_').replace(/^\d+/g, '');
+    return str
+      .replace(/\W/g, '_')
+      .replace(/\s+/g, '_')
+      .replace(/^\d+/g, '');
   },
   findFieldByKey(fields, fieldKey) {
     for (let field of fields) {
