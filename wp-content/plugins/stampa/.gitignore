@@ -27,3 +27,4 @@ yarn-error.log*
 vendor
 .cache
 node_modules
+dist
