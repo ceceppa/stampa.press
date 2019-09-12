@@ -36,6 +36,7 @@
 
 .stampa__left,
   .stampa__right {
+    background: #fff;
     background: var(--stampa-white);
     width: 300px;
     min-width: 300px;
@@ -44,10 +45,12 @@
   }
 
 .stampa__left {
+    border-right: 1px solid #e2e4e7;
     border-right: 1px solid var(--stampa-border);
   }
 
 .stampa__right {
+    border-left: 1px solid #e2e4e7;
     border-left: 1px solid var(--stampa-border);
   }
 
@@ -62,6 +65,7 @@
   }
 
 .stampa__border--bottom {
+    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--stampa-border);
   }
 
@@ -79,9 +83,11 @@
     display: flex;
     background: transparent;
     font-weight: 600;
+    color: #191e23;
     color: var(--stampa-dark);
     width: 100%;
     border: none;
+    border-bottom: 1px solid #e2e4e7;
     border-bottom: 1px solid var(--stampa-border);
     -moz-text-align-last: left;
          text-align-last: left;
@@ -93,6 +99,7 @@
   }
 
   .toggle-group__button:hover {
+      background-color: #f8f9f9;
       background-color: var(--stampa-hover);
     }
 
@@ -194,7 +201,7 @@
     }
 
 .stampa-grid__field:hover {
-      border-color: var(--stampa-blue) !important;
+      border-color: var(--stampa-blue);
     }
 
 .stampa-grid__field:hover .stampa-grid__field__type {
@@ -281,7 +288,9 @@
       border-color: var(--stampa-active)
     }
 
-.stampa-grid__field.active:hover {}
+.stampa-grid__field.active:hover {
+        border-color: var(--stampa-active);
+      }
 
 .stampa-grid__field__content {
       padding: 0;
@@ -371,6 +380,10 @@
       margin-right: 15px;
       opacity: 0.4;
     }
+
+  .grid-options >*.no-divider::after {
+        display: none;
+      }
 
   .grid-options .stampa-number,
   .grid-options .stampa-checkbox {
@@ -591,6 +604,7 @@
     padding: 10px
   }
   .stampa-fields__item:hover {
+      background: #f8f9f9;
       background: var(--stampa-hover);
     }
   .stampa-fields__image {
@@ -668,6 +682,7 @@
  * conflicts with this one, and I don't like using !important
  */
 .stampa-checkbox .stampa-checkbox__input {
+      border: 2px solid #6c7781;
       border: 2px solid var(--stampa-checkbox-border);
       border-radius: 2px;
 
@@ -682,6 +697,7 @@
   .hierarchy__item {
     margin: 0;
     padding: 10px;
+    border: 1px solid #e2e4e7;
     border: 1px solid var(--stampa-border);
     cursor: move;
   }
@@ -705,7 +721,10 @@
     align-content: center;
     -webkit-box-align: center;
             align-items: center;
-    pointer-events: none
+    pointer-events: none;
+    z-index: 10;
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease
   }
   .toast-message::after {
       display: none;
@@ -714,6 +733,7 @@
       -webkit-transform: translate(-50%, 0);
               transform: translate(-50%, 0);
       opacity: 1;
+      pointer-events: auto;
     }
   .toast-message__label {
       margin-right: 20px;
@@ -726,14 +746,20 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
     background: rgba(0, 0, 0, 0.2);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    opacity: 0
+    opacity: 0;
+    z-index: 1;
+    -webkit-transition: opacity 0.15s ease;
+    transition: opacity 0.15s ease;
+    height: 0;
+    width: 0
   }
   .toast-overlay.visible {
       opacity: 1;
+      height: 100%;
+      width: 100%;
     }
 /*  @import '../node_modules/react-sortable-tree/style.css'; */
 

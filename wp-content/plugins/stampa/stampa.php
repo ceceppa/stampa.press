@@ -21,6 +21,7 @@ define( 'STAMPA_REACT_BOILERPLATES_FOLDER', __DIR__ . '/assets-to-copy/gutenberg
 
 require __DIR__ . '/vendor/autoload.php';
 
+require __DIR__ . '/includes/errors-handler.php';
 require __DIR__ . '/includes/styles.php';
 require __DIR__ . '/includes/scripts.php';
 require __DIR__ . '/includes/stampa-custom-post-type.php';

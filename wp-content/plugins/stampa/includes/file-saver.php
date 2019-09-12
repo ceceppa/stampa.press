@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stampa;
 
+use Exception;
 use Stampa\Assets_Copier;
 use Stampa\Block_Data;
 
@@ -53,7 +54,11 @@ class File_Saver {
 	}
 
 	public function save_file( string $output_file, string $content ) {
-		file_put_contents( $output_file, $content );
+		$saved = file_put_contents( $output_file, $content );
+
+		if ( ! $saved ) {
+			throw new Exception( 'Cannot save ' . $output_file );
+		}
 
 		chmod( $output_file, 0777 );
 	}

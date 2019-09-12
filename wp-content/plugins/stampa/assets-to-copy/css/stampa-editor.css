@@ -10,6 +10,7 @@
     background: transparent;
     height: 100%;
     border-radius: 0;
+    border: 1px solid rgb(141, 150, 160, 0.2);
     border: 1px solid var(--stampa-editor-border-color)
   }
   .stampa-field input:hover, .stampa-field textarea:hover {
@@ -28,6 +29,7 @@
   .stampa-field--image {
     position: relative;
     overflow: hidden;
+    border: 1px solid rgb(141, 150, 160, 0.2);
     border: 1px solid var(--stampa-editor-border-color)
   }
   .stampa-field--image.wireframe {
@@ -89,6 +91,7 @@
       }
   .stampa-field--image.round .image {
         position: relative;
+        border: 1px solid rgb(141, 150, 160, 0.2);
         border: 1px solid var(--stampa-editor-border-color);
         border-radius: 50%;
         overflow: hidden;
@@ -214,6 +217,7 @@
   }
 
 .stampa-field--wysiwyg {
+    border: 1px solid rgb(141, 150, 160, 0.2);
     border: 1px solid var(--stampa-editor-border-color);
   }
   .stampa-field .the-html >div {

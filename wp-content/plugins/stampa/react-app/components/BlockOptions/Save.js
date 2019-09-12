@@ -45,7 +45,17 @@ export default function Save() {
         setSavingState(false);
       },
       error: data => {
-        alert('Something went wrong :(');
+        const toastData = store.get('toast');
+
+        toastData.message = `<p><strong>Something went wrong:(</strong></p><p>${data.responseJSON.message}</p>`;
+        toastData.button1 = 'Ok';
+        toastData.button1Callback = () => {
+          toastData.message = null;
+          store.set('toast')(toastData);
+        };
+        toastData.button2 = null;
+        store.set('toast')(toastData);
+
         setSavingState(false);
       },
     });

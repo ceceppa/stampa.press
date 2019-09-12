@@ -25,9 +25,11 @@ const initialState = {
   searchFilter: '',
   showFieldTypeHint: false,
   toast: {
-    message: 'null',
+    message: null,
     button1: null,
+    button1Callback: null,
     button2: null,
+    button2Callback: null,
   },
 };
 

@@ -74,7 +74,12 @@ class Rest_API {
 
 		$generate_code = isset( $params['generate'] );
 		if ( $generate_code ) {
-			new Block_Code_Generator( $post_id );
+			$code_generator = new Block_Code_Generator( $post_id );
+			$status         = $code_generator->get_status();
+
+			if ( is_wp_error( $status ) ) {
+				return $status;
+			}
 		}
 
 		return [

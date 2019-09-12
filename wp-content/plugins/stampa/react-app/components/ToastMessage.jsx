@@ -10,9 +10,23 @@ const ToastMessage = function(props) {
     <Fragment>
       <div className={`toast-overlay ${visibleClass}`}></div>
       <div className={`toast-message ${visibleClass}`}>
-        <span className="toast-message__label">Message goes here</span>
-        <button className="button button-link-delete">Yes</button>
-        <button className="button">No</button>
+        <span
+          className="toast-message__label"
+          dangerouslySetInnerHTML={{ __html: toast.message }}
+        />
+        {toast.button1 && (
+          <button
+            className="button button-link-delete"
+            onClick={toast.button1Callback}
+          >
+            {toast.button1}
+          </button>
+        )}
+        {toast.button2 && (
+          <button className="button" onClick={toast.button2Callback}>
+            {toast.button2}
+          </button>
+        )}
       </div>
     </Fragment>
   );

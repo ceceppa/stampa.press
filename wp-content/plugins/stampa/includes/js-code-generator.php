@@ -7,6 +7,7 @@ namespace Stampa;
 require __DIR__ . '/js-code-inspector-controls.php';
 require __DIR__ . '/js-fields-code-generator.php';
 
+use Exception;
 use Stampa\Fields_Loader;
 use Stampa\Block_Data;
 use Stampa\Stampa_Replacer;
@@ -23,9 +24,9 @@ class JS_Code_Generator {
 		$can_generate_file = ! defined( 'STAMPA_PHPUNIT' ) || defined( 'STAMPA_GENERATE_JS_FILE' );
 
 		if ( $can_generate_file ) {
-			$js_code     = $this->generate_js_code();
-			$output_file = $this->save_file( $js_code );
-			$this->append_to_index_js( $output_file );
+				$js_code     = $this->generate_js_code();
+				$output_file = $this->save_file( $js_code );
+				$this->append_to_index_js( $output_file );
 		}
 	}
 

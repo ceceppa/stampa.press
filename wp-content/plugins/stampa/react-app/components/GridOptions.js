@@ -43,7 +43,7 @@ export default function GridOptions() {
       </label>
 
       {/* Toggle Field Type Hint */}
-      <label htmlFor="showFieldTypeHint" className="stampa-checkbox">
+      <label htmlFor="showFieldTypeHint" className="stampa-checkbox no-divider">
         <input
           className="stampa-checkbox__input"
           type="checkbox"

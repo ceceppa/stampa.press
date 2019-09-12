@@ -62,7 +62,7 @@
     }
 
     &:hover {
-      border-color: var(--stampa-blue) !important;
+      border-color: var(--stampa-blue);
 
       .stampa-grid__field__type {
         opacity: 1;
@@ -146,7 +146,9 @@
     &.active {
       border-color: var(--stampa-active);
 
-      &:hover {}
+      &:hover {
+        border-color: var(--stampa-active);
+      }
     }
 
     &__content {

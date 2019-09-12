@@ -115,10 +115,12 @@ export default {
    * This function is used by both FieldOptions & App.js
    */
   deleteActiveField: store => {
-    console.info(store);
-    const confirm = window.confirm('Are you sure?');
+    const toastData = store.get('toast');
 
-    if (confirm) {
+    toastData.message = 'Are you sure?';
+    toastData.button1 = 'Yes';
+    toastData.button2 = 'No';
+    toastData.button1Callback = () => {
       const activeFieldKey = store.get('activeFieldKey');
       const fields = store
         .get('stampaFields')
@@ -126,7 +128,15 @@ export default {
 
       store.set('stampaFields')(fields);
       store.set('activeFieldKey')(null);
-    }
+
+      toastData.button2Callback();
+    };
+
+    toastData.button2Callback = () => {
+      toastData.message = null;
+      store.set('toast')(toastData);
+    };
+    store.set('toast')(toastData);
   },
   sanitizeVariableName: function(str) {
     str = str.toLowerCase();
