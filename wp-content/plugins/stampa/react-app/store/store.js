@@ -30,6 +30,7 @@ const initialState = {
     button1Callback: null,
     button2: null,
     button2Callback: null,
+    autoHide: false,
   },
 };
 

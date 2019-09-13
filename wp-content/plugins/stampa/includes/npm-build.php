@@ -7,6 +7,8 @@ declare(strict_types=1);
  */
 namespace Stampa;
 
+use Exception;
+
 class NPM_Build {
 	public function __construct( string $block_name ) {
 		$stampa_path = Assets_Copier::get_folder( '__root' );
@@ -20,6 +22,7 @@ class NPM_Build {
 		$this->exec( 'prettier --write blocks/' . $block_name . '.js' );
 		$this->exec( 'prettier --write --html-whitespace-sensitivity ignore --parser html modules/' . $block_name . '.php' );
 		$this->exec( 'parcel build index.js -d dist && parcel build index.pcss -d dist' );
+		$this->exec( 'npm run build' );
 
 		$this->update_md5( $block_name );
 
@@ -39,7 +42,11 @@ class NPM_Build {
 			return;
 		}
 
-		exec( 'npm install >> npm.log' );
+		exec( 'npm install > npm.log 2>&1', $output, $return_value );
+
+		if ( $return_value > 0 ) {
+			throw new Exception( '"npm install" command failed' );
+		}
 	}
 
 	private function exec( string $command ) {

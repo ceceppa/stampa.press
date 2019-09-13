@@ -16,3 +16,13 @@ Array
 (
 )
 
+npm run build
+1
+Array
+(
+    [0] => 
+    [1] => > stampa-blocks@1.0.0 build /var/www/html/wp-content/themes/stampa/stampa
+    [2] => > parcel build index.js -d dist && parcel build index.pcss -d dist
+    [3] => 
+)
+

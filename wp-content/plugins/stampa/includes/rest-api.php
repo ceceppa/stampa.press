@@ -73,9 +73,11 @@ class Rest_API {
 		$this->update_block_metadata( $post_id, $params );
 
 		$generate_code = isset( $params['generate'] );
+		$message       = __( 'Block saved successfully', 'stampa' );
 		if ( $generate_code ) {
 			$code_generator = new Block_Code_Generator( $post_id );
 			$status         = $code_generator->get_status();
+			$message        = __( 'Block generated successfully', 'stampa' );
 
 			if ( is_wp_error( $status ) ) {
 				return $status;
@@ -83,8 +85,9 @@ class Rest_API {
 		}
 
 		return [
-			'ID'   => $post_id,
-			'link' => admin_url( 'post.php?post=' . $post_id . '&action=edit' ),
+			'ID'      => $post_id,
+			'link'    => admin_url( 'post.php?post=' . $post_id . '&action=edit' ),
+			'message' => $message,
 		];
 	}
 

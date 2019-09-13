@@ -1,30 +1,65 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Store from '../store/store';
+
+let showOverlay = true;
+
+/**
+ * When doing the autohide you can see the message disapper while
+ * the element is sliding up, and that looks very glitchy.
+ * So we're using a local variable to make the animation better again.
+ */
+let latestMessage = null;
+let autoHideTiemout = null;
 
 const ToastMessage = function(props) {
   const store = Store.useStore();
-  const toast = store.get('toast');
-  const visibleClass = toast.message ? 'visible' : '';
+  const toastData = store.get('toast');
+  const visibleClass = toastData.message ? 'visible' : '';
+  const overlayVisibleClass = toastData.message && showOverlay ? 'visible' : '';
+
+  useEffect(() => {
+    if (toastData.autoHide) {
+      toastData.autoHide = false;
+      showOverlay = false;
+      latestMessage = toastData.message;
+
+      clearTimeout(autoHideTiemout);
+      autoHideTiemout = setTimeout(() => {
+        toastData.message = null;
+        showOverlay = true;
+
+        store.set('toast')(toastData);
+
+        setTimeout(() => {
+          latestMessage = null;
+        }, 200);
+      }, 3000);
+
+      store.set('toast')(toastData);
+    }
+  });
 
   return (
     <Fragment>
-      <div className={`toast-overlay ${visibleClass}`}></div>
+      <div className={`toast-overlay ${overlayVisibleClass}`}></div>
       <div className={`toast-message ${visibleClass}`}>
         <span
           className="toast-message__label"
-          dangerouslySetInnerHTML={{ __html: toast.message }}
+          dangerouslySetInnerHTML={{
+            __html: toastData.message || latestMessage,
+          }}
         />
-        {toast.button1 && (
+        {toastData.button1 && (
           <button
             className="button button-link-delete"
-            onClick={toast.button1Callback}
+            onClick={toastData.button1Callback}
           >
-            {toast.button1}
+            {toastData.button1}
           </button>
         )}
-        {toast.button2 && (
-          <button className="button" onClick={toast.button2Callback}>
-            {toast.button2}
+        {toastData.button2 && (
+          <button className="button" onClick={toastData.button2Callback}>
+            {toastData.button2}
           </button>
         )}
       </div>

@@ -42,12 +42,25 @@ export default function Save() {
         if (data && data.link) {
           window.history.replaceState('edit', document.title, data.link);
         }
+
+        const toastData = store.get('toast');
+
+        toastData.message = `</p><p>${data.message}</p>`;
+        toastData.button1 = 'Ok';
+        toastData.button1Callback = () => {
+          toastData.message = null;
+          store.set('toast')(toastData);
+        };
+        toastData.button2 = null;
+        toastData.autoHide = true;
+        store.set('toast')(toastData);
+
         setSavingState(false);
       },
       error: data => {
         const toastData = store.get('toast');
 
-        toastData.message = `<p><strong>Something went wrong:(</strong></p><p>${data.responseJSON.message}</p>`;
+        toastData.message = `</p><p>${data.responseJSON.message}</p>`;
         toastData.button1 = 'Ok';
         toastData.button1Callback = () => {
           toastData.message = null;

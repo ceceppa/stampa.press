@@ -27,6 +27,8 @@ declare(strict_types=1);
 
 namespace Stampa;
 
+use Exception;
+
 class Assets_Copier {
 	private static $output_folders = [];
 	private static $sub_folders    = [ 'blocks', 'css', 'stampa-components', 'modules', 'postcss' ];
@@ -54,8 +56,11 @@ class Assets_Copier {
 			$folder_exists = is_dir( $folder );
 
 			if ( ! $folder_exists ) {
-				mkdir( $folder );
-				chmod( $folder, 0777 );
+				$success = mkdir( $folder, 0777, true );
+
+				if ( ! $success ) {
+					throw new Exception( 'Cannot create the folder: <i>' . $folder . '</i>' );
+				}
 			}
 		}
 	}
