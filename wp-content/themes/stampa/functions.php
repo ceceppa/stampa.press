@@ -3,7 +3,7 @@ namespace Semplice;
 
 use function Meno\Prevent\prevent_generation;
 
-define( 'SEMPLICE_THEME_VERSION', '1567692552' );
+define( 'SEMPLICE_THEME_VERSION', '1568468435' );
 
 $composer_autoload = __DIR__ . '/vendor/autoload.php';
 if ( file_exists( $composer_autoload ) ) {
@@ -22,6 +22,8 @@ require $includes_path . 'styles.php';
 require $includes_path . 'scripts.php';
 require $includes_path . 'svg.php';
 require $includes_path . 'seo.php';
+
+require __DIR__ . '/stampa/stampa-loader.php';
 
 if ( function_exists( 'prevent_generation' ) ) {
 	prevent_generation();

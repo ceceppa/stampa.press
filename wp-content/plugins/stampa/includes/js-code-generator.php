@@ -69,17 +69,16 @@ class JS_Code_Generator {
 		$columns    = Block_Data::get_grid_value( 'columns' );
 		$rows       = Block_Data::get_grid_value( 'rows' );
 		$gap        = Block_Data::get_grid_value( 'gap' );
-		$height     = intval( $row_height ) * intval( $rows );
+		// $height     = intval( $row_height ) * intval( $rows );
 
 		// Can't use "repeat" property -.-, why????
 		$template_columns = str_repeat( '1fr ', (int) $columns );
-		$template_rows    = str_repeat( '1fr ', (int) $rows );
+		$template_rows    = str_repeat( $row_height . 'px ', (int) $rows );
 		$grid_style       = [
 			'display'             => 'grid',
 			'gridTemplateColumns' => $template_columns,
 			'gridTemplateRows'    => $template_rows,
 			'gridGap'             => "{$gap}px",
-			'height'              => "{$height}px",
 		];
 
 		Stampa_Replacer::add_json_mapping( 'block.style', $grid_style );

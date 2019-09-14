@@ -77,7 +77,9 @@ class Rest_API {
 		if ( $generate_code ) {
 			$code_generator = new Block_Code_Generator( $post_id );
 			$status         = $code_generator->get_status();
-			$message        = __( 'Block generated successfully', 'stampa' );
+
+			$icon    = '<img class="toast-message__icon" src="' . STAMPA_PLUGIN_URL . 'svg/success.svg" aria-hidden="true">';
+			$message = $icon . __( 'Block generated successfully', 'stampa' );
 
 			if ( is_wp_error( $status ) ) {
 				return $status;

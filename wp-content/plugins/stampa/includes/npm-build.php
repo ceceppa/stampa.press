@@ -11,9 +11,9 @@ use Exception;
 
 class NPM_Build {
 	public function __construct( string $block_name ) {
-		$stampa_path = Assets_Copier::get_folder( '__root' );
+		$theme_stampa_path = Assets_Copier::get_folder( '__root' );
 
-		chdir( $stampa_path );
+		chdir( $theme_stampa_path );
 
 		$this->remove_npm_log();
 		$this->npm_install();
@@ -22,11 +22,8 @@ class NPM_Build {
 		$this->exec( 'prettier --write blocks/' . $block_name . '.js' );
 		$this->exec( 'prettier --write --html-whitespace-sensitivity ignore --parser html modules/' . $block_name . '.php' );
 		$this->exec( 'parcel build index.js -d dist && parcel build index.pcss -d dist' );
-		$this->exec( 'npm run build' );
 
 		$this->update_md5( $block_name );
-
-		chmod( 'npm.log', 0777 );
 	}
 
 	private function remove_npm_log() {
@@ -52,9 +49,14 @@ class NPM_Build {
 	private function exec( string $command ) {
 		exec( $command, $output, $return_value );
 
-		$this->log( $command );
-		$this->log( $return_value );
-		$this->log( $output );
+		if ( $return_value > 0 ) {
+			$this->log( $command );
+			$this->log( $return_value );
+			$this->log( $output );
+			error_log( print_r( $output, true ) );
+
+			throw new Exception( sprintf( 'Command failed:</p><p><strong>%s</strong>', $command ) );
+		}
 	}
 
 	private function log( $output ) {

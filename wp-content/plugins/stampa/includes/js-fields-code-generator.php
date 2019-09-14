@@ -57,8 +57,16 @@ class JS_Fields_Code_Generator {
 
 		$values           = $field->values ?? [];
 		$template_columns = trim( str_repeat( '1fr ', (int) $values->columns ) );
-		$template_rows    = trim( str_repeat( '1fr ', (int) $values->rows ) );
-		$gap              = $values->gap;
+
+		$number_of_rows          = (int) $values->rows;
+		$number_of_rows_occupied = (int) $field->position->endRow;
+
+		$block_row_height = (int) Block_Data::get_grid_value( 'rowHeight' );
+		$total_height     = $block_row_height * $number_of_rows_occupied;
+		$field_row_height = $total_height / $number_of_rows;
+		$template_rows    = trim( str_repeat( $field_row_height . 'px ', $number_of_rows ) );
+
+		$gap = $values->gap;
 
 		$on_click = $this->get_on_click_code( $field );
 

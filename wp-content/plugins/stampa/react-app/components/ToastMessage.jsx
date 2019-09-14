@@ -33,7 +33,7 @@ const ToastMessage = function(props) {
         setTimeout(() => {
           latestMessage = null;
         }, 200);
-      }, 3000);
+      }, 5000);
 
       store.set('toast')(toastData);
     }

@@ -52,7 +52,7 @@ export default function GridOptions() {
           checked={showFieldTypeHint}
           onChange={() => store.set('showFieldTypeHint')(!showFieldTypeHint)}
         />
-        <span className="stampa-checkbox__label">Show field type hint:</span>
+        <span className="stampa-checkbox__label">Show field type hint</span>
       </label>
 
       {/* Save & Generate buttons */}
