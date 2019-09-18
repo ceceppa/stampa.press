@@ -1,16 +1,81 @@
 .hero {
-  &__heading {
+  background: var(--stampa-theme-blue) !important;
+  color: var(--stampa-theme-hero-text);
+  padding-top: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .page & {
+    min-height: 80vh;
   }
-  &__container {
+
+  &__wrapper {
+    padding: 32px;
+    max-width: 500px;
+    margin: auto;
   }
-  &__github {
-  }
-  &__docs {
-  }
-  &__tryme {
-  }
-  &__twitter {
-  }
+
+  &__heading,
   &__intro {
+    text-align: center;
+  }
+
+  &__heading {
+    font-weight: lighter;
+    font-size: 110px;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__intro {
+    font-size: 32px;
+    font-weight: normal;
+    line-height: 52px;
+    margin-top: 20px;
+    margin-bottom: 80px;
+
+    strong {
+      display: inline-block;
+      margin: 0 10px;
+      padding: 0 10px;
+      background: var(--stampa-theme-hero-text);
+      color: var(--stampa-theme-blue);
+    }
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+  }
+
+  &__button {
+    flex-basis: 23%;
+    text-align: center;
+  }
+
+  &__image {
+    margin-bottom: 10px;
+  }
+
+  &__github {}
+
+  &__docs {}
+
+  &__tryme {}
+
+  &__twitter {}
+
+  &__intro {}
+
+  img,
+  svg {
+    height: 48px;
+    width: 48px;
+  }
+
+  input {
+    width: 90%;
   }
 }

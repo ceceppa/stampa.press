@@ -22,4 +22,19 @@
 	<?php _e( 'Skip to content', 'semplice' ); ?>
 </a>
 
-	<?php get_template_part( 'template-parts/main', 'sidebar' ); ?>
+<header class="header" role="banner" id="header">
+	<div class="header__logo">
+	<a href="<?php echo home_url(); ?>">
+		<img src="logo" alt="Stampa">
+	</a>
+	</div>
+
+	<?php
+	wp_nav_menu(
+		array(
+			'theme_location' => 'primary',
+			'menu_id'        => 'primary-menu',
+		)
+	);
+	?>
+</header>

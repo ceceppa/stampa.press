@@ -7,8 +7,8 @@
     "build": "npm run svg:sprite & npm run parcel:build",
     "watch:svg": "watch 'npm run svg:sprite' svg",
     "watch:dist": "watch --interval=1 'npm run theme:version' dist",
-    "parcel:watch": "export PARCEL_NOTIFIER_LEVEL=error && parcel watch -d dist styles/*.pcss index.js",
-    "parcel:build": "parcel -d dist build *.pcss index.js",
+    "parcel:watch": "export PARCEL_NOTIFIER_LEVEL=error && parcel watch postcss/style.pcss index.js",
+    "parcel:build": "parcel -d dist build style.pcss index.js",
     "svg:sprite": "svg-sprite --symbol --svg-xmldecl=false --dest=dist svg/*.svg",
     "theme:version": "NEW_VALUE=$(date +'%s') && sed -i -r \"s/(define.*'SEMPLICE_THEME_VERSION'),(.*)/\\1, '$NEW_VALUE' );/\" functions.php"
   },

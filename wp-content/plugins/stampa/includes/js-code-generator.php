@@ -69,7 +69,6 @@ class JS_Code_Generator {
 		$columns    = Block_Data::get_grid_value( 'columns' );
 		$rows       = Block_Data::get_grid_value( 'rows' );
 		$gap        = Block_Data::get_grid_value( 'gap' );
-		// $height     = intval( $row_height ) * intval( $rows );
 
 		// Can't use "repeat" property -.-, why????
 		$template_columns = str_repeat( '1fr ', (int) $columns );

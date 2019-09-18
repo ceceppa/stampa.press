@@ -18,6 +18,7 @@ add_action( 'wp_head', __NAMESPACE__ . '\register_blocks_render_callback' );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\load_style_editor', 999 );
 add_filter( 'block_categories', __NAMESPACE__ . '\register_stampa_blocks_category', 10, 2 );
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_blocks' );
+add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_style' );
 
 /**
  * Register the new "Stampa blocks"
@@ -97,4 +98,8 @@ function register_blocks_render_callback() {
 
 function load_style_editor() {
 	wp_enqueue_style( 'stampa-editor', get_template_directory_uri() . '/stampa/css/stampa-editor.css', [], '1.0' );
+}
+
+function enqueue_style() {
+	wp_enqueue_style( 'stampa-blocks-style', get_template_directory_uri() . '/stampa/dist/index.css', [], '1.0' );
 }

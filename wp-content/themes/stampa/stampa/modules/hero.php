@@ -3,6 +3,7 @@
 	style="background: url('<?php echo $backgroundImage; ?>') no-repeat center / cover "
 >
 	<h2 class="hero__heading"><?php echo $heading; ?></h2>
+	<div class="hero__intro"><?php echo $intro; ?></div>
 	<div class="hero__container">
 		<a href="<?php echo $github__link; ?>" class="hero__github" alt="Tooltip">
 			<img
@@ -37,6 +38,4 @@
 			<span class="hero__label"><?php echo $twitter__label; ?></span>
 		</a>
 	</div>
-	<!-- container: twitter -->
-	<div class="hero__intro"><?php echo $intro ?></div>
 </section>
