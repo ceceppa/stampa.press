@@ -92,12 +92,11 @@ class JS_Code_Generator {
 	}
 
 	private function save_file( string $code ) : string {
-		$file_saver = new File_Saver( 'blocks', 'js' );
+		$file_saver = new File_Saver( 'blocks', 'js', $code );
+		$file_saver->prettify();
+		$file_saver->save_file();
 
-		$output_file = $file_saver->get_output_file();
-		$file_saver->save_file( $output_file, $code );
-
-		return $output_file;
+		return $file_saver->get_output_file();
 	}
 
 	private function append_to_index_js( string $output_file ) {

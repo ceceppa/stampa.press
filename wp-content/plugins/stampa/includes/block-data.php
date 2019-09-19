@@ -52,6 +52,9 @@ class Block_Data {
 	}
 
 	/* Public methods */
+	public static function get_post_id() : int {
+		return self::$post_id;
+	}
 
 	public static function get_grid_data() : array {
 		return self::$block_data['grid'];

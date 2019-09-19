@@ -19,11 +19,13 @@ class NPM_Build {
 		$this->npm_install();
 
 		// exec: npm run prettify / build doesn't work from PHP return error 1?
-		$this->exec( 'prettier --write blocks/' . $block_name . '.js' );
-		$this->exec( 'prettier --write --html-whitespace-sensitivity ignore --parser html modules/' . $block_name . '.php' );
-		$this->exec( 'parcel build index.js -d dist && parcel build index.pcss -d dist' );
+		// $this->exec( 'prettier --write blocks/' . $block_name . '.js' );
+		// $this->update_md5( $block_name, 'blocks' );
 
-		$this->update_md5( $block_name );
+		// $this->exec( 'prettier --write --html-whitespace-sensitivity ignore --parser html modules/' . $block_name . '.php' );
+		// $this->update_md5( $block_name, 'modules' );
+
+		self::exec( 'parcel build index.js -d dist && parcel build index.pcss -d dist' );
 	}
 
 	private function remove_npm_log() {
@@ -46,30 +48,28 @@ class NPM_Build {
 		}
 	}
 
-	private function exec( string $command ) {
+	public static function exec( string $command ) {
 		exec( $command, $output, $return_value );
 
 		if ( $return_value > 0 ) {
-			$this->log( $command );
-			$this->log( $return_value );
-			$this->log( $output );
+			self::log( $command );
+			self::log( $return_value );
+			self::log( $output );
 			error_log( print_r( $output, true ) );
 
 			throw new Exception( sprintf( 'Command failed:</p><p><strong>%s</strong>', $command ) );
 		}
 	}
 
-	private function log( $output ) {
+	private static function log( $output ) {
 		file_put_contents( 'npm.log', print_r( $output, true ) . PHP_EOL, FILE_APPEND );
 	}
 
-	private function update_md5( string $block_name ) {
-		$folders = [ Assets_Copier::get_folder( 'blocks' ), Assets_Copier::get_folder( 'postcss' ), Assets_Copier::get_folder( 'modules' ) ];
+	private function update_md5( string $block_name, string $assets_output_folder_name ) {
+		$folder = Assets_Copier::get_folder( $assets_output_folder_name );
 
-		foreach ( $folders as $folder ) {
-			$file = $this->find_file_in_folder( $folder, $block_name );
-			$this->save_md5( $file );
-		}
+		$file = $this->find_file_in_folder( $folder, $block_name );
+		$this->save_md5( $file );
 	}
 
 	private function find_file_in_folder( string $folder, string $block_name ) : string {

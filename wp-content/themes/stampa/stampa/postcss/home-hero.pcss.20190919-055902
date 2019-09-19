@@ -1,0 +1,14 @@
+.home-hero {
+  &__container {
+  }
+  &__github {
+  }
+  &__docs {
+  }
+  &__tryme {
+  }
+  &__twitter {
+  }
+  &__intro {
+  }
+}
