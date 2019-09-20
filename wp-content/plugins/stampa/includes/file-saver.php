@@ -30,51 +30,45 @@ class File_Saver {
 		return $output_file;
 	}
 
-	public function prettify( string $parameters = '' ) {
-		$temp_file = tempnam( sys_get_temp_dir(), 'stampa-prettify' ) . '.' . $this->file_extension;
-		$saved     = file_put_contents( $temp_file, $this->new_content );
-
-		if ( ! $saved ) {
-			throw new Exception( 'Cannot save ' . $temp_file );
+	public function save_file() {
+		if ( $this->has_output_file_changed() ) {
+			$this->rename_original_file();
 		}
 
-		NPM_Build::exec( 'prettify --write ' . $parameters . ' ' . $temp_file );
-
-		$this->compare_md5( $temp_file );
-		$this->temp_file = $temp_file;
-	}
-
-	public function save_file( string $new_content ) {
 		$output_file = $this->get_output_file();
+		$saved       = file_put_contents( $output_file, $this->new_content );
 
-		if ( ! $this->md5_matches ) {
-			$this->rename_original_file( $output_file );
-		}
-
-		$saved = rename( $temp_file, $output_file );
 		if ( ! $saved ) {
 			throw new Exception( 'Cannot save ' . $output_file );
 		}
 
+		Block_Data::update_md5( $this->get_output_file(), $this->file_extension );
 		chmod( $output_file, 0777 );
 	}
 
-	private function compare_md5( string $new_file ) {
+	public function prettify( string $parameters = '' ) {
+		NPM_Build::exec( 'prettier --write ' . $parameters . ' ' . $this->get_output_file() );
+
+		Block_Data::update_md5( $this->get_output_file(), $this->file_extension );
+	}
+
+	private function has_output_file_changed() {
 		$output_file        = $this->get_output_file();
 		$output_file_exists = file_exists( $output_file );
 
 		if ( ! $output_file_exists ) {
-			return;
+			return false;
 		}
 
 		$old_md5 = Block_Data::get_md5( $this->file_extension );
-		$md5     = md5_file( $new_file );
+		$md5     = md5_file( $output_file );
 
-		$this->md5_matches = empty( $old_md5 ) || $md5 === $old_md5;
+		return ! empty( $old_md5 ) && $old_md5 !== $md5;
 	}
 
-	private function rename_original_file( string $output_file ) {
-		$new_name = $output_file . '.' . date( 'Ymd-His' );
+	private function rename_original_file() {
+		$output_file = $this->get_output_file();
+		$new_name    = $output_file . '.' . date( 'Ymd-His' );
 
 		rename( $output_file, $new_name );
 	}

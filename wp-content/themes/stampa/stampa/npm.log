@@ -1,6 +1,0 @@
-parcel build index.js -d dist && parcel build index.pcss -d dist
-1
-Array
-(
-)
-

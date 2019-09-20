@@ -93,8 +93,8 @@ class JS_Code_Generator {
 
 	private function save_file( string $code ) : string {
 		$file_saver = new File_Saver( 'blocks', 'js', $code );
-		$file_saver->prettify();
 		$file_saver->save_file();
+		$file_saver->prettify();
 
 		return $file_saver->get_output_file();
 	}

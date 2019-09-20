@@ -18,14 +18,7 @@ class NPM_Build {
 		$this->remove_npm_log();
 		$this->npm_install();
 
-		// exec: npm run prettify / build doesn't work from PHP return error 1?
-		// $this->exec( 'prettier --write blocks/' . $block_name . '.js' );
-		// $this->update_md5( $block_name, 'blocks' );
-
-		// $this->exec( 'prettier --write --html-whitespace-sensitivity ignore --parser html modules/' . $block_name . '.php' );
-		// $this->update_md5( $block_name, 'modules' );
-
-		self::exec( 'parcel build index.js -d dist && parcel build index.pcss -d dist' );
+		self::exec( 'export && npm run build' );
 	}
 
 	private function remove_npm_log() {
@@ -49,6 +42,7 @@ class NPM_Build {
 	}
 
 	public static function exec( string $command ) {
+		$command .= ' 2>&1';
 		exec( $command, $output, $return_value );
 
 		if ( $return_value > 0 ) {
@@ -62,6 +56,9 @@ class NPM_Build {
 	}
 
 	private static function log( $output ) {
+		if ( is_array( $output ) ) {
+			$output = join( PHP_EOL, $output );
+		}
 		file_put_contents( 'npm.log', print_r( $output, true ) . PHP_EOL, FILE_APPEND );
 	}
 

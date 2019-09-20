@@ -34,14 +34,13 @@ class PHP_Code_Generator {
 	}
 
 	private function save_php_file() : string {
-		$file_saver  = new File_Saver( 'modules', 'php' );
-		$output_file = $file_saver->get_output_file();
-
 		$php_code = $this->start_section() . $this->php_code . "\n</section>";
 
-		$file_saver->save_file( $output_file, $php_code );
+		$file_saver = new File_Saver( 'modules', 'php', $php_code );
+		$file_saver->save_file();
+		$file_saver->prettify( '--html-whitespace-sensitivity ignore --parser html' );
 
-		return $output_file;
+		return $file_saver->get_output_file();
 	}
 
 	private function start_section() {

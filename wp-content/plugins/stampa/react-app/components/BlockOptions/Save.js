@@ -16,6 +16,14 @@ export default function Save() {
     }
 
     const fields = store.get('stampaFields');
+    const toastData = store.get('toast');
+
+    toastData.message = `Generating the block code`;
+    toastData.button1 = null;
+    toastData.button2 = null;
+    toastData.autoHide = false;
+    store.set('toast')(toastData);
+
     setSavingState(true);
 
     jQuery.ajax({
@@ -42,8 +50,6 @@ export default function Save() {
         if (data && data.link) {
           window.history.replaceState('edit', document.title, data.link);
         }
-
-        const toastData = store.get('toast');
 
         toastData.message = `</p><p>${data.message}</p>`;
         toastData.button1 = 'Ok';

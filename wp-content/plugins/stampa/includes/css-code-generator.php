@@ -27,14 +27,12 @@ class CSS_Code_Generator {
 	}
 
 	private function save_css_file() : string {
-		$file_saver  = new File_Saver( 'postcss', 'pcss' );
-		$output_file = $file_saver->get_output_file();
-
 		$css_content = join( PHP_EOL, $this->css_code ) . "\n}";
 
-		$file_saver->save_file( $output_file, $css_content );
+		$file_saver = new File_Saver( 'postcss', 'pcss', $css_content );
+		$file_saver->save_file();
 
-		return $output_file;
+		return $file_saver->get_output_file();
 	}
 
 	private function append_to_index_pcss( string $output_file ) {
