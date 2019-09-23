@@ -18,7 +18,7 @@ export default function Save() {
     const fields = store.get('stampaFields');
     const toastData = store.get('toast');
 
-    toastData.message = `Generating the block code`;
+    toastData.message = generate ? 'Generating the block code' : 'Saving block';
     toastData.button1 = null;
     toastData.button2 = null;
     toastData.autoHide = false;
@@ -51,8 +51,8 @@ export default function Save() {
           window.history.replaceState('edit', document.title, data.link);
         }
 
-        toastData.message = `</p><p>${data.message}</p>`;
-        toastData.button1 = 'Ok';
+        toastData.message = generate ? `</p><p>${data.message}</p>` : null;
+        toastData.button1 = generate ? 'Ok' : null;
         toastData.button1Callback = () => {
           toastData.message = null;
           store.set('toast')(toastData);
