@@ -6,8 +6,8 @@
 import {
   ClassicEdit,
   StampaMediaUpload,
-  StampaImageOption
-} from "../stampa-components";
+  StampaImageOption,
+} from '../stampa-components';
 
 const useCallback = window.React.useCallback;
 const { __ } = wp.i18n;
@@ -19,7 +19,7 @@ const {
   SelectControl,
   ToggleControl,
   TextControl,
-  IconButton
+  IconButton,
 } = wp.components;
 const { Fragment } = wp.element;
 
@@ -27,85 +27,85 @@ const allFieldsOptions = {
   container: [],
   github: [
     {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
+      name: 'icon',
+      type: 'image',
+      label: 'Icon',
+      attribute_type: 'object',
+      attribute_default: '{}',
+      stampa: 'false',
     },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
+    { name: 'label', type: 'text', label: 'Label', value: 'Label' },
+    { name: 'link', type: 'text', label: 'URL', stampa: 'false' },
   ],
   docs: [
     {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
+      name: 'icon',
+      type: 'image',
+      label: 'Icon',
+      attribute_type: 'object',
+      attribute_default: '{}',
+      stampa: 'false',
     },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
+    { name: 'label', type: 'text', label: 'Label', value: 'Label' },
+    { name: 'link', type: 'text', label: 'URL', stampa: 'false' },
   ],
   tryme: [
     {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
+      name: 'icon',
+      type: 'image',
+      label: 'Icon',
+      attribute_type: 'object',
+      attribute_default: '{}',
+      stampa: 'false',
     },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
+    { name: 'label', type: 'text', label: 'Label', value: 'Label' },
+    { name: 'link', type: 'text', label: 'URL', stampa: 'false' },
   ],
   twitter: [
     {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
+      name: 'icon',
+      type: 'image',
+      label: 'Icon',
+      attribute_type: 'object',
+      attribute_default: '{}',
+      stampa: 'false',
     },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
+    { name: 'label', type: 'text', label: 'Label', value: 'Label' },
+    { name: 'link', type: 'text', label: 'URL', stampa: 'false' },
   ],
-  intro: []
+  intro: [],
 };
 const fieldOptionsComponents = {
   select: SelectControl,
   checkbox: ToggleControl,
   text: TextControl,
-  image: StampaImageOption
+  image: StampaImageOption,
 };
 let focusedField;
 
-registerBlockType("stampa/home-hero", {
-  title: __("Home hero"),
-  icon: "admin-home",
-  category: "stampa-blocks",
+registerBlockType('stampa/home-hero', {
+  title: __('Home hero'),
+  icon: 'admin-home',
+  category: 'stampa-blocks',
   keywords: [],
 
   multiple: true,
 
   attributes: {
-    backgroundImage: { type: "object" },
-    github__icon: { type: "object", default: {} },
-    github__label: { type: "string", default: "Github" },
-    github__link: { type: "string", default: "" },
-    docs__icon: { type: "object", default: {} },
-    docs__label: { type: "string", default: "Doc" },
-    docs__link: { type: "string", default: "" },
-    tryme__icon: { type: "object", default: {} },
-    tryme__label: { type: "string", default: "Try Me" },
-    tryme__link: { type: "string", default: "" },
-    twitter__icon: { type: "object", default: {} },
-    twitter__label: { type: "string", default: "Twitter" },
-    twitter__link: { type: "string", default: "" },
-    intro: { type: "string", format: "string", default: "" }
+    backgroundImage: { type: 'object' },
+    github__icon: { type: 'object', default: {} },
+    github__label: { type: 'string', default: 'Github' },
+    github__link: { type: 'string', default: '' },
+    docs__icon: { type: 'object', default: {} },
+    docs__label: { type: 'string', default: 'Doc' },
+    docs__link: { type: 'string', default: '' },
+    tryme__icon: { type: 'object', default: {} },
+    tryme__label: { type: 'string', default: 'Try Me' },
+    tryme__link: { type: 'string', default: '' },
+    twitter__icon: { type: 'object', default: {} },
+    twitter__label: { type: 'string', default: 'Twitter' },
+    twitter__link: { type: 'string', default: '' },
+    intro: { type: 'string', format: 'string', default: '' },
   },
 
   edit({ className, attributes = {}, setAttributes }) {
@@ -131,15 +131,15 @@ registerBlockType("stampa/home-hero", {
     return (
       <Fragment>
         <InspectorControls>
-          <PanelBody title={__("Block options")}>
+          <PanelBody title={__('Block options')}>
             <MediaUpload
-              onSelect={image => updateAttribute("backgroundImage", image.url)}
+              onSelect={image => updateAttribute('backgroundImage', image.url)}
               type="image"
               value={attributes.backgroundImage}
               render={({ open }) => (
                 <IconButton
                   className="button"
-                  label={__("Set background Image")}
+                  label={__('Set background Image')}
                   icon="edit"
                   onClick={open}
                 >
@@ -150,7 +150,7 @@ registerBlockType("stampa/home-hero", {
           </PanelBody>
           ;
           {fieldOptions && fieldOptions.length > 0 && (
-            <PanelBody title={__("Options")} className="typed-panel-body">
+            <PanelBody title={__('Options')} className="typed-panel-body">
               {fieldOptions.map(option => {
                 const Component = fieldOptionsComponents[option.type];
                 const attributeKey = `${focusedField}__${option.name}`;
@@ -167,7 +167,7 @@ registerBlockType("stampa/home-hero", {
                           values.map(value => {
                             return {
                               label: value,
-                              value
+                              value,
                             };
                           })
                         }
@@ -186,171 +186,172 @@ registerBlockType("stampa/home-hero", {
           <div
             className="home-hero"
             style={{
-              display: "grid",
+              display: 'grid',
               gridTemplateColumns:
-                "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-              gridTemplateRows: "46px 46px 46px 46px 46px ",
-              gridGap: "5px",
-              backgroundImage: `url(${attributes.backgroundImage})`
+                '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ',
+              gridTemplateRows: '46px 46px 46px 46px ',
+              gridGap: '5px',
+              backgroundImage: `url(${attributes.backgroundImage})`,
             }}
           >
             {/* container */}
             <div
               className={`stampa-field stampa-field--container home-hero__container ${
-                focusedField == "container" ? "focused" : ""
+                focusedField == 'container' ? 'focused' : ''
               }`}
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
-                gridTemplateRows: "92px",
-                gridGap: "5px",
-                gridRowStart: 4,
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
+                gridTemplateRows: '92px',
+                gridGap: '5px',
+                gridRowStart: 3,
                 gridColumnStart: 3,
-                gridRowEnd: 6,
-                gridColumnEnd: 11
+                gridRowEnd: 5,
+                gridColumnEnd: 11,
               }}
-              onClick={e => updateFocusedField(e, "container")}
+              onClick={e => updateFocusedField(e, 'container')}
             >
               {/* github */}
               <div
                 className={`stampa-field stampa-field--icon-button home-hero__github ${
-                  focusedField == "github" ? "focused" : ""
+                  focusedField == 'github' ? 'focused' : ''
                 }`}
                 style={{
                   gridRowStart: 1,
                   gridColumnStart: 1,
                   gridRowEnd: 2,
-                  gridColumnEnd: 3
+                  gridColumnEnd: 3,
                 }}
-                onClick={e => updateFocusedField(e, "github")}
+                onClick={e => updateFocusedField(e, 'github')}
                 title="github"
               >
                 <div className="flex flex--column">
-                  {" "}
+                  {' '}
                   <img
                     src={attributes.github__icon.url}
                     alt={attributes.github__label}
-                  />{" "}
+                  />{' '}
                   <input
                     type="text"
                     value={attributes.github__label}
                     placeholder="Github"
                     onChange={e =>
-                      updateAttribute("github__label", e.target.value)
+                      updateAttribute('github__label', e.target.value)
                     }
-                  />{" "}
+                  />{' '}
                 </div>
               </div>
               {/* docs */}
               <div
                 className={`stampa-field stampa-field--icon-button home-hero__docs ${
-                  focusedField == "docs" ? "focused" : ""
+                  focusedField == 'docs' ? 'focused' : ''
                 }`}
                 style={{
                   gridRowStart: 1,
                   gridColumnStart: 3,
                   gridRowEnd: 2,
-                  gridColumnEnd: 5
+                  gridColumnEnd: 5,
                 }}
-                onClick={e => updateFocusedField(e, "docs")}
+                onClick={e => updateFocusedField(e, 'docs')}
                 title="docs"
               >
                 <div className="flex flex--column">
-                  {" "}
+                  {' '}
                   <img
                     src={attributes.docs__icon.url}
                     alt={attributes.docs__label}
-                  />{" "}
+                  />{' '}
                   <input
                     type="text"
                     value={attributes.docs__label}
                     placeholder="Doc"
                     onChange={e =>
-                      updateAttribute("docs__label", e.target.value)
+                      updateAttribute('docs__label', e.target.value)
                     }
-                  />{" "}
+                  />{' '}
                 </div>
               </div>
               {/* tryme */}
               <div
                 className={`stampa-field stampa-field--icon-button home-hero__tryme ${
-                  focusedField == "tryme" ? "focused" : ""
+                  focusedField == 'tryme' ? 'focused' : ''
                 }`}
                 style={{
                   gridRowStart: 1,
                   gridColumnStart: 5,
                   gridRowEnd: 2,
-                  gridColumnEnd: 7
+                  gridColumnEnd: 7,
                 }}
-                onClick={e => updateFocusedField(e, "tryme")}
+                onClick={e => updateFocusedField(e, 'tryme')}
                 title="tryme"
               >
                 <div className="flex flex--column">
-                  {" "}
+                  {' '}
                   <img
                     src={attributes.tryme__icon.url}
                     alt={attributes.tryme__label}
-                  />{" "}
+                  />{' '}
                   <input
                     type="text"
                     value={attributes.tryme__label}
                     placeholder="Try Me"
                     onChange={e =>
-                      updateAttribute("tryme__label", e.target.value)
+                      updateAttribute('tryme__label', e.target.value)
                     }
-                  />{" "}
+                  />{' '}
                 </div>
               </div>
               {/* twitter */}
               <div
                 className={`stampa-field stampa-field--icon-button home-hero__twitter ${
-                  focusedField == "twitter" ? "focused" : ""
+                  focusedField == 'twitter' ? 'focused' : ''
                 }`}
                 style={{
                   gridRowStart: 1,
                   gridColumnStart: 7,
                   gridRowEnd: 2,
-                  gridColumnEnd: 9
+                  gridColumnEnd: 9,
                 }}
-                onClick={e => updateFocusedField(e, "twitter")}
+                onClick={e => updateFocusedField(e, 'twitter')}
                 title="twitter"
               >
                 <div className="flex flex--column">
-                  {" "}
+                  {' '}
                   <img
                     src={attributes.twitter__icon.url}
                     alt={attributes.twitter__label}
-                  />{" "}
+                  />{' '}
                   <input
                     type="text"
                     value={attributes.twitter__label}
                     placeholder="Twitter"
                     onChange={e =>
-                      updateAttribute("twitter__label", e.target.value)
+                      updateAttribute('twitter__label', e.target.value)
                     }
-                  />{" "}
+                  />{' '}
                 </div>
               </div>
             </div>
             {/* intro */}
             <div
-              className={`stampa-field stampa-field--richtext home-hero__intro ${
-                focusedField == "intro" ? "focused" : ""
+              className={`stampa-field stampa-field--richtext ${
+                focusedField == 'intro' ? 'focused' : ''
               }`}
               style={{
                 gridRowStart: 1,
                 gridColumnStart: 2,
-                gridRowEnd: 3,
-                gridColumnEnd: 12
+                gridRowEnd: 2,
+                gridColumnEnd: 12,
               }}
-              onClick={e => updateFocusedField(e, "intro")}
+              onClick={e => updateFocusedField(e, 'intro')}
               title="intro"
             >
               <RichText
+                className="home-hero__intro"
                 multiline={true}
                 placeholder="Intro text"
                 value={attributes.intro}
-                onChange={value => updateAttribute("intro", value)}
+                onChange={value => updateAttribute('intro', value)}
               />
             </div>
           </div>
@@ -362,5 +363,5 @@ registerBlockType("stampa/home-hero", {
   /**
    * Let the content to be rendered with PHP
    */
-  save: () => null
+  save: () => null,
 });

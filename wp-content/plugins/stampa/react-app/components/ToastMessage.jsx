@@ -36,6 +36,9 @@ const ToastMessage = function(props) {
       }, 5000);
 
       store.set('toast')(toastData);
+    } else {
+      clearTimeout(autoHideTiemout);
+      showOverlay = true;
     }
   });
 
