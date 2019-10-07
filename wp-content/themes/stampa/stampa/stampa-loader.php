@@ -101,5 +101,5 @@ function load_style_editor() {
 }
 
 function enqueue_blocks_style() {
-	wp_enqueue_style( 'stampa-blocks-style', get_template_directory_uri() . '/stampa/dist/index.css', [], '1.0' );
+	wp_enqueue_style( 'stampa-blocks-style', get_template_directory_uri() . '/stampa/dist/editor.css', [], '1.0' );
 }

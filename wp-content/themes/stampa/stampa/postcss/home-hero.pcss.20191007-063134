@@ -1,5 +1,4 @@
-.home-hero,
-.block-editor .home-hero {
+.home-hero {
   background: var(--stampa-theme-blue) !important;
   color: var(--stampa-theme-hero-text);
   padding-top: 40px;

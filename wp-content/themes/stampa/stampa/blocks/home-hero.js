@@ -24,8 +24,8 @@ const {
 const { Fragment } = wp.element;
 
 const allFieldsOptions = {
-  container: [],
-  github: [
+  intro: [],
+  "icon-button": [
     {
       name: "icon",
       type: "image",
@@ -36,44 +36,7 @@ const allFieldsOptions = {
     },
     { name: "label", type: "text", label: "Label", value: "Label" },
     { name: "link", type: "text", label: "URL", stampa: "false" }
-  ],
-  docs: [
-    {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
-    },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
-  ],
-  tryme: [
-    {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
-    },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
-  ],
-  twitter: [
-    {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
-    },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
-  ],
-  intro: []
+  ]
 };
 const fieldOptionsComponents = {
   select: SelectControl,
@@ -93,19 +56,10 @@ registerBlockType("stampa/home-hero", {
 
   attributes: {
     backgroundImage: { type: "object" },
-    github__icon: { type: "object", default: {} },
-    github__label: { type: "string", default: "Github" },
-    github__link: { type: "string", default: "" },
-    docs__icon: { type: "object", default: {} },
-    docs__label: { type: "string", default: "Doc" },
-    docs__link: { type: "string", default: "" },
-    tryme__icon: { type: "object", default: {} },
-    tryme__label: { type: "string", default: "Try Me" },
-    tryme__link: { type: "string", default: "" },
-    twitter__icon: { type: "object", default: {} },
-    twitter__label: { type: "string", default: "Twitter" },
-    twitter__link: { type: "string", default: "" },
-    intro: { type: "string", format: "string", default: "" }
+    intro: { type: "string", format: "string", default: "" },
+    "icon-button__icon": { type: "object", default: {} },
+    "icon-button__label": { type: "string", default: "Label" },
+    "icon-button__link": { type: "string", default: "" }
   },
 
   edit({ className, attributes = {}, setAttributes }) {
@@ -194,144 +148,6 @@ registerBlockType("stampa/home-hero", {
               backgroundImage: `url(${attributes.backgroundImage})`
             }}
           >
-            {/* container */}
-            <div
-              className={`stampa-field stampa-field--container home-hero__container ${
-                focusedField == "container" ? "focused" : ""
-              }`}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
-                gridTemplateRows: "92px",
-                gridGap: "5px",
-                gridRowStart: 4,
-                gridColumnStart: 3,
-                gridRowEnd: 6,
-                gridColumnEnd: 11
-              }}
-              onClick={e => updateFocusedField(e, "container")}
-            >
-              {/* github */}
-              <div
-                className={`stampa-field stampa-field--icon-button home-hero__github ${
-                  focusedField == "github" ? "focused" : ""
-                }`}
-                style={{
-                  gridRowStart: 1,
-                  gridColumnStart: 1,
-                  gridRowEnd: 2,
-                  gridColumnEnd: 3
-                }}
-                onClick={e => updateFocusedField(e, "github")}
-                title="github"
-              >
-                <div className="flex flex--column">
-                  {" "}
-                  <img
-                    src={attributes.github__icon.url}
-                    alt={attributes.github__label}
-                  />{" "}
-                  <input
-                    type="text"
-                    value={attributes.github__label}
-                    placeholder="Github"
-                    onChange={e =>
-                      updateAttribute("github__label", e.target.value)
-                    }
-                  />{" "}
-                </div>
-              </div>
-              {/* docs */}
-              <div
-                className={`stampa-field stampa-field--icon-button home-hero__docs ${
-                  focusedField == "docs" ? "focused" : ""
-                }`}
-                style={{
-                  gridRowStart: 1,
-                  gridColumnStart: 3,
-                  gridRowEnd: 2,
-                  gridColumnEnd: 5
-                }}
-                onClick={e => updateFocusedField(e, "docs")}
-                title="docs"
-              >
-                <div className="flex flex--column">
-                  {" "}
-                  <img
-                    src={attributes.docs__icon.url}
-                    alt={attributes.docs__label}
-                  />{" "}
-                  <input
-                    type="text"
-                    value={attributes.docs__label}
-                    placeholder="Doc"
-                    onChange={e =>
-                      updateAttribute("docs__label", e.target.value)
-                    }
-                  />{" "}
-                </div>
-              </div>
-              {/* tryme */}
-              <div
-                className={`stampa-field stampa-field--icon-button home-hero__tryme ${
-                  focusedField == "tryme" ? "focused" : ""
-                }`}
-                style={{
-                  gridRowStart: 1,
-                  gridColumnStart: 5,
-                  gridRowEnd: 2,
-                  gridColumnEnd: 7
-                }}
-                onClick={e => updateFocusedField(e, "tryme")}
-                title="tryme"
-              >
-                <div className="flex flex--column">
-                  {" "}
-                  <img
-                    src={attributes.tryme__icon.url}
-                    alt={attributes.tryme__label}
-                  />{" "}
-                  <input
-                    type="text"
-                    value={attributes.tryme__label}
-                    placeholder="Try Me"
-                    onChange={e =>
-                      updateAttribute("tryme__label", e.target.value)
-                    }
-                  />{" "}
-                </div>
-              </div>
-              {/* twitter */}
-              <div
-                className={`stampa-field stampa-field--icon-button home-hero__twitter ${
-                  focusedField == "twitter" ? "focused" : ""
-                }`}
-                style={{
-                  gridRowStart: 1,
-                  gridColumnStart: 7,
-                  gridRowEnd: 2,
-                  gridColumnEnd: 9
-                }}
-                onClick={e => updateFocusedField(e, "twitter")}
-                title="twitter"
-              >
-                <div className="flex flex--column">
-                  {" "}
-                  <img
-                    src={attributes.twitter__icon.url}
-                    alt={attributes.twitter__label}
-                  />{" "}
-                  <input
-                    type="text"
-                    value={attributes.twitter__label}
-                    placeholder="Twitter"
-                    onChange={e =>
-                      updateAttribute("twitter__label", e.target.value)
-                    }
-                  />{" "}
-                </div>
-              </div>
-            </div>
             {/* intro */}
             <div
               className={`stampa-field stampa-field--richtext home-hero__intro ${
@@ -352,6 +168,36 @@ registerBlockType("stampa/home-hero", {
                 value={attributes.intro}
                 onChange={value => updateAttribute("intro", value)}
               />
+            </div>
+            {/* icon-button */}
+            <div
+              className={`stampa-field stampa-field--icon-button home-hero__icon-button ${
+                focusedField == "icon-button" ? "focused" : ""
+              }`}
+              style={{
+                gridRowStart: 4,
+                gridColumnStart: 6,
+                gridRowEnd: 5,
+                gridColumnEnd: 8
+              }}
+              onClick={e => updateFocusedField(e, "icon-button")}
+              title="icon-button"
+            >
+              <div className="flex flex--row">
+                {" "}
+                <img
+                  src={attributes.icon - button__icon.url}
+                  alt={attributes.icon - button__label}
+                />{" "}
+                <input
+                  type="text"
+                  value={attributes.icon - button__label}
+                  placeholder="Label"
+                  onChange={e =>
+                    updateAttribute("icon-button__label", e.target.value)
+                  }
+                />{" "}
+              </div>
             </div>
           </div>
         </div>

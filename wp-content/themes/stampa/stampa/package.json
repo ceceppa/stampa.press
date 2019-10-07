@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "parcel watch index.js & parcel watch index.pcss",
+    "dev": "parcel watch index.js index.pcss editor.pcss",
     "prettify": "prettier --write blocks/*.js && prettier --write --html-whitespace-sensitivity ignore --parser html modules/*.php",
-    "build": "parcel build index.js -d dist && parcel build index.pcss -d dist"
+    "build": "parcel build index.js index.pcss editor.pcss -d dist"
   },
   "eslintConfig": {
     "extends": "react-app"

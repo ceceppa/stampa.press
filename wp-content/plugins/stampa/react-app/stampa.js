@@ -8,7 +8,7 @@
  * So, for this reason we can store the information extenally without using any state/store.
  *
  */
-export default {
+const stampaUtils = {
   /**
    * Get the postID passed via PHP
    */
@@ -116,15 +116,24 @@ export default {
    */
   deleteActiveField: store => {
     const toastData = store.get('toast');
+    const stampaFields = store.get('stampaFields');
+    const activeFieldKey = store.get('activeFieldKey');
+    const activeField = stampaUtils.findFieldByKey(
+      stampaFields,
+      activeFieldKey
+    );
 
-    toastData.message = 'Are you sure?';
+    toastData.message =
+      '<strong>Delete:</strong> ' + (activeField.title || activeField.name);
     toastData.button1 = 'Yes';
     toastData.button2 = 'No';
     toastData.button1Callback = () => {
-      const activeFieldKey = store.get('activeFieldKey');
-      const fields = store
-        .get('stampaFields')
-        .filter(field => field.key !== activeFieldKey);
+      const fields = stampaUtils.removeFieldFromItsParent(
+        activeField,
+        stampaFields
+      );
+
+      console.info(fields);
 
       store.set('stampaFields')(fields);
       store.set('activeFieldKey')(null);
@@ -170,4 +179,23 @@ export default {
 
     return null;
   },
+  removeFieldFromItsParent(fieldToRemove, fields) {
+    for (let index in fields) {
+      const child = fields[index];
+
+      if (child.key === fieldToRemove.key) {
+        fields.splice(index, 1);
+
+        break;
+      }
+
+      if (Array.isArray(child.fields)) {
+        stampaUtils.removeFieldFromItsParent(fieldToRemove, child.fields);
+      }
+    }
+
+    return fields;
+  },
 };
+
+export default stampaUtils;

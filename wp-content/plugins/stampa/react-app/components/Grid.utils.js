@@ -5,6 +5,7 @@
 import shortid from 'shortid';
 
 import stampa from '../stampa';
+import stampaUtils from '../stampa';
 
 let oldX, oldY, gridArea;
 
@@ -127,8 +128,7 @@ function updateField(parentField, draggedFieldId, dragData, store) {
     checkAndUpdateFieldParent(field, fields, parentField);
   } else {
     if (!isOnTheMainGrid(field, fields)) {
-      removeFieldFromCurrentParent(field, fields);
-
+      stampaUtils.removeFieldFromItsParent(field, fields);
       fields.push(field);
     }
   }
@@ -168,7 +168,7 @@ function checkAndUpdateFieldParent(field, fields, parentField) {
   if (isFieldChildOf(field, parentField)) {
     return;
   }
-  removeFieldFromCurrentParent(field, fields);
+  removeFieldFromItsParent(field, fields);
 
   const parent = stampa.findFieldByKey(fields, parentField.key);
   if (!Array.isArray(parent.fields)) {
@@ -190,22 +190,6 @@ function isFieldChildOf(field, parentField) {
   }
 
   return false;
-}
-
-function removeFieldFromCurrentParent(fieldToRemove, fields) {
-  for (let index in fields) {
-    const child = fields[index];
-
-    if (child.key == fieldToRemove.key) {
-      fields.splice(index, 1);
-
-      break;
-    }
-
-    if (Array.isArray(child.fields)) {
-      removeFieldFromCurrentParent(fieldToRemove, child.fields);
-    }
-  }
 }
 
 function isOnTheMainGrid(field, fields) {
