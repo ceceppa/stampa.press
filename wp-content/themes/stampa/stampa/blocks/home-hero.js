@@ -25,18 +25,7 @@ const { Fragment } = wp.element;
 
 const allFieldsOptions = {
   intro: [],
-  try_me: [
-    {
-      name: "icon",
-      type: "image",
-      label: "Icon",
-      attribute_type: "object",
-      attribute_default: "{}",
-      stampa: "false"
-    },
-    { name: "label", type: "text", label: "Label", value: "Label" },
-    { name: "link", type: "text", label: "URL", stampa: "false" }
-  ]
+  try_me: [{ name: "link", type: "text", label: "URL", stampa: "false" }]
 };
 const fieldOptionsComponents = {
   select: SelectControl,
@@ -57,8 +46,7 @@ registerBlockType("stampa/home-hero", {
   attributes: {
     backgroundImage: { type: "object" },
     intro: { type: "string", format: "string", default: "" },
-    try_me__icon: { type: "object", default: {} },
-    try_me__label: { type: "string", default: "Label" },
+    try_me: { type: "string", default: "" },
     try_me__link: { type: "string", default: "" }
   },
 
@@ -171,7 +159,7 @@ registerBlockType("stampa/home-hero", {
             </div>
             {/* try_me */}
             <div
-              className={`stampa-field stampa-field--icon-button home-hero__try_me ${
+              className={`stampa-field stampa-field--button home-hero__try_me ${
                 focusedField == "try_me" ? "focused" : ""
               }`}
               style={{
@@ -183,21 +171,12 @@ registerBlockType("stampa/home-hero", {
               onClick={e => updateFocusedField(e, "try_me")}
               title="try_me"
             >
-              <div className="flex flex--row">
-                {" "}
-                <img
-                  src={attributes.try_me__icon.url}
-                  alt={attributes.try_me__label}
-                />{" "}
-                <input
-                  type="text"
-                  value={attributes.try_me__label}
-                  placeholder="Label"
-                  onChange={e =>
-                    updateAttribute("try_me__label", e.target.value)
-                  }
-                />{" "}
-              </div>
+              <textarea
+                className="button home-hero__try_me"
+                value={attributes.try_me}
+                placeholder="Add text..."
+                onChange={e => updateAttribute("try_me", e.target.value)}
+              />
             </div>
           </div>
         </div>

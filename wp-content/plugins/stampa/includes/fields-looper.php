@@ -39,6 +39,7 @@ class Fields_Looper {
 
 			Stampa_Replacer::add_single_mapping( 'field.name', $field->name );
 			Stampa_Replacer::add_single_mapping( 'field.title', $field->title ?? '' );
+			Stampa_Replacer::add_single_mapping( 'field.class', $field->class ?? '' );
 			$this->map_field_values( $stampa_field, $field );
 
 			$field_code .= call_user_func( $this->opening_block_code, $stampa_field, $field );

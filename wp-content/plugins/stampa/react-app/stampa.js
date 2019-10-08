@@ -133,8 +133,6 @@ const stampaUtils = {
         stampaFields
       );
 
-      console.info(fields);
-
       store.set('stampaFields')(fields);
       store.set('activeFieldKey')(null);
 

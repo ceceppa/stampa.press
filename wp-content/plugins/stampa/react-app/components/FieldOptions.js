@@ -46,13 +46,13 @@ const FieldOptions = function(props) {
   const updateFieldOption = useCallback((e, fieldName, sanitize = false) => {
     const fields = store.get('stampaFields');
     const field = stampa.findFieldByKey(fields, activeFieldKey);
-    const value = e.target.value;
-
-    field[fieldName] = value;
+    let value = e.target.value;
 
     if (sanitize) {
-      stampa.sanitizeVariableName(value);
+      value = stampa.sanitizeVariableName(value);
     }
+
+    field[fieldName] = value;
 
     store.set('stampaFields')(fields);
   });
