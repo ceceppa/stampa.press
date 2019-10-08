@@ -18,7 +18,7 @@ class NPM_Build {
 		$this->remove_npm_log();
 		$this->npm_install();
 
-		self::exec( 'export && npm run build' );
+		self::exec( 'npm run build' );
 	}
 
 	private function remove_npm_log() {

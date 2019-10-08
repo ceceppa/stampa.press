@@ -25,7 +25,7 @@ const { Fragment } = wp.element;
 
 const allFieldsOptions = {
   intro: [],
-  "icon-button": [
+  try_me: [
     {
       name: "icon",
       type: "image",
@@ -57,9 +57,9 @@ registerBlockType("stampa/home-hero", {
   attributes: {
     backgroundImage: { type: "object" },
     intro: { type: "string", format: "string", default: "" },
-    "icon-button__icon": { type: "object", default: {} },
-    "icon-button__label": { type: "string", default: "Label" },
-    "icon-button__link": { type: "string", default: "" }
+    try_me__icon: { type: "object", default: {} },
+    try_me__label: { type: "string", default: "Label" },
+    try_me__link: { type: "string", default: "" }
   },
 
   edit({ className, attributes = {}, setAttributes }) {
@@ -143,7 +143,7 @@ registerBlockType("stampa/home-hero", {
               display: "grid",
               gridTemplateColumns:
                 "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ",
-              gridTemplateRows: "46px 46px 46px 46px 46px ",
+              gridTemplateRows: "46px 46px 46px 46px ",
               gridGap: "5px",
               backgroundImage: `url(${attributes.backgroundImage})`
             }}
@@ -169,10 +169,10 @@ registerBlockType("stampa/home-hero", {
                 onChange={value => updateAttribute("intro", value)}
               />
             </div>
-            {/* icon-button */}
+            {/* try_me */}
             <div
-              className={`stampa-field stampa-field--icon-button home-hero__icon-button ${
-                focusedField == "icon-button" ? "focused" : ""
+              className={`stampa-field stampa-field--icon-button home-hero__try_me ${
+                focusedField == "try_me" ? "focused" : ""
               }`}
               style={{
                 gridRowStart: 4,
@@ -180,21 +180,21 @@ registerBlockType("stampa/home-hero", {
                 gridRowEnd: 5,
                 gridColumnEnd: 8
               }}
-              onClick={e => updateFocusedField(e, "icon-button")}
-              title="icon-button"
+              onClick={e => updateFocusedField(e, "try_me")}
+              title="try_me"
             >
               <div className="flex flex--row">
                 {" "}
                 <img
-                  src={attributes.icon - button__icon.url}
-                  alt={attributes.icon - button__label}
+                  src={attributes.try_me__icon.url}
+                  alt={attributes.try_me__label}
                 />{" "}
                 <input
                   type="text"
-                  value={attributes.icon - button__label}
+                  value={attributes.try_me__label}
                   placeholder="Label"
                   onChange={e =>
-                    updateAttribute("icon-button__label", e.target.value)
+                    updateAttribute("try_me__label", e.target.value)
                   }
                 />{" "}
               </div>

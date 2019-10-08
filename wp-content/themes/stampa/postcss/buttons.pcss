@@ -1,4 +1,23 @@
-button {
+button,
+.button {
+  padding: 15px 30px;
+  border-radius: 2px;
+  transition: all var(--transition-fast) ease;
+
+  &--dark {
+
+    &,
+    &:visited {
+      background: var(--stampa-theme-light-blue);
+      color: var(--stampa-theme-dark-blue);
+    }
+
+    &:hover {
+      background: var(--stampa-theme-dark-blue);
+      color: var(--stampa-theme-light-blue);
+    }
+  }
+
   &:visited {}
 
   &:focus {}

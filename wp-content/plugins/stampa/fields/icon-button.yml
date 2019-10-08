@@ -62,7 +62,7 @@ gutenberg:
 php: 
   code: <a
           href="<?php echo ${{stampa.field.name}}__link; ?>"
-          class="{{stampa.block.className}}__{{stampa.field.name}}"
+          class="{{stampa.block.className}}__{{stampa.field.name}} {{stampa.field.class}}"
           alt="{{stampa.value.label}}"
         >
           <img 

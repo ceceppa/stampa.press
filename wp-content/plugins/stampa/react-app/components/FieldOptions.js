@@ -43,20 +43,16 @@ const FieldOptions = function(props) {
     activeField = stampa.findFieldByKey(fields, activeFieldKey);
   }
 
-  const updateFieldTitle = useCallback(e => {
+  const updateFieldOption = useCallback((e, fieldName, sanitize = false) => {
     const fields = store.get('stampaFields');
     const field = stampa.findFieldByKey(fields, activeFieldKey);
+    const value = e.target.value;
 
-    field.title = e.target.value;
+    field[fieldName] = value;
 
-    store.set('stampaFields')(fields);
-  });
-
-  const updateFieldName = useCallback(e => {
-    const fields = store.get('stampaFields');
-    const field = stampa.findFieldByKey(fields, activeFieldKey);
-
-    field.name = stampa.sanitizeVariableName(e.target.value);
+    if (sanitize) {
+      stampa.sanitizeVariableName(value);
+    }
 
     store.set('stampaFields')(fields);
   });
@@ -104,7 +100,7 @@ const FieldOptions = function(props) {
             name="field-title"
             id="field-title"
             value={activeField.title || ''}
-            onChange={updateFieldTitle}
+            onChange={e => updateFieldOption(e, 'title')}
           />
         </label>
       )}
@@ -122,7 +118,23 @@ const FieldOptions = function(props) {
             name="field-name"
             id="field-name"
             value={activeField.name}
-            onChange={updateFieldName}
+            onChange={e => updateFieldOption(e, 'name', true)}
+          />
+        </label>,
+        <label htmlFor="field-class" className="stampa-text" key="field-class">
+          <span
+            className="stampa-text__label tooltip"
+            data-tooltip="Custom class for the element (optional)"
+          >
+            Field class:
+          </span>
+          <input
+            className="stampa-text__input"
+            type="text"
+            name="field-class"
+            id="field-class"
+            value={activeField.class || ''}
+            onChange={e => updateFieldOption(e, 'class')}
           />
         </label>,
         <hr key="hr-1" className="stampa-hr" />,
