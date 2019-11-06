@@ -232,6 +232,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
           gridGap={+fieldGridPosition.gap}
           gridRowHeight={-1}
           acceptedGroups={stampaField.acceptedGroups}
+          maxChildren={stampaField.maxChildren}
           fields={field.fields || []}
           parentField={field}
           draggable={true}

@@ -1,6 +1,43 @@
 .home-hero {
+  background: var(--stampa-theme-blue) !important;
+  color: var(--stampa-theme-hero-text);
+  padding-top: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .page & {
+    min-height: 80vh;
+  }
+
+  &__wrapper {
+    padding: 32px;
+    max-width: 500px;
+    margin: auto;
+  }
+
   &__intro {
+    max-width: 864px;
+    padding: 0 32px;
+    text-align: center;
+
+    p {
+      font-size: 60px;
+      line-height: 102px;
+      margin-top: 20px;
+      margin-bottom: 80px;
+      font-weight: lighter;
+
+      strong {
+        display: inline-block;
+        margin: 0 10px;
+        padding: 10px;
+        line-height: 1;
+        background: var(--stampa-theme-hero-text);
+        color: var(--stampa-theme-blue);
+      }
+    }
   }
-  &__try_me {
-  }
+
+  &__try_me {}
 }

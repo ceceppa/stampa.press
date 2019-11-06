@@ -3,7 +3,7 @@ namespace Semplice;
 
 use function Meno\Prevent\prevent_generation;
 
-define( 'SEMPLICE_THEME_VERSION', '1570516089' );
+define( 'SEMPLICE_THEME_VERSION', '1572937332' );
 
 $composer_autoload = __DIR__ . '/vendor/autoload.php';
 if ( file_exists( $composer_autoload ) ) {

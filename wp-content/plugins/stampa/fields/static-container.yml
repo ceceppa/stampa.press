@@ -4,31 +4,30 @@ stampa:
   label: Container
   tooltip: Static <div /> element
   icon: button.svg
-  options: []
   container: 1
   acceptedGroups:
-  - static
-  - fields
+    - static
+    - fields
   fieldClassName: field-container
   defaultSize:
     rows: 3
     columns: 3
 options:
-- name: columns
-  type: number
-  label: Columns
-  value: '6'
-  inspector: 'false'
-- name: rows
-  type: number
-  label: Rows
-  value: '5'
-  inspector: 'false'
-- name: gap
-  type: number
-  label: Gap
-  value: '5'
-  inspector: 'false'
+  - name: columns
+    type: number
+    label: Columns
+    value: "6"
+    inspector: "false"
+  - name: rows
+    type: number
+    label: Rows
+    value: "5"
+    inspector: "false"
+  - name: gap
+    type: number
+    label: Gap
+    value: "5"
+    inspector: "false"
 php:
   code: <div class="{{stampa.block.className}}__{{stampa.field.name}}">
   end_block: "</div><!-- container: {{stampa.field.name}} -->"

@@ -73,7 +73,13 @@ const FieldOptions = function(props) {
   let options = [];
   const hasOptions = stampaField && Array.isArray(stampaField.options);
   if (hasOptions) {
-    options = stampaField.options;
+    options = stampaField.options.filter(function isOptionConditional(option) {
+      if (option.if == null || activeField == null) {
+        return true;
+      }
+
+      return activeField.values[option.if.option] === option.if.equals;
+    });
   }
 
   const groupLabel = activeField ? stampaField.label : 'Field';

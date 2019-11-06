@@ -12,13 +12,14 @@
     border-radius: 0;
     border: 1px solid var(--stampa-editor-border-color)
   }
+
   .stampa-field input:hover, .stampa-field textarea:hover {
       border-color: rgb(78, 80, 83);
     }
+
   .stampa-field--textarea * {
       height: 100%;
     }
-
 .stampa-field .stampa-media-upload {
     height: 100%;
   }
@@ -329,6 +330,7 @@
       text-align: inherit;
       font-size: inherit;
       color: inherit;
+      background: transparent;
     }
 
   .wp-block[data-type^='stampa/'] .stampa-field .components-base-control__field {

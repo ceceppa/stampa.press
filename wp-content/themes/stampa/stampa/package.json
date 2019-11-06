@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "parcel watch index.js index.pcss editor.pcss",
+    "dev": "parcel watch index.js index.pcss editor.pcss -d dist",
     "prettify": "prettier --write blocks/*.js && prettier --write --html-whitespace-sensitivity ignore --parser html modules/*.php",
     "build": "parcel build index.js index.pcss editor.pcss -d dist"
   },

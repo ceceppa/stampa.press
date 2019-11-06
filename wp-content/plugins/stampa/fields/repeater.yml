@@ -1,0 +1,66 @@
+stampa:
+  group: Static
+  id: repeater
+  label: Repeater
+  tooltip: Flex/Grid Repeater group
+  icon: button.svg
+  container: 1
+  maxChildren: 1
+  acceptedGroups:
+    - static
+    - fields
+  fieldClassName: repeater-container
+  defaultSize:
+    rows: 3
+    columns: 3
+options:
+  - name: type
+    type: select
+    label: Type
+    value: flex
+    values:
+      - flex
+      - grid
+  - name: columns
+    type: number
+    label: Columns
+    value: "6"
+    inspector: "false"
+    if:
+      option: type
+      equals: grid
+  - name: rows
+    type: number
+    label: Rows
+    value: "5"
+    inspector: "false"
+    if:
+      option: type
+      equals: grid
+  - name: gap
+    type: number
+    label: Gap
+    value: "5"
+    inspector: "false"
+    if:
+      option: type
+      equals: grid
+  - name: flexWidth
+    type: number
+    label: Child width (%)
+    value: 100%
+    if:
+      option: type
+      equals: flex
+  - name: flexWrap
+    type: checkbox
+    label: flex-wrap
+    value: "wrap"
+    checked: "false"
+    if:
+      option: type
+      equals: flex
+
+php:
+  code: <div class="{{stampa.block.className}}__{{stampa.field.name}}">
+  end_block: "</div><!-- container: {{stampa.field.name}} -->"

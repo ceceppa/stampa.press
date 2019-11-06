@@ -22,6 +22,7 @@ const Grid = function({
   fields,
   useClassName,
   parentField,
+  maxChildren,
 }) {
   const ref = useRef();
   const store = Store.useStore();
@@ -30,12 +31,15 @@ const Grid = function({
   const handleDragOver = useCallback(e => {
     const isStampaField = e.dataTransfer.types.includes('stampa-field-key');
     const draggedFieldGroup = stampa.getDraggedFieldGroup();
-    const isFieldGroupAccepted = acceptedGroups.indexOf(draggedFieldGroup) >= 0;
+    const canAcceptMoreChildren =
+      maxChildren == null || maxChildren > fields.length;
+    const isFieldGroupAccepted =
+      acceptedGroups.indexOf(draggedFieldGroup) >= 0 && canAcceptMoreChildren;
 
     /**
      * Prevent the parent grid from showing the highlighted cells
      * if the child container does not accept the dragged field.
-    */
+     */
     if (!isFieldGroupAccepted) {
       e.stopPropagation();
     }
@@ -113,14 +117,15 @@ const Grid = function({
           height: `${+gridHeight}${heightUnit}`,
         }}
       >
-        {store.get('gridShow') &&
+        {store.get('gridShow') && (
           <CSSGrid
             gridColumns={gridColumns}
             gridRows={gridRows}
             gridGap={gridGap}
             gridHeight={gridHeight}
             gridHeightUnit={heightUnit}
-          />}
+          />
+        )}
         {fields.map(field => (
           <Field
             field={field}
@@ -129,13 +134,14 @@ const Grid = function({
             draggingClass={draggingClass}
           />
         ))}
-        {drag.over &&
+        {drag.over && (
           <div
             className="stampa-grid__highlight"
             style={{
               gridArea,
             }}
-          />}
+          />
+        )}
       </div>
     </div>
   );
