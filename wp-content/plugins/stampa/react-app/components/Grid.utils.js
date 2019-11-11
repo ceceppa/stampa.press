@@ -37,7 +37,7 @@ function updateDragData(
       over: true,
     };
 
-    gridArea = getGridArea(dragData);
+    gridArea = getGridArea(dragData, gridColumns, gridRows);
     setDragCallback(dragData);
 
     return gridArea;
@@ -57,12 +57,12 @@ function calculateCellXY(element, boundingClientRect, gridColumns, gridRows) {
     cellY: Math.ceil(y / cellHeight),
   };
 }
-function getGridArea(drag) {
+function getGridArea(drag, gridColumns, gridRows) {
   if (stampa.isResizing()) {
     return getResizingArea(drag);
   }
 
-  return getOccupiedArea(drag);
+  return getOccupiedArea(drag, gridColumns, gridRows);
 }
 
 function getResizingArea(drag) {
@@ -72,10 +72,10 @@ function getResizingArea(drag) {
 
   if (resize == 'width') {
     endColumn = Math.max(startColumn, drag.column + 1);
-    endRow += startRow;
+    endRow = parseInt(startRow, 10) + parseInt(endRow, 10);
   } else if (resize == 'height') {
     endRow = Math.max(startRow, drag.row + 1);
-    endColumn += startColumn;
+    endColumn = parseInt(startColumn, 10) + parseInt(endColumn, 10);
   } else {
     endColumn = Math.max(startColumn, drag.column + 1);
     endRow = Math.max(startRow, drag.row + 1);
@@ -86,7 +86,7 @@ function getResizingArea(drag) {
   }
 }
 
-function getOccupiedArea(drag) {
+function getOccupiedArea(drag, gridColumns, gridRows) {
   let endRow = drag.row;
   let endColumn = drag.column;
 
@@ -106,6 +106,9 @@ function getOccupiedArea(drag) {
       endRow += field.defaultSize.rows;
       endColumn += field.defaultSize.columns;
     }
+
+    endRow = Math.min(gridRows + 1, endRow);
+    endColumn = Math.min(gridColumns + 1, endColumn);
   }
 
   return `${drag.row} / ${drag.column} / ${endRow} / ${endColumn}`;

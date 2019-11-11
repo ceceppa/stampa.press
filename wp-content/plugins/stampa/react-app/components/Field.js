@@ -1,4 +1,10 @@
-import React, { useCallback, useRef, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+} from 'react';
 
 import Store from '../store/store';
 import Grid from './Grid';
@@ -152,6 +158,34 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
     e.stopPropagation();
   });
 
+  const useDataAttribute = useMemo(() => {
+    const data = {};
+
+    const keys = Object.keys(field.values);
+    for (let key of keys) {
+      data[`data-option-${key.toLowerCase()}`] = field.values[key];
+    }
+
+    return data;
+  });
+
+  const useStyleAttribute = useMemo(() => {
+    const data = {};
+
+    for (let option of stampaField.options) {
+      const key = option.name;
+      const value = field.values[key];
+
+      if (value == null || value.length === 0) {
+        continue;
+      }
+
+      data[`--${key.toLowerCase()}`] = `${value}${option.suffix || ''}`;
+    }
+
+    return data;
+  });
+
   /**
    * Data saved with PHP using json_encode gets converted to string, but we need numbers...
    */
@@ -176,7 +210,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
     }
   }
 
-  const fieldGridPosition = {
+  const gridFieldGridData = {
     columns: (field.values && field.values.columns) || field.position.endColumn,
     rows: (field.values && field.values.rows) || field.position.endRow,
     gap: (field.values && field.values.gap) || store.get('gridGap'),
@@ -184,8 +218,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
 
   const tooltipPosition = stampaField.container ? 'top' : '';
   const showFieldTypeHint = store.get('showFieldTypeHint');
-  const tooltipClass =
-    showFieldTypeHint || stampaField.container ? '' : 'has-html-tooltip';
+  const tooltipClass = showFieldTypeHint ? '' : 'has-html-tooltip';
 
   return (
     <div
@@ -200,6 +233,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
         gridArea,
       }}
       onClick={setAsActive}
+      {...useDataAttribute}
     >
       <div
         className={`tooltip tooltip--html grid ${tooltipPosition}`}
@@ -227,9 +261,9 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
       )}
       {stampaField.container && (
         <Grid
-          gridColumns={+fieldGridPosition.columns}
-          gridRows={+fieldGridPosition.rows}
-          gridGap={+fieldGridPosition.gap}
+          gridColumns={+gridFieldGridData.columns}
+          gridRows={+gridFieldGridData.rows}
+          gridGap={+gridFieldGridData.gap}
           gridRowHeight={-1}
           acceptedGroups={stampaField.acceptedGroups}
           maxChildren={stampaField.maxChildren}
@@ -237,6 +271,7 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
           parentField={field}
           draggable={true}
           useClassName="is-container"
+          useCustomStyle={useStyleAttribute}
         />
       )}
       {stampaField.container == null && (

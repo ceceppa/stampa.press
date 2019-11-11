@@ -4,7 +4,7 @@ stampa:
   label: Image
   tooltip: Image
   icon: image.svg
-  fieldClassName: '{round} wireframe'
+  fieldClassName: "{round} wireframe"
   html: <div class="image">
     <svg class="image-wireframe"
     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -23,15 +23,15 @@ options:
   - name: round
     type: checkbox
     label: Round
-    checked: 'false'
+    checked: "false"
     value: round
-    inspector: 'false'
+    inspector: "false"
   - name: size
     type: select
     label: Image size
     tooltip: The image size to use.
     value: full
-    inspector: 'false'
+    inspector: "false"
   - name: fit
     type: select
     label: Default value for "object-fit"
@@ -61,20 +61,18 @@ gutenberg:
   attribute:
     type: object
   wp_components: IconButton
-  react:
-    <StampaMediaUpload
-      fieldName="{{stampa.field.name}}"
-      image={attributes.{{stampa.field.name}}}
-      customClass="{{stampa.value.round}}"
-      attributes={attributes}
-      updateAttribute={updateAttribute}
-      updateFocusedField={updateFocusedField}
+  react: <StampaMediaUpload
+    fieldName="{{stampa.field.name}}"
+    image={attributes.{{stampa.field.name}}}
+    attributes={attributes}
+    updateAttribute={updateAttribute}
+    updateFocusedField={updateFocusedField}
     />
-php: 
+php:
   code: <?php if ( isset( ${{stampa.field.name}}->id) ) {
-          $object_fit = $__{{stampa.field.name}}->fit;
-          $object_position = $__{{stampa.field.name}}->position;
-          wp_get_attachment_image( ${{stampa.field.name}}->id, '{{stampa.value.size}}', '', [
-            'class' => "{$object_fit} {$object_position}"
-          ] );
-        } ?>
+    $object_fit = $__{{stampa.field.name}}->fit;
+    $object_position = $__{{stampa.field.name}}->position;
+    wp_get_attachment_image( ${{stampa.field.name}}->id, '{{stampa.value.size}}', '', [
+    'class' => "{$object_fit} {$object_position}"
+    ] );
+    } ?>

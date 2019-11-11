@@ -9,6 +9,7 @@ import CheckboxField from './FieldOptions/CheckboxField';
 import TextField from './FieldOptions/TextField';
 import SelectField from './FieldOptions/SelectField';
 import NumberField from './FieldOptions/NumberField';
+import LabelField from './FieldOptions/LabelField';
 // import MediaField from './FieldOptions/MediaField';
 
 import stampa from '../stampa';
@@ -21,6 +22,7 @@ const components = {
   text: TextField,
   select: SelectField,
   number: NumberField,
+  label: LabelField,
 };
 
 const FieldOptions = function(props) {
@@ -148,10 +150,14 @@ const FieldOptions = function(props) {
         <h3 key="h3-tag">Options:</h3>,
         options.map(option => {
           const Component = components[option.type];
-
+          const tooltipClass = option.tooltip ? 'tooltip tooltip--left' : '';
           return (
             Component && (
-              <div className="field-option" key={option.name}>
+              <div
+                className={`field-option ${tooltipClass}`}
+                key={option.name}
+                data-tooltip={option.tooltip}
+              >
                 <Component
                   option={option}
                   updateOptionValue={updateOptionValue}

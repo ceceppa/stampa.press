@@ -26,6 +26,18 @@
     display: grid;
     align-self: flex-start;
     transition: all 0.15s ease;
+
+    [data-option-type='flex']>.stampa-grid>& {
+      display: flex;
+
+      >* {
+        flex-basis: var(--flexwidth);
+      }
+
+      >.stampa-grid__highlight {
+        flex-basis: 100%;
+      }
+    }
   }
 
   &__svg {
@@ -204,4 +216,8 @@
   pointer-events: none;
   opacity: 0.15;
   transition: all 0.15s ease;
+
+  [data-option-type='flex']>.stampa-grid>.stampa-grid__content>& {
+    background: transparent !important;
+  }
 }

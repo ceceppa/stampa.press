@@ -29,7 +29,7 @@ namespace Stampa;
 class Stampa_Replacer {
 	private static $mapping_data = [];
 
-	public static function add_single_mapping( string $special_key, string $value ) : void {
+	public static function add_single_mapping( string $special_key, $value ) : void {
 		self::add_mapping( $special_key, $value );
 	}
 

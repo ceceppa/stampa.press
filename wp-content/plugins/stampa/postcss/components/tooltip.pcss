@@ -10,7 +10,7 @@ $size: 8px;
   }
 
   &:hover {
-    z-index: 99;
+    z-index: 999;
 
     &::before,
     &::after {
@@ -120,6 +120,19 @@ $size: 8px;
     text-align: center;
     white-space: pre-wrap;
     font-size: 12px;
+  }
+
+  &--left {
+    &::before {
+      left: 30px;
+      margin-left: 0;
+    }
+
+    &::after {
+      left: 30px;
+      transform: translate(-50%, 20px);
+      max-width: 200px;
+    }
   }
 }
 

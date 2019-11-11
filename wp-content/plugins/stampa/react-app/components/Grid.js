@@ -23,6 +23,8 @@ const Grid = function({
   useClassName,
   parentField,
   maxChildren,
+  useCustomStyle,
+  ...props
 }) {
   const ref = useRef();
   const store = Store.useStore();
@@ -103,6 +105,8 @@ const Grid = function({
       className={`stampa-grid ${useClassName || ''} ${glowingClass}`}
       data-accepted-groups={acceptedGroups.join(',')}
       onClick={() => store.set('activeFieldKey')(null)}
+      style={useCustomStyle}
+      {...props}
     >
       <div
         className="stampa-grid__content editor-styles-wrapper"

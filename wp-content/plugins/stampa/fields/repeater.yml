@@ -6,6 +6,7 @@ stampa:
   icon: button.svg
   container: 1
   maxChildren: 1
+  showGhostElements: 1
   acceptedGroups:
     - static
     - fields
@@ -14,6 +15,21 @@ stampa:
     rows: 3
     columns: 3
 options:
+  - name: label
+    type: label
+    label: Number of items
+  - name: min
+    type: number
+    label: Min
+    value: 1
+  - name: max
+    type: number
+    label: Max
+    value: -1
+    tooltip: Use -1 for "unlimited" number of items
+  - name: style
+    type: label
+    label: Container style
   - name: type
     type: select
     label: Type
@@ -21,10 +37,26 @@ options:
     values:
       - flex
       - grid
+  - name: flexWidth
+    type: number
+    label: Child width (%)
+    value: 100
+    suffix: "%"
+    if:
+      option: type
+      equals: flex
+  - name: flexWrap
+    type: checkbox
+    label: flex-wrap
+    value: "wrap"
+    checked: "false"
+    if:
+      option: type
+      equals: flex
   - name: columns
     type: number
     label: Columns
-    value: "6"
+    value: "1"
     inspector: "false"
     if:
       option: type
@@ -32,7 +64,7 @@ options:
   - name: rows
     type: number
     label: Rows
-    value: "5"
+    value: "1"
     inspector: "false"
     if:
       option: type
@@ -45,22 +77,18 @@ options:
     if:
       option: type
       equals: grid
-  - name: flexWidth
-    type: number
-    label: Child width (%)
-    value: 100%
-    if:
-      option: type
-      equals: flex
-  - name: flexWrap
-    type: checkbox
-    label: flex-wrap
-    value: "wrap"
-    checked: "false"
-    if:
-      option: type
-      equals: flex
-
+gutenberg:
+  attribute:
+    type: array
+  react_start_block: <RepeaterGroup
+    fieldName="{{stampa.field.name}}"
+    >
+    <RepeaterField
+    attributes={attributes}
+    updateAttribute={updateAttribute}
+    updateFocusedField={updateFocusedField}
+    >
+  react_end_block: </RepeaterField></RepeaterGroup>
 php:
   code: <div class="{{stampa.block.className}}__{{stampa.field.name}}">
   end_block: "</div><!-- container: {{stampa.field.name}} -->"

@@ -82,13 +82,13 @@
       -webkit-transition: all 0.15s ease;
       transition: all 0.15s ease;
     }
-  .stampa-field--image.round .stampa-grid__field__content {
+  .stampa-field--image[data-option-round="round"] .stampa-grid__field__content {
         display: -webkit-box;
         display: flex;
         width: 100%;
         height: 100%;
       }
-  .stampa-field--image.round .image {
+  .stampa-field--image[data-option-round="round"] .image {
         position: relative;
         border: 1px solid var(--stampa-editor-border-color);
         border-radius: 50%;
