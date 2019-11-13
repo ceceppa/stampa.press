@@ -28,7 +28,6 @@
   }
   .stampa-field--image {
     position: relative;
-    overflow: hidden;
     border: 1px solid var(--stampa-editor-border-color)
   }
   .stampa-field--image.wireframe {
