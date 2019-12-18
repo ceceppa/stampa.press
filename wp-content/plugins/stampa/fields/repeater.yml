@@ -21,12 +21,12 @@ options:
   - name: min
     type: number
     label: Min
-    value: 1
+    value: 0
   - name: max
     type: number
     label: Max
-    value: -1
-    tooltip: Use -1 for "unlimited" number of items
+    value: 0
+    tooltip: Use 0 for "unlimited" number of items
   - name: style
     type: label
     label: Container style
@@ -40,7 +40,7 @@ options:
   - name: flexWidth
     type: number
     label: Child width (%)
-    value: 100
+    value: 33.3333
     suffix: "%"
     if:
       option: type

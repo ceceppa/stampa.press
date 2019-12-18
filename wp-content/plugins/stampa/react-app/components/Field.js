@@ -161,7 +161,8 @@ const Field = React.memo(function({ field, resizingClass, draggingClass }) {
   const useDataAttribute = useMemo(() => {
     const data = {};
 
-    const keys = Object.keys(field.values);
+    console.info(field.values);
+    const keys = Object.keys(field.values || {});
     for (let key of keys) {
       data[`data-option-${key.toLowerCase()}`] = field.values[key];
     }

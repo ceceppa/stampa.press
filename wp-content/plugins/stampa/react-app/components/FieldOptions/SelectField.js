@@ -24,22 +24,23 @@ export default function SelectField({
     <div className="stampa-select">
       <label
         htmlFor={`field-${option.name}`}
-        className={`stampa-select__name ${option.tooltip ? 'tooltip' : ''}`}
-        data-tooltip={option.tooltip}
+        className="stampa-select__name"
         dangerouslySetInnerHTML={{ __html: `${option.label}:` }}
       />
-      {useSimpleSelect &&
+      {useSimpleSelect && (
         <SimpleSelect
           option={option}
           selectedValues={selectedValues}
           updateOptionValue={updateOptionValue}
-        />}
-      {!useSimpleSelect &&
+        />
+      )}
+      {!useSimpleSelect && (
         <MultiSelect
           option={option}
           selectedValues={selectedValues}
           updateOptionValue={updateOptionValue}
-        />}
+        />
+      )}
     </div>
   );
 }

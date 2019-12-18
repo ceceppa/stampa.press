@@ -2,10 +2,10 @@
  * This code is part of "Grid.js" and has been splitted to keep the code
  * more organised and clean
  */
-import shortid from "shortid";
+import shortid from 'shortid';
 
-import stampa from "../stampa";
-import stampaUtils from "../stampa";
+import stampa from '../stampa';
+import stampaUtils from '../stampa';
 
 let oldX, oldY, gridArea;
 
@@ -34,7 +34,7 @@ function updateDragData(
     const dragData = {
       column: cellX,
       row: cellY,
-      over: true
+      over: true,
     };
 
     gridArea = getGridArea(dragData, gridColumns, gridRows);
@@ -54,7 +54,7 @@ function calculateCellXY(element, boundingClientRect, gridColumns, gridRows) {
 
   return {
     cellX: Math.ceil(x / cellWidth),
-    cellY: Math.ceil(y / cellHeight)
+    cellY: Math.ceil(y / cellHeight),
   };
 }
 function getGridArea(drag, gridColumns, gridRows) {
@@ -70,10 +70,10 @@ function getResizingArea(drag) {
 
   const resize = stampa.getResizeDirection();
 
-  if (resize == "width") {
+  if (resize == 'width') {
     endColumn = Math.max(startColumn, drag.column + 1);
     endRow = parseInt(startRow, 10) + parseInt(endRow, 10);
-  } else if (resize == "height") {
+  } else if (resize == 'height') {
     endRow = Math.max(startRow, drag.row + 1);
     endColumn = parseInt(startColumn, 10) + parseInt(endColumn, 10);
   } else {
@@ -92,7 +92,7 @@ function getOccupiedArea(drag, gridColumns, gridRows) {
 
   const draggedFieldId = stampa.getDraggedFieldId();
   // draggedFieldId starts with _ when dragging an element from the grid
-  if (draggedFieldId && draggedFieldId[0] == "_") {
+  if (draggedFieldId && draggedFieldId[0] == '_') {
     const position = stampa.getFieldPosition();
 
     drag.row -= position.offsetX;
@@ -123,7 +123,7 @@ function updateField(parentField, draggedFieldId, dragData, store) {
     return;
   }
 
-  const fields = store.get("stampaFields");
+  const fields = store.get('stampaFields');
   const field = stampa.findFieldByKey(fields, draggedFieldId);
   updateFieldSizeOrPosition(field, dragData);
 
@@ -137,7 +137,7 @@ function updateField(parentField, draggedFieldId, dragData, store) {
   }
 
   resetResizeData(store);
-  store.set("stampaFields")(fields);
+  store.set('stampaFields')(fields);
 }
 
 function updateFieldSizeOrPosition(field, dragData) {
@@ -146,11 +146,11 @@ function updateFieldSizeOrPosition(field, dragData) {
   let resizeWidth = false;
   let resizeHeight = false;
 
-  if (resize == "width") {
+  if (resize == 'width') {
     resizeWidth = true;
-  } else if (resize == "height") {
+  } else if (resize == 'height') {
     resizeHeight = true;
-  } else if (resize == "se") {
+  } else if (resize == 'se') {
     resizeWidth = true;
     resizeHeight = true;
   } else {
@@ -212,7 +212,7 @@ function resetResizeData() {
 }
 
 function addNewField(parentField, draggedFieldId, dragData, store) {
-  const fields = store.get("stampaFields");
+  const fields = store.get('stampaFields');
   const sourceField = stampa.getFieldById(draggedFieldId);
 
   /**
@@ -239,12 +239,12 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
   if (parentField) {
     addNewFieldAsChildOf(parentField, newField, store);
   } else {
-    store.set("stampaFields")([...fields, newField]);
+    store.set('stampaFields')([...fields, newField]);
   }
 
   // Set the last block as "active"
-  store.set("activeFieldId")(newField.id);
-  store.set("activeFieldKey")(newField.key);
+  store.set('activeFieldId')(newField.id);
+  store.set('activeFieldKey')(newField.key);
   stampa.setDraggedField(null);
   stampa.setDraggedFieldId(null);
   stampa.setDraggedFieldGroup(null);
@@ -262,15 +262,15 @@ function addNewField(parentField, draggedFieldId, dragData, store) {
 function generateUniqueName(fieldName, fields) {
   for (let field of fields) {
     if (field.name == fieldName) {
-      const re = new RegExp("\\d+$");
+      const re = new RegExp('\\d+$');
       const match = fieldName.match(re);
 
       if (match) {
-        fieldName = fieldName.replace(/\d+$/, "");
+        fieldName = fieldName.replace(/\d+$/, '');
 
         fieldName += +match[0] + 1;
       } else {
-        fieldName += "1";
+        fieldName += '1';
       }
 
       return generateUniqueName(fieldName, fields);
@@ -295,8 +295,8 @@ function setupFieldStampaData(
       startColumn: dragData.column,
       startRow: dragData.row,
       endColumn: 1,
-      endRow: 1
-    }
+      endRow: 1,
+    },
   };
 
   if (sourceField.defaultSize) {
@@ -316,8 +316,8 @@ function setupFieldValuesData(newField, sourceField) {
    * to the default "value"
    */
   for (let option of sourceField.options) {
-    if (option.type == "checkbox" && option.checked == false) {
-      newField.values[option.name] = "";
+    if (option.type == 'checkbox' && option.checked == false) {
+      newField.values[option.name] = '';
     } else {
       newField.values[option.name] = option.value;
     }
@@ -325,11 +325,11 @@ function setupFieldValuesData(newField, sourceField) {
 }
 
 function addNewFieldAsChildOf(parentField, newField, store) {
-  const fields = store.get("stampaFields");
+  const fields = store.get('stampaFields');
 
   appendChildToParent(parentField.key, fields, newField);
 
-  store.set("stampaFields")(fields);
+  store.set('stampaFields')(fields);
 }
 
 function appendChildToParent(parentKey, fields, newField) {
