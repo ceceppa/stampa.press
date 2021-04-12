@@ -1,5 +1,7 @@
 # Stampa
 
+**NOTE** Due lack of time this project has never been completed :(
+
 The Gutenberg block boilerplate generator
 
 Stampa is a Stand alone and WP Plugin that aims to generate basic REACT code for our custom blocks.
