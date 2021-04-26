@@ -18,6 +18,12 @@ Another issue is that you can't load your front-end CSS inside the Gutenberg edi
 The reality is that the page inside the block editor will never look 100% like the one rendered in the front-end. 
 For this reason, the idea of Stampa is to allow you to create your block with a simple drag and drop interface and the power of CSS Grids so that the final result will not be perfect but close enough to the actual block rendered in the post/page.
 
+### Drag & Drop
+
+You can create a new block by combining the available components using an easy drag-and-drop interface:
+
+![Drag & Drop](https://raw.githubusercontent.com/ceceppa/stampa.press/main/images/editor.gif)
+
 ### The code generator
 
 Once you have created your block, pressing the "Save & Generate" button will generate the following files for you:
@@ -30,7 +36,6 @@ That's all, simple :)
 
 ![The editor](https://raw.githubusercontent.com/ceceppa/stampa.press/main/images/the-editor.png)
 
-
 ### Grid settings
 
 This section allows you to customise the size of the CSS Grid
@@ -39,11 +44,9 @@ This section allows you to customise the size of the CSS Grid
 
 ### The visual block generator
 
-![Drag & Drop](https://raw.githubusercontent.com/ceceppa/stampa.press/main/images/editor.gif)
-
 Here we have three columns:
 
 - The first column contains the components available, more can be added via PHP
-- Middle column is the visual representation of your block
+- Middle column is the visual representation of your block, element can be resized
 - The last column contains the block and the selected component settings
 
