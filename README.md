@@ -22,7 +22,7 @@ For this reason, the idea of Stampa is to allow you to create your block with a 
 
 You can create a new block by combining the available components using an easy drag-and-drop interface:
 
-![Drag & Drop](https://raw.githubusercontent.com/ceceppa/stampa.press/main/images/drag-end-drop.gif)
+![Drag & Drop](https://raw.githubusercontent.com/ceceppa/stampa.press/main/images/drag-and-drop.gif)
 
 ### The code generator
 
